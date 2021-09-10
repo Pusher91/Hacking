@@ -6,7 +6,7 @@ Comptia A+, Network+, and Security+ | Currently avidly pursuing my OSCP certific
 ### Contents of this blog:
 ```markdown
 - My notes
-- Walkthroughts from:
+- Walkthroughs from:
   - Hack The Box
   - Proving Grounds
   - Vulnhub
