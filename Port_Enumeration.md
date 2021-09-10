@@ -356,6 +356,15 @@ done;</pre>
                 </td>
             </tr>
         </table>
+    <li>Host</li>
+        <ul>
+            <table>
+                <tr>
+                    <td>Resolve IP to domain name</td>
+                    <td>Host &lt;ip address&gt;<br>TEST</td>
+                </tr>
+            </table>
+        </ul>
 </ul>
 
 
