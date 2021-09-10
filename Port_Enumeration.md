@@ -255,7 +255,7 @@
         <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
     </ul>
 </li>
-<li>Tools
+<li>Tools</li>
     <ul>
         <li>nc
             <ul>
@@ -274,7 +274,6 @@
             </ul>
         </li>
     </ul>
-</li>
 <li>Telnet</li>
 <li>swaks
     <ul>
