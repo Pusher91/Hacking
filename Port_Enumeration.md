@@ -4,9 +4,7 @@
 
 <details>
   <summary>21 TCP / FTP</summary>
-  <br>
   - ftp
-  <br>
   
   |||
     | ------------- | ------------- |
@@ -18,19 +16,15 @@
     | Turn off prompt while downloading files | ftp> prompt off |
     | Set mode to binary | ftp> binary |
   
-  <br>
   - wget
-  <br>
   
   |||
     | ------------- | ------------- |
     | Recursively download FTP contents  | wget -r ftp://\<user\>@\<ip address\> --password=\<password\><br> wget -r ftp://\<user\>:\<password\>@\<ip address\> |
     | Mirror FTP | wget --mirror ftp://\<user\>:\<password\>@\<ip address\>  |
   
-  <br>
   - Proftp
     - Can copy file to/from directories over FTP using write permissions
-  <br>
   
     |||
       | ------------- | ------------- |
@@ -38,9 +32,7 @@
       | Select file to copy | telnet> site cpfr \<file to copy\>  |
       | Select file to copy | telnet> site cpto \<directory to copy to\>  |
   
-  <br>
   </details>
-  <br>
   
 #### 22 TCP / SSH
   
