@@ -310,7 +310,6 @@
         <li>Alt+F2</li>
     </ul>
 </li>
-</ul>
 
 <h2>53 TCP / DNS</h2>
 
