@@ -1,4 +1,4 @@
-## My Brain Bank
+## Free Knowledge
 
 Comptia A+, Network+, and Security+ | Currently avidly pursuing my OSCP certification.
 
