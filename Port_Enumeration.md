@@ -231,6 +231,7 @@ quit
 Connection closed by foreign host.
                 </pre>
             </li>
+            <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
         </ul>
     </li>
 </ul>
