@@ -320,6 +320,7 @@ done;</pre>
         <ul>
             <li>resolv.conf hosts will be searched in order from top to bottom</li>
         </ul>
+
     <li>nslookup</li>
         <table>
             <tr>
@@ -355,22 +356,69 @@ done;</pre>
                     </table>
                 </td>
             </tr>
-
         </table>
+
     <li>Host</li>
         <ul>
             <table>
                 <tr>
                     <td>Resolve IP to domain name</td>
-                    <td>Host &lt;ip address&gt;<br>TEST</td>
+                    <td>host &lt;ip address&gt;<br>host &lt;domain name&gt; &lt;DNS Server&gt;</td>
+                </tr>
+                <tr>
+                    <td>Find all mx records for example.ecom</td>
+                    <td>host -t mx &lt;Domain Name&gt;<br>Example: host -t mx example.com</td>
+                </tr>
+                <tr>
+                    <td>Zone Transfer</td>
+                    <td>host -l &lt;domain name&gt; &lt;DNS Sever&gt;<br>Example: host -l cronos.htb ns1.cronos.htb<br>Example: host -l cronos.htb &lt;ip address&gt;</td>
+                </tr>
+                <tr>
+                    <td>Find name servers</td>
+                    <td>host -t ns example.com</td>
                 </tr>
             </table>
         </ul>
-</ul>
-
-<li>test1</li>
-<ul>test2
-    <li>test3</li>
+    <li>dig</li>
+                <table>
+                    <tr>
+                        <td>Zone Transfer</td>
+                        <td>dig axfr &lt;Domain - Example: friendzone.htb&gt; @&lt;ns ip address&gt;</td>
+                    </tr>
+                </table>
+    <li>DNSRecon</li>
+        <table>
+            <tr>
+                <td>Zone Transfer</td>
+                <td>dnsrecon -d &ls;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
+            </tr>
+        </table>
+    <li>Gobuster</li>
+        <table>
+            <tr>
+                <td>Subdomain brute force</td>
+                <td>gobuster dns -d &ls;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
+            </tr>
+        </table>
+    <li>dnsEnum</li>
+    <li>wfuzz</li>
+        <table>
+            <tr>
+                <td>Run scan to look for other subdomains</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Run 1st scan to check char length on responses and immediately push ctrl+c</td>
+                            <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&lt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
+                        </tr>
+                        <tr>
+                            <td>Run 2nd scan with --hh &gt;#&lt; flag to hide response to exclude length of page the coincides with directories that do not exist</td>
+                            <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&gt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt --hh &lt;Char Length #&gt;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 </ul>
 
 
