@@ -1,9 +1,9 @@
-## My IT Security Journey
+## My IT Experienct, Immortalized
 
 Comptia A+, Network+, and Security+ | Currently avidly pursuing my OSCP certification.
 
 
-### Contents of this blog:
+### Contents:
 - Notes:
   - Enumeration (ports and their services)
   - Windows PrivEsc
