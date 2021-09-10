@@ -57,15 +57,25 @@
 </details>
 
 #### 25 TCP / SMTP
+  
 #### 53 TCP / DNS
+  
 #### 69 UDP / TFTP
+  
 #### 80 TCP / HTTP
+  
 #### 88 TCP / Kerberos
+  
 #### 110 TCP / POP3
+  
 #### 111 TCP / rpcbind / NFS
+  
 #### 113 TCP / ident
+  
 #### 119 TCP / NNTP
+  
 #### 135 TCP / msrpc
+  
 #### 139 TCP / netbios
 #### 143 TCP / IMAP
 #### 161 UDP / SNMP
