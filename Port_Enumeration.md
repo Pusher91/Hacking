@@ -650,6 +650,45 @@ done;</pre>
     </tr>
 </table>
 
+<h2>113 TCP / ident</h2>
+
+<ul>
+<li>Used to identify who is using a TCP connection</li>    
+<ul>
+    <li>By default nmap -sC will enumerate every use of every running port</li>
+</ul>
+</ul>
+
+<h2>119 TCP / NNTP</h2>
+
+<ul>
+    <li>Network News Transfer Protocol</li>
+    <ul>
+        <li>Tools</li>
+        <ul>
+            <li>netcat</li>
+            <ul>
+                <li>nc -nv &lt;ip address&gt; &lt;port&gt;</li>
+            </ul>
+        </ul>
+        <li>Commands:</li>
+        <table>
+            <tr>
+                <td>List available commands</td>
+                <td>HELP</td>
+            </tr>
+            <tr>
+                <td>List available articles to read</td>
+                <td>LIST<br>Example:<br><table>
+                    <tr>
+                        <td>LIST<br>215 list of newsgroups follows<br>org.apache.avalon.dev 0 0 y<br>org.apache.avalon.user 0 0 y</td>
+                    </tr>
+                </table><br>The 0 in each column means the first and last article for each newgroup is 0.  This means there are no article available to read.</td>
+            </tr>
+        </table>
+    </ul>
+</ul>
+
 </body>
 </html>
 
