@@ -21,9 +21,12 @@
 
 <h4>Nmap</h4>
 
-<ul>Output all open ports to comma separated list:
-    <li>sudo nmap -p- &lt;ip address&gt; -oA &lt;output name&gt;</li>
-    <li>cat &lt;nmap scan&gt; | grep open | awk -F/ '{print $1}' ORS=','</li>
+<ul>
+    <li>Output all open ports to comma separated list:</li>
+        <ul>
+            <li>sudo nmap -p- &lt;ip address&gt; -oA &lt;output name&gt;</li>
+            <li>cat &lt;nmap scan&gt; | grep open | awk -F/ '{print $1}' ORS=','</li>
+        </ul>
 </ul>
 
 
