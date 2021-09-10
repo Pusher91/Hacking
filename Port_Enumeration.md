@@ -175,19 +175,23 @@ echo "Done"</pre>
 
 <ul>
     <li>Most common attack is brute forcing
-        <li>Password attacks against enumerated usernames and default usernames</li>
-        <li>Brute force password with Hydra</li>
-        <li>Brute force priavete keys with Crowbar</li>
-        <li>Fuzz passwords using patator</li>
-        <li>Metasploit ssh_login</li>
-        <li>Bruteforcing can lock you out.  Possibly for a set period of time.</li>
+        <ul>
+            <li>Password attacks against enumerated usernames and default usernames</li>
+            <li>Brute force password with Hydra</li>
+            <li>Brute force priavete keys with Crowbar</li>
+            <li>Fuzz passwords using patator</li>
+            <li>Metasploit ssh_login</li>
+            <li>Bruteforcing can lock you out.  Possibly for a set period of time.</li>
+        </ul>
     </li>
     <li>Sometimes the password prompt is disabled and login is only allowed using a private key</li>
     <li>SSH Key Fingerprint
-        <li>Based on the hosts public key
-            <li>/etc/ssh/ssh_host_rsa_key.pub</li>
-            <li>Used for easy identification of the hosts public key</li>
-        </li>
+        <ul>
+            <li>Based on the hosts public key
+                <li>/etc/ssh/ssh_host_rsa_key.pub</li>
+                <li>Used for easy identification of the hosts public key</li>
+            </li>
+        </ul>
     </li>
 </ul>
 
@@ -272,7 +276,7 @@ Connection closed by foreign host.
             <li>Swiss Army Knift SMTP
                 <table>
                     <tr>
-                        <td>Send email list</td>
+                        <td>Script: Send email list</td>
                         <td>
                             <pre>for email in $(cat email.lst);
 do
