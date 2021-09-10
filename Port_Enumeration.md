@@ -150,22 +150,24 @@ echo "Done"</pre>
         </table>
     </li>
     <li>Proftp
-        <li>Can copy a file between remote directories using write permissions
-            <table>
-                <tr>
-                    <td>Connect to FTP server </td>
-                    <td>telnet &lt;ip address&gt; &lt;port&gt;</td>
+        <ul>
+            <li>Can copy a file between remote directories using write permissions
+                <table>
+                    <tr>
+                        <td>Connect to FTP server </td>
+                        <td>telnet &lt;ip address&gt; &lt;port&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Select a file to copy</td>
+                        <td>site cpfr &lt;remote file&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Select a location to copy file to</td>
+                        <td>Site cpto &lt;remote directory to copy file to&gt;</td>
                 </tr>
-                <tr>
-                    <td>Select a file to copy</td>
-                    <td>site cpfr &lt;remote file&gt;</td>
-                </tr>
-                <tr>
-                    <td>Select a location to copy file to</td>
-                    <td>Site cpto &lt;remote directory to copy file to&gt;</td>
-                </tr>
-            </table>
-        </li>
+                </table>
+            </li>
+        </ul>
     </li>
 </ul>
 
