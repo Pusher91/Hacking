@@ -526,10 +526,11 @@ done;</pre>
             <ul>
                 <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt; -outputfile &lt;file&gt;</li>  
             </ul>
-        <li>Good article: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
         </ul>
     </ul>   
 </ul>
+
+<li>Good article: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
 
 </body>
 </html>
