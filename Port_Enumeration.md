@@ -33,9 +33,10 @@
       | Connect to FTP Server  | telnet \<ip address\> \<port\> |
       | Select file to copy | telnet> site cpfr \<file to copy\>  |
       | Select file to copy | telnet> site cpto \<directory to copy to\>  |
+
+  </details>
+  <br>
   
-</details>
-<br>
 #### 22 TCP / SSH
   
   - Most common attack is brute forcing
