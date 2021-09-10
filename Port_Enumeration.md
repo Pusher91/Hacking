@@ -103,7 +103,7 @@ echo "Done"</pre>
 <h2>21 TCP / FTP</h2>
 
 <ul>
-    <li>If FTP is rejecting user login without asking for a password then we can enumerate users</li>
+    <li>If FTP is rejecting user login *without* asking for a password then we can enumerate users</li>
     <li>Tools
         <table>
           <tr>
