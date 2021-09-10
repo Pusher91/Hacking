@@ -531,7 +531,7 @@ done;</pre>
 </ul>
 
 <li>Good article on Kerberose attacking: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
-
+<br>
 
 <h2>110 TCP / POP3</h2>
 
