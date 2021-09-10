@@ -689,6 +689,48 @@ done;</pre>
     </ul>
 </ul>
 
+<h2>135 TCP / msrpc</h2>
+
+<ul>
+    <li>Lists all rpc endoints</li>
+    <ul>
+        <li>Typically lists a ton of information that makes it tough to work with</li>
+        <li>Used with other exploits like SMB relays</li>
+    </ul>
+    <li>impacket-rpcdump</li>
+    <table>
+        <tr>
+            <td>Dump all information</td>
+            <td>impacket-rpcdump &lt;ip address&gt;</td>
+        </tr>
+    </table>
+    <li>impacket-rpcmap</li>
+    <table>
+        <tr>
+            <td>Map rpc information</td>
+            <td>'ncacn_ip_tcp:&lt;ip address&gt;'</td>
+        </tr>
+        <tr>
+            <ul>
+                <li>Brute force the endpoints we can interact with and the specific methods</li>
+                <ul>
+                    <li>Google the UUID's</li>
+                    <ul>
+                        <li>site: docs.microsoft.com &lt;UUID&gt;</li>
+                    </ul>
+                </ul>
+            </ul>
+        </tr>
+    </table>
+    <li>metasploit</li>
+    <ul>
+        <li>/auxiliary/scanner/dcerpc/endpoint_mapper</li>
+        <li>/auxiliary/scanner/dcerpc/hidden</li>
+    </ul>
+</ul>
+
+<h2>139 TCP / Netbios</h2>
+
 </body>
 </html>
 
