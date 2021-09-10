@@ -742,7 +742,7 @@
         <table>
             <tr>
                 <td>Example Usage</td>
-                <td>sudo nbtscan -r &gt;ip address or range&lt;</td>
+                <td>sudo nbtscan -r &lt;ip address or range&gt;</td>
             </tr>
             <tr>
                 <td>Specify the originating UDP port as 137</td>
@@ -765,7 +765,7 @@
                         </ul>
                     </ul>
                 </td>
-                <td>rpcclient -U '' -N &gt;ip address&lt;</td>
+                <td>rpcclient -U '' -N &lt;ip address&gt;</td>
             </tr>
             <tr>
                 <td>Enumerate Users</td>
@@ -841,6 +841,57 @@
 </ul>
 
 <h2>143 TCP / IMAP</h2>
+
+<table>
+    <tr>
+        <td>Login</td>
+        <td>LOGIN &lt;username&gt; &lt;password&gt;<br><li>If enclosing values with quotes they must be escaped with a \</li></td>
+    </tr>
+    <tr>
+        <td>List Folders/Mailboxes</td>
+        <td>A1 LIST *<br>A1 LIST INBOX *<br>A1 LIST "Archive" *</td>
+    </tr>
+    <tr>
+        <td>Create new folder/inbox</td>
+        <td>A1 CREATE &lt;name&gt;"</td>
+    </tr>
+    <tr>
+        <td>Delete folder/mailbox</td>
+        <td>A1 DELETE &lt;name&gt;</td>
+    </tr>
+    <tr>
+        <td>Rename folder/mailbox</td>
+        <td>A1 RENAME &lt;mailbox to rename&gt; &lt;new name&gt;</td>
+    </tr>
+    <tr>
+        <td>List subscribed folders</td>
+        <td>A1 LSUB "" *</td>
+    </tr>
+    <tr>
+        <td>Status of a mailbox</td>
+        <td>A1 STATUS INBOX (messages unseen recent)</td>
+    </tr>
+    <tr>
+        <td>Select a mailbox</td>
+        <td>A1 SELECT INBOX</td>
+    </tr>
+    <tr>
+        <td>List Messages</td>
+        <td>List messages A1 FETCH:* (flags)<br>A1 UID FETCH 1:* (flags)</td>
+    </tr>
+    <tr>
+        <td>Retrieve message content</td>
+        <td>A1 FETCH 2 body[text]<br>A1 FETCH 2 all<br> A1 UID FETCH 102 (UID RFC822.SIZE BODY.PEEK[])</td>
+    </tr>
+    <tr>
+        <td>Close mailbox</td>
+        <td>A1 CLOSE</td>
+    </tr>
+    <tr>
+        <td>Logout</td>
+        <td>A1 LOGOUT</td>
+    </tr>
+</table>
 
 </body>
 </html>
