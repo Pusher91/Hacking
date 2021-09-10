@@ -4,14 +4,41 @@
 <details>
   <summary>21 TCP / FTP</summary>
   
+- ftp
+  | | |
+  | ------------- | ------------- |
+  | Connect to server  | ftp <ip address> |
+  | Upload file | ftp> put \<file\>  |
+  | Download file  | ftp> get \<file\>  |
+  | Upload multiple files | ftp> mput *[.txt/.php/etc..] |
+  | Download multiple files | ftp> mget *[.txt/.php/etc..] |
+  | Turn off prompt while downloading files | ftp> prompt off |
+  | Set mode to binary | ftp> binary |
+  
+- wget
+|||
+  | ------------- | ------------- |
+  | Recursively download FTP contents  | wget -r ftp://\<user\>@\<ip address\> --password=\<password\><br> wget -r ftp://\<user\>:\<password\>@\<ip address\> |
+  | Mirror FTP | wget --mirror ftp://\<user\>:\<password\>@\<ip address\>  |
+  
+- Proftp
+  - Can copy file to/from directories over FTP using write permissions
+  | | |
+    | ------------- | ------------- |
+    | Connect to FTP Server  | telnet \<ip address\> \<port\> |
+    | Select file to copy | telnet> site cpfr \<file to copy\>  |
+    | Select file to copy | telnet> site cpto \<directory to copy to\>  |
+  
+</details>
+<details>
+  <summary>22 TCP / SSH</summary>
+  
 | Connect to server  | ftp <ip address> |
 | ------------- | ------------- |
 | Upload file | ftp> put \<file\>  |
-| Download file  | ftp> get \<file\>  |
   
 </details>
 
-#### 22 TCP / SSH
 #### 25 TCP / SMTP
 #### 53 TCP / DNS
 #### 69 UDP / TFTP
