@@ -348,14 +348,15 @@ done;</pre>
                                         </ul>
                                 </ul>
                             </td>
+                        </tr>
                         <tr>
                             <td>Zone transfer</td>
                             <td>ls -d &lt;domain&gt;</td>
                         </tr>
-                        </tr>
                     </table>
                 </td>
             </tr>
+
         </table>
     <li>Host</li>
         <ul>
