@@ -1,4 +1,4 @@
-## My IT Experienct, Immortalized
+## My IT Experience, Immortalized
 
 Comptia A+, Network+, and Security+ | Currently avidly pursuing my OSCP certification.
 
