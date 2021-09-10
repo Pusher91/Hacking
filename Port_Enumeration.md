@@ -292,8 +292,7 @@ do
         --header 'Subject: Please Register Your Account' \
         --body 'http://10.10.14.106/test' \
         --server sneakymailer.htb
-done;
-                                </pre>
+done;</pre>
                         </tr>
                         </tr>
                     </table>
@@ -321,7 +320,46 @@ done;
         <ul>
             <li>resolv.conf hosts will be searched in order from top to bottom</li>
         </ul>
+    </ul>
+    <li>nslookup</li>
+        <table>
+            <tr>
+                <td>Resolve IP to domain name</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Start nslookup in interactive mode</td>
+                            <td>nslookup</td>
+                        </tr>
+                        <tr>
+                            <td>Enter server IP</td>
+                            <td>&gt;ip address&lt;</td>
+                        </tr>
+                        <tr>
+                            <td>Enter IP and/or hostname to resolve against the server</td>
+                            <td>
+                                <ul>
+                                    <li>ip addresses to try:</li>
+                                        <ul>
+                                            <li>ip of the nameserver itself</li>
+                                            <li>127.0.0.1</li>
+                                            <li>127.0.0.2</li>
+                                            <li>Any other suspected interested ip addresses or hostnames</li>
+                                        </ul>
+                                </ul>
+                            </td>
+                        <tr>
+                            <td>Zone transfer</td>
+                            <td>ls -d &lt;domain&gt;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 </ul>
+
+
+
 
 </body>
 </html>
