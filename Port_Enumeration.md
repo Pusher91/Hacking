@@ -255,6 +255,7 @@ Connection closed by foreign host.
     <li>Tools
         <ul>
             <li>nc
+                <ul>
                 <li>Use nc -nvC to implement a full CRLF, sometimes this is needed if a response is not being received from the server
                     <table>
                         <tr>
@@ -267,6 +268,7 @@ Connection closed by foreign host.
                         </tr>
                     </table>
                 </li>
+                </ul>
             </li>
         </ul>
     </li>
