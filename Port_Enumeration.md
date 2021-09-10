@@ -514,6 +514,20 @@ done;</pre>
                 <li>Rebeus - C#/.NET replacement for ASREPRoast.ps1.  Harder for victim to detect.</li>
             </ul>
         </ul>
+        <li>Attack from linux</li>
+        <ul>
+            <li>User enumeration methods:</li>
+            <ul>
+                <li>Using LDAP, may need a domain users credentials to access.</li>
+                <li>Brute force - kerbrute</li>
+                <li>Any other means</li>
+            </ul>
+            <li>Request tickets/retrieve hashes using Impacket-GetNPUsers</li>
+            <ul>
+                <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt;/li&gt;
+            </ul>
+        </ul>
+        <li>Good article: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
     </ul>
 </ul>
 
