@@ -1086,6 +1086,90 @@
 <li>Secure version of port 80.  Most of the same things apply</li>
 <li>Check certificate for any interesting information</li>
 
+<h2>445 TCP / SMB</h2>
+
+<li>SMB is the protocol, CIFS is an old dialect of SMB, and my is the Linux/Unix-like implementation of the SMB protocol.</li>
+<li>Try logging in as guest as well as null authentication</li>
+<li>Brute force usernames by themselves or with passwords</li>
+<li>If errors with any  smb command install: cifs-utils</li>
+<li>enum4linux &lt;ip address&gt;</li>
+<li>Mounting SMB share</li>
+<table>
+    <tr>
+        <td>Mount SMB Share</td>
+        <td>
+            <table>
+                <tr>
+                    <td>Create a folder to mount to</td>
+                    <td>sudo mkdir /mnt/&lt;folder&gt;</td>
+                </tr>
+                <tr>
+                    <td>Mounting command and some different options</td>
+                    <td>
+                        <li>sudo mount -t cifs -o vers=1.0 //10.11.1.136/'&lt;share name&gt;' /mnt/&lt;folder&gt;</li>
+                        <ul>
+                            <li>-o username=&lt;username&gt;,dir_mode=777,file_mode=666</li>
+                            <li>-o username=&lt;username&gt;,uid=user,gid=group</li>
+                            <li>-o 'user=&lt;username&gt;,password=&lt;password&gt;'</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Unmount SMB Share (Forced & Lazy)</td>
+                    <td>sudo umount -f &lt;mounted share directory&gt;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<li>crackmapexec</li>
+<table>
+    <tr>
+        <td>Check password policies</td>
+        <td>crackmapexec smb --pass-pol &lt;ip address&gt;</td>
+    </tr>
+    <tr>
+        <td>Check password policies with null authentication</td>
+        <td>
+            <li>crackmapexec smb --pass-pol &lt;ip address&gt; -u '' -p ''</li>
+            <ul>
+                <li>This generally works on Domains from 2003.  Newly installed domains do not like null authentication</li>
+                <li>If this works then note that null authentication allows domain enumeration and a lot of information can be found</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <li>Enumerate SMB Shares</li>
+            <ul>
+                <li>Attempt with non-existent username and password</li>
+            </ul>
+        </td>
+        <td>smb -u &lt;username&gt; -p &lt;password&gt; --shares</td>
+    </tr>
+    <tr>
+        <td>SMB Brute force</td>
+        <td>smb -u &lt;username&gt; -p &lt;password&gt;</td>
+    </tr>
+    <tr>
+        <td>WinRM Brute Force</td>
+        <td>
+            <li>winrm -u &lt;username&gt; -p &lt;password&gt;</li>
+            <ul>
+                <li>If successful, get shell using evil-winrm</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Crawl shares and output in json format
+            <li>Read output with jq . &lt;file&gt;</li>
+        </td>
+        <td>-M spider_plus</td>
+    </tr>
+</table>
+<li>Query registry information - impacket-reg</li>
+
 </body>
 </html>
 
