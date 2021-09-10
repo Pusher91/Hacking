@@ -34,9 +34,20 @@
 <details>
   <summary>22 TCP / SSH</summary>
   
-| Connect to server  | ftp <ip address> |
-| ------------- | ------------- |
-| Upload file | ftp> put \<file\>  |
+  - Most common attack is brute forcing
+    - Tools:
+      - Hydra - brute force username:password combinations
+      - Crowbar - brute force using private keys
+     - Brute forcing can lock you out, possibly for a set period of time.
+  - Sometimes password prompt is diabled and login is only allowed by using a private key
+  - SSH Key fingerprint
+    - Used for easy identification of the keys you are connecting to
+  - Usually located /etc/ssh/ssh_host_rsa_key.pub
+
+|||
+  | ------------- | ------------- |
+  | Connect with different key exchange algorithm | -oKexAlgorithms=+\<algorithm\> |
+  |Allow to connect with a different type of key|-oPubkeyAcceptedKeyTypes=+\<key type - example: ssh-dss\>|
   
 </details>
 
