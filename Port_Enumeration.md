@@ -467,7 +467,7 @@ done;</pre>
     </li>
 </ul>
 
-<h2>Kerberos</h2>
+<h2>88 TCP / Kerberos</h2>
 
 <ul>
     <li>Tools</li>
@@ -568,6 +568,85 @@ done;</pre>
     <tr>
         <td>Read email</td>
         <td>RETR &lt;email # from LIST&gt;</td>
+    </tr>
+</table>
+
+<h2>111 TCP / rpcbind / NFS</h2>
+<ul>
+    <li>A portmapper</li>
+    <li>Should list NFS ports</li>
+    <li>Like a telephone book, similar to DNS, that maps out program numbers to ports</li>
+    <li>Listens on port 111.  Maps RPC services to the ports they listen on.  Clients provide the program number they are trying to access and RPCbind redirects the client to the port # for that service.</li>
+    <li>Tools</li>
+    <ul>
+        <li>rpcinfo</li>
+        <ul>
+            <li>Utility that will connect to the RPC server and report back any information divulged by the server.</li>
+            <li>Command: rpcinfo &lt;ip address&gt;</li>
+            <table>
+                <tr>
+                    <td>Compact Results</td>
+                    <td>-s</td>
+                </tr>
+                <tr>
+                    <td>Display all registered RP programs and show port numbers</td>
+                    <td>-p</td>
+                </tr>
+            </table>
+        </ul>
+        <li>nmap</li>
+        <ul>
+            <li>rpcinfo script</li>
+        </ul>
+        <li>netcat</li>
+        <ul>
+            <li>nc -nv &lt;ip address&gt;</li>
+        </ul>
+    </ul>
+    <li>Network File System (NFS)</li>
+    <ul>
+        <li>Often used with Unix systems.  Can be difficult to setup securely so it is not uncommon that NFS shares are open to the world.</li>
+        <li>Gain access to files that show an owner with a UUID #</li>
+        <ul>
+            <li>Create a new user on local machine with same UUID # as the user that has access to that file or folder</li>
+            <ul>
+                <li>Create and use imposter user:</li>
+                <ul>
+                    <li>adduser &lt;user&gt;</li>
+                    <li>Change UUID in /etc/passwd</li>
+                    <li>sudo su &lt;newuser&gt;</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+</ul>
+
+<table>
+    <tr>
+        <td>Mount NFS Share</td>
+        <td>sudo mount -o nolock &lt;ip address&gt;:/&lt;share name&gt; ~/&lt;Local directory to mount to&gt;<br><table>
+            <tr>
+                <td>Disable File locaking.  Often needed for older NFS servers</td>
+                <td>-o nolock</td>
+            </tr>
+        </table></td>
+    </tr>
+    <tr>
+        <td>Show mounting information</td>
+        <td>showmount<br><table>
+            <tr>
+                <td>Show all mount points</td>
+                <td>-a</td>
+            </tr>
+            <tr>
+                <td>Show all directories</td>
+                <td>-d</td>
+            </tr>
+            <tr>
+                <td>Show export list</td>
+                <td>-e</td>
+            </tr>
+        </table></td>
     </tr>
 </table>
 
