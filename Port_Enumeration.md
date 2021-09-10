@@ -352,6 +352,7 @@ done;</pre>
                             <td>Zone transfer</td>
                             <td>ls -d &lt;domain&gt;</td>
                         </tr>
+                        </tr>
                     </table>
                 </td>
             </tr>
