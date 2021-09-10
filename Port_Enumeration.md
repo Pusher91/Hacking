@@ -209,7 +209,7 @@ echo "Done"</pre>
             <li>On internal networks you can typically send emails as anybody</li>
             <li>SMTP poisoning
                 <pre>
-                     telnet 10.0.0.12 25
+telnet 10.0.0.12 25
 Trying 10.0.0.12...
 Connected to 10.0.0.12.
 Escape character is '^]'.
