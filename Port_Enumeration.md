@@ -274,11 +274,12 @@ Connection closed by foreign host.
     <li>swaks
         <ul>
             <li>Swiss Army Knift SMTP
-                <table>
-                    <tr>
-                    <tr>Bash script to send emails to a list</tr>
-                    <tr>
-                            <pre>for email in $(cat email.lst);
+                <li>
+                    <table>
+                        <tr>
+                        <tr>Bash script to send emails to a list</tr>
+                        <tr>
+                                <pre>for email in $(cat email.lst);
 do
     swaks \
         --from support@sneakymailer.htb \
@@ -287,10 +288,11 @@ do
         --body 'http://10.10.14.106/test' \
         --server sneakymailer.htb
 done;
-                            </pre>
-                    </tr>
-                    </tr>
-                </table>
+                                </pre>
+                        </tr>
+                        </tr>
+                    </table>
+                </li>
             </li>
         </ul>
     </li>
