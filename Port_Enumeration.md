@@ -1,4 +1,5 @@
 # Port and Service Enumeration
+
 ###### [Return to Main Page](/index.md)
 
 
@@ -6,6 +7,7 @@
   <summary>21 TCP / FTP</summary>
   
 - ftp
+  
   | | |
   | ------------- | ------------- |
   | Connect to server  | ftp <ip address> |
@@ -17,6 +19,7 @@
   | Set mode to binary | ftp> binary |
   
 - wget
+  
 |||
   | ------------- | ------------- |
   | Recursively download FTP contents  | wget -r ftp://\<user\>@\<ip address\> --password=\<password\><br> wget -r ftp://\<user\>:\<password\>@\<ip address\> |
@@ -24,6 +27,7 @@
   
 - Proftp
   - Can copy file to/from directories over FTP using write permissions
+  
   | | |
     | ------------- | ------------- |
     | Connect to FTP Server  | telnet \<ip address\> \<port\> |
