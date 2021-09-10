@@ -2,10 +2,9 @@
 
 Comptia A+, Network+, and Security+ | Currently avidly pursuing my OSCP certification.
 
-
 ### Contents:
 - Notes:
-  - [Enumeration](/Port Enumeration.md)? (ports and their services)
+  - [Enumeration](/Port_Enumeration.md) (ports and their services)
   - Windows PrivEsc
   - Linux PrivEsc
   - Web application attacks
