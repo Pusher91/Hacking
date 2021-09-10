@@ -325,6 +325,7 @@ done;</pre>
         <table>
             <tr>
                 <td>Resolve IP to domain name</td>
+                <pre>
                 <td>
                     <table>
                         <tr>
@@ -333,7 +334,7 @@ done;</pre>
                         </tr>
                         <tr>
                             <td>Enter server IP</td>
-                            <td>&gt;ip address&lt;</td>
+                            <td>&lt;ip address&gt;</td>
                         </tr>
                         <tr>
                             <td>Enter IP and/or hostname to resolve against the server</td>
@@ -355,6 +356,7 @@ done;</pre>
                         </tr>
                     </table>
                 </td>
+            </pre>
             </tr>
 
         </table>
