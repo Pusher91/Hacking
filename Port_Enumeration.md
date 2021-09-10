@@ -530,7 +530,45 @@ done;</pre>
     </ul>   
 </ul>
 
-<li>Good article: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
+<li>Good article on Kerberose attacking: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
+
+<h2>110 TCP / POP3</h2>
+
+<li>Post Office Protocol 3</li>
+<ul>
+    <li>Used to receive emails</li>
+    <li>If we can log on to a POP3 server we can potentially read people's emails</li>
+    <li>Logging in can allow us to read data, not write</li>
+</ul>
+<li>Tools</li>
+<ul>
+    <li>Evolution email client can be used</li>
+    <li>nc -nv &lt;ip address&gt; &lt;port&gt;</li>
+    <li>nc -nvC</li>
+    <ul>
+        <li>add C flag if not getting a response</li>
+    </ul>
+    <li>telnet</li>
+</ul>
+
+<table>
+    <tr>
+        <td>Pick username to login with</td>
+        <td>USER &lt;username&gt;</td>
+    </tr>
+    <tr>
+        <td>Enter password for user</td>
+        <td>PASS &lt;password&gt;</td>
+    </tr>
+    <tr>
+        <td>List Emails</td>
+        <td>LIST</td>
+    </tr>
+    <tr>
+        <td>Read email</td>
+        <td>RETR &lt;email # from LIST&gt;</td>
+    </tr>
+</table>
 
 </body>
 </html>
