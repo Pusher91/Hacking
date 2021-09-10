@@ -291,11 +291,15 @@ done;
         </ul>
     </li>
     <li>Thunderbird
-        <li>Mail client</li>
+        <ul>
+            <li>Mail client</li>
+        </ul>
     </li>
     <li>Evolution
-        <li>Mail Client</li>
-        <li>Alt+F2</li>
+        <ul>
+            <li>Mail Client</li>
+            <li>Alt+F2</li>
+        </ul>
     </li>
 </ul>
 
