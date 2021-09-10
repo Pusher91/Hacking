@@ -1,6 +1,6 @@
 ## Free Knowledge
 
-Comptia A+, Network+, and Security+ | Avidly pursuing my OSCP certification .
+Comptia A+, Network+, and Security+ | Avidly pursuing OSCP.
 
 ### Contents:
 - Notes:
