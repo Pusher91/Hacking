@@ -205,6 +205,18 @@ echo "Done"</pre>
 <ul>
     <li>Simple Mail Transfer Protocol
         <ul>
+            <li>
+                <table>
+                    <tr>
+                        <td>VRFY &lt;username&gt;</td>
+                        <td>asks a server to verify an email address</td>
+                    </tr>
+                    <tr>
+                        <td>EXPN</td>
+                        <td>Asks the server for the membership of a mailing list</td>
+                    </tr>
+                </table>
+            </li>
             <li>Sends mail</li>
             <li>On internal networks you can typically send emails as anybody</li>
             <li>SMTP poisoning
@@ -233,6 +245,53 @@ Connection closed by foreign host.
             </li>
             <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
         </ul>
+    </li>
+    <li>Tools
+        <ul>
+            <li>nc
+                <li>Use nc -nvC to implement a full CRLF, sometimes this is needed if a response is not being received from the server
+                    <table>
+                        <tr>
+                            <td>CR - Carriage Return</td>
+                            <td>\n</td>
+                        </tr>
+                        <tr>
+                            <td>LF - Line Feed</td>
+                            <td>\r</td>
+                        </tr>
+                    </table>
+                </li>
+            </li>
+        </ul>
+    </li>
+    <li>Telnet</li>
+    <li>swaks
+        <li>Swiss Army Knift SMTP
+            <table>
+                <tr>
+                    <td>Send email list</td>
+                    <td>
+                        <pre>r email in $(cat email.lst);
+do
+    swaks \
+        --from support@sneakymailer.htb \
+        --to $email \
+        --header 'Subject: Please Register Your Account' \
+        --body 'http://10.10.14.106/test' \
+        --server sneakymailer.htb
+done;
+                        </pre>
+                </td>
+                </tr>
+            </table>
+        </li>
+    </li>
+    <li>Thunderbird
+        <li>Mail client</li>
+    </li>
+    <li>Evolution
+        <li>Mail Client</li>
+        <li>Alt+F2</li>
     </li>
 </ul>
 
