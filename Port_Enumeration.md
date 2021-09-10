@@ -390,14 +390,14 @@ done;</pre>
         <table>
             <tr>
                 <td>Zone Transfer</td>
-                <td>dnsrecon -d &ls;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
+                <td>dnsrecon -d &lt;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
             </tr>
         </table>
     <li>Gobuster</li>
         <table>
             <tr>
                 <td>Subdomain brute force</td>
-                <td>gobuster dns -d &ls;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
+                <td>gobuster dns -d &lt;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
             </tr>
         </table>
     <li>dnsEnum</li>
@@ -421,6 +421,51 @@ done;</pre>
         </table>
 </ul>
 
+<h2>69 UDP / TFTP</h2>
+
+<ul>
+    <li>No command to list files</li>
+    <li>Mostly the same commands as FTP</li>
+</ul>
+
+<h2>80 TCP / HTTP</h2>
+
+<ul>
+    <li>Hosts file is located in /etc/hosts</li>
+    <li>Check headers for evidence of what the server is running</li>
+    <li>gobuster
+        <ul>
+            <li>Enumerate directories</li>
+        </ul>
+    </li>
+    <li>feroxbuster
+        <ul>
+            <li>Enumerate directories recursivley</li>
+        </ul>
+    </li>
+    <li>Google web server version to find OS version that the host is running</li>
+    <li>curl
+        <table>
+            <tr>
+                <td>banner grab</td>
+                <td>-i</td>
+            </tr>
+            <tr>
+                <td>Follow page redirections and grab header</td>
+                <td>-L -i</td>
+            </tr>
+            <tr>
+                <td>Silent mode.  Do not show progress meter or error messages.</td>
+                <td>-s</td>
+            </tr>
+        </table>
+    </li>
+    <li>html2text
+        <ul>
+            <li>Render page in CLI</li>
+        </ul>
+    </li>
+</ul>
 
 </body>
 </html>
