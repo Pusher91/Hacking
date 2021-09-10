@@ -8,7 +8,7 @@
   
 - ftp
   
-  |||
+  |asd|asd|
     | ------------- | ------------- |
     | Connect to server  | ftp <ip address> |
     | Upload file | ftp> put \<file\>  |
@@ -20,7 +20,7 @@
   
 - wget
   
-  |||
+  |asd|asd|
     | ------------- | ------------- |
     | Recursively download FTP contents  | wget -r ftp://\<user\>@\<ip address\> --password=\<password\><br> wget -r ftp://\<user\>:\<password\>@\<ip address\> |
     | Mirror FTP | wget --mirror ftp://\<user\>:\<password\>@\<ip address\>  |
@@ -28,7 +28,7 @@
 - Proftp
   - Can copy file to/from directories over FTP using write permissions
   
-    |||
+    |asd|asd|
       | ------------- | ------------- |
       | Connect to FTP Server  | telnet \<ip address\> \<port\> |
       | Select file to copy | telnet> site cpfr \<file to copy\>  |
@@ -48,7 +48,7 @@
     - Used for easy identification of the keys you are connecting to
   - Usually located /etc/ssh/ssh_host_rsa_key.pub
 
-|||
+|asd|asd|
   | ------------- | ------------- |
   | Connect with different key exchange algorithm | -oKexAlgorithms=+\<algorithm\> |
   |Allow to connect with a different type of key|-oPubkeyAcceptedKeyTypes=+\<key type - example: ssh-dss\>|
