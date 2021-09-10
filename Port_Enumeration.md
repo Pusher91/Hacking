@@ -2,7 +2,9 @@
 
 ###### [Return to Main Page](/index.md)
 
-#### 21 TCP / FTP
+<details>
+  <summary>21 TCP / FTP</summary>
+  <br>
   
 - ftp
   
@@ -32,7 +34,8 @@
       | Select file to copy | telnet> site cpfr \<file to copy\>  |
       | Select file to copy | telnet> site cpto \<directory to copy to\>  |
   
-  
+  </details>
+  <br>
 #### 22 TCP / SSH
   
   - Most common attack is brute forcing
