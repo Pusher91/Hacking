@@ -266,12 +266,13 @@ Connection closed by foreign host.
     </li>
     <li>Telnet</li>
     <li>swaks
-        <li>Swiss Army Knift SMTP
-            <table>
-                <tr>
-                    <td>Send email list</td>
-                    <td>
-                        <pre>r email in $(cat email.lst);
+        <ul>
+            <li>Swiss Army Knift SMTP
+                <table>
+                    <tr>
+                        <td>Send email list</td>
+                        <td>
+                            <pre>for email in $(cat email.lst);
 do
     swaks \
         --from support@sneakymailer.htb \
@@ -280,11 +281,12 @@ do
         --body 'http://10.10.14.106/test' \
         --server sneakymailer.htb
 done;
-                        </pre>
-                </td>
-                </tr>
-            </table>
-        </li>
+                            </pre>
+                    </td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
     </li>
     <li>Thunderbird
         <li>Mail client</li>
