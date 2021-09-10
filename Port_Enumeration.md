@@ -131,6 +131,19 @@ echo "Done"</pre></tr>
           </tr>
         </table>
     </li>
+    <li>
+        wget
+        <table>
+            <tr>
+                <td>Recursively download FTP contents</td>
+                <td>wget -r ftp://&lt;user&gt;&lt;ip address&gt; --password=&lt;password&gt;</td>
+            </tr>
+            <tr>
+                <td>Mirror FTP</td>
+                <td>wget --mirror ftp://&lt;user&gt;:&lt;password&gt;@&lt;ip address&gt;</td>
+            </tr>
+        </table>
+    </li>
 </ul>
 
 </body>
