@@ -254,7 +254,7 @@
         </li>
         <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
     </ul>
-</li>
+</ul>
 <li>Tools</li>
     <ul>
         <li>nc
