@@ -276,8 +276,8 @@ Connection closed by foreign host.
             <li>Swiss Army Knift SMTP
                 <table>
                     <tr>
-                        <td>Script: Send email list</td>
-                        <td>
+                    <tr>Bash script to send emails to a list</tr>
+                    <tr>
                             <pre>for email in $(cat email.lst);
 do
     swaks \
@@ -288,7 +288,7 @@ do
         --server sneakymailer.htb
 done;
                             </pre>
-                    </td>
+                    </tr>
                     </tr>
                 </table>
             </li>
