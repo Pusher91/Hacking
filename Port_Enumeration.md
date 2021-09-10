@@ -1162,13 +1162,203 @@
     </tr>
     <tr>
         <td>
-            Crawl shares and output in json format
-            <li>Read output with jq . &lt;file&gt;</li>
+            <li>Crawl shares and output in json format</li>
+            <ul>
+                <li>Read output with jq . &lt;file&gt;</li>                
+            </ul>
         </td>
         <td>-M spider_plus</td>
     </tr>
 </table>
 <li>Query registry information - impacket-reg</li>
+<table>
+    <tr>
+        <td>Query HKU</td>
+        <td>impacket-reg -hashes &lt;LM:NTLM hashes&gt; &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; query -keyName HKU\\</td>
+    </tr>
+    <tr>
+        <td>Query HKLM</td>
+        <td>impacket-reg -hashes &lt;LM:NTLM hashes&gt; &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; query -keyName HKLM\\</td>
+    </tr>
+</table>
+<li>Interesting registeries</li>
+<ul>
+    <li>Some software might store secrets in this directory</li>
+</ul>
+
+<li>Responder</li>
+<ul>
+    <li>Intercept SMB logon requests and gain the hash to crack</li>
+</ul>
+<li>smbpasswd</li>
+<table>
+    <tr>
+        <td>Change user password</td>
+        <td>smbpasswd -U &lt;username&gt; -r &lt;domain or ip&gt;</td>
+    </tr>
+</table>
+<li>nmap</li>
+<table>
+    <td>
+        <li>Enumerate share paths</li>
+        <ul>
+            <li>May append a C: to the beginning even if it is a Linux host</li>
+        </ul>
+    </td>
+    <td>nmap --script smb-enum-shares</td>
+</table>
+<li>smbmap</li>
+<table>
+    <tr>
+        <td>
+            <li>list smb shares</li>
+            <ul>
+                <li>Attempt with non-existent username</li>
+            </ul>
+        </td>
+        <td>smbmap –H &lt;ip address&gt; -u &lt;username ex. guest&gt;</td>
+    </tr>
+    <tr>
+        <td>Recursively show  all files/shares</td>
+        <td>-R</td>
+    </tr>
+</table>
+<li>smbclient</li>
+<table>
+    <tr>
+        <td>List smb shares</td>
+        <td>smbclient -L &lt;ip address&gt;</td>
+    </tr>
+    <tr>
+        <td>Download all SMB files w/ smbclient</td>
+        <td>
+            <li>smbclient //&lt;ip address&gt;/&lt;share name&gt;</li>
+            <li>recurse ON</li>
+            <li>prompt OFF</li>
+            <li>mget *</li>
+        </td>
+    </tr>
+    <tr>
+        <td>Connect to share</td>
+        <td>smbclient //&lt;ip address&gt;/&lt;share name&gt;</td>
+    </tr>
+    <tr>
+        <td>Show extended file attributes</td>
+        <td>allinfo &lt;file&gt;</td>
+    </tr>
+    <tr>
+        <td>Download data stream file</td>
+        <td>get "&lt;Parent File&gt;:&lt;Data Stream File&gt;"</td>
+    </tr>
+</table>
+<li>smbcacls</li>
+<table>
+    <tr>
+        <td>See folder permissions</td>
+        <td>smbcacls -N '//&lt;ip address&gt;/&lt;share&gt;' /&lt;folder&gt;</td>
+    </tr>
+</table>
+<li>If access to write to SMB share</li>
+<ul>
+    <li>SCF File attack</li>
+    <ul>
+        <li>Create icon on windows that has the icon image set on remote ip.  When Windows tries to pull that icon it authenticates to the remote server.  Hash can then be stolen.</li>
+        <li>https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/</li>
+    </ul>
+</ul>
+<li>Enumerate samba version</li>
+<table>
+    <tr>
+        <td>Wireshark</td>
+        <td>
+            <li>Log in anonymously (smbclient -L \\&lt;ip address&gt;)</li>
+            <li>Search for packet with "Session Setup Andx Responses" in the info field</li>
+        </td>
+    </tr>
+    <tr>
+        <td>ngrep & smbclient</td>
+        <td>
+            <li>Terminal 1</li>
+            <ul>
+                <li>ngrep -i -d tap0 's.?a.?m.?b.?a.*[[:digit:]]' port 139</li>
+            </ul>
+            <li>Terminal 2</li>
+            <ul>
+                <li>echo exit | smbclient -L &lt;ip address&gt;</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+<li>Error correction - NT_STATUS_CONNECTION_DISCONNECTED</li>
+<ul>
+    <li>Most likely smb is using too new of a protocol and needs to be manually set to use an older one</li>
+    <table>
+        <tr>
+            <td>Fix #1 - smbclient flag</td>
+            <td>smbclient //&lt;ip address&gt;/&lt;share name&gt; --option='client min protocol=NT1'</td>
+        </tr>
+        <tr>
+            <td>Fix #2 - Change config file</td>
+            <td>
+                <li>Append to global section of /etc/samba/smb.conf:</li>
+                <ul>
+                    <li>client min protocol = NT1</li>
+                    <ul>
+                        <li>Might need client min protocol = LANMAN1</li>
+                    </ul>
+                </ul>
+                <li>service smbd restart</li>
+            </td>
+        </tr>
+    </table>
+</ul>
+<li> SMB Protocols</li>
+<ul>
+    <li>By default SMB2 selects the SMB2_10 variant.</li>
+    <li>By default SMB3 selects the SMB3_00 variant.</li>
+</ul>
+<table>
+    <tr>
+        <td>LANMAN1</td>
+        <td>First modern version of the protocol. Long filename support.</td>
+    </tr>
+    <tr>
+        <td>LANMAN2</td>
+        <td> Updates to Lanman1 protocol.</td>
+    </tr>
+    <tr>
+        <td>NT1</td>
+        <td>Current up to date version of the protocol. Used by Windows NT. Known as CIFS.</td>
+    </tr>
+    <tr>
+        <td>SMB2</td>
+        <td>Re-implementation of the SMB protocol. Used by Windows Vista and later versions of Windows. SMB2 has sub protocols available.</td>
+    </tr>
+    <tr>
+        <td>SMB2_02</td>
+        <td>The earliest SMB2 version.</td>
+    </tr>
+    <tr>
+        <td>SMB2_10</td>
+        <td>Windows 7 SMB2 version.</td>
+    </tr>
+    <tr>
+        <td>SMB2_22</td>
+        <td>Early Windows 8 SMB2 version.</td>
+    </tr>
+    <tr>
+        <td>SMB2_24</td>
+        <td>Windows 8 beta SMB2 version.</td>
+    </tr>
+    <tr>
+        <td>SMB3</td>
+        <td>The same as SMB2. Used by Windows 8. SMB3 has sub protocols available.</td>
+    </tr>
+    <tr>
+        <td>SMB3_00</td>
+        <td>Windows 8 SMB3 version. (mostly the same as SMB2_24)</td>
+    </tr>
+</table>
 
 </body>
 </html>
