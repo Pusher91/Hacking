@@ -478,7 +478,7 @@ done;</pre>
         </ul>
         <table>
             <tr>
-                <td>bloodhound.py</td>
+                <td>Generate file for bloodhound to analyze</td>
                 <td>sudo python3 bloodhound.py -c all -u &lt;user&gt; -p '&lt;password&gt;' -ns &lt;ip&gt; -d &lt;domain name&gt; --zip</td>
             </tr>
         </table>
@@ -524,7 +524,7 @@ done;</pre>
             </ul>
             <li>Request tickets/retrieve hashes using Impacket-GetNPUsers</li>
             <ul>
-                <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt;/li&gt;
+                <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt; -outputfile &lt;file&gt;
             </ul>
         </ul>
         <li>Good article: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
