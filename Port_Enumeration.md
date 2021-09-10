@@ -19,6 +19,7 @@
 </ul>
 
 <h4>Nmap</h4>
+
 <ul>Output all open ports to comma separated list:
     <li>sudo nmap -p- &lt;ip address&gt; -oA &lt;output name&gt;</li>
     <li>cat &lt;nmap scan&gt; | grep open | awk -F/ '{print $1}' ORS=','</li>
@@ -56,7 +57,8 @@
                 <li>nmap may send less if:
                     <ul><li>It has nothing to send</li>
                         <li>Hardware Limit</li>
-                    </ul></li>
+                    </ul>
+                </li>
                 </ul>
         </td>
          <td>--min-rate &lt;#&gt;</td>
@@ -85,17 +87,19 @@
 
 <table>
     <tr>Bash script for port scanning</tr>
-    <tr><pre>#!/bin/bash host=10.5.5.11
+    <tr>
+        <pre>#!/bin/bash host=10.5.5.11
 for port in {1..65535}; do
     timeout .1 bash -c "echo >/dev/tcp/$host/$port" &&
     echo "port $port is open"
 done
-echo "Done"</pre></tr>
+echo "Done"</pre>
+    </tr>
 </table>
 
 <p>Massscan - Possbily the fastest port scanner.</p>
 
-<h4>21 TCP / FTP</h4>
+<h2>21 TCP / FTP</h2>
 
 <ul>
     <li>If FTP is rejecting user login without asking for a password then we can enumerate users</li>
