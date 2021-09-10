@@ -325,7 +325,6 @@ done;</pre>
         <table>
             <tr>
                 <td>Resolve IP to domain name</td>
-                <pre>
                 <td>
                     <table>
                         <tr>
@@ -356,7 +355,6 @@ done;</pre>
                         </tr>
                     </table>
                 </td>
-            </pre>
             </tr>
 
         </table>
