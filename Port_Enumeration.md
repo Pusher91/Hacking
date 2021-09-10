@@ -2,9 +2,7 @@
 
 ###### [Return to Main Page](/index.md)
 
-
-<details>
-  <summary>21 TCP / FTP</summary>
+#### 21 TCP / FTP
   
 - ftp
   
@@ -34,10 +32,8 @@
       | Select file to copy | telnet> site cpfr \<file to copy\>  |
       | Select file to copy | telnet> site cpto \<directory to copy to\>  |
   
-</details>
   
-<details>
-  <summary>22 TCP / SSH</summary>
+#### 22 TCP / SSH
   
   - Most common attack is brute forcing
     - Tools:
@@ -53,9 +49,8 @@
   | ------------- | ------------- |
   | Connect with different key exchange algorithm | -oKexAlgorithms=+\<algorithm\> |
   |Allow to connect with a different type of key|-oPubkeyAcceptedKeyTypes=+\<key type - example: ssh-dss\>|
-  
-</details>
 
+  
 #### 25 TCP / SMTP
   
 #### 53 TCP / DNS
