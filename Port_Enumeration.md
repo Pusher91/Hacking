@@ -737,8 +737,8 @@ done;</pre>
     <li>Modern implementations of SMB do not require netbios.</li>
     <li>netbios is required for backwards compatibility with SMB.</li>
     <li>Tools:</li>
-    <ul>
-        <li>nbtscan</li>
+<ul>
+    <li>nbtscan</li>
         <table>
             <tr>
                 <td>Example Usage</td>
@@ -748,100 +748,93 @@ done;</pre>
                 <td>Specify the originating UDP port as 137</td>
                 <td>-r</td>
             </tr>
-        </table>
-        <li>rpcclient</li>
+            </table>
+    <li>rpcclient</li>
         <table>
             <tr>
-                <td>Authentication</td>
+                <td>Typical authentication</td>
+                <td>rpcclient &lt;ip address&gt;</td>
+            </tr>
+            <tr>
                 <td>
-                    <table>
-                        <tr>
-                            <td>Typical authentication</td>
-                            <td>rpcclient &lt;ip address&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <ul>
-                                    <li>Null Authentication</li>
-                                    <ul>
-                                        <li>This generally works on Domains from 2003.  Newly installed domains do not like null authentication</li>
-                                        <li>If this works then note that null authentication allows domain enumeration and a lot of information can be found</li>
-                                    </ul>
-                                </ul>
-                            </td>
-                            <td>rpcclient -U '' -N &gt;ip address&lt;</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate Users</td>
-                            <td>enumdomusers<br>querydispinfo</td>
-                        </tr>
-                        <tr>
-                            <td>Get user SID</td>
-                            <td>lookupnames &gt;username&lt;</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate user groups</td>
-                            <td> &lt;[rid value]&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>Query group name from rid value</td>
-                            <td>querygroup &lt;rid value&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate printers</td>
-                            <td>enumprinters</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate groups</td>
-                            <td>enumalsgroups [Builtin|Domain]</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate users (output in SID) in groups</td>
-                            <td>queryaliasmem [Builtin|Domain] &lt;rid&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>Change users password (must log in to rpcclient as user)</td>
-                            <td>setuserinfo2 &lt;username&gt; 23 '&lt;password&gt;'
-                                <ul>
-                                    <li>23 is the USER_INTERAL4_INFORMATION field.  It does things in cleartext.  24 supports encrpytion</li>
-                                    <li>NT_STATUS_PASSWORD_RESTRICTION means there was a password complexity failure and the password did not change</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate Domains</td>
-                            <td>enumdomains</td>
-                        </tr>
-                        <tr>
-                            <td>Domain SID</td>
-                            <td>lsaquery</td>
-                        </tr>
-                        <tr>
-                            <td>Domain info</td>
-                            <td>querydominfo</td>
-                        </tr>
-                        <tr>
-                            <td>Create domain user</td>
-                            <td>createdomuser</td>
-                        </tr>
-                        <tr>
-                            <td>delete domain user</td>
-                            <td>deletedomuser</td>
-                        </tr>
-                        <tr>
-                            <td>Add rights to user account</td>
-                            <td>lsaaddacctrights</td>
-                        </tr>
-                        <tr>
-                            <td>Remove rights from user account</td>
-                            <td>lsaremoveacctrights</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate trusted domain within AD forest</td>
-                            <td>dsenumdomtrusts</td>
-                        </tr>
-                    </table>
+                    <ul>
+                        <li>Null Authentication</li>
+                        <ul>
+                            <li>This generally works on Domains from 2003.  Newly installed domains do not like null authentication</li>
+                            <li>If this works then note that null authentication allows domain enumeration and a lot of information can be found</li>
+                        </ul>
+                    </ul>
                 </td>
+                <td>rpcclient -U '' -N &gt;ip address&lt;</td>
+            </tr>
+            <tr>
+                <td>Enumerate Users</td>
+                <td>enumdomusers<br>querydispinfo</td>
+            </tr>
+            <tr>
+                <td>Get user SID</td>
+                <td>lookupnames &gt;username&lt;</td>
+            </tr>
+            <tr>
+                <td>Enumerate user groups</td>
+                <td> &lt;[rid value]&gt;</td>
+            </tr>
+            <tr>
+                <td>Query group name from rid value</td>
+                <td>querygroup &lt;rid value&gt;</td>
+            </tr>
+            <tr>
+                <td>Enumerate printers</td>
+                <td>enumprinters</td>
+            </tr>
+            <tr>
+                <td>Enumerate groups</td>
+                <td>enumalsgroups [Builtin|Domain]</td>
+            </tr>
+            <tr>
+                <td>Enumerate users (output in SID) in groups</td>
+                <td>queryaliasmem [Builtin|Domain] &lt;rid&gt;</td>
+            </tr>
+            <tr>
+                <td>Change users password (must log in to rpcclient as user)</td>
+                <td>setuserinfo2 &lt;username&gt; 23 '&lt;password&gt;'
+                    <ul>
+                        <li>23 is the USER_INTERAL4_INFORMATION field.  It does things in cleartext.  24 supports encrpytion</li>
+                        <li>NT_STATUS_PASSWORD_RESTRICTION means there was a password complexity failure and the password did not change</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Enumerate Domains</td>
+                <td>enumdomains</td>
+            </tr>
+            <tr>
+                <td>Domain SID</td>
+                <td>lsaquery</td>
+            </tr>
+            <tr>
+                <td>Domain info</td>
+                <td>querydominfo</td>
+            </tr>
+            <tr>
+                <td>Create domain user</td>
+                <td>createdomuser</td>
+            </tr>
+            <tr>
+                <td>delete domain user</td>
+                <td>deletedomuser</td>
+            </tr>
+            <tr>
+                <td>Add rights to user account</td>
+                <td>lsaaddacctrights</td>
+            </tr>
+            <tr>
+                <td>Remove rights from user account</td>
+                <td>lsaremoveacctrights</td>
+            </tr>
+            <tr>
+                <td>Enumerate trusted domain within AD forest</td>
+                <td>dsenumdomtrusts</td>
             </tr>
         </table>
     </ul>
