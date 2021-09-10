@@ -26,6 +26,18 @@
 </ul>
 
 
+<table>
+    <tr>
+        <td>Show justification for scan results</td>
+        <td>--reason</td>
+    </tr>
+    <tr>
+        <td>Banner grab / version detection</td>
+        <td>-sV</td>
+    </tr>
+</table>
+
+
 </body>
 </html>
 
