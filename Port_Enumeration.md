@@ -320,7 +320,6 @@ done;</pre>
         <ul>
             <li>resolv.conf hosts will be searched in order from top to bottom</li>
         </ul>
-    </ul>
     <li>nslookup</li>
         <table>
             <tr>
