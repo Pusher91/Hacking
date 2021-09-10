@@ -470,9 +470,50 @@ done;</pre>
 <h2>Kerberos</h2>
 
 <ul>
-    <li>Enumeration/attacks</li>
+    <li>Tools</li>
     <ul>
-        <li>TEST</li>
+        <li>Bloodhound</li>
+        <ul>
+            <li>Analyzes relationships between AD objects</li>
+        </ul>
+        <table>
+            <tr>
+                <td>bloodhound.py</td>
+                <td>sudo python3 bloodhound.py -c all -u &lt;user&gt; -p '&lt;password&gt;' -ns &lt;ip&gt; -d &lt;domain name&gt; --zip</td>
+            </tr>
+        </table>
+    </ul>
+    <li>Kerbrute</li>
+    <ul>
+        <li>Can enumerate AD usernames
+            <table>
+                <tr>
+                    <td>Enumerate usename list</td>
+                    <td>userenum -d &gt;domain or ip&lt; &gt;username list&lt;<br>-/usr/share/seclists/Usernames/xato-net-10-million-usernames.txt</td>
+                </tr>
+            </table>
+        </li>
+        <li>Can also be used to brute force passwords.  Uses preauth method so it will not generate a typical failed login error code</li>
+    </ul>
+    <li>AS-REP Roasting</li>
+    <ul>
+        <li>Retrieve a ticket for a use that has DONT_REQ_PREAUTH enabled and then crack it</li>
+        <ul>
+            <li>DONT_REQ_PREAUTH means the DC will provide a TGT without verifying the request for the ticket was encrypted by the password of the user that is requesting the TGT.</li>
+        </ul>
+        <li>Attack can be done from machine that is not joined to the domain</li>
+        <ul>
+            <li>Enumeration is easier on a domain-joined machine - you can use LDAP Filter or PowerView to find targets</li>
+        </ul>
+        <li>Attack from a windows machine:</li>
+        <ul>
+            <li>Tools:</li>
+            <ul>
+                <li>PowerView.ps1 - Enumerate Users</li>
+                <li>ASREPRoast.ps1 - Retrieve ticket hashes</li>
+                <li>Rebeus - C#/.NET replacement for ASREPRoast.ps1.  Harder for victim to detect.</li>
+            </ul>
+        </ul>
     </ul>
 </ul>
 
