@@ -169,6 +169,39 @@ echo "Done"</pre>
     </li>
 </ul>
 
+<h2>22 TCP / SSH</h2>
+
+<ul>
+    <li>Most common attack is brute forcing
+        <li>Password attacks against enumerated usernames and default usernames</li>
+        <li>Brute force password with Hydra</li>
+        <li>Brute force priavete keys with Crowbar</li>
+        <li>Fuzz passwords using patator</li>
+        <li>Metasploit ssh_login</li>
+        <li>Bruteforcing can lock you out.  Possibly for a set period of time.</li>
+    </li>
+    <li>Sometimes the password prompt is disabled and login is only allowed using a private key</li>
+    <li>SSH Key Fingerprint
+        <li>Based on the hosts public key
+            <li>/etc/ssh/ssh_host_rsa_key.pub</li>
+            <li>Used for easy identification of the hosts public key</li>
+        </li>
+    </li>
+</ul>
+
+<table>
+    <tr>
+        <td>Connect with a different key exchange algorithm</td>
+        <td>-oKexAlgorithms=+&lt;algorithm&gt;</td>
+    </tr>
+    <tr>
+        <td>Connect with a different type of key</td>
+        <td>-oPubkeyAcceptedKeyTypes=+&lt;key type - example: ssh-dss&gt;</td>
+    </tr>
+</table>
+
+<h2>25 TCP / SMTP</h2>
+
 </body>
 </html>
 
