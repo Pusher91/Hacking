@@ -10,7 +10,7 @@
   
   |||
     | ------------- | ------------- |
-    | Connect to server  | ftp <ip address> |
+    | Connect to server  | ftp \<ip address\> |
     | Upload file | ftp> put \<file\>  |
     | Download file  | ftp> get \<file\>  |
     | Upload multiple files | ftp> mput *[.txt/.php/etc..] |
