@@ -210,8 +210,9 @@ echo "Done"</pre>
 
 <ul>
     <li>Simple Mail Transfer Protocol</li>
-    <li>SMTP Commands:
-        <table>
+        <ul>
+            <li>SMTP Commands:
+                <table>
                     <tr>
                         <td>VRFY &lt;username&gt;</td>
                         <td>asks a server to verify an email address</td>
@@ -221,8 +222,7 @@ echo "Done"</pre>
                         <td>Asks the server for the membership of a mailing list</td>
                     </tr>
                 </table>
-    </li>
-        <ul>
+            </li>
             <li>Sends mail</li>
             <li>On internal networks you can typically send emails as anybody</li>
             <li>SMTP poisoning
