@@ -63,6 +63,25 @@
     </tr>
 </table>
 
+<h4>netcat</h4>
+
+<table>
+    <tr>
+        <td>TCP Port Scan</td>
+        <td>nc -nvv -w 1 -z &lt;ip address&gt; &lt;port #&gt; &lt;port #&gt;</td>
+    </tr>
+    <tr>
+        <td>UDP Port Scan</td>
+        <td>nc -nv -u -z -w 1 &lt;ip address&gt; &lt;port #&gt; &lt;port #&gt;</td>
+    </tr>
+</table>
+
+    <ul>
+        <li>w: Connection timeout in seconds</li>
+        <li>z: Specify Zero-I/O mode which will send no data and is used for scanning</li>
+    </ul>
+</tr>
+
 
 </body>
 </html>
