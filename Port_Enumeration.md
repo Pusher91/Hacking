@@ -209,7 +209,8 @@ echo "Done"</pre>
 <h2>25 TCP / SMTP</h2>
 
 <ul>
-    <li>Simple Mail Transfer Protocol
+    <li>Simple Mail Transfer Protocol</li>
+    <li>SMTP Commands:
         <table>
                     <tr>
                         <td>VRFY &lt;username&gt;</td>
