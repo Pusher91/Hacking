@@ -307,6 +307,15 @@ done;
     </li>
 </ul>
 
+<h2>53 TCP / DNS</h2>
+
+<ul>
+    <li>If DNS is running then we can edit /etc/resolv.conf instead of /etc/hosts so it will autobatically grab other DNS names</li>
+        <ul>
+            <li>resolv.conf hosts will be searched in order from top to bottom</li>
+        </ul>
+</ul>
+
 </body>
 </html>
 
