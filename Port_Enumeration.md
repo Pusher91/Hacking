@@ -82,6 +82,17 @@
     </ul>
 </tr>
 
+<p>UDP Scanning relies on the server to send back a "ICMP Port Unreachable" message to know if a port is open or closed.  If the server doesn't send back this message (port is filtered by a firewall, etc) then the port will look like it is open when it is not.</p>
+
+<table>
+    <tr>Bash script for port scanning</tr>
+    <tr><pre>#!/bin/bash host=10.5.5.11
+for port in {1..65535}; do
+    timeout .1 bash -c "echo >/dev/tcp/$host/$port" &&
+    echo "port $port is open"
+done
+echo "Done"</pre></tr>
+</table>
 
 </body>
 </html>
