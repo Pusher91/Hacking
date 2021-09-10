@@ -21,7 +21,7 @@
 <h4>Nmap</h4>
 <ul>Output all open ports to comma separated list:
     <li>sudo nmap -p- &lt;ip address&gt; -oA &lt;output name&gt;</li>
-    <li>cat &lt;nmap scan&gt;.nmap | grep open | awk -F/ '{print $1}' ORS=','</li>
+    <li>cat &lt;nmap scan&gt; | grep open | awk -F/ '{print $1}' ORS=','</li>
 </ul>
 
 
@@ -33,6 +33,33 @@
     <tr>
         <td>Banner grab / version detection</td>
         <td>-sV</td>
+    </tr>
+    <tr>
+        <td>"Safe scripts".  Default script scan.  Some are intrusive.</td>
+        <td>-sC</td>
+    </tr>
+    <tr>
+        <td>Top 1000 ports</td>
+        <td>--top-ports 1000</td>
+    </tr>
+    <tr>
+        <td>UDP Scan</td>
+        <td>-sU</td>
+    </tr>
+    <tr>
+        <td>TCP & UDP Scan</td>
+        <td>-sTU</td>
+    </tr>
+    <tr>
+        <td>
+            <ul>Packets per second to send
+                <li>nmap may send less if:
+                    <ul><li>It has nothing to send</li>
+                        <li>Hardware Limit</li>
+                    </ul></li>
+                </ul>
+        </td>
+         <td>--min-rate &lt;#&gt;</td>
     </tr>
 </table>
 
