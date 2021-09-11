@@ -1652,7 +1652,7 @@ conn conceal
 
 <li>Oracle DB exploit guide</li>
 <ul>
-    blackhat.com/presentations/bh-usa-09/GATES/BHUSA09-Gates-OracleMetasploit-SLIDES.pdf
+    <li>blackhat.com/presentations/bh-usa-09/GATES/BHUSA09-Gates-OracleMetasploit-SLIDES.pdf</li>
 </ul>
 
 
