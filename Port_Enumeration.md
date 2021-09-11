@@ -1679,6 +1679,7 @@
         </td>
     </tr>
     <tr>
+        <td>Brute force login credentials</td>
         <td>
             <li>odat passwordguesser</li>
             <li>auxiliary/scanner/oracle/oracle_login</li>
