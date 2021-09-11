@@ -490,22 +490,22 @@
             <td>-ErrorAction SilentlyContinue<br>ErrorAction ignore</td>
         </tr>
     </table>
-<li>Networking</li>
-<li>Miscellaneous</li>
-<table>
-    <tr>
-        <td>Secretly run scripts</td>
-        <td>powershell.exe -ExecutionPolicy Bypass –NoLogo –NonInteractive –NoProfile –File &lt;file.ps1&gt;</td>
-    </tr>
-    <tr>
-        <td>enable colors</td>
-        <td>reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1</td>
-    </tr>
-    <tr>
-        <td>dot-source / load all variables & functions from powershell script</td>
-        <td>.\&lt;script&gt;.ps1<br>iex (New-Object System.Net.Webclient).DownloadString(&#039;https://website.com/url/to/file.ps1&#039;)</td>
-    </tr>
-</table>
+    <li>Networking</li>
+    <li>Miscellaneous</li>
+    <table>
+        <tr>
+            <td>Secretly run scripts</td>
+            <td>powershell.exe -ExecutionPolicy Bypass –NoLogo –NonInteractive –NoProfile –File &lt;file.ps1&gt;</td>
+        </tr>
+        <tr>
+            <td>enable colors</td>
+            <td>reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1</td>
+        </tr>
+        <tr>
+            <td>dot-source / load all variables & functions from powershell script</td>
+            <td>.\&lt;script&gt;.ps1<br>iex (New-Object System.Net.Webclient).DownloadString(&#039;https://website.com/url/to/file.ps1&#039;)</td>
+        </tr>
+    </table>
 
 
 
