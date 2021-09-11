@@ -542,9 +542,6 @@
                     <tr>
                         <td>Create SMB Share Credential Variable</td>
                         <td>
-                            <li>Create credential on Windows using SMB credentials set in previous command</li>
-                        </td>
-                        <td>
                             <li>$pass = ConvertTo-SecureString &#039;&lt;password&gt;&#039; -AsPlainText -Force</li>
                             <li>$cred = New-Object System.Management.Automation.PSCredential(&#039;&lt;Username&gt;&#039;, $pass)</li>
                             <ul>
