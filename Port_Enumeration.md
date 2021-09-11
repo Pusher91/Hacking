@@ -1713,7 +1713,7 @@
     <tr>
         <td>Upload file</td>
         <td>
-            <li>odat dbmsadvisor -s 10.10.10.82 -d &lt;database&gt; -U &lt;username&gt; -P &ltpassword&gt; --sysdba --putFile C:\\inetpub\\wwwroot &lt;remote file&gt; &lt;local file&gt;</li>
+            <li>odat dbmsadvisor -s 10.10.10.82 -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt; --sysdba --putFile C:\\inetpub\\wwwroot &lt;remote file&gt; &lt;local file&gt;</li>
             <ul>
                 <li>Also try dbmsxslprocessor instead of dbmsadvisor</li>
             </ul>
@@ -1729,7 +1729,7 @@
     </tr>
     <tr>
         <td>Read file</td>
-        <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br><br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
+        <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
     </tr>
     <tr>
         <td>Write file</td>
