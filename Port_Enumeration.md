@@ -1442,53 +1442,54 @@
                 <tr>
                     <td>Fields Explained</td>
                     <td><pre># ipsec.conf - strongSwan IPsec configuration file
-                        config setup
-                        charondebug="all"
-                        # More verbose for troubleshooting connection
 
-                        uniqueids=yes
-                        strictcrlpolicy=no
-                        conn conceal
-                        authby=secret
-                        # Auth type.  PSK = secret
+config setup
+    charondebug="all"
+# More verbose for troubleshooting connection
 
-                        auto=add
-                        ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
-                        # ike-scan values: Enc=&lt;Value 1&gt; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;
+    uniqueids=yes
+    strictcrlpolicy=no
+conn conceal
+    authby=secret
+# Auth type.  PSK = secret
 
-                        esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
-                        # ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
+    auto=add
+    ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
+# ike-scan values: Enc=&lt;Value 1&gt; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;
 
-                        type=transport
-                        # ipsec transport mode
+    esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
+# ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
 
-                        keyexchange=ikev1
-                        # ike-scan value: (IKE CGA version 1) = ikev1
+    type=transport
+# ipsec transport mode
 
-                        left=&lt;Local Machine IP&gt;
-                        right=&lt;Remote Machine IP&gt;
-                        rightsubnet=&lt;Remote Machine IP&gt;[tcp]
+    keyexchange=ikev1
+# ike-scan value: (IKE CGA version 1) = ikev1
+
+    left=&lt;Local Machine IP&gt;
+    right=&lt;Remote Machine IP&gt;
+    rightsubnet=&lt;Remote Machine IP&gt;[tcp]
                     </pre></td>
                 </tr>
                 <tr>
                     <td>Example File</td>
                     <td><pre># ipsec.conf - strongSwan IPsec configuration file
 
-                        config setup
-                        charondebug="all"
-                        uniqueids=yes
-                        strictcrlpolicy=no
+config setup
+    charondebug="all"
+    uniqueids=yes
+    strictcrlpolicy=no
 
-                        conn conceal
-                        authby=secret
-                        auto=add
-                        ike=3des-sha1-modp1024!
-                        esp=3des-sha1!
-                        type=transport
-                        keyexchange=ikev1
-                        left=10.10.14.6
-                        right=10.10.10.116
-                    rightsubnet=10.10.10.116[tcp]</pre></td>
+conn conceal
+    authby=secret
+    auto=add
+    ike=3des-sha1-modp1024!
+    esp=3des-sha1!
+    type=transport
+    keyexchange=ikev1
+    left=10.10.14.6
+    right=10.10.10.116
+    rightsubnet=10.10.10.116[tcp]</pre></td>
                 </tr>
             </table>
         </ul>
