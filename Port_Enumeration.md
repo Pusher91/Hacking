@@ -1362,7 +1362,7 @@
 
 <h2>464 TCP / kpasswd5</h2>
 <li>Used for changing/setting passwords against Active Directory.</li>
-
+<br>
 <h2>500 UDP / ISAKMP</h2>
 <li>Used for Internet Key Exchange (IKE)</li>
 <li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
@@ -1429,7 +1429,9 @@
             <table>
                 <tr>
                     <td>Fields Explained</td>
-                    <td><pre># This file holds shared secrets or RSA private keys for authentication.<br>%any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</td></pre></tr>
+                    <td><pre># This file holds shared secrets or RSA private keys for authentication.
+%any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</td></pre>
+                </tr>
                 <tr>
                     <td>Example file</td>
                     <td><pre># This file holds shared secrets or RSA private keys for authentication.
