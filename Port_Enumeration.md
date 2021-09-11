@@ -1608,7 +1608,7 @@
 <table>
     <tr>
         <td>Run shell command</td>
-        <td>EXEC xp_cmdshell '&lt;command&gt;</td>
+        <td>EXEC xp_cmdshell '&lt;command&gt;'</td>
     </tr>
     <tr>
         <td>Enable xp_cmdshell</td>
@@ -1720,7 +1720,7 @@
     </tr>
 </table>
 
-<li>Oracle DB Commands:</li>
+<!--<li>Oracle DB Commands:</li>
 <table>
     <tr>
         <td>View privileges</td>
@@ -1745,7 +1745,7 @@
     </tr>
 </table>
 
-<li>Generating shell for Oracle</li>
+<li>Generating shell for Oracle</li>-->
 
 </body>
 </html>
