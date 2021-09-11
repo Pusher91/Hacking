@@ -1085,7 +1085,7 @@
 
 <li>Secure version of port 80.  Most of the same things apply</li>
 <li>Check certificate for any interesting information</li>
-
+<br>
 <h2>445 TCP / SMB</h2>
 
 <li>SMB is the protocol, CIFS is an old dialect of SMB, and my is the Linux/Unix-like implementation of the SMB protocol.</li>
@@ -1359,6 +1359,98 @@
         <td>Windows 8 SMB3 version. (mostly the same as SMB2_24)</td>
     </tr>
 </table>
+
+<h2>464 TCP / kpasswd5</h2>
+<li>Used for changing/setting passwords against Active Directory.</li>
+
+<h2>500 UDP / ISAKMP</h2>
+<li>Used for Internet Key Exchange (IKE)</li>
+<li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
+<ul>
+    <li>Used to establish an IPSEC VPN</li>
+    <ul>
+        <li>Internet Protocol Security (IPSEC) is a suite of tools that are used for securing network traffic at the IP Layer.</li>
+        <ul>
+            <li>AH and ESP protocols provide security assurances:</li>
+            <ul>
+                <li>Authentication Header (AH)</li>
+                <ul>
+                    <li>Provides data integrity (We will now if the data has been modified between senders).</li>
+                    <li>Data source authentication (We will know if the source isn't what is expected for that connection).</li>
+                    <li>Protection against replay attacks.</li>
+                </ul>
+                <li>Encapsulating Security Payloads(ESP)</li>
+                <ul>
+                    <li>Provides similar capabilities as AH plus confidentiality (Someone in the middle won't be able to see the data)</li>
+                </ul>
+                <li>Both of these protocols can operate in two modes:</li>
+                <ul>
+                    <li>Transport mode</li>
+                    <ul>
+                        <li>The IP of the packet is sent in the clear over the internet for routing, but the payload is encrypted.</li>
+                        <li>Typically used directly host to host</li>
+                    </ul>
+                    <li>Tunnel mode</li>
+                    <ul>
+                        <li>The entire IP packet is encrypted and becomes the payload of another IP packet.  The header of the new packet directs where the packet goes.</li>
+                        <li>Typically used when a computer is behind a network.</li>
+                    </ul>
+                </ul>
+            </ul>
+            <li>There are also security associations (SA) used with IPSEC.  This provides a bundle of algorithms to dynamically exchange keys and establish a secure connection over AH or ESP.  IKE is one of those.</li>
+        </ul>
+    </ul>
+</ul>
+<li>Tools:</li>
+<ul>
+    <li>ike-scan</li>
+    <ul>
+        <li>ike-scan -M &lt;ip address&gt;</li>
+        <ul>
+            <li>Enumerates:</li>
+            <ul>
+                <li>IKE Encryption type</li>
+                <li>Auth type (PSK, etc)</li>
+                <li>IKE version (v1 or v2)</li>
+            </ul>
+        </ul>
+    </ul>
+    <li>strongswan</li>
+    <ul>
+        <li>Used to connect to VPN once password is known</li>
+        <li>Avoid errors:</li>
+        <ul>
+            <li>sudo apt install libstrongswan-standard-plugins</li>
+            <li>sudo apt install libstrongswan-extra-plugins</li>
+        </ul>
+        <li>Must edit local files to connect to VPN</li>
+        <ul>
+            <li>/etc/ipsec.secrets</li>
+            <table>
+                <tr>
+                    <td>Fields Explained</td>
+                    <td># This file holds shared secrets or RSA private keys for authentication.<br>%any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</td>
+                </tr>
+                <tr>
+                    <td>Example file</td>
+                    <td><pre># This file holds shared secrets or RSA private keys for authentication.
+
+                    %any : PSK "Dudecake1!"</pre></td>
+                </tr>
+            </table>
+            <li>/etc/ipsec.conf</li>
+            <table>
+                <tr>
+                    <td>Values retrieves using ike-scan</td>
+                    <td></td>
+                </tr>
+            </table>
+        </ul>
+    </ul>
+</ul>
+
+
+
 
 </body>
 </html>
