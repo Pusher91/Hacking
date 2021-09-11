@@ -1685,6 +1685,7 @@
             <li>*Passwords are typically lowercase</li>
         </td>
     </tr>
+    
     <tr>
         <td>Log into Oracle DB</td>
         <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt;</td>
