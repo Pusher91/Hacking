@@ -1496,7 +1496,7 @@
 </ul>
 
 
-<h2>636 TCP / LDAPS</h2>
+<!--<h2>636 TCP / LDAPS</h2>
 <li>LDAP SSL connection</li>
 <br>
 
@@ -1540,7 +1540,7 @@
         </tr>
     </table>
 
-    <h2>1025 TCP / msrpc</h2>
+    <h2>1025 TCP / msrpc</h2>-->
 
 
 </body>
