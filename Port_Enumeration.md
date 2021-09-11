@@ -1496,11 +1496,12 @@
 </ul>
 
 
-<!--<h2>636 TCP / LDAPS</h2>
+<h2>636 TCP / LDAPS</h2>
 <li>LDAP SSL connection</li>
 <br>
 
 <h2>837 TCP / rsync</h2>
+
 <table>
     <tr>
         <td>Enumerate shared folders</td>
@@ -1520,27 +1521,27 @@
     </tr>
     <tr>
         <td>Create remote directory on local machine</td>
-        <td>rsync -av rsync://&lt;username&gt;@&ltip address:port&gt;/&lt;share name&gt; ./&lt;<local directory>&gt;</td>
-        </tr>
-        <tr>
-            <td>Upload a file to remote machine</td>
-            <td>rsync ./&lt;local file&gt; &lt;ip&gt;::&lt;remote directory&gt;</td>
-        </tr>
-        <tr>
-            <td>Upload directory to remote machine</td>
-            <td>rsync -r ./&lt;local directory&gt; &lt;ip address&gt;::&lt;remote directory&gt;</td>
-        </tr>
-        <tr>
-            <td>Upload/create directory on local machine on remote machine</td>
-            <td>rsync -av ./.ssh rsync://&lt;ip address&gt;/&lt;share name&gt;</td>
-        </tr>
-        <tr>
-            <td>Specify a ssh port for rsync if ssh is not running on 22</td>
-            <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
-        </tr>
-    </table>
+        <td>rsync -av rsync://&lt;username&gt;@&ltip address:port&gt;/&lt;share name&gt; ./&lt;&lt;local directory>&gt;</td>
+    </tr>
+    <tr>
+        <td>Upload a file to remote machine</td>
+        <td>rsync ./&lt;local file&gt; &lt;ip&gt;::&lt;remote directory&gt;</td>
+    </tr>
+    <tr>
+        <td>Upload directory to remote machine</td>
+        <td>rsync -r ./&lt;local directory&gt; &lt;ip address&gt;::&lt;remote directory&gt;</td>
+    </tr>
+    <tr>
+        <td>Upload/create directory on local machine on remote machine</td>
+        <td>rsync -av ./.ssh rsync://&lt;ip address&gt;/&lt;share name&gt;</td>
+    </tr>
+    <tr>
+        <td>Specify a ssh port for rsync if ssh is not running on 22</td>
+        <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
+    </tr>
+</table>
 
-    <h2>1025 TCP / msrpc</h2>-->
+<h2>1025 TCP / msrpc</h2>
 
 
 </body>
