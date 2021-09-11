@@ -1588,20 +1588,10 @@ conn conceal
 <li>sqsh</li>
 <ul>
     <li>append server to /etc/freetds/freetds.config</li>
-
 <pre>[&lt;hostname&gt;]
     host = &lt;ip&gt;
     port = &lt;port #&gt;
     tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;</pre>
-    
-    <table>
-        <tr>
-            <td><pre>[&lt;hostname&gt;]
-    host = &lt;ip&gt;
-    port = &lt;port #&gt;
-    tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;</pre></td>
-        </tr>
-    </table>
 </ul>
 
 </body>
