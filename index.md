@@ -5,7 +5,7 @@ Comptia A+, Network+, and Security+ | Avidly pursuing OSCP.
 ### Contents:
 - Notes:
   - [Enumeration](/Port_Enumeration.md) (ports and their services)
-  - Windows PrivEsc
+  - [Windows PrivEsc](/Windows_PrivEsc.md)
   - Linux PrivEsc
   - Web application attacks
   - Port Forwarding and Tunnelling
