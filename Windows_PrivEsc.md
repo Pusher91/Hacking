@@ -611,8 +611,8 @@
                         <td>Start Share</td>
                         <td>service smbd restart</td>
                     </tr>
-                    <li>Troubleshoot by using smbclient and access the SMB directory on our machine and attempt to retrieve or upload files.</li>
                 </table>
+                <li>Troubleshoot by using smbclient and access the SMB directory on our machine and attempt to retrieve or upload files.</li>
             </td>
         </tr>
     </table>
