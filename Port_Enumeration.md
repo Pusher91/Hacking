@@ -1469,8 +1469,8 @@
                             right=&lt;Remote Machine IP&gt;
                             rightsubnet=&lt;Remote Machine IP&gt;[tcp]
                         </pre></td>
-                    </tr>
-                    <tr>
+                </tr>
+                <tr>
                         <td>Example File</td>
                         <td><pre># ipsec.conf - strongSwan IPsec configuration file
 
@@ -1489,11 +1489,11 @@
                             left=10.10.14.6
                             right=10.10.10.116
                         rightsubnet=10.10.10.116[tcp]</pre></td>
-                    </tr>
-                </table>
-            </ul>
+                </tr>
+            </table>
         </ul>
     </ul>
+</ul>
 
 
     <h2>636 TCP / LDAPS</h2>
