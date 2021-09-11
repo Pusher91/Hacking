@@ -1426,7 +1426,6 @@
         <li>Must edit local files to connect to VPN</li>
         <ul>
             <li>/etc/ipsec.secrets</li>
-            <pre>
             <table>
                 <tr>
                     <td>Fields Explained</td>
@@ -1434,15 +1433,62 @@
                 </tr>
                 <tr>
                     <td>Example file</td>
-                    <td>This file holds shared secrets or RSA private keys for authentication. %any : PSK "Dudecake1!"</td>
+                    <td><pre># This file holds shared secrets or RSA private keys for authentication.
+%any : PSK "Dudecake1!"</pre></td>
                 </tr>
             </table>
-        </pre>
             <li>/etc/ipsec.conf</li>
             <table>
                 <tr>
-                    <td>Values retrieves using ike-scan</td>
-                    <td></td>
+                    <td>Fields Explained</td>
+                    <td><pre># ipsec.conf - strongSwan IPsec configuration file
+config setup
+    charondebug="all"
+# More verbose for troubleshooting connection
+
+    uniqueids=yes
+    strictcrlpolicy=no
+conn conceal
+    authby=secret
+# Auth type.  PSK = secret
+
+    auto=add
+    ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
+# ike-scan values: Enc=<Value 1>; Hash=<Value 2>; Group=2:<value 3>
+
+    esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
+# ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
+
+    type=transport
+# ipsec transport mode
+
+    keyexchange=ikev1
+# ike-scan value: (IKE CGA version 1) = ikev1
+
+    left=&lt;Local Machine IP&gt;
+    right=&lt;Remote Machine IP&gt;
+    rightsubnet=&ls;Remote Machine IP&gt;[tcp]
+</pre></td>
+                </tr>
+                <tr>
+                    <td>Example File</td>
+                    <td><pre># ipsec.conf - strongSwan IPsec configuration file
+
+config setup
+    charondebug="all"
+    uniqueids=yes
+    strictcrlpolicy=no
+
+conn conceal
+    authby=secret
+    auto=add
+    ike=3des-sha1-modp1024!
+    esp=3des-sha1!
+    type=transport
+    keyexchange=ikev1
+    left=10.10.14.6
+    right=10.10.10.116
+    rightsubnet=10.10.10.116[tcp]</pre></td>
                 </tr>
             </table>
         </ul>
