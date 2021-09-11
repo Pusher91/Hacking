@@ -1429,7 +1429,7 @@
             <table>
                 <tr>
                     <td>Fields Explained</td>
-                    <td># This file holds shared secrets or RSA private keys for authentication.<br>%any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</td>
+                    <td><pre># This file holds shared secrets or RSA private keys for authentication.<br>%any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</pre></td>
                 </tr>
                 <tr>
                     <td>Example file</td>
