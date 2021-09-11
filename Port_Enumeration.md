@@ -1362,7 +1362,7 @@
 
 <h2>464 TCP / kpasswd5</h2>
 <li>Used for changing/setting passwords against Active Directory.</li>
-<!--
+<br>
 <h2>500 UDP / ISAKMP</h2>
 <li>Used for Internet Key Exchange (IKE)</li>
 <li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
@@ -1400,7 +1400,7 @@
             <li>There are also security associations (SA) used with IPSEC.  This provides a bundle of algorithms to dynamically exchange keys and establish a secure connection over AH or ESP.  IKE is one of those.</li>
         </ul>
     </ul>
-</ul> -->
+</ul>
 <li>Tools:</li>
 <ul>
     <li>ike-scan</li>
