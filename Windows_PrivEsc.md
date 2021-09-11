@@ -596,22 +596,22 @@
                         <td>Open share</td>
                         <td>cd \\&lt;ip address&gt;\&lt;share name&gt;\</td>
                     </tr>
-                    <li>Create SMB share using Linux's built-in SMB server</li>
-                    <table>
-                        <tr>
-                            <td>Create SMB Share (optional and self-explanatory parameters included)</td>
-                            <td>sudo vi /etc/samba/smb.conf<br>[share]<br>comment = My Share<br>browseable = yes<br>path = /srv/SMB<br>read only = no<br>guest ok = yes<br>writable = yes<br>create mask = 0777</td>
-                        </tr>
-                        <tr>
-                            <td>Might need to give SMB permissions to share directory</td>
-                            <td>chmod 777 &lt;smb share directory&gt;<br>chmod 755 &lt;smb share directory&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>Start Share</td>
-                            <td>service smbd restart</td>
-                        </tr>
-                        <li>Troubleshoot by using smbclient and access the SMB directory on our machine and attempt to retrieve or upload files.</li>
-                    </table>
+                </table>
+                <li>Create SMB share using Linux's built-in SMB server</li>
+                <table>
+                    <tr>
+                        <td>Create SMB Share (optional and self-explanatory parameters included)</td>
+                        <td>sudo vi /etc/samba/smb.conf<br>[share]<br>comment = My Share<br>browseable = yes<br>path = /srv/SMB<br>read only = no<br>guest ok = yes<br>writable = yes<br>create mask = 0777</td>
+                    </tr>
+                    <tr>
+                        <td>Might need to give SMB permissions to share directory</td>
+                        <td>chmod 777 &lt;smb share directory&gt;<br>chmod 755 &lt;smb share directory&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Start Share</td>
+                        <td>service smbd restart</td>
+                    </tr>
+                    <li>Troubleshoot by using smbclient and access the SMB directory on our machine and attempt to retrieve or upload files.</li>
                 </table>
             </td>
         </tr>
