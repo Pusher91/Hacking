@@ -1738,11 +1738,11 @@
     <tr>
         <td>Run last procedure</td>
         <td>/</td>
-    </tr>
+    </tr>-->
     <tr>
         <td>View output</td>
         <td>set serveroutput ON</td>
-    </tr>-->
+    </tr>
 </table>
 
 <li>Generating shell for Oracle</li>
