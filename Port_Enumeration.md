@@ -1426,6 +1426,7 @@
         <li>Must edit local files to connect to VPN</li>
         <ul>
             <li>/etc/ipsec.secrets</li>
+            <pre>
             <table>
                 <tr>
                     <td>Fields Explained</td>
@@ -1433,11 +1434,10 @@
                 </tr>
                 <tr>
                     <td>Example file</td>
-                    <td><pre># This file holds shared secrets or RSA private keys for authentication.
-
-%any : PSK "Dudecake1!"</pre></td>
+                    <td>This file holds shared secrets or RSA private keys for authentication. %any : PSK "Dudecake1!"</td>
                 </tr>
             </table>
+        </pre>
             <li>/etc/ipsec.conf</li>
             <table>
                 <tr>
