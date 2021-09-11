@@ -1429,12 +1429,13 @@
             <table>
                 <tr>
                     <td>Fields Explained</td>
-                    <td><pre># This file holds shared secrets or RSA private keys for authentication.<br>%any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</pre></td>
+                    <td><pre># This file holds shared secrets or RSA private keys for authentication.
+%any : &lt;Authentication Type - Example: PSK&gt; "&lt;VPN Password&gt;"</pre></td>
                 </tr>
                 <tr>
                     <td>Example file</td>
                     <td><pre># This file holds shared secrets or RSA private keys for authentication.
-                    %any : PSK "Dudecake1!"</pre></td>
+%any : PSK "Dudecake1!"</pre></td>
                 </tr>
             </table>
             <li>/etc/ipsec.conf</li>
