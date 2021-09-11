@@ -1434,7 +1434,7 @@
                 <tr>
                     <td>Example file</td>
                     <td><pre># This file holds shared secrets or RSA private keys for authentication.
-%any : PSK "Dudecake1!"</pre></td>
+                    %any : PSK "Dudecake1!"</pre></td>
                 </tr>
             </table>
             <li>/etc/ipsec.conf</li>
@@ -1442,55 +1442,56 @@
                 <tr>
                     <td>Fields Explained</td>
                     <td><pre># ipsec.conf - strongSwan IPsec configuration file
-config setup
-    charondebug="all"
-# More verbose for troubleshooting connection
+                        config setup
+                        charondebug="all"
+                        # More verbose for troubleshooting connection
 
-    uniqueids=yes
-    strictcrlpolicy=no
-conn conceal
-    authby=secret
-# Auth type.  PSK = secret
+                        uniqueids=yes
+                        strictcrlpolicy=no
+                        conn conceal
+                        authby=secret
+                        # Auth type.  PSK = secret
 
-    auto=add
-    ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
-# ike-scan values: Enc=<Value 1>; Hash=<Value 2>; Group=2:<value 3>
+                        auto=add
+                        ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
+                        # ike-scan values: Enc=<Value 1>; Hash=<Value 2>; Group=2:<value 3>
 
-    esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
-# ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
+                            esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
+                            # ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
 
-    type=transport
-# ipsec transport mode
+                            type=transport
+                            # ipsec transport mode
 
-    keyexchange=ikev1
-# ike-scan value: (IKE CGA version 1) = ikev1
+                            keyexchange=ikev1
+                            # ike-scan value: (IKE CGA version 1) = ikev1
 
-    left=&lt;Local Machine IP&gt;
-    right=&lt;Remote Machine IP&gt;
-    rightsubnet=&lt;Remote Machine IP&gt;[tcp]
-</pre></td>
-                </tr>
-                <tr>
-                    <td>Example File</td>
-                    <td><pre># ipsec.conf - strongSwan IPsec configuration file
+                            left=&lt;Local Machine IP&gt;
+                            right=&lt;Remote Machine IP&gt;
+                            rightsubnet=&lt;Remote Machine IP&gt;[tcp]
+                        </pre></td>
+                    </tr>
+                    <tr>
+                        <td>Example File</td>
+                        <td><pre># ipsec.conf - strongSwan IPsec configuration file
 
-config setup
-    charondebug="all"
-    uniqueids=yes
-    strictcrlpolicy=no
+                            config setup
+                            charondebug="all"
+                            uniqueids=yes
+                            strictcrlpolicy=no
 
-conn conceal
-    authby=secret
-    auto=add
-    ike=3des-sha1-modp1024!
-    esp=3des-sha1!
-    type=transport
-    keyexchange=ikev1
-    left=10.10.14.6
-    right=10.10.10.116
-    rightsubnet=10.10.10.116[tcp]</pre></td>
-                </tr>
-            </table>
+                            conn conceal
+                            authby=secret
+                            auto=add
+                            ike=3des-sha1-modp1024!
+                            esp=3des-sha1!
+                            type=transport
+                            keyexchange=ikev1
+                            left=10.10.14.6
+                            right=10.10.10.116
+                        rightsubnet=10.10.10.116[tcp]</pre></td>
+                    </tr>
+                </table>
+            </ul>
         </ul>
     </ul>
 </ul>
@@ -1520,26 +1521,26 @@ conn conceal
     <tr>
         <td>Create remote directory on local machine</td>
         <td>rsync -av rsync://&lt;username&gt;@&ltip address:port&gt;/&lt;share name&gt; ./&lt;<local directory>&gt;</td>
-    </tr>
-    <tr>
-        <td>Upload a file to remote machine</td>
-        <td>rsync ./&lt;local file&gt; &lt;ip&gt;::&lt;remote directory&gt;</td>
-    </tr>
-    <tr>
-        <td>Upload directory to remote machine</td>
-        <td>rsync -r ./&lt;local directory&gt; &lt;ip address&gt;::&lt;remote directory&gt;</td>
-    </tr>
-    <tr>
-        <td>Upload/create directory on local machine on remote machine</td>
-        <td>rsync -av ./.ssh rsync://&lt;ip address&gt;/&lt;share name&gt;</td>
-    </tr>
-    <tr>
-        <td>Specify a ssh port for rsync if ssh is not running on 22</td>
-        <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
-    </tr>
-</table>
+        </tr>
+        <tr>
+            <td>Upload a file to remote machine</td>
+            <td>rsync ./&lt;local file&gt; &lt;ip&gt;::&lt;remote directory&gt;</td>
+        </tr>
+        <tr>
+            <td>Upload directory to remote machine</td>
+            <td>rsync -r ./&lt;local directory&gt; &lt;ip address&gt;::&lt;remote directory&gt;</td>
+        </tr>
+        <tr>
+            <td>Upload/create directory on local machine on remote machine</td>
+            <td>rsync -av ./.ssh rsync://&lt;ip address&gt;/&lt;share name&gt;</td>
+        </tr>
+        <tr>
+            <td>Specify a ssh port for rsync if ssh is not running on 22</td>
+            <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
+        </tr>
+    </table>
 
-<h2>1025 TCP / msrpc</h2>
+    <h2>1025 TCP / msrpc</h2>
 
 
 </body>
