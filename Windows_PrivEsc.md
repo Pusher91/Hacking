@@ -613,7 +613,7 @@
         </tr>
         <tr>
             <td>Base64 Decoding</td>
-            <td>powershell -e &lt;base 64&gt;</td>
+            <td><li>powershell -e &lt;base 64&gt;</li></td>
         </tr>
     </table>
 
