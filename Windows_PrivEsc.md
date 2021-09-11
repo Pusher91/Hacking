@@ -207,7 +207,198 @@
         <li>Common C# offensive tools that are checked for updates daily, and then compiled</li>
     </ul>
 
+    <br>
 
+    <h2>cmd</h2>
+    <li>Location: C:\Windows\System32\cmd.exe</li>
+    <li>Miscellaneous</li>
+    <table>
+        <tr>
+            <td>grep string from output</td>
+            <td>&lt;command&gt; | findstr</td>
+        </tr>
+    </table>
+    <li>System Information & Control</li>
+    <table>
+        <tr>
+            <td>show hostname</td>
+            <td>hostname</td>
+        </tr>
+        <tr>
+            <td>Restart</td>
+            <td>shutdown -r -t 10 && exit<br><li>&& exit because an error message can pop up when initiating a restart with a shell still active.</li></td>
+        </tr>
+        <tr>
+            <td>List system-wide updates</td>
+            <td>wmic qfe get Caption, Description, HotFixID, InstalledOn</td>
+        </tr>
+        <tr>
+            <td>List version and architecture</td>
+            <td>systeminfo | findstr /B /C:"OS Name" /C:"OS Version" /C:"System Type"</td>
+        </tr>
+        <tr>
+            <td>List version and architecture</td>
+            <td>systeminfo | findstr /B /C:"OS Name" /C:"OS Version" /C:"System Type"</td>
+        </tr>
+        <tr>
+            <td>Enumerate drivers installed</td>
+            <td>driverquery /v</td>
+        </tr>
+    </table>
+    <li>Applications & Services</li>
+    <table>
+        <tr>
+            <td>List running services</td>
+            <td>tasklist</td>
+        </tr>
+        <tr>
+            <td>Running Processes & Services</td>
+            <td>tasklist /SVC</td>
+        </tr>
+    </table>
+    <li>User & Group Permissions</li>
+    <table>
+        <tr>
+            <td>view current user</td>
+            <td>whoami<br>echo %username%</td>
+        </tr>
+        <tr>
+            <td>See all user accounts</td>
+            <td>net user</td>
+        </tr>
+        <tr>
+            <td>More details about specific account</td>
+            <td>net user &lt;username&gt;</td>
+        </tr>
+        <tr>
+            <td>View domain users</td>
+            <td>net user /domain</td>
+        </tr>
+        <tr>
+            <td>View local administrators group</td>
+            <td>net localgroup Administrators</td>
+        </tr>
+        <tr>
+            <td>View groups</td>
+            <td>net group </td>
+        </tr>
+        <tr>
+            <td>Shows all groups on the domain</td>
+            <td>net group /domain</td>
+        </tr>
+        <tr>
+            <td>net accounts</td>
+            <td>Check accounts info (password lockout, etc)</td>
+        </tr>
+        <tr>
+            <td>Add user</td>
+            <td>net user &lt;username&gt; &lt;password&gt; /add</td>
+        </tr>
+        <tr>
+            <td>Add user to domain</td>
+            <td>net user &lt;username&gt; &lt;password&gt; /add /domain</td>
+        </tr>
+        <tr>
+            <td>Change password</td>
+            <td>net user &lt;username&gt; &lt;password&gt;</td>
+        </tr>
+        <tr>
+            <td>View users in a group</td>
+            <td>net group &quot;&lt;Group Name&gt;&quot;</td>
+        </tr>
+        <tr>
+            <td>Add user to a group</td>
+            <td>net group "Group Name" /add &lt;user&gt;</td>
+        </tr>
+        <tr>
+            <td>Make user a local admin</td>
+            <td>net localgroup administrators &lt;username&gt; /add</td>
+        </tr>
+        <tr>
+            <td>Give full control of file to user</td>
+            <td>cacls &lt;file&gt; /t /e /p &lt;user&gt;:F<br>- F = Full Control</td>
+        </tr>
+        <tr>
+            <td>Remove access to file from user</td>
+            <td>cacls &lt;file&gt; /r /e &lt;user&gt;</td>
+        </tr>
+    </table>
+    <li>File System</li>
+    <table>
+        <tr>
+            <td>Edit text document</td>
+            <td>Copy con C:\file.txt</td>
+        </tr>
+        <tr>
+            <td>Search for files</td>
+            <td>dir &lt;file name&gt;
+                <table>
+                    <tr>
+                        <td>/s</td>
+                        <td>List all occurrences of the file in the specified directory and subdirectories</td>
+                    </tr>
+                    <tr>
+                        <td>/r</td>
+                        <td>Display alternate data streams of the file (files that are acting like folders and contain files inside of them)<br><li>If data stream files are found, display content with Powershell: (Get-Content < main file> -Stream &lt;File inside the file&gt;</li>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Find file</td>
+            <td>where &lt;file name&gt;<br>where /r C:\ &lt;file name&gt;<br>where /R C:\ &lt;file name&gt;</td>
+        </tr>
+        <tr>
+            <td>Mount smb share</td>
+            <td>net use &lt;drive letter&gt;: \\&lt;SMB Server ip&gt;\&lt;smb share to mount&gt;</td>
+        </tr>
+        <tr>
+            <td>List all drives that are currently mounted as well as unmounted but connected</td>
+            <td>mountvol</td>
+        </tr>
+        <tr>
+            <td>Analyze encrypted files</td>
+            <td>cipher /c &lt;file&gt;</td>
+        </tr>
+        <tr>
+            <td>Check file permissions</td>
+            <td>cacls &lt;file&gt;</td>
+        </tr>
+    </table>
+    <li>Networking</li>
+    <table>
+        <tr>
+            <td>Disable firewall - New way</td>
+            <td>netsh advfirewall set allprofiles state off</td>
+        </tr>
+        <tr>
+            <td>Disable Firewall - Old way</td>
+            <td>netsh firewall set opmode disable</td>
+        </tr>
+        <tr>
+            <td>Disable firewall service (can only run as SYSTEM?)</td>
+            <td>net stop mpssvc</td>
+        </tr>
+        <tr>
+            <td>Current firewall profile</td>
+            <td>netsh advfirewall show currentprofile</td>
+        </tr>
+        <tr>
+            <td>Firewall rules</td>
+            <td>netsh advfirewall firewall show rule name=all</td>
+        </tr>
+        <tr>
+            <td>Show open ports</td>
+            <td>netstat -ano</td>
+        </tr>
+        <tr>
+            <td>Network Information</td>
+            <td>ipconfig /all</td>
+        </tr>
+    </table>
+
+    <h2>Powershell</h2>
 
 
 
