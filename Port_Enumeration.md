@@ -1734,11 +1734,11 @@
     <tr>
         <td>Write file</td>
         <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '<insert text to write>';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;filename&gt;.&lt;type&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;</td>
-    </tr>
+    </tr>-->
     <tr>
         <td>Run last procedure</td>
         <td>/</td>
-    </tr>-->
+    </tr>
     <tr>
         <td>View output</td>
         <td>set serveroutput ON</td>
