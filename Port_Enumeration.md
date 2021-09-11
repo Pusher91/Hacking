@@ -1723,18 +1723,18 @@
 
 <li>Oracle DB Commands:</li>
 <table>
-    <tr>
+    <!--<tr>
         <td>View privileges</td>
         <td>select * from session_privs;<br>select * from user_role_privs;</td>
     </tr>
-    <!--<tr>
+    <tr>
         <td>Read file</td>
         <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br><br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
     </tr>
     <tr>
         <td>Write file</td>
         <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '<insert text to write>';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;filename&gt;.&lt;type&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;</td>
-    </tr>-->
+    </tr>
     <tr>
         <td>Run last procedure</td>
         <td>/</td>
@@ -1742,7 +1742,8 @@
     <tr>
         <td>View output</td>
         <td>set serveroutput ON</td>
-    </tr>
+    </tr>-->
+</table>
 
 <li>Generating shell for Oracle</li>
 
