@@ -1467,7 +1467,7 @@ conn conceal
 
     left=&lt;Local Machine IP&gt;
     right=&lt;Remote Machine IP&gt;
-    rightsubnet=&ls;Remote Machine IP&gt;[tcp]
+    rightsubnet=&lt;Remote Machine IP&gt;[tcp]
 </pre></td>
                 </tr>
                 <tr>
