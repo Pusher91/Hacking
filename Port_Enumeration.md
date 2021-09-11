@@ -1435,7 +1435,7 @@
                     <td>Example file</td>
                     <td><pre># This file holds shared secrets or RSA private keys for authentication.
 
-                    %any : PSK "Dudecake1!"</pre></td>
+%any : PSK "Dudecake1!"</pre></td>
                 </tr>
             </table>
             <li>/etc/ipsec.conf</li>
