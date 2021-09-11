@@ -1721,7 +1721,7 @@
     </tr>
 </table>
 
-<!--<li>Oracle DB Commands:</li>
+<li>Oracle DB Commands:</li>
 <table>
     <tr>
         <td>View privileges</td>
@@ -1746,7 +1746,7 @@
     </tr>
 </table>
 
-<li>Generating shell for Oracle</li>-->
+<li>Generating shell for Oracle</li>
 
 </body>
 </html>
