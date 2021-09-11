@@ -2069,10 +2069,13 @@
 
 <h2>6379 TCP / redis</h2>
 <li>Key store / value storage</li>
+<li>RCE Methods:</li>
 <ul>
     <li>Create php web shell</li>
-    <li>If able to upload files to victim, upload module for RCE</li>
+    <li>If able to upload files (not using redis) to victim, upload module for RCE</li>
     <li>=&lt;5.0.5(?) clone-master RCE</li>
+    <li>Create SSH key on victim</li>
+    <li>Create malicious cronjob</li>
 </ul>
 <li>Tools</li>
 <ul>
