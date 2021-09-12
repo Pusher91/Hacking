@@ -4,8 +4,8 @@ Comptia A+, Network+, and Security+ | Avidly pursuing OSCP.
 
 ### Contents:
 - Notes:
-  - [Enumeration](/Hacking/Port_Enumeration.html) (ports and their services)
-  - [Windows PrivEsc](/Hacking/Windows_PrivEsc.html)
+  - [Enumeration](Port_Enumeration.html) (ports and their services)
+  - [Windows PrivEsc](/Windows_PrivEsc.html)
   - Linux PrivEsc
   - Web application attacks
   - Port Forwarding and Tunnelling
