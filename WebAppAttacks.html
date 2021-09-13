@@ -715,51 +715,66 @@ layout: default
 
 	<br>
 
-	<h2>XSS</h2>
+	<h2>LFI</h2>
 
-	<li>Tools</li>
+	<li>Finding LFI</li>
 	<ul>
-		<li>beEf</li>
+		<li>&lt;url&gt;/?page=&lt;Directory&gt;</li>
 		<ul>
-			<li>Browser Exploitation Framework.  Can leverage a simple XSS vulnerability to launch many different client-side attacks.</li>
+			<li>Try changing directory to access different files</li>
+			<ul>
+				<li>Try files that show in source code</li>
+				<li>Observe response size for file you know do not exist with reponse size for files you believe exist</li>
+				<li>Entering index.php in a LFI means index.php will reload itself until an error occurs or hang indefinitely</li>
+				<ul>
+					<li>"../index.php" could display a different webpage</li>
+				</ul>
+			</ul>
 		</ul>
 	</ul>
 
-	<li>XSS scripting protections</li>
+	<li>Files to test for LFI:</li>
 	<ul>
-		<li>Website source uses: $lt&$gt on input field</li>
-	</ul>
-
-	<li>Three types of XSS:</li>
-	<ul>
-		<li>Stored</li>
+		<li>Windows:</li>
 		<ul>
-			<li>Also known as persistent XSS</li>
-			<li>Exploit payload is stored in a database or otherwise cached by the server.  The web app shows this to anyone who views the vulnerable page.</li>
-			<li>Vulnerabilities often exist in forum software in comment sections or product reviews.</li>
+			<li>Try forward and backslashes</li>
+			<li>\boot.ini</li>
+			<li>\windows\system32\license.rtf</li>
+			<li>View PHP session ID</li>
+			<ul>
+				<li>&lt;url&gt;/?something=/Windows/Temp/sess_&lt;cookies from PHPSESSIOD in browser &quot;Storage&quot;&gt;</li>
+			</ul>
 		</ul>
-		<li>Reflected</li>
+		<li>Linux:</li>
 		<ul>
-			<li>Test for XSS</li>
-			<table>
-				<tr>
-					<td>
-						<li>Message on webpage appears in url argument, try to make it bold</li>
-						<li>Example: the word "test" appears on the web page and you can alter it in the url.  Try to change it to be bold.</li>
-					</td>
-					<td>&lt;url&gt;/msg=test --&gt; &lt;url&gt;/msg=&lt;b&gt;test&lt;/b&gt;</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<li>Send image to see if user clicks on it</li>
-						<ul>
-							<li>Set nc -lvnp 80 ahead of time</li>
-						</ul>
-					</td>
-				</tr>
-			</table>
+			<li>/etc/passwd</li>
 		</ul>
 	</ul>
 
+	<li>Sometimes a website might look for certain words to be included in the url</li>
+	<table>
+		<tr>
+			<td>Original</td>
+			<td>http://&lt;url&gt;/department/manage.php?notes=files/UserNotes.txt</td>
+		</tr>
+		<tr>
+			<td>LFI Exploited</td>
+			<td>http://&lt;url&gt;/department/manage.php?notes=files/UserNotes/../../../../etc/passwd</td>
+		</tr>
+	</table>
 
+	<li>Email poisoning</li>
+	<ul>
+		<li>Send email to user that includes a web shell</li>
+		<li>Access the email through LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
+	</ul>
+
+	<li>Log file poisoning</li>
+	<ul>
+		<li>Change User-Agent to web shell</li>
+		<li>Access php access logs</li>
+		<ul>
+			<li>Linux Log locations could be listed in /usr/local/etc/apache24/httpd.conf</li>
+			<li>Possible windows log location - c:\xampp\apache\logs\access.log</li>
+		</ul>
+	</ul>
