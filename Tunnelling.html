@@ -1,0 +1,37 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>Port Forwarding and Tunnelling</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<body>
+
+<h1>Port Forwarding and Tunnelling</h1>
+
+<hr>
+
+<h2>SSH Tunnelling</h2>
+
+<li>Local port forwarding</li>
+<ul>
+    <li>Send traffic from port on local machine to port on remote machine</li>
+    <li>ssh &lt;username&gt;@&lt;ssh server&gt; &ndash;L &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt;</li>
+</ul>
+
+<li>Remote port forwarding</li>
+<ul>
+    <li>Send traffic sent to port on remote machine to our local machine</li>
+    <li>ssh &lt;username&gt;@&lt;ssh server&gt; -R &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt;</li>
+</ul>
+
+<li>Dynamic port forwarding</li>
+<ul>
+    <li>Forward open ports on victim to attacker</li>
+    <li>ssh &lt;username&gt;@&lt;ssh server&gt; -D  &lt;address to bind to&gt;:&lt;port to bind to&gt;</li>
+</ul>
+
+</body>
+</html>
