@@ -237,7 +237,7 @@ layout: default
         </tr>
         <tr>
             <td colspan="2">
-                <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
+                <li>SELECT * FROM users WHERE username = '" + input_username + "' AND password ='" + input_password + "'";</li>
                 <br>turns into:<br>
                 <li>SELECT * FROM users WHERE username = 'admin' AND password = '' or 'a'='a'</li>
             </td>
@@ -256,7 +256,7 @@ layout: default
         </tr>
         <tr>
             <td colspan="2">
-                <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
+                <li>SELECT * FROM users WHERE username = '" + input_username + "' AND password ='" + input_password + "'";</li>
                 <br>turns into:<br>
                 <li>SELECT * FROM users WHERE username = '' or 1=1 -- AND password = '&lt;anything&gt;'</li>
             </td>
@@ -430,7 +430,7 @@ layout: default
     </ul>
 
     <h4>SQL Injection Union Attack</h4>
-    
+
     <ul>
 
         <li>Quick method - Group_concat</li>
