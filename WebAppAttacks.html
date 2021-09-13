@@ -236,7 +236,7 @@ layout: default
             <td>'#</td>
         </tr>
         <tr>
-            <td>
+            <td colspan="2">
                 <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
                 <br>turns into:<br>
                 <li>SELECT * FROM users WHERE username = 'admin' AND password = '' or 'a'='a'</li>
@@ -255,7 +255,7 @@ layout: default
             <td>&lt;anything&gt;</td>
         </tr>
         <tr>
-            <td>
+            <td colspan="2">
                 <li>SELECT * FROM users WHERE username = '" + formusr + "' AND password ='" + formpwd + "'";</li>
                 <br>turns into:<br>
                 <li>SELECT * FROM users WHERE username = '' or 1=1 -- AND password = '&lt;anything&gt;'</li>
