@@ -743,8 +743,11 @@ layout: default
 			<li>Test for XSS</li>
 			<table>
 				<tr>
-					<td>Message on webpage appears in url argument, try to make it bold</td>
-					<td>&lt;url&gt;/msg=User Created --&gt; &lt;url&gt;/msg=&lt;b&gt;User Created&lt;/b&gt;</td>
+					<td>
+						<li>Message on webpage appears in url argument, try to make it bold</li>
+						<li>Example: the word "test" appears on the web page and you can alter it in the url.  Try to change it to be bold.</li>
+					</td>
+					<td>&lt;url&gt;/msg=test --&gt; &lt;url&gt;/msg=&lt;b&gt;test&lt;/b&gt;</td>
 				</tr>
 				<tr>
 					<td></td>
