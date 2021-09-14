@@ -9,29 +9,49 @@ layout: default
 
 <body>
 
-<h1>Port Forwarding and Tunnelling</h1>
+    <h1>Port Forwarding and Tunnelling</h1>
 
-<hr>
+    <hr>
 
-<h2>SSH Tunnelling</h2>
+    <h2>SSH Tunnelling</h2>
 
-<li>Local port forwarding</li>
-<ul>
-    <li>Send traffic from port on local machine to port on remote machine</li>
-    <li>ssh &lt;username&gt;@&lt;ssh server&gt; &ndash;L &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt;</li>
-</ul>
+    <li>Flags:</li>
+    <ul>
+        <table>
+            <tr>
+                <td>-f</td>
+                <td>Immediately send the port forward command the background</td>
+            </tr>
+            <tr>
+                <td>-N</td>
+                <td>Do not allow any commands to be send through the SSH session</td>
+            </tr>
+        </table>
+    </ul>
 
-<li>Remote port forwarding</li>
-<ul>
-    <li>Send traffic sent to port on remote machine to our local machine</li>
-    <li>ssh &lt;username&gt;@&lt;ssh server&gt; -R &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt;</li>
-</ul>
 
-<li>Dynamic port forwarding</li>
-<ul>
-    <li>Forward open ports on victim to attacker</li>
-    <li>ssh &lt;username&gt;@&lt;ssh server&gt; -D  &lt;address to bind to&gt;:&lt;port to bind to&gt;</li>
-</ul>
+    <li>Local port forwarding</li>
+    <ul>
+        <li>Send traffic from port on local machine to port on remote machine</li>
+        <li>ssh &lt;username&gt;@&lt;ssh server&gt; &ndash;L &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt;</li>
+    </ul>
+
+    <li>Remote port forwarding</li>
+    <ul>
+        <li>Send traffic sent to port on remote machine to our local machine</li>
+        <li>ssh &lt;username&gt;@&lt;ssh server&gt; -R &lt;local port&gt;:&lt;remote host&gt;:&lt;remote port&gt;</li>
+    </ul>
+
+    <li>Dynamic port forwarding</li>
+    <ul>
+        <li>Forward open ports on victim to attacker</li>
+        <li>ssh &lt;username&gt;@&lt;ssh server&gt; -D  &lt;address to bind to&gt;:&lt;port to bind to&gt;</li>
+        <li>Append &quot;127.0.0.17 &lt;local port #&gt;&quot; to the bottom of /etc/proxychains.conf</li>
+        <li>Once dynamic port forwarding is setup you can access the TCP connections on the remote machine by appending "proxychains" to the beginning of your commands</li>
+        <ul>
+            <li>Example:proxychains ssh -f -N -D &lt;port set in /etc/proxychains.conf&gt; User@sshServer</li>
+        </ul>
+    </ul>
 
 </body>
 </html>
