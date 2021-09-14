@@ -11,7 +11,7 @@ layout: default
 
     <h1>Windows PrivEsc</h1>
 
-<hr>
+    <hr>
 
     <h2>Manual PrivEsc:</h2>
     <li>Use rlwrap on shell to enable arrow usage (up and down to navigate previous commands, left and right to navigate text)</li>
@@ -214,7 +214,7 @@ layout: default
 
     <br>
 
-    <h2>cmd</h2>
+    <h2>cmd Commands</h2>
     <li>Location: C:\Windows\System32\cmd.exe</li>
     <li>Miscellaneous</li>
     <table>
@@ -403,7 +403,7 @@ layout: default
         </tr>
     </table>
 
-    <h2>Powershell</h2>
+    <h2>Powershell Commands</h2>
     <li>System Information & Control</li>
     <table>
         <tr>
@@ -1287,7 +1287,7 @@ layout: default
     <li>bypassuac-x**.exe /c C:\directory\to\shell4444.exe</li>
 </ul>
 
-<h2>Finding logged in users</h2>
+<h2>Finding Logged in Users</h2>
 
 <li>Enumerate Logged on Users</li>
 <ul>
@@ -1352,34 +1352,6 @@ layout: default
         <td>Relative ID</td>
     </tr>
 </table>
-
-<h2>Clock Skew</h2>
-
-<li>Fix clock skew</li>
-<ul>
-    <li>Check clock skew</li>
-    <ul>
-        <li>nmap</li>
-        <ul>
-            <li>sudo nmap -p445 -sV -sC &lt;ip address&gt;</li>
-            <li>Look for clock-skew: mean: &lt;value&gt; deviation: &lt;clock skew time&gt; median: &lt;value&gt;</li>
-        </ul>
-    </ul>
-    <li>Check local time (on Kali)</li>
-    <ul>
-        <li>date</li>
-    </ul>
-    <li>Change local time (on Kali)</li>
-    <ul>
-        <li>date -s &lt;Time&gt;</li>
-        <ul>
-            <li>&lt;Time&gt; Format</li>
-            <ul>
-                <li>HH:MM:SS</li>
-            </ul>
-        </ul>
-    </ul>
-</ul>
 
 <h2>Dump Hashes</h2>
 
@@ -1608,6 +1580,32 @@ layout: default
         <td>Shows all groups on the domain</td>
     </tr>
 </table>
+
+<li>Fix clock skew</li>
+<ul>
+    <li>Check clock skew</li>
+    <ul>
+        <li>nmap</li>
+        <ul>
+            <li>sudo nmap -p445 -sV -sC &lt;ip address&gt;</li>
+            <li>Look for clock-skew: mean: &lt;value&gt; deviation: &lt;clock skew time&gt; median: &lt;value&gt;</li>
+        </ul>
+    </ul>
+    <li>Check local time (on Kali)</li>
+    <ul>
+        <li>date</li>
+    </ul>
+    <li>Change local time (on Kali)</li>
+    <ul>
+        <li>date -s &lt;Time&gt;</li>
+        <ul>
+            <li>&lt;Time&gt; Format</li>
+            <ul>
+                <li>HH:MM:SS</li>
+            </ul>
+        </ul>
+    </ul>
+</ul>
 
 <h2>Credential Usage</h2>
 
