@@ -57,12 +57,12 @@ layout: default
     <li>Dynamic port forwarding</li>
     <ul>
         <li>Forward open ports on victim to attacker</li>
-        <li>ssh &lt;username&gt;@&lt;ssh server&gt; -D  &lt;address to bind to&gt;:&lt;port to bind to&gt;</li>
-        <li>Append &quot;127.0.0.17 &lt;local port #&gt;&quot; to the bottom of /etc/proxychains.conf</li>
-        <li>Once dynamic port forwarding is setup you can access the TCP connections on the remote machine by appending "proxychains" to the beginning of your commands</li>
         <ul>
-            <li>Example:proxychains ssh -f -N -D &lt;port set in /etc/proxychains.conf&gt; User@sshServer</li>
+            <li>Setup:</li>
+            <li>Append &quot;127.0.0.17 &lt;local port #&gt;&quot; to the bottom of /etc/proxychains.conf</li>
+            <li>ssh &lt;username&gt;@&lt;ssh server&gt; -D  &lt;port set in /etc/proxychains.conf&gt;</li>
         </ul>
+        <li>Once dynamic port forwarding is setup you can access the TCP connections on the remote machine by appending "proxychains" to the beginning of your commands.</li>
     </ul>
 
 </body>
