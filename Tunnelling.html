@@ -65,17 +65,21 @@ layout: default
         <li>Once dynamic port forwarding is setup you can access the TCP connections on the remote machine by appending "proxychains" to the beginning of your commands.</li>
     </ul>
 
-    <h2>rinetd</h2>
+        <h2>Chisel</h2>
 
-    <li>Configuration file located in /etc/rinetd.conf</li>
+    <li>How to forward a port with Chisel:</li>
     <ul>
-        <li>bindaddress and bindport</li>
-        <ul>
-            <li>The listening IP/port</li>
-        </ul>
-        <li>connectaddress and connectport</li>
+        <table>
+            <tr>
+                <td>Set up listener port</td>
+                <td>chisel server --reverse --port &lt;port #&gt;</td>
+            </tr>
+            <tr>
+                <td>Forward port to listener</td>
+                <td>chisel client <listener ip>:<chisel server port #> R:<port # to open listener on>:localhost:<port # being forwarded></td>
+            </tr>
+        </table>
     </ul>
-    <li>Restart service after updating conf file</li>
 
     <h2>socat</h2>
 
@@ -92,21 +96,17 @@ layout: default
         </tr>
     </table>
 
-    <h2>Chisel</h2>
+    <h2>rinetd</h2>
 
-    <li>How to forward a port with Chisel:</li>
+    <li>Configuration file located in /etc/rinetd.conf</li>
     <ul>
-        <table>
-            <tr>
-                <td>Set up listener port</td>
-                <td>chisel server --reverse --port &lt;port #&gt;</td>
-            </tr>
-            <tr>
-                <td>Forward port to listener</td>
-                <td>chisel client <listener ip>:<chisel server port #> R:<port # to open listener on>:localhost:<port # being forwarded></td>
-            </tr>
-        </table>
+        <li>bindaddress and bindport</li>
+        <ul>
+            <li>The listening IP/port</li>
+        </ul>
+        <li>connectaddress and connectport</li>
     </ul>
+    <li>Restart service after updating conf file</li>
 
 </body>
 </html>
