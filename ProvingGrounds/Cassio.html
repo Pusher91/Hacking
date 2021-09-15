@@ -262,34 +262,42 @@ Java Mantainer
     <img src="Cassio/port80.png">
 
     <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios]
+&#x2514;&#x2500;$ cat 192.168.181.116-raft | grep -v 403
 ===============================================================
 Gobuster v3.1.0
 by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
 ===============================================================
-[+] Url:                     http://192.168.181.116:8080
+[+] Url:                     http://192.168.181.116/
 [+] Method:                  GET
 [+] Threads:                 100
 [+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt
 [+] Negative Status codes:   404
-[+] Exclude Length:          0
 [+] User Agent:              gobuster/3.1.0
 [+] Timeout:                 10s
 ===============================================================
-2021/09/14 16:19:24 Starting gobuster in directory enumeration mode
+2021/09/14 15:30:09 Starting gobuster in directory enumeration mode
 ===============================================================
-/login                (Status: 200) [Size: 1097]
-/home                 (Status: 200) [Size: 746] 
+/assets               (Status: 301) [Size: 238] [--&gt; http://192.168.181.116/assets/]
+/.                    (Status: 200) [Size: 9088]                                    
+/images               (Status: 301) [Size: 238] [--&gt; http://192.168.181.116/images/]
+/download             (Status: 200) [Size: 1479862]                                 
+/backup_migrate       (Status: 301) [Size: 246] [--&gt; http://192.168.181.116/backup_migrate/]
 ===============================================================
-2021/09/14 16:19:44 Finished
+2021/09/14 15:30:36 Finished
 ===============================================================
     </pre>
 
+    <p>I visit the /download directory and it turns out to be a download link for the file "download".  This file turns out to be a zip file.  Upon unzipping this file and looking through it nothing interesting stands out.
+
+    <pre>
+&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios/exfiltrated]
+&#x2514;&#x2500;$ file download 
+download: Zip archive data, at least v2.0 to extract
+    </pre>
 
 
-
-
-
-
+    
 
 </body>
 </html>
