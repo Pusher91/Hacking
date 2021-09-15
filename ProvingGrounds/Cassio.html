@@ -178,24 +178,14 @@ Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
 
 
     <pre>
-&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios]
-&#x2514;&#x2500;$ smbclient -L 192.168.181.116                  
-Enter WORKGROUP\kali&#039;s password: 
-Anonymous login successful
-
-    Sharename       Type      Comment
-    ---------       ----      -------
-    print$          Disk      Printer Drivers
-    Samantha Konstan Disk      Backups and Recycler files
-    IPC$            IPC       IPC Service (Samba 4.10.4)
-Reconnecting with SMB1 for workgroup listing.
-Anonymous login successful
-
-    Server               Comment
-    ---------            -------
-
-    Workgroup            Master
-    ---------            -------
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Cassios/exfiltrated/SMB]
+&#x2514;&#x2500;$ smbmap -H 192.168.231.116        
+[+] IP: 192.168.231.116:445 Name: 192.168.231.116                                   
+        Disk                                                    Permissions Comment
+    ----                                                    ----------- -------
+    print$                                              NO ACCESS   Printer Drivers
+    Samantha Konstan                                    READ, WRITE Backups and Recycler files
+    IPC$                                                NO ACCESS   IPC Service (Samba 4.10.4)
     </pre>
 
     <pre>
@@ -344,7 +334,17 @@ main/resources/static/css/main.css:889:[type=color]:focus, [type=color]:active, 
         <li>The directory of the SMB share is ~/backups.  Samantha is writing this, so this is likely /home/samantha/backups.</li>
     </ul>
 
-    <p>With this knowledge in mind, we click "Save Current Values".  Then we go to Samantha's SMB share and we find the newly generate .ser file.  When we click on "Check Status" after saving the values.  When we click "Check Status" on the dashboard app.  We notice that the values remain the same.
+    <p>With this knowledge in mind, we click "Save Current Values".  Then we go to Samantha's SMB share and we find the a newly generate .ser file called recycler.ser.  When we click on "Check Status" we notice that the values remain the on the dashboard app.  This suggests we are able to create the .ser file by clicking "Save" and we are able to read the recycler.ser file from the SMB share using the Dashboard web app.  If we are able to modify the recycler.ser file then we might have remote code execution by having the dashboard app read the recycler.ser file.  According to our smbmap results from earlier we already know we have ready and write access to this SMB share.</p>
+
+    <p>In order to modify recycler.ser to gain a reverse shell, we need to know what kind of file we are working with.  We will do this using the "file" command.</p>
+
+    <pre>
+┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Cassios]
+└─$ file recycler.ser 
+recycler.ser: Java serialization data, version 5
+    </pre>
+
+    <p>It appears to be a Java serialization file.</p>
 
 
 </body>
