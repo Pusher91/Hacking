@@ -257,7 +257,7 @@ Java Mantainer
 
     <br>
 
-    <h2>Port 80 Web Enumeration - Gobuster</h2>
+    <h2>Port 80</h2>
 
     <img src="Cassio/port80.png">
 
@@ -288,7 +288,9 @@ by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
 ===============================================================
     </pre>
 
-    <p>I visit the /download directory and it turns out to be a download link for the file "download".  This file turns out to be a zip file.  Upon unzipping this file and looking through it nothing interesting stands out.
+    <li>/download</li>
+
+    <p>I visit the /download directory and it turns out to be a download link for the file "download".  This file turns out to be a zip file.  Upon unzipping this file and looking through the contents nothing interesting stands out.
 
     <pre>
 &#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios/exfiltrated]
@@ -296,8 +298,42 @@ by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
 download: Zip archive data, at least v2.0 to extract
     </pre>
 
+    <li>/backup_migrate - Finding Credentials</li>
 
-    
+    <p>The backup_migrate web directory reveals a file to download named "recycler.tar".  I download this file and extract the contents using "tar -xvf recycler.tar".  Recursively searching the extracted files reveals the password "DoNotMessWithTheRecycler123".  At this point I look through the file that contains the password and it also reveals the username "recycler" to go along with it. </p>
+
+    <pre>                                                                                                                                                          
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Cassios/exfiltrated/src]
+&#x2514;&#x2500;$ grep -irn password
+main/java/com/industrial/recycler/WebSecurityConfig.java:35:             User.withDefaultPasswordEncoder()
+main/java/com/industrial/recycler/WebSecurityConfig.java:37:                .<mark>password(&quot;DoNotMessWithTheRecycler123&quot;)</mark>
+main/resources/templates/login.html:23:             Invalid username and password.
+main/resources/templates/login.html:32:           &lt;label for=&quot;name&quot;&gt;Password:&lt;/label&gt;
+main/resources/templates/login.html:33:           &lt;input type=&quot;password&quot;  name=&quot;password&quot;  id=&quot;password&quot; placeholder=&quot;Ask to your supervisor&quot;&gt;
+main/resources/static/css/main.css:871:[type=color], [type=date], [type=datetime], [type=datetime-local], [type=email], [type=month], [type=number], [type=password], [type=search], [type=tel], [type=text], [type=url], [type=week], [type=time], select, textarea {
+main/resources/static/css/main.css:885:[type=color]:hover, [type=date]:hover, [type=datetime]:hover, [type=datetime-local]:hover, [type=email]:hover, [type=month]:hover, [type=number]:hover, [type=password]:hover, [type=search]:hover, [type=tel]:hover, [type=text]:hover, [type=url]:hover, [type=week]:hover, [type=time]:hover, select:hover, textarea:hover {
+main/resources/static/css/main.css:889:[type=color]:focus, [type=color]:active, [type=date]:focus, [type=date]:active, [type=datetime]:focus, [type=datetime]:active, [type=datetime-local]:focus, [type=datetime-local]:active, [type=email]:focus, [type=email]:active, [type=month]:focus, [type=month]:active, [type=number]:focus, [type=number]:active, [type=password]:focus, [type=password]:active, [type=search]:focus, [type=search]:active, [type=tel]:focus, [type=tel]:active, [type=text]:focus, [type=text]:active, [type=url]:focus, [type=url]:active, [type=week]:focus, [type=week]:active, [type=time]:focus, [type=time]:active, select:focus, select:active, textarea:focus, textarea:active {
+    </pre>
+
+    <li>main/java/com/industrial/recycler/WebSecurityConfig.java </li>
+
+    <pre>
+             User.withDefaultPasswordEncoder()
+                .username(&quot;recycler&quot;)
+                .password(&quot;DoNotMessWithTheRecycler123&quot;)
+                .roles(&quot;USER&quot;)
+                .build();
+    </pre>
+
+
+    <h2>Port 8080</h2>
+
+    <img src="Cassio/port8080.png">
+
+    <p>On the main page we see a link for the dashboard.  On that next page we see a login screen.  This looks like where we would use the credentials that we found.  We login successfully with username: recycler and password: DoNotMessWithTheRecycler123.  After logging in we are presented with this page.</p>
+
+    <img src="Cassio/port8080_loggedin.png">
+
 
 </body>
 </html>
