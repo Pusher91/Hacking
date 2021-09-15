@@ -336,12 +336,15 @@ main/resources/static/css/main.css:889:[type=color]:focus, [type=color]:active, 
 
     <p>At this point we would refer back to the readme.txt we found in the SMB share.  There are a some key things to take away from the readme.</p>
     <ul>
+        <li>The dashboard app being referred to is likely the dashboard we are seeing on :8080/dashboard.</li>
         <li>The .ser file holds all the last data saved from the process</li>
         <li>Data saved in the dashboard app will be saved to a .ser file.</li>
         <li>The .ser file can be read by the dashboard app.</li>
         <li>The .ser file will be saved to the SMB share.</li>
         <li>The directory of the SMB share is ~/backups.  Samantha is writing this, so this is likely /home/samantha/backups.</li>
     </ul>
+
+    <p>With this knowledge in mind, we click "Save Current Values".  Then we go to Samantha's SMB share and we find the newly generate .ser file.  When we click on "Check Status" after saving the values.  When we click "Check Status" on the dashboard app.  We notice that the values remain the same.
 
 
 </body>
