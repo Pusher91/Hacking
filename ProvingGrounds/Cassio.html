@@ -177,5 +177,119 @@ Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
     </pre>
 
 
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios]
+&#x2514;&#x2500;$ smbclient -L 192.168.181.116                  
+Enter WORKGROUP\kali&#039;s password: 
+Anonymous login successful
+
+    Sharename       Type      Comment
+    ---------       ----      -------
+    print$          Disk      Printer Drivers
+    Samantha Konstan Disk      Backups and Recycler files
+    IPC$            IPC       IPC Service (Samba 4.10.4)
+Reconnecting with SMB1 for workgroup listing.
+Anonymous login successful
+
+    Server               Comment
+    ---------            -------
+
+    Workgroup            Master
+    ---------            -------
+    </pre>
+
+    <pre>
+┌──(kali㉿kali)-[~/…/ProvingGrounds/Cassios/exfiltrated/SMB]
+└─$ smbmap -H 192.168.181.116 -R -A .
+[+] IP: 192.168.181.116:445 Name: 192.168.181.116                                   
+[+] Starting search for files matching '.' on share Samantha Konstan.
+[+] Match found! Downloading: Samantha Konstan\recycler.ser
+[+] Match found! Downloading: Samantha Konstan\readme.txt
+[+] Match found! Downloading: Samantha Konstan\resources.html
+[+] Match found! Downloading: Samantha Konstan\pom-bak.xml
+[+] Match found! Downloading: Samantha Konstan\spring-mvc-quickstart-archetype\README.md
+[+] Match found! Downloading: Samantha Konstan\spring-mvc-quickstart-archetype\archetype-catalog.xml
+[+] Match found! Downloading: Samantha Konstan\spring-mvc-quickstart-archetype\pom.xml
+[+] Match found! Downloading: Samantha Konstan\spring-mvc-quickstart-archetype\src\main\resources\archetype-resources\.gitignore
+[+] Match found! Downloading: Samantha Konstan\spring-mvc-quickstart-archetype\src\main\resources\archetype-resources\pom.xml
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\BUILD.txt
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\CONTRIBUTING.markdown
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\LICENSE.txt
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\NOTICE.txt
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\README.md
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\pom.xml
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\src\assembly\sources.xml
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\src\main\resources\application.properties
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\src\main\resources\logback.xml
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\src\main\resources\persistence.properties
+[+] Match found! Downloading: Samantha Konstan\thymeleafexamples-layouts\src\main\webapp\WEB-INF\web.xml
+    </pre>
+
+
+    <pre>
+┌──(kali㉿kali)-[~/…/ProvingGrounds/Cassios/exfiltrated/SMB]
+└─$ grep -irn pass
+192.168.181.116-Samantha Konstan_spring-mvc-quickstart-archetype_README.md:139:dataSource.password=postgres
+192.168.181.116-Samantha Konstan_thymeleafexamples-layouts_src_main_resources_persistence.properties:4:dataSource.password=
+192.168.181.116-Samantha Konstan_resources.html:359:returns file system locations for a passed-in empty string (indicating
+    </pre>
+
+
+    <pre>
+┌──(kali㉿kali)-[~/…/ProvingGrounds/Cassios/exfiltrated/SMB]
+└─$ cat 192.168.181.116-Samantha\ Konstan_readme.txt 
+The recycler is a critical piece of our industrial infraestructure.
+Please be careful with it!
+
+The .ser file holds all the last data saved from the process, it can
+be readed from the upper management dashboard app. 
+
+Remember to set the location of the file to my home directory "~/backups".
+
+Set this directory to share access so the remote system can access the
+file via SMB.
+
+Any concerns or suggestions, please reach at samantha@loca.host.
+
+Samantha Konstan
+Java Mantainer
+    </pre>
+
+    <br>
+
+    <h2>Port 80 Web Enumeration - Gobuster</h2>
+
+    <img src="Cassio/port80.png">
+
+    <pre>
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://192.168.181.116:8080
+[+] Method:                  GET
+[+] Threads:                 100
+[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt
+[+] Negative Status codes:   404
+[+] Exclude Length:          0
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2021/09/14 16:19:24 Starting gobuster in directory enumeration mode
+===============================================================
+/login                (Status: 200) [Size: 1097]
+/home                 (Status: 200) [Size: 746] 
+===============================================================
+2021/09/14 16:19:44 Finished
+===============================================================
+    </pre>
+
+
+
+
+
+
+
+
 </body>
 </html>
