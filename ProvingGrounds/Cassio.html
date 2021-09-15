@@ -15,7 +15,166 @@ layout: default
 
     <h2>Port Scanning</h2>
 
-    <img src="Cassio/nmap_tcp_port_scan.PNG">
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios]
+&#x2514;&#x2500;$ sudo nmap -p- 192.168.181.116 -oN nmap/ping_tcp                      
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-09-14 20:33 EDT
+Nmap scan report for 192.168.181.116
+Host is up (0.047s latency).
+Not shown: 65530 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+8080/tcp open  http-proxy
+
+Nmap done: 1 IP address (1 host up) scanned in 33.57 seconds    
+    </pre>
+
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cassios/nmap]
+&#x2514;&#x2500;$ sudo nmap -p22,80,139,445,8080 -sV -sC 192.168.181.116 -oN script_tcp
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-09-14 20:35 EDT
+Nmap scan report for 192.168.181.116
+Host is up (0.038s latency).
+
+PORT     STATE SERVICE     VERSION
+22/tcp   open  ssh         OpenSSH 7.4 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 36:cd:06:f8:11:72:6b:29:d8:d8:86:99:00:6b:1d:3a (RSA)
+|   256 7d:12:27:de:dd:4e:8e:88:48:ef:e3:e0:b2:13:42:a1 (ECDSA)
+|_  256 c4:db:d3:61:af:85:95:0e:59:77:c5:9e:07:0b:2f:74 (ED25519)
+80/tcp   open  http        Apache httpd 2.4.6 ((CentOS))
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Apache/2.4.6 (CentOS)
+|_http-title: Landed by HTML5 UP
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: SAMBA)
+445/tcp  open  netbios-ssn Samba smbd 4.10.4 (workgroup: SAMBA)
+8080/tcp open  http-proxy
+| fingerprint-strings: 
+|   GetRequest: 
+|     HTTP/1.1 200 
+|     X-Content-Type-Options: nosniff
+|     X-XSS-Protection: 1; mode=block
+|     Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+|     Pragma: no-cache
+|     Expires: 0
+|     X-Frame-Options: DENY
+|     Content-Type: text/html;charset=UTF-8
+|     Content-Language: en-US
+|     Date: Wed, 15 Sep 2021 00:35:37 GMT
+|     Connection: close
+|     &lt;!doctype html&gt;
+|     &lt;html lang=&quot;en&quot;&gt;
+|     &lt;head&gt;
+|     &lt;meta charset=&quot;utf-8&quot;&gt;
+|     &lt;meta http-equiv=&quot;x-ua-compatible&quot; content=&quot;ie=edge&quot;&gt;
+|     &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+|     &lt;title&gt;&lt;/title&gt;
+|     &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/main.css&quot;&gt;
+|     &lt;/head&gt;
+|     &lt;body&gt;
+|     &lt;div class=&quot;small-container&quot;&gt;
+|     &lt;div class=&quot;flex-row&quot;&gt;
+|     &lt;h1&gt;Recycler Management System&lt;/h1&gt;
+|     &lt;/div&gt;
+|     &lt;div class=&quot;flex-row&quot;&gt;
+|     &lt;img src=&quot;/images/factory.jpg&quot; class=&quot;round-button&quot;&gt;
+|     &lt;/div&gt; 
+|     &lt;/div&gt;
+|     &lt;br&gt;
+|     &lt;div class=&quot;small-container&quot;&gt;
+|     &lt;div class=&quot;flex-small&quot;&gt;Control system for the factory
+|   HTTPOptions: 
+|     HTTP/1.1 200 
+|     Allow: GET,HEAD,OPTIONS
+|     X-Content-Type-Options: nosniff
+|     X-XSS-Protection: 1; mode=block
+|     Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+|     Pragma: no-cache
+|     Expires: 0
+|     X-Frame-Options: DENY
+|     Content-Length: 0
+|     Date: Wed, 15 Sep 2021 00:35:37 GMT
+|     Connection: close
+|   RTSPRequest: 
+|     HTTP/1.1 400 
+|     Content-Type: text/html;charset=utf-8
+|     Content-Language: en
+|     Content-Length: 435
+|     Date: Wed, 15 Sep 2021 00:35:37 GMT
+|     Connection: close
+|     &lt;!doctype html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP Status 400 
+|     Request&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 400 
+|_    Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
+|_http-open-proxy: Proxy might be redirecting requests
+|_http-title: Site doesn&#039;t have a title (text/html;charset=UTF-8).
+|_http-trane-info: Problem with XML parsing of /evox/about
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port8080-TCP:V=7.91%I=7%D=9/14%Time=61413FD8%P=x86_64-pc-linux-gnu%r(Ge
+SF:tRequest,429,&quot;HTTP/1\.1\x20200\x20\r\nX-Content-Type-Options:\x20nosnif
+SF:f\r\nX-XSS-Protection:\x201;\x20mode=block\r\nCache-Control:\x20no-cach
+SF:e,\x20no-store,\x20max-age=0,\x20must-revalidate\r\nPragma:\x20no-cache
+SF:\r\nExpires:\x200\r\nX-Frame-Options:\x20DENY\r\nContent-Type:\x20text/
+SF:html;charset=UTF-8\r\nContent-Language:\x20en-US\r\nDate:\x20Wed,\x2015
+SF:\x20Sep\x202021\x2000:35:37\x20GMT\r\nConnection:\x20close\r\n\r\n&lt;!doc
+SF:type\x20html&gt;\n&lt;html\x20lang=\&quot;en\&quot;&gt;\n\n&lt;head&gt;\n\x20\x20&lt;meta\x20charse
+SF:t=\&quot;utf-8\&quot;&gt;\n\x20\x20&lt;meta\x20http-equiv=\&quot;x-ua-compatible\&quot;\x20conten
+SF:t=\&quot;ie=edge\&quot;&gt;\n\x20\x20&lt;meta\x20name=\&quot;viewport\&quot;\x20content=\&quot;width=d
+SF:evice-width,\x20initial-scale=1\&quot;&gt;\n\n\x20\x20&lt;title&gt;&lt;/title&gt;\n\n\x20\x
+SF:20&lt;link\x20rel=\&quot;stylesheet\&quot;\x20href=\&quot;/css/main\.css\&quot;&gt;\n\x20\x20\n&lt;/
+SF:head&gt;\n\n&lt;body&gt;\n\t\n\t&lt;div\x20class=\&quot;small-container\&quot;&gt;\n\t\t&lt;div\x20
+SF:class=\&quot;flex-row\&quot;&gt;\n\t\t\t&lt;h1&gt;Recycler\x20Management\x20System&lt;/h1&gt;\n\
+SF:t\t&lt;/div&gt;\n\t\t&lt;div\x20class=\&quot;flex-row\&quot;&gt;\n\t\t\t&lt;img\x20src=\&quot;/images
+SF:/factory\.jpg\&quot;\x20class=\&quot;round-button\&quot;&gt;\n\t\t&lt;/div&gt;\x20\n\n\t&lt;/div&gt;\
+SF:n\t&lt;br&gt;\n\t&lt;div\x20class=\&quot;small-container\&quot;&gt;\n\n\t\t\t&lt;div\x20class=\&quot;
+SF:flex-small\&quot;&gt;Control\x20system\x20for\x20the\x20factory\x20&quot;)%r(HTTPOpt
+SF:ions,12B,&quot;HTTP/1\.1\x20200\x20\r\nAllow:\x20GET,HEAD,OPTIONS\r\nX-Conte
+SF:nt-Type-Options:\x20nosniff\r\nX-XSS-Protection:\x201;\x20mode=block\r\
+SF:nCache-Control:\x20no-cache,\x20no-store,\x20max-age=0,\x20must-revalid
+SF:ate\r\nPragma:\x20no-cache\r\nExpires:\x200\r\nX-Frame-Options:\x20DENY
+SF:\r\nContent-Length:\x200\r\nDate:\x20Wed,\x2015\x20Sep\x202021\x2000:35
+SF::37\x20GMT\r\nConnection:\x20close\r\n\r\n&quot;)%r(RTSPRequest,24E,&quot;HTTP/1\
+SF:.1\x20400\x20\r\nContent-Type:\x20text/html;charset=utf-8\r\nContent-La
+SF:nguage:\x20en\r\nContent-Length:\x20435\r\nDate:\x20Wed,\x2015\x20Sep\x
+SF:202021\x2000:35:37\x20GMT\r\nConnection:\x20close\r\n\r\n&lt;!doctype\x20h
+SF:tml&gt;&lt;html\x20lang=\&quot;en\&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP\x20Status\x20400\x20\xe2\x80
+SF:\x93\x20Bad\x20Request&lt;/title&gt;&lt;style\x20type=\&quot;text/css\&quot;&gt;body\x20{font
+SF:-family:Tahoma,Arial,sans-serif;}\x20h1,\x20h2,\x20h3,\x20b\x20{color:w
+SF:hite;background-color:#525D76;}\x20h1\x20{font-size:22px;}\x20h2\x20{fo
+SF:nt-size:16px;}\x20h3\x20{font-size:14px;}\x20p\x20{font-size:12px;}\x20
+SF:a\x20{color:black;}\x20\.line\x20{height:1px;background-color:#525D76;b
+SF:order:none;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP\x20Status\x20400\x20\xe2\x80\
+SF:x93\x20Bad\x20Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;);
+Service Info: Host: CASSIOS
+
+Host script results:
+|_clock-skew: mean: 1h20m01s, deviation: 2h18m35s, median: 0s
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.10.4)
+|   Computer name: cassios
+|   NetBIOS computer name: CASSIOS\x00
+|   Domain name: \x00
+|   FQDN: cassios
+|_  System time: 2021-09-14T20:35:46-04:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2021-09-15T00:35:44
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
+    </pre>
 
 
 </body>
