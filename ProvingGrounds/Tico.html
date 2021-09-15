@@ -251,3 +251,52 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 58.11 seconds
     </pre>
+
+
+    <h2>Port 21</h2>
+
+    <li>Connecting to ftp using -p for passive mode.  Also downloading debug.pcap</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Tico/exfiltrated/FTP]
+&#x2514;&#x2500;$ ftp -p 192.168.231.143
+Connected to 192.168.231.143.
+220 (vsFTPd 3.0.3)
+Name (192.168.231.143:kali): anonymous
+530 Please login with USER and PASS.
+530 Please login with USER and PASS.
+SSL not available
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; ls
+227 Entering Passive Mode (192,168,231,143,156,75).
+150 Here comes the directory listing.
+drwxr-xr-x    2 ftp      ftp          4096 Feb 01  2021 pub
+226 Directory send OK.
+ftp&gt; cd pub
+250 Directory successfully changed.
+ftp&gt; ls
+227 Entering Passive Mode (192,168,231,143,156,160).
+150 Here comes the directory listing.
+-rw-r--r--    1 ftp      ftp          4603 Feb 01  2021 debug.pcap
+226 Directory send OK.
+ftp&gt; get debug.pcap
+local: debug.pcap remote: debug.pcap
+227 Entering Passive Mode (192,168,231,143,156,162).
+150 Opening BINARY mode data connection for debug.pcap (4603 bytes).
+226 Transfer complete.
+4603 bytes received in 0.00 secs (2.1004 MB/s)
+    </pre>
+
+
+    <h2>Port 80</h2>
+
+    <img src="Tico/port80.png">
+
+
+
+    <h2>Port 8080</h2>
+
+    <img src="Tico/port8080.png">
+
