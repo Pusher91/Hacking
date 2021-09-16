@@ -486,6 +486,7 @@ setuid(0); setgid(0); system(&quot;/bin/bash&quot;);
 
     <li>File calls for executable without absolute path</li>
     <ul>
+        <li>We can add a malicious version of the executable to our PATH.</li>
         <li>Create a malicious executable with the same name as the program that is being called without an absolute path</li>
         <pre>
 int main() {

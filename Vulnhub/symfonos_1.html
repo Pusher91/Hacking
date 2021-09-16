@@ -468,6 +468,38 @@ uid=1000(helios) gid=1000(helios) groups=1000(helios),24(cdrom),25(floppy),29(au
     <p>The reverse shell was acting strange so I created an ssh key for the user Helios.  After reconnecting through ssh the shell worked perfect, as expected.</p>
     <li><a href="https://pusher91.github.io/Hacking/Linux_PrivEsc.html#ssh">SSH Shell Setup Instructions</a></li>
 
+    <h2>Getting Root</h2>
+
+    <p>In the /opt directory I notice a SUID executable named statuscheck.  When I execute it, it seems like it is grabbing headers of a web page.  In search of a way to exploit this SUID executable, I run the "strings" command against it.  This reveals that the SUID executable is calling curl without an absolute path.  This is our path to root.</p>
+
+    <pre>
+helios@symfonos:/opt$ strings statuscheck 
+/lib64/ld-linux-x86-64.so.2
+libc.so.6
+system
+__cxa_finalize
+__libc_start_main
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_Jv_RegisterClasses
+_ITM_registerTMCloneTable
+GLIBC_2.2.5
+<mark>curl</mark> -I H
+http://lH
+ocalhostH
+AWAVA
+AUATL
+[]A\A]A^A_
+;*3$"
+GCC: (Debian 6.3.0-18+deb9u1) 6.3.0 20170516
+crtstuff.c
+__JCR_LIST__
+deregister_tm_clones
+...
+...
+...
+    </pre>
+
 
 </body>
 </html>
