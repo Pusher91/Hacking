@@ -1111,3 +1111,18 @@ layout: default
 			<li>/_graphql</li>
 		</ul>
 	</ul>
+
+	<h2>Webdav</h2>
+
+	<li>Webdav gives the ability to manage files on a web server.  Actions such as update, delte, move, and copy.</li>
+	<li>RCE - If we have access to webdav then we can get RCE by uploading a web shell.</li>
+
+	<li>Tools</li>
+	<ul>
+		<li>cadaver</li>
+	</ul>
+
+	<li>Credential file - Webdav can use basic authentication.  If it does we can find the credentials stored on the web server in a file called passwd.dav.  This file is usually in whichever directory that has basic auth enabled.</li>
+	<ul>
+		<li>Example location of this file: /var/www/html/webdav/passwd.dav</li>
+	</ul>

