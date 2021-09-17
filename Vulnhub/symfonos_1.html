@@ -13,6 +13,9 @@ layout: default
 
     <hr>
 
+    <h4>Summary</h4>
+    <p>We begin this box by anonymously logging into SMB.  There is a file in the SMB share that lists off possible passwords.  Then we look at port 139/rpc and find a username to try these passwords against.  One of the passwords match the user we found and we are granted access to another share in SMB.  The new SMB share gives a hint to look at a hidden web directory that leads to a wordpress page.  We exploit an LFI in a wordpress plugin being used in conjunction with SMTP poisoning to get a shell.  We then privesc to root by exploiting a SUID executable calling for another executable without using an absolute path.</p>
+
     <h2>Port Scanning</h2>
 
     <li>Running port scan against the full port range to determine all open ports.</li>
