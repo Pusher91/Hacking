@@ -11,6 +11,9 @@ layout: default
 
     <h1>Muddy Walkthrough</h1>
 
+    <hr>
+
+    <h2>Summary</h2>
     <p>Muddy involved exploiting an LFI to gain access to a webdav server.  Once access is gained to webdav we are able to upload a webshell, and at that point RCE is achieved.  Privesc involved exploting a cronjob running netstat without an absolute path.  We are able to write a malicious netstat to a directory in the cronjob PATH variable preceding the legitimate cronjob.  This leads us to root.</p>
 
     <hr>
