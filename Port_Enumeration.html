@@ -94,12 +94,14 @@ layout: default
     <table>
         <tr>Bash script for port scanning</tr>
         <tr>
-            <pre>#!/bin/bash host=10.5.5.11
-                for port in {1..65535}; do
-                timeout .1 bash -c "echo >/dev/tcp/$host/$port" &&
-                echo "port $port is open"
-                done
-            echo "Done"</pre>
+            <pre>
+#!/bin/bash host=10.5.5.11
+for port in {1..65535}; do
+	timeout .1 bash -c "echo >/dev/tcp/$host/$port" &&
+	echo "port $port is open"
+done
+echo "Done"
+        </pre>
         </tr>
     </table>
 
@@ -286,15 +288,15 @@ Connection closed by foreign host.
                             <tr>Bash script to send emails to a list</tr>
                             <tr>
                                 <pre>
-                                    for email in $(cat email.lst);
-                                    do
-                                    swaks \
-                                    --from support@sneakymailer.htb \
-                                    --to $email \
-                                    --header 'Subject: Please Register Your Account' \
-                                    --body 'http://&lt;ip address&gt;/test' \
-                                    --server sneakymailer.htb
-                                    done;
+for email in $(cat email.lst);
+do
+	swaks \
+		--from support@sneakymailer.htb \
+		--to $email \
+		--header 'Subject: Please Register Your Account' \
+		--body 'http://10.10.14.106/test' \
+		--server sneakymailer.htb
+done;
                                 </pre>
                             </tr>
                         </tr>
