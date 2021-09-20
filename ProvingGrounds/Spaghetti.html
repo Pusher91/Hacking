@@ -116,7 +116,24 @@ Service detection performed. Please report any incorrect results at https://nmap
         </ul>
         <img src="Spaghetti/revshell.png">
 
-        
+        <li>The first thing upon getting a reverse shell is upgrading it to a pty, enabling the "clear" command, and enabling auto-compelete.</li>
+
+        <pre>
+hostmaster@spaghetti:~$ python3 -c &quot;import pty;pty.spawn(&#039;/bin/bash&#039;)&quot;;
+python3 -c &quot;import pty;pty.spawn(&#039;/bin/bash&#039;)&quot;;
+hostmaster@spaghetti:~$ export TERM=xterm
+export TERM=xterm
+hostmaster@spaghetti:~$ ^Z
+zsh: suspended  nc -lvnp 4444
+                                                                                                                                                              
+&#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Spaghetti/nmap]
+&#x2514;&#x2500;$ stty raw -echo;fg;                                                                                                                              148 &#x2a2f; 1 &#x2699;
+[1]  + continued  nc -lvnp 4444
+        </pre>
+
+
+
+
 </body>
 </html>
 
