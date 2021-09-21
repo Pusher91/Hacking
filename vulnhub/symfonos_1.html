@@ -93,7 +93,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 33.23 seconds
     </pre>
 
-    <h2>Port 445</h2>
+    <h2>Information Gathering</h2>
 
     <li>Running smbmap against smb shows we have read access to the share "anonymous"</li>
 
@@ -141,11 +141,7 @@ Next person I find using one of these passwords will be fired!
     </pre>
 
 
-
-    <h2>Port 139</h2>
-
-
-    <li>Enumerating users using rpcclient.</li>
+    <li>Now we target rpc.  We are able to enumerate users using rpcclient.</li>
 
     <pre>
 ┌──(kali㉿kali)-[~/Documents/VulnHub/symfonos]
@@ -155,13 +151,7 @@ rpcclient $> enumdomusers
 user:[helios] rid:[0x3e8]
     </pre>
 
-    <p>We find out that the user helios exists.  We note this down along with the possible passwords we found earlier.</p>
-
-
-    <h2>Returning to port 445</h2>
-
-
-    <li>We go back to SMB and attempt to login using the user helios and the passwords we found in "attention.txt".  The password qwerty appears to work.</li>
+    <p>We find out that the user helios exists.  We note this down along with the possible passwords we found earlier.  We go back to SMB and attempt to login using the user helios and the passwords we found in "attention.txt".  The password qwerty appears to work.</p>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/VulnHub/symfonos]
@@ -196,9 +186,6 @@ getting file \todo.txt of size 52 as todo.txt (520000.0 KiloBytes/sec) (average 
     </pre>
 
     <li>The "research.txt" file does not appear to help us at this point.  However, "todo.txt" looks like it reveals a hidden directory, "/h3l105".</li>
-
-
-    <h2>Port 80</h2>
 
     <img src="../images/symfonos_1/port80.png">
 
@@ -408,11 +395,9 @@ Shellcodes: No Results
 
     <li>As the exploit directs us to do, I visit: http://symfonos.local/h3l105/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/passwd</li>
 
-    <p>The web page output the /etc/passwd file.  So we know the LFI works.  Now we need to find a way to exploit the LFI to RCE.  This brings up back to port 25, SMTP.</p>
+    <p>The web page output the /etc/passwd file.  So we know the LFI works.  Now we need to find a way to exploit the LFI to RCE.  This brings us back to port 25, SMTP.  In order to take advantage of the LFI we found we will use SMTP poisoning.  We will send an email to helios that contains a web shell.  Then we will go back to the LFI to access the web shell.</p>
 
-    <h2>Port 25</h2>
-
-    <p>In order to take advantage of the LFI we found we will use SMTP poisoning.  We will send an email to helios that contains a web shell.  Then we will go back to the LFI to access the web shell.</p>
+    <h2>Foothold</h2>
 
     <li>Poisoning SMTP</li>
 
@@ -439,8 +424,6 @@ quit
 221 2.0.0 Bye
 Connection closed by foreign host.
     </pre>
-
-    <h2>RCE Achieved</h2>
 
     <li>Now we can visit:</li>
     <ul>
@@ -471,7 +454,7 @@ uid=1000(helios) gid=1000(helios) groups=1000(helios),24(cdrom),25(floppy),29(au
     <p>The reverse shell was acting strange so I created an ssh key for the user Helios.  After reconnecting through ssh the shell worked perfectly, as expected.</p>
     <li><a href="https://pusher91.github.io/Hacking/Linux_PrivEsc.html#ssh">SSH Shell Setup Instructions</a></li>
 
-    <h2>Getting Root</h2>
+    <h2>Privesc - Root</h2>
 
     <p>In the /opt directory I notice a SUID executable named statuscheck.  When I execute it, it seems like it is grabbing headers of a web page.  In search of a way to exploit this SUID executable, I run the "strings" command against it.  This reveals that the SUID executable is calling curl without an absolute path.  This is our path to root.</p>
 

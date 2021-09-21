@@ -71,7 +71,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Thu Sep 16 15:21:28 2021 -- 1 IP address (1 host up) scanned in 48.58 seconds
     </pre>
 
-    <h2>Port 80</h2>
+    <h2>Information Gathering</h2>
 
     <img src="../images/muddy/port80.png">
 
@@ -120,7 +120,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
     <li>The /webdav directory stands out.  If we can gain access to the webdav service we can possibly upload a webshell and gain RCE that way.  We visit this page and it asks for a username and password.  I tried a few combos but nothing worked.  We will note this for later.</li>
 
-    <h2>Port 8888 - LFI</h2>
+    <li>The web service on port 8888 is our first point of interest.</li>
 
     <img src="../images/muddy/port8888.png">
     
@@ -197,6 +197,8 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
   &lt;/SOAP-ENV:Body&gt;
 &lt;/SOAP-ENV:Envelope&gt;
     </pre>
+
+    <h2>Foothold</h2>
 
     <p>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials for basic auth on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav</p>
 
@@ -291,7 +293,7 @@ www-data@muddy:/var/www/html/webdav$
     </pre>
 
 
-    <h2>Getting root</h2>
+    <h2>Privesc - Root</h2>
 
     <li>Once we are on the box, one of the things we check is for cronjobs.  There turns out to be a cronjob we can exploit</li>
 

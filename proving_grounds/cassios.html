@@ -182,7 +182,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
     </pre>
 
-    <h2>Port 445</h2>
+    <h2>Information Gathering</h2>
 
     <p>We start off by taking a look at smb.  By using smbmap we are able to quickly see what shares exist and what permissions we have on those shares, while using an anonymous login.</p>
 
@@ -262,7 +262,7 @@ Java Mantainer
 
     <br>
 
-    <h2>Port 80</h2>
+    <li>Now I move to port 80.</li>
 
     <img src="../images/cassios/port80.png">
 
@@ -332,8 +332,7 @@ main/resources/static/css/main.css:889:[type=color]:focus, [type=color]:active, 
                 .build();
     </pre>
 
-
-    <h2>Port 8080</h2>
+    <li>Now we take a look at port 8080</li>
 
     <img src="../images/cassios/port8080.png">
 
@@ -368,6 +367,8 @@ recycler.ser: Java serialization data, version 5
     <p>I tried a bunch of different methods to achieve a reverse shell.  This particular machine turns out to have socat on it.  So using socat was the easiest method of obtaining a reverse shell.</p>
 
     <li>Generating the malicious recycler.ser file.</li>
+
+    <h2>Foothold</h2>
 
     <pre>
 ┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Cassios]
@@ -423,6 +424,8 @@ Shellcodes: No Results
 
     <p>The exploit says that if we create a symbolic link file to the location of where our sudo ability "sudoedit" points to then we can get sudo rights to edit any file we choose.  I choose to edit /etc/passwd so I can add another root user.</p>
 
+    <h2>Privilege Escalation</h2>
+
     <li>Creating symbolic link file</li>
 
     <pre>
@@ -444,8 +447,6 @@ Password:
 [root@cassios backups]# id
 uid=0(root) gid=0(root) groups=0(root)
     </pre>
-
-
 
 </body>
 </html>

