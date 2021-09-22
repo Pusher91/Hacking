@@ -96,6 +96,8 @@ layout: default
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ sshpass -p sergioteamo ssh aeolus@10.0.0.14 -f -N -L 800:localhost:8080
     </pre>
 
+    <h2>Privesc - Cronos</h2>
+
     <li>When I visit the web page it gives a logon screen for LibreNMS</li>
 
     <img src="../images/symfonos_2/librenms.png">
@@ -105,7 +107,7 @@ layout: default
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ searchsploit librenms&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10; Exploit Title                                                                     |  Path&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;LibreNMS - addhost Command Injection (Metasploit)                                  | linux/remote/46970.rb&#13;&#10;LibreNMS - Collectd Command Injection (Metasploit)                                 | linux/remote/47375.rb&#13;&#10;LibreNMS 1.46 - &apos;addhost&apos; Remote Code Execution                                    | php/webapps/47044.py&#13;&#10;LibreNMS 1.46 - &apos;search&apos; SQL Injection                                             | multiple/webapps/48453.txt&#13;&#10;LibreNMS 1.46 - MAC Accounting Graph Authenticated SQL Injection                   | multiple/webapps/49246.py&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;Shellcodes: No Results
     </pre>
-
+    
     <li>I played with each exploit (except metasploit) but ended up using "LibreNMS 1.46 - 'addhost' Remote Code Execution".  This exploit creates a "device" on LibreNMS that contains a payload with a reverse shell command.  The exploit created the device successfully but it failed to execute the payload after creation.</li>
 
     <pre>
@@ -119,8 +121,6 @@ layout: default
     <li>Now I try the exploit again and observe what is happening when the script attempts to execute the payload..</li>
 
     <img src="../images/symfonos_2/burp_response_unauthenticated.png">
-
-    <h2>Privesc - Cronos</h2>
 
     <li>As we can see. the server is responding with "unauthenticated" when it attempts to execute the payload.  In order to fix this, I first remove the Burp settings that are forwarding requests from 8080 to LibreNMS.  These settings are no longer required.  Then, I browse to http://127.0.0.1:800/ajax_output.php?hostname=dummydevice2&type=snmpwalk&id=capture&format=text just like the exploit was attempting to do.  I also intercept this request with burp so that I can compare the differences between the request I am sending to the web server and the request that the exploit it sending to the web server.  It turns out that the exploit was not including the CSRF token so we were getting the "unauthenticated" message instead of executing the payload.  When we browse to that URL manually, the payload executes successfully.</li>
 

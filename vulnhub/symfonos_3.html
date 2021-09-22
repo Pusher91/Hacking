@@ -32,6 +32,17 @@ layout: default
 
     <h2>Information Gathering</h2>
 
+    <li>We are unable to login to the ftp server so the first point of interest comes from the web server.  I start off using gobuster to enumerate directories, but it seems like there is going to be a lot of recrusive directory enumeration that needs to done so I switch to feroxbuster.  I played around with a few word lists and settings before settling on feroxbuster with these flags:</li>
+    <ul>
+        <li>feroxbuster --url http://10.0.0.15 -w /usr/share/seclists/Discovery/Web-Content/raft-large-words.txt -d 0 -t 25 -o 10.0.0.15-feroxbuster,raft-large-words</li>
+    </ul>
+    <li>ferobuster output:</li>
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_3/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ cat 10.0.0.15-feroxbuster,raft-large-words | grep -v &apos;403\|301&apos;&#13;&#10;200       22l       28w      241c http://10.0.0.15/&#13;&#10;200       22l       28w      241c http://10.0.0.15/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/&#13;&#10;200       21l       34w      273c http://10.0.0.15/gate/cerberus/tartarus/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/cerberus/&#13;&#10;200       53l     1157w     6825c http://10.0.0.15/gate/cerberus/tartarus/research&#13;&#10;200       22l       28w      241c http://10.0.0.15/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/&#13;&#10;200       22l       28w      241c http://10.0.0.15/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/cerberus/&#13;&#10;200       21l       34w      273c http://10.0.0.15/gate/cerberus/tartarus/&#13;&#10;200       53l     1157w     6825c http://10.0.0.15/gate/cerberus/tartarus/research
+    </pre>
+
+
+
     <h2>Foothold</h2>
 
     <h2>Privesc - Root</h2>
