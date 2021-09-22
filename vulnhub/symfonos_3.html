@@ -32,14 +32,22 @@ layout: default
 
     <h2>Information Gathering</h2>
 
-    <li>We are unable to login to the ftp server so the first point of interest comes from the web server.  I start off using gobuster to enumerate directories, but it seems like there is going to be a lot of recrusive directory enumeration that needs to done so I switch to feroxbuster.  I played around with a few word lists and settings before settling on feroxbuster with these flags:</li>
+    <li>We are unable to login to the ftp server so the first point of interest comes from the web server.  I start off using gobuster to enumerate directories, but it seems like there is going to be a lot of recrusive directory enumeration that needs to done so I switch to feroxbuster.  I wanr ferbuster with two wordlists.  raft-large-words.txt and directory-list-2.3-medium.txt:</li>
     <ul>
         <li>feroxbuster --url http://10.0.0.15 -w /usr/share/seclists/Discovery/Web-Content/raft-large-words.txt -d 0 -t 25 -o 10.0.0.15-feroxbuster,raft-large-words</li>
-    </ul>
-    <li>ferobuster output:</li>
-    <pre>
+        <ul>
+            <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_3/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ cat 10.0.0.15-feroxbuster,raft-large-words | grep -v 403 | sort | uniq&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/cerberus/&#13;&#10;200       21l       34w      273c http://10.0.0.15/gate/cerberus/tartarus/&#13;&#10;200       22l       28w      241c http://10.0.0.15/&#13;&#10;200       53l     1157w     6825c http://10.0.0.15/gate/cerberus/tartarus/research&#13;&#10;301        9l       28w      305c http://10.0.0.15/gate&#13;&#10;301        9l       28w      314c http://10.0.0.15/gate/cerberus&#13;&#10;301        9l       28w      323c http://10.0.0.15/gate/cerberus/tartarus&#13;&#10;301        9l       28w      330c http://10.0.0.15/gate/cerberus/tartarus/charon&#13;&#10;301        9l       28w      330c http://10.0.0.15/gate/cerberus/tartarus/hermes
     </pre>
+        </ul>
+        <li>feroxbuster --url http://10.0.0.15 -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -d 0 -t 25 -f -o 10.0.0.15-ferox,dirmed</li>
+        <ul>
+            <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_3/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ cat 10.0.0.15-ferox,dirmed                                     &#13;&#10;403        9l       28w      274c http://10.0.0.15/cgi-bin/&#13;&#10;403        9l       28w      274c http://10.0.0.15/icons/&#13;&#10;403        9l       28w      274c http://10.0.0.15/icons/small/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/&#13;&#10;200       20l       21w      202c http://10.0.0.15/gate/cerberus/&#13;&#10;200        1l       10w       64c http://10.0.0.15/cgi-bin/underworld/
+            </pre>
+        </ul>
+    </ul>
+
 
 
 
