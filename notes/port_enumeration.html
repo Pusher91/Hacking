@@ -31,7 +31,7 @@ layout: default
                 <ul>
                     <li>Easy way to create comma separated list using output file from sudo nmap -p-</li>
                     <ul>
-                        <li>cat <output file from -p- scan> | grep open| awk -F / '{print $1}' ORS=',' | xclip -selection clipboard</li>
+                        <li>cat &lt;output file from -p- scan&gt; | grep open| awk -F / &apos;{print $1}&apos; ORS=&apos;,&apos; | xclip -selection clipboard</li>
                     </ul>
                 </ul>
             </td>
@@ -47,7 +47,7 @@ layout: default
         </tr>
         <tr>
             <td>Enumerate service versions and other information from open ports</td>
-            <td>cat <output file from previous -sU scan> | grep open| awk -F / '{print $1}' ORS=',' | xclip -selection clipboard</td>
+            <td>sudo nmap -sV -sC -sU -p&lt;comma separated list of open ports&gt;</td>
         </tr>
     </table>
 
