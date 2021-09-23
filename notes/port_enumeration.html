@@ -15,22 +15,47 @@ layout: default
     <hr>
     
     <h2>Port Scanning</h2>
+    
+    <h4>Nmap</h4>
+
+    <li>Basic strategy</li>
+    <table>
+        <tr>
+            <td>Enumerate all open TCP ports</td>
+            <td>sudo nmap -p- &lt;ip address&gt; -oN &lt;output file&gt;</td>
+        </tr>
+        <tr>
+            <td>Enumerate service versions and other information from open ports</td>
+            <td>
+                <li>sudo nmap -p&lt;comma separated list of open ports&gt; -sV -sC &lt;ip address&gt; -oN &lt;output file&gt;</li>
+                <ul>
+                    <li>Easy way to create comma separated list using output file from sudo nmap -p-</li>
+                    <ul>
+                        <li>cat <output file from -p- scan> | grep open| awk -F / '{print $1}' ORS=',' | xclip -selection clipboard</li>
+                    </ul>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Enumerate all open UDP ports</td>
+            <td>
+                <li>sudo nmap -sU &lt;output file&gt;</li>
+                <ul>
+                    <li>You do not want to do -p- for UDP ports.  -p- will scan the full port range and would take a long time for UDP.  -sU will test the most common/likely open ports.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Enumerate service versions and other information from open ports</td>
+            <td>cat <output file from previous -sU scan> | grep open| awk -F / '{print $1}' ORS=',' | xclip -selection clipboard</td>
+        </tr>
+    </table>
+
     <ul>
         <li>Running scan with -sV and -sC at the same time or each separately can give different responses in some cases.</li>
         <li>If UDP shows open|filtered then run scripts with -sC.  This will be more likely to get a response from the port to confirm if it is open or not.  Sometimes open ports only show up while using -sT (rare.  Maybe only an ISAKMP/ipsec issue?)</li>
         <li>If tools can't find service version then use wireshark.</li>
     </ul>
-    
-    <h4>Nmap</h4>
-    
-    <ul>
-        <li>Output all open ports to comma separated list:</li>
-        <ul>
-            <li>sudo nmap -p- &lt;ip address&gt; -oA &lt;output name&gt;</li>
-            <li>cat &lt;nmap scan&gt; | grep open | awk -F/ '{print $1}' ORS=','</li>
-        </ul>
-    </ul>
-    
     
     <table>
         <tr>
