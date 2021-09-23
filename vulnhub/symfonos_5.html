@@ -20,12 +20,15 @@ layout: default
 
     <li>Running a port scan against the full port range to determine which ones are open.</li>
 
-    <pre></pre>
+    <pre>
+# Nmap 7.91 scan initiated Thu Sep 23 12:42:36 2021 as: nmap -p- -oN ping_tcp 10.0.0.16&#13;&#10;Nmap scan report for 10.0.0.16&#13;&#10;Host is up (0.00063s latency).&#13;&#10;Not shown: 65531 closed ports&#13;&#10;PORT    STATE SERVICE&#13;&#10;22/tcp  open  ssh&#13;&#10;80/tcp  open  http&#13;&#10;389/tcp open  ldap&#13;&#10;636/tcp open  ldapssl&#13;&#10;MAC Address: 00:0C:29:1E:61:A6 (VMware)&#13;&#10;&#13;&#10;# Nmap done at Thu Sep 23 12:42:44 2021 -- 1 IP address (1 host up) scanned in 8.10 seconds
+    </pre>
 
     <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
 
-    <pre></pre>
-
+    <pre>
+# Nmap 7.91 scan initiated Thu Sep 23 12:43:26 2021 as: nmap -p22,80,389,636 -sV -sC -oN script_tcp 10.0.0.16&#13;&#10;Nmap scan report for 10.0.0.16&#13;&#10;Host is up (0.00023s latency).&#13;&#10;&#13;&#10;PORT    STATE SERVICE  VERSION&#13;&#10;22/tcp  open  ssh      OpenSSH 7.9p1 Debian 10+deb10u1 (protocol 2.0)&#13;&#10;| ssh-hostkey: &#13;&#10;|   2048 16:70:13:77:22:f9:68:78:40:0d:21:76:c1:50:54:23 (RSA)&#13;&#10;|   256 a8:06:23:d0:93:18:7d:7a:6b:05:77:8d:8b:c9:ec:02 (ECDSA)&#13;&#10;|_  256 52:c0:83:18:f4:c7:38:65:5a:ce:97:66:f3:75:68:4c (ED25519)&#13;&#10;80/tcp  open  http     Apache httpd 2.4.29 ((Ubuntu))&#13;&#10;|_http-server-header: Apache/2.4.29 (Ubuntu)&#13;&#10;|_http-title: Site doesn&apos;t have a title (text/html).&#13;&#10;389/tcp open  ldap     OpenLDAP 2.2.X - 2.3.X&#13;&#10;636/tcp open  ldapssl?&#13;&#10;MAC Address: 00:0C:29:1E:61:A6 (VMware)&#13;&#10;Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Thu Sep 23 12:43:44 2021 -- 1 IP address (1 host up) scanned in 18.43 seconds
+    </pre>
 
     <h2>Information Gathering</h2>
 
