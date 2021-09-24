@@ -1,0 +1,43 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>Sar Walkthrough</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<body>
+
+    <h1>Sar Walkthrough</h1>
+
+    <hr>
+
+    <h2>Summary</h2>
+    
+    <p></p>
+
+    <h2>Port Scanning</h2>
+
+    <li>Running a port scan against the full port range to determine which ones are open.</li>
+
+    <pre>
+# Nmap 7.91 scan initiated Fri Sep 24 11:04:26 2021 as: nmap -p- -oN ping_tcp 10.0.0.18&#13;&#10;Nmap scan report for 10.0.0.18&#13;&#10;Host is up (0.0018s latency).&#13;&#10;Not shown: 65534 closed ports&#13;&#10;PORT   STATE SERVICE&#13;&#10;80/tcp open  http&#13;&#10;MAC Address: 00:0C:29:56:34:62 (VMware)&#13;&#10;&#13;&#10;# Nmap done at Fri Sep 24 11:04:34 2021 -- 1 IP address (1 host up) scanned in 7.76 seconds
+    </pre>
+
+    <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
+
+    <pre>
+# Nmap 7.91 scan initiated Fri Sep 24 11:05:28 2021 as: nmap -p80 -sV -sC -oN script_tcp 10.0.0.18&#13;&#10;Nmap scan report for 10.0.0.18&#13;&#10;Host is up (0.00021s latency).&#13;&#10;&#13;&#10;PORT   STATE SERVICE VERSION&#13;&#10;80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))&#13;&#10;|_http-server-header: Apache/2.4.29 (Ubuntu)&#13;&#10;|_http-title: Apache2 Ubuntu Default Page: It works&#13;&#10;MAC Address: 00:0C:29:56:34:62 (VMware)&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Fri Sep 24 11:05:41 2021 -- 1 IP address (1 host up) scanned in 13.12 seconds
+    </pre>
+
+
+    <h2>Information Gathering</h2>
+
+    <h2>Foothold</h2>
+
+    <h2>Privesc - Root</h2>
+
+</body>
+</html>
+
