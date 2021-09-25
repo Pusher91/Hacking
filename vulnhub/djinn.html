@@ -34,19 +34,7 @@ layout: default
     <br>
     <h2>Information Gathering</h2>
 
-    <li>I begin with logging into the FTP server.  The creds anonymous:anonymous let me in.</li>
-
-    <pre>
-&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ ftp 10.0.0.20  &#13;&#10;Connected to 10.0.0.20.&#13;&#10;220 (vsFTPd 3.0.3)&#13;&#10;Name (10.0.0.20:kali): anonymous&#13;&#10;530 Please login with USER and PASS.&#13;&#10;530 Please login with USER and PASS.&#13;&#10;SSL not available&#13;&#10;331 Please specify the password.&#13;&#10;Password:&#13;&#10;230 Login successful.&#13;&#10;Remote system type is UNIX.&#13;&#10;Using binary mode to transfer files.&#13;&#10;ftp&gt; ls&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Here comes the directory listing.&#13;&#10;-rw-r--r--    1 0        0              11 Oct 20  2019 creds.txt&#13;&#10;-rw-r--r--    1 0        0             128 Oct 21  2019 game.txt&#13;&#10;-rw-r--r--    1 0        0             113 Oct 21  2019 message.txt&#13;&#10;226 Directory send OK.&#13;&#10;ftp&gt; mget *&#13;&#10;mget creds.txt? y&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Opening BINARY mode data connection for creds.txt (11 bytes).&#13;&#10;226 Transfer complete.&#13;&#10;11 bytes received in 0.00 secs (195.3125 kB/s)&#13;&#10;mget game.txt? y&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Opening BINARY mode data connection for game.txt (128 bytes).&#13;&#10;226 Transfer complete.&#13;&#10;128 bytes received in 0.00 secs (2.7127 MB/s)&#13;&#10;mget message.txt? y&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Opening BINARY mode data connection for message.txt (113 bytes).&#13;&#10;226 Transfer complete.&#13;&#10;113 bytes received in 0.00 secs (2.4492 MB/s)&#13;&#10;ftp&gt; exit&#13;&#10;221 Goodbye.
-    </pre>
-
-    <li>According to the files there is a game of some sort for us to play on port 1337.  There are also credentials in creds.txt that I am going to take note of, nitu:81299</li>
-
-    <pre>
-&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat creds.txt                                                                                                1 &Cross;&#13;&#10;nitu:81299&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat game.txt &#13;&#10;oh and I forgot to tell you I&apos;ve setup a game for you on port 1337. See if you can reach to the &#13;&#10;final level and get the prize.&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat message.txt &#13;&#10;@nitish81299 I am going on holidays for few days, please take care of all the work. &#13;&#10;And don&apos;t mess up anything.
-    </pre>
-
-    <li>Next I run gobuster against the web server on port 7331.</li>
+    <li>The web server on port 7331 turns out to be the service of interest.  ftp and the port with the game on it turn out to be rabbit holes.  </li>
 
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Djinn/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ gobuster dir -u http://10.0.0.20:7331/ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt                     &#13;&#10;===============================================================&#13;&#10;Gobuster v3.1.0&#13;&#10;by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)&#13;&#10;===============================================================&#13;&#10;[+] Url:                     http://10.0.0.20:7331/&#13;&#10;[+] Method:                  GET&#13;&#10;[+] Threads:                 10&#13;&#10;[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt&#13;&#10;[+] Negative Status codes:   404&#13;&#10;[+] User Agent:              gobuster/3.1.0&#13;&#10;[+] Timeout:                 10s&#13;&#10;===============================================================&#13;&#10;2021/09/24 20:17:29 Starting gobuster in directory enumeration mode&#13;&#10;===============================================================&#13;&#10;/wish                 (Status: 200) [Size: 385]&#13;&#10;/genie                (Status: 200) [Size: 1676]&#13;&#10;                                                &#13;&#10;===============================================================&#13;&#10;2021/09/24 20:18:01 Finished&#13;&#10;===============================================================
@@ -69,7 +57,7 @@ layout: default
 
     <img src="../images/djinn/rev_shell.png">
 
-    <li>After getting shell I take a look at the file app.py</li>
+    <li>After getting shell I take a look at the file /opt/80/app.py which is the directory that our shell starts in</li>
     
     <pre>
         www-data@djinn:/opt$ cat 80/app.py&#13;&#10;        import subprocess&#13;&#10;        &#13;&#10;        from flask import Flask, redirect, render_template, request, url_for&#13;&#10;        &#13;&#10;        app = Flask(__name__)&#13;&#10;        app.secret_key = &quot;key&quot;&#13;&#10;        
@@ -92,7 +80,7 @@ www-data@djinn:/opt$ su nitish &#13;&#10;Password: &#13;&#10;nitish@djinn:/opt$
     </pre>
 
 
-    
+
     <br>
     <h2>Privesc - sam</h2>
 
