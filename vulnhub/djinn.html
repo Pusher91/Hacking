@@ -46,10 +46,10 @@ layout: default
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat creds.txt                                                                                                1 &Cross;&#13;&#10;nitu:81299&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat game.txt &#13;&#10;oh and I forgot to tell you I&apos;ve setup a game for you on port 1337. See if you can reach to the &#13;&#10;final level and get the prize.&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat message.txt &#13;&#10;@nitish81299 I am going on holidays for few days, please take care of all the work. &#13;&#10;And don&apos;t mess up anything.
     </pre>
 
-    <li>Next I run gobuster against the web server on port 1337.</li>
+    <li>Next I run gobuster against the web server on port 7331.</li>
 
     <pre>
-
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Djinn/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ gobuster dir -u http://10.0.0.20:7331/ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt                     &#13;&#10;===============================================================&#13;&#10;Gobuster v3.1.0&#13;&#10;by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)&#13;&#10;===============================================================&#13;&#10;[+] Url:                     http://10.0.0.20:7331/&#13;&#10;[+] Method:                  GET&#13;&#10;[+] Threads:                 10&#13;&#10;[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt&#13;&#10;[+] Negative Status codes:   404&#13;&#10;[+] User Agent:              gobuster/3.1.0&#13;&#10;[+] Timeout:                 10s&#13;&#10;===============================================================&#13;&#10;2021/09/24 20:17:29 Starting gobuster in directory enumeration mode&#13;&#10;===============================================================&#13;&#10;/wish                 (Status: 200) [Size: 385]&#13;&#10;/genie                (Status: 200) [Size: 1676]&#13;&#10;                                                &#13;&#10;===============================================================&#13;&#10;2021/09/24 20:18:01 Finished&#13;&#10;===============================================================
     </pre>
 
     <li>This reveals two directories.  The /wish directory leads us to a reverse shell.  On this page we are able to submit commands.  When we submit "whoami" we see www-data returns in the URL that we get redirected to.  So it appears we are getting command execution.  I did this in Burp as shown below.</li>
@@ -68,6 +68,34 @@ layout: default
     <li>Getting shell on Djinn using the base64 encoded command</li>
 
     <img src="../images/djinn/rev_shell.png">
+
+    <li>After getting shell I take a look at the file app.py</li>
+    
+    <pre>
+        www-data@djinn:/opt$ cat 80/app.py&#13;&#10;        import subprocess&#13;&#10;        &#13;&#10;        from flask import Flask, redirect, render_template, request, url_for&#13;&#10;        &#13;&#10;        app = Flask(__name__)&#13;&#10;        app.secret_key = &quot;key&quot;&#13;&#10;        
+        <mark>CREDS = &quot;/home/nitish/.dev/creds.txt&quot;</mark>&#13;&#10;        &#13;&#10;        RCE = [&quot;/&quot;, &quot;.&quot;, &quot;?&quot;, &quot;*&quot;, &quot;^&quot;, &quot;$&quot;, &quot;eval&quot;, &quot;;&quot;]&#13;&#10;        &#13;&#10;        &#13;&#10;        def validate(cmd):&#13;&#10;            if CREDS in cmd and &quot;cat&quot; not in cmd:&#13;&#10;                return True&#13;&#10;        &#13;&#10;            try:&#13;&#10;                for i in RCE:&#13;&#10;                    for j in cmd:&#13;&#10;                        if i == j:&#13;&#10;                            return False&#13;&#10;                return True&#13;&#10;            except Exception:&#13;&#10;                return False&#13;&#10;        &#13;&#10;        &#13;&#10;        @app.route(&quot;/&quot;, methods=[&quot;GET&quot;])&#13;&#10;        def index():&#13;&#10;            return render_template(&quot;main.html&quot;)&#13;&#10;        &#13;&#10;        &#13;&#10;        @app.route(&quot;/wish&quot;, methods=[&apos;POST&apos;, &quot;GET&quot;])&#13;&#10;        def wish():&#13;&#10;            execute = request.form.get(&quot;cmd&quot;)&#13;&#10;            if execute:&#13;&#10;                if validate(execute):&#13;&#10;                    output = subprocess.Popen(execute, shell=True,&#13;&#10;                                              stdout=subprocess.PIPE).stdout.read()&#13;&#10;                else:&#13;&#10;                    output = &quot;Wrong choice of words&quot;&#13;&#10;        &#13;&#10;                return redirect(url_for(&quot;genie&quot;, name=output))&#13;&#10;            else:&#13;&#10;                return render_template(&apos;wish.html&apos;)&#13;&#10;        &#13;&#10;        &#13;&#10;        @app.route(&apos;/genie&apos;, methods=[&apos;GET&apos;, &apos;POST&apos;])&#13;&#10;        def genie():&#13;&#10;            if &apos;name&apos; in request.args:&#13;&#10;                page = request.args.get(&apos;name&apos;)&#13;&#10;            else:&#13;&#10;                page = &quot;It&apos;s not that hard&quot;&#13;&#10;        &#13;&#10;            return render_template(&apos;genie.html&apos;, file=page)&#13;&#10;        &#13;&#10;        &#13;&#10;        if __name__ == &quot;__main__&quot;:&#13;&#10;            app.run(host=&apos;0.0.0.0&apos;, debug=True)        
+    </pre>
+
+    <li>I highlighed the above code where the code specifies a file in the home directory of nitish named "creds.txt".  I take a look at this file and find credentials for the user nitish.</li>
+
+    <pre>
+www-data@djinn:/opt$ cat /home/nitish/.dev/creds.txt&#13;&#10;nitish:p4ssw0rdStr3r0n9
+    </pre>
+
+    <br>
+    <h2>Privesc - nitish</h2>
+
+    <li>I use the "su" command to switch to this user.</li>
+
+    <pre>
+www-data@djinn:/opt$ su nitish &#13;&#10;Password: &#13;&#10;nitish@djinn:/opt$ 
+    </pre>
+
+
+    
+    <br>
+    <h2>Privesc - sam</h2>
+
 
     <br>
     <h2>Privesc - Root</h2>
