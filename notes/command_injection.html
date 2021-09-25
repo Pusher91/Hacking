@@ -1,0 +1,33 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>Command Injection</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<hr>
+
+<body>
+
+    <h1>Command Injection</h1>
+    
+    <hr>
+    
+    <h2>Python</h2>
+
+    <li>If you have a python shell or suspect you are interacting with python, test for python command injection by entering math problems (i.e. Enter: 2*2).  If the math is being evaluated it might be possible to a python command injection.</li>
+
+    <li>Inject commands:</li>
+    <ul>
+        <li>eval('__import__("os").system("&lt;command&gt;")')</li>
+    </ul>
+
+    <li>Good resource: https://www.stackhawk.com/blog/command-injection-python/#os-commands</li>
+
+    <h2>SSTI (Server Side Template Injection)</h2>
+
+
+</body>
+</html>
