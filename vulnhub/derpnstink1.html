@@ -1,0 +1,47 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>DerpNStink: 1 Walkthrough</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<body>
+
+    <h1>DerpNStink: 1 Walkthrough</h1>
+
+    <hr>
+
+    <h2>Summary</h2>
+
+    <p></p>
+
+    <h2>Port Scanning</h2>
+
+    <li>Running a port scan against the full port range to determine which ones are open.</li>
+
+    <pre>
+# Nmap 7.91 scan initiated Sun Sep 26 19:14:03 2021 as: nmap -p- -oN ping_tcp 10.0.0.21&#13;&#10;Nmap scan report for 10.0.0.21&#13;&#10;Host is up (0.0022s latency).&#13;&#10;Not shown: 65532 closed ports&#13;&#10;PORT   STATE SERVICE&#13;&#10;21/tcp open  ftp&#13;&#10;22/tcp open  ssh&#13;&#10;80/tcp open  http&#13;&#10;MAC Address: 00:0C:29:17:69:BF (VMware)&#13;&#10;&#13;&#10;# Nmap done at Sun Sep 26 19:14:22 2021 -- 1 IP address (1 host up) scanned in 19.30 seconds
+    </pre>
+
+    <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
+
+    <pre>
+# Nmap 7.91 scan initiated Sun Sep 26 19:15:02 2021 as: nmap -p21,22,80 -sV -sC -oN script_tcp 10.0.0.21&#13;&#10;Nmap scan report for 10.0.0.21&#13;&#10;Host is up (0.00021s latency).&#13;&#10;&#13;&#10;PORT   STATE SERVICE VERSION&#13;&#10;21/tcp open  ftp     vsftpd 3.0.2&#13;&#10;22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 (Ubuntu Linux; protocol 2.0)&#13;&#10;| ssh-hostkey: &#13;&#10;|   1024 12:4e:f8:6e:7b:6c:c6:d8:7c:d8:29:77:d1:0b:eb:72 (DSA)&#13;&#10;|   2048 72:c5:1c:5f:81:7b:dd:1a:fb:2e:59:67:fe:a6:91:2f (RSA)&#13;&#10;|   256 06:77:0f:4b:96:0a:3a:2c:3b:f0:8c:2b:57:b5:97:bc (ECDSA)&#13;&#10;|_  256 28:e8:ed:7c:60:7f:19:6c:e3:24:79:31:ca:ab:5d:2d (ED25519)&#13;&#10;80/tcp open  http    Apache httpd 2.4.7 ((Ubuntu))&#13;&#10;| http-robots.txt: 2 disallowed entries &#13;&#10;|_/php/ /temporary/&#13;&#10;|_http-server-header: Apache/2.4.7 (Ubuntu)&#13;&#10;|_http-title: DeRPnStiNK&#13;&#10;MAC Address: 00:0C:29:17:69:BF (VMware)&#13;&#10;Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Sun Sep 26 19:15:23 2021 -- 1 IP address (1 host up) scanned in 20.70 seconds
+    </pre>
+
+    <br>
+    <h2>Information Gathering</h2>
+
+    
+    <br>
+    <h2>Foothold</h2>
+
+
+    <br>
+    <h2>Privesc - Root</h2>
+
+</body>
+</html>
+
