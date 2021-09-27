@@ -13,7 +13,7 @@ layout: default
     
     <hr>
 
-    <h2>Summary</h2>
+    <h2><a id="summary">Summary</a></h2>
 
     <h2>Contents</h2>
     <ul>
@@ -26,7 +26,7 @@ layout: default
     
     <p>This box is on the easy side.  It starts off with only a web server on port 80.  After web enumeration we find a vulnerable service running.  We exploit it to gain a shell as www-data.  Then we exploit a cron job to gain a root shell.</p>
 
-    <h2>Port Scanning</h2>
+    <h2><a id="portscan">Port Scanning</a></h2>
 
     <li>Running a port scan against the full port range to determine which ones are open.</li>
 
@@ -42,7 +42,7 @@ layout: default
 
     <br>
 
-    <h2>Information Gathering</h2>
+    <h2><a id="infogather">Information Gathering</a></h2>
 
     <li>The web server on port 80 seems to be the only service running.  I start off with some gobuster scans to try to enumerate any hidden directories.  Nothing turns up so I turn my attention to /robots.txt.</li>
 
@@ -85,7 +85,7 @@ Copied to: /home/kali/Documents/VulnHub/Sars/49344.py
 
     <br>
 
-    <h2>Foothold</h2>
+    <h2><a id="foothold">Foothold</a></h2>
 
     <li>One of the first things I always do is check for cronjobs using "cat /etc/cron*"</li>
 
@@ -107,7 +107,7 @@ www-data@sar:/var/www/html$ ls -la write.sh&#13;&#10;-rwxrwxrwx 1 www-data www-d
 
     <li>write.sh simply creates the file /tmp/gateway.  However, we have write access to write.sh, so all we need to do is edit the contents with our own malicious command.  When root runs finally.sh under it's cronjob, it will execute write.sh, which will execute out malicious command.</li>
 
-    <h2>Privesc - Root</h2>
+    <h2><a id="root">Privesc - Root</a></h2>
 
     <pre>
 www-data@sar:/var/www/html$ cat write.sh &#13;&#10;#!/bin/sh&#13;&#10;&#13;&#10;cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash

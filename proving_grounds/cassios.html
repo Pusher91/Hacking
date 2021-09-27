@@ -15,17 +15,18 @@ layout: default
 
     <h2>Contents</h2>
     <ul>
-        <li>Summary</li>
-        <li>Port Scanning</li>
-        <li>Information Gathering</li>
-        <li>Foothold</li>
-        <li>Privesc - root</li>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#root">Privesc - root</a></li>
     </ul>
 
-    <h4>Summary</h4>
+    <h2><a id="summary">Summary</a></h2>
+
     <p>Cassios is a relatively straightforward box.  It involves web enumeration and then exploiting java deserialization to obtain a reverse shell.  The privesc was two parts.  First finding the sudo ability and then finding the exploit for that specific sudo version and sudo ability.</p>
 
-    <h2>Port Scanning</h2>
+    <h2><a id="portscan">Port Scanning</a></h2>
 
     <li>We start off by running an nmap scan against all ports.</li>
 
@@ -191,7 +192,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 27.50 seconds
     </pre>
 
-    <h2>Information Gathering</h2>
+    <h2><a id="infogather">Information Gathering</a></h2>
 
     <p>We start off by taking a look at smb.  By using smbmap we are able to quickly see what shares exist and what permissions we have on those shares, while using an anonymous login.</p>
 
@@ -377,7 +378,7 @@ recycler.ser: Java serialization data, version 5
 
     <li>Generating the malicious recycler.ser file.</li>
 
-    <h2>Foothold</h2>
+    <h2><a id="foothold">Foothold</a></h2>
 
     <pre>
 ┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Cassios]
@@ -433,7 +434,7 @@ Shellcodes: No Results
 
     <p>The exploit says that if we create a symbolic link file to the location of where our sudo ability "sudoedit" points to then we can get sudo rights to edit any file we choose.  I choose to edit /etc/passwd so I can add another root user.</p>
 
-    <h2>Privilege Escalation</h2>
+    <h2><a id="root">Privesc - Root</a></h2>
 
     <li>Creating symbolic link file</li>
 

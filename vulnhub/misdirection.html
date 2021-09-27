@@ -15,18 +15,19 @@ layout: default
 
     <h2>Contents</h2>
     <ul>
-        <li>Summary</li>
-        <li>Port Scanning</li>
-        <li>Information Gathering</li>
-        <li>Foothold</li>
-        <li>Privesc - root</li>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#brexit">Privesc - brexit</a></li>
+        <li><a href="#root">Privesc - root</a></li>
     </ul>
 
-    <h2>Summary</h2>
+    <h2><a id="summary">Summary</a></h2>
     
     <p>This box was very easy.  The most difficult part was avoiding all the rabbit holes during the initial phase of web enumeration.  Once you get past all the rabbit holes, there is simply an interactive webshell waiting for us to find it.  We gain our www-data reverse shell.  www-data has the sudo ability to execute bash as brexit.  We gain our brexit shell.  The user brexit has write access to /etc/passwd.  We simply add another root user and we have our root shell.</p>
 
-    <h2>Port Scanning</h2>
+    <h2><a id="portscan">Port Scanning</a></h2>
 
     <li>Running a port scan against the full port range to determine which ones are open.</li>
 
@@ -40,7 +41,7 @@ layout: default
 # Nmap 7.91 scan initiated Thu Sep 23 17:07:03 2021 as: nmap -p22,80,3306,8080 -sV -sC -oN script_tcp 10.0.0.17&#13;&#10;Nmap scan report for 10.0.0.17&#13;&#10;Host is up (0.00020s latency).&#13;&#10;&#13;&#10;PORT     STATE SERVICE VERSION&#13;&#10;22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)&#13;&#10;| ssh-hostkey: &#13;&#10;|   2048 ec:bb:44:ee:f3:33:af:9f:a5:ce:b5:77:61:45:e4:36 (RSA)&#13;&#10;|   256 67:7b:cb:4e:95:1b:78:08:8d:2a:b1:47:04:8d:62:87 (ECDSA)&#13;&#10;|_  256 59:04:1d:25:11:6d:89:a3:6c:6d:e4:e3:d2:3c:da:7d (ED25519)&#13;&#10;80/tcp   open  http    Rocket httpd 1.2.6 (Python 2.7.15rc1)&#13;&#10;|_http-server-header: Rocket 1.2.6 Python/2.7.15rc1&#13;&#10;|_http-title: Site doesn&apos;t have a title (text/html; charset=utf-8).&#13;&#10;3306/tcp open  mysql   MySQL (unauthorized)&#13;&#10;|_ssl-cert: ERROR: Script execution failed (use -d to debug)&#13;&#10;|_ssl-date: ERROR: Script execution failed (use -d to debug)&#13;&#10;|_sslv2: ERROR: Script execution failed (use -d to debug)&#13;&#10;|_tls-alpn: ERROR: Script execution failed (use -d to debug)&#13;&#10;|_tls-nextprotoneg: ERROR: Script execution failed (use -d to debug)&#13;&#10;8080/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))&#13;&#10;|_http-server-header: Apache/2.4.29 (Ubuntu)&#13;&#10;|_http-title: Apache2 Ubuntu Default Page: It works&#13;&#10;MAC Address: 00:0C:29:F8:19:B4 (VMware)&#13;&#10;Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Thu Sep 23 17:07:49 2021 -- 1 IP address (1 host up) scanned in 45.63 seconds
     </pre>
 
-    <h2>Information Gathering</h2>
+    <h2><a id="infogather">Information Gathering</a></h2>
 
     <li>I began by using gobuster against both port 80 and 8080.  Apparently the difficulty of gaining a foothold on this box comes from being able to avoid rabbit holes.  After going down a few and coming back to my gobuster results I found the way in.  Here is the gobuster scan that revelead the way in (as well as a rabbit hole)</li>
 
@@ -78,14 +79,14 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
     </pre>
 
-    <h2>Foothold</h2>
+    <h2><a id="foothold">Foothold</a></h2>
 
     <li>Simply by going to /debug we are prompted with a fully interactive web shell.  I use a bash command the create a reverse shell on my machine.</li>
 
     <img src="../images/misdirection/foothold.png">
 
 
-    <h2>Privesc - Brexit</h2>
+    <h2><a id="brexit">Privesc - Brexit</a></h2>
 
     <li>The first thing I did was run "sudo -l" to see if we have any sudo access.</li>
 
@@ -111,7 +112,7 @@ www-data@misdirection:/var/www/html/debug$ sudo -u brexit /bin/bash&#13;&#10;bre
 
     <li>It turns out we have write access to /etc/passwd</li>
 
-    <h2>Privesc - Root</h2>
+    <h2><a id="root">Privesc - Root</a></h2>
 
     <li>I choose to add another use named root2 to /etc/passwd.  In order to do this I will simply add another user named root2 to the end of the passwd file like this:</li>
     <ul>

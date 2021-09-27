@@ -22,11 +22,11 @@ layout: default
         <li>Privesc - root</li>
     </ul>
 
-    <h2>Summary</h2>
+    <h2><a id="summary">Summary</a></h2>
 
     <p>Gaining a foothold on Spaghetti involved exploiting a command being offered by a bot on an irc server.  Exploitation of this command leads to RCE as a low privilege user.  Once in the box, we are able to achieve root command execution by exploiting a script that root runs as a cronjob.  This script uses contents of the mysql table "mailbox" for the parameters that it passes.  The mysql credentials are found in the web server config files.  Upon modifying the contents of mysql we are able to execute our own malicious script as root.</p>
 
-    <h2>Port Scanning</h2>
+    <h2><a id="portscan">Port Scanning</a></h2>
 
     <li>Running a port scan against the full port range to determine which ones are open.</li>
 
@@ -91,7 +91,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 # Nmap done at Sat Sep 18 15:48:36 2021 -- 1 IP address (1 host up) scanned in 22.81 seconds
     </pre>
 
-    <h2>Information Gathering</h2>
+    <h2><a id="infogather">Information Gathering</a></h2>
 
     <li>The first real point of interest comes from the irc server on port 6667.  I used the program hexchat to connect to the irc server.  There is a room on this irc server named #mailAssistant with a user/bot in it named spaghetti_BoT.  Once in the irc room you can send the message "hello" and the bot responds telling us to send it a DM with "!command"</li>
 
@@ -120,7 +120,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
         <li>The user input does not go through any sanitization.  It gets passed directly into the "cmd" variable which then gets executed as a shell command.  In order to exploit this all we need to do is add a pipe before whatever command we want to send in the "description" portion of the command for email issues.</li>
 
-        <h2>Foothold</h2>
+        <h2><a id="foothold">Foothold</a></h2>
 
         <li>I send a command and receieve a reverse shell on 4444</li>
         <ul>

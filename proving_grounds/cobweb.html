@@ -15,17 +15,17 @@ layout: default
 
     <h2>Contents</h2>
     <ul>
-        <li>Summary</li>
-        <li>Port Scanning</li>
-        <li>Information Gathering</li>
-        <li>Foothold</li>
-        <li>Privesc - root</li>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#root">Privesc - root</a></li>
     </ul>
 
-    <h2>Summary</h2>
+    <h2><a id="summary">Summary</a></h2>
     <p>Cobweb involved finding a SQL injection on the web server.  This sql injection allowed us to gain shell through a remote shell.  Once on the box we are able to escalate our privileges to root by exploiting a program that has the SUID bit set.</p>
 
-    <h2>Port Scanning</h2>
+    <h2><a id="portscan">Port Scanning</a></h2>
 
     <li>Running a port scan against the full port range to determine which ones are open.</li>
 
@@ -104,7 +104,7 @@ Service detection performed. Please report any incorrect results at https://nmap
     </pre>
 
 
-    <h2>Information Gathering</h2>
+    <h2><a id="infogather">Information Gathering</a></h2>
 
     <li>The files on the ftp server turn out to be the first point of interest.  We need to download them.</li>
 
@@ -175,7 +175,7 @@ ftp&gt; exit
 
     <img src="../images/cobweb/sql_injection.png">
 
-    <h2>Foothold</h2>
+    <h2><a id="foothold">Foothold</a></h2>
 
     <li>Now we will exploit this code using a URL sql injection.  I send this through Firefox to create a web page containing a reverse shell.</li>
     <ul>
@@ -187,7 +187,7 @@ ftp&gt; exit
         <li>The reverse shell connects and I gain a shell as the user apache.</li>
     </ul>
 
-    <h2>Privesc - Root</h2>
+    <h2><a id="root">Privesc - Root</a></h2>
 
     <li>I search for all files that have the SUID bit set and the one that stands out is screens-4.5.0</li>
 

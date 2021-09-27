@@ -15,17 +15,17 @@ layout: default
 
     <h2>Contents</h2>
     <ul>
-        <li>Summary</li>
-        <li>Port Scanning</li>
-        <li>Information Gathering</li>
-        <li>Foothold</li>
-        <li>Privesc - root</li>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#root">Privesc - root</a></li>
     </ul>
 
-    <h2>Summary</h2>
+    <h2><a id="summary">Summary</a></h2>
     <p>We begin this box by anonymously logging into SMB.  There is a file in the SMB share that lists off possible passwords.  Then we look at port 139/rpc and find a username to try these passwords against.  One of the passwords match the user we found and we are granted access to another share in SMB.  The new SMB share gives a hint to look at a hidden web directory that leads to a wordpress page.  We exploit an LFI in a wordpress plugin being used in conjunction with SMTP poisoning to get a shell.  We then privesc to root by exploiting a SUID executable calling for another executable without using an absolute path.</p>
 
-    <h2>Port Scanning</h2>
+    <h2><a id="portscan">Port Scanning</a></h2>
 
     <li>Running port scan against the full port range to determine all open ports.</li>
     <pre>
@@ -102,7 +102,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 33.23 seconds
     </pre>
 
-    <h2>Information Gathering</h2>
+    <h2><a id="infogather">Information Gathering</a></h2>
 
     <li>Running smbmap against smb shows we have read access to the share "anonymous"</li>
 
@@ -406,7 +406,7 @@ Shellcodes: No Results
 
     <p>The web page output the /etc/passwd file.  So we know the LFI works.  Now we need to find a way to exploit the LFI to RCE.  This brings us back to port 25, SMTP.  In order to take advantage of the LFI we found we will use SMTP poisoning.  We will send an email to helios that contains a web shell.  Then we will go back to the LFI to access the web shell.</p>
 
-    <h2>Foothold</h2>
+    <h2><a id="foothold">Foothold</a></h2>
 
     <li>Poisoning SMTP</li>
 
@@ -463,7 +463,7 @@ uid=1000(helios) gid=1000(helios) groups=1000(helios),24(cdrom),25(floppy),29(au
     <p>The reverse shell was acting strange so I created an ssh key for the user Helios.  After reconnecting through ssh the shell worked perfectly, as expected.</p>
     <li><a href="https://pusher91.github.io/Hacking/Linux_PrivEsc.html#ssh">SSH Shell Setup Instructions</a></li>
 
-    <h2>Privesc - Root</h2>
+    <h2><a id="root">Privesc - Root</a></h2>
 
     <p>In the /opt directory I notice a SUID executable named statuscheck.  When I execute it, it seems like it is grabbing headers of a web page.  In search of a way to exploit this SUID executable, I run the "strings" command against it.  This reveals that the SUID executable is calling curl without an absolute path.  This is our path to root.</p>
 
