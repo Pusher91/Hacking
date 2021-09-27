@@ -15,14 +15,14 @@ layout: default
 
     <h2>Contents</h2>
     <ul>
-        <li><a href="summary">Summary</a></li>
-        <li>Port Scanning</li>
-        <li>Information Gathering</li>
-        <li>Foothold</li>
-        <li>Privesc - nitish</li>
-        <li>Privesc - sam</li>
-        <li>Privesc Method #1 - root</li>
-        <li>Privesc Method #2 - root</li>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#nitish">Privesc - nitish</a></li>
+        <li><a href="#sam">Privesc - sam</a></li>
+        <li><a href="#root">Privesc Method #1 - root</a></li>
+        <li><a href="#root2">Privesc Method #2 - root</a></li>
     </ul>
 
     <h2><a id=summary>Summary</a></h2>
@@ -44,7 +44,7 @@ layout: default
     </pre>
 
     <br>
-    <h2>Information Gathering</h2>
+    <h2><a id="infogather">Information Gathering</a></h2>
 
     <li>The web server on port 7331 turns out to be the service of interest.  FTP contains a few files, accessible using anonymous login (anonymous:anonymous).  The files do not lead anything interesting.  We can connect to the service on port 1337 using netcat.  It is a math game.  This game on port 1337 is an alternative route to root which I will cover at the end.</li>
 
@@ -63,7 +63,7 @@ layout: default
     </ul>
 
     <br>
-    <h2>Foothold</h2>
+    <h2><a id="foothold">Foothold</a></h2>
 
     <li>Now that I have verified the command works, I execute the command against Djinn.  I also url-encode the command by highlighting the payload and pressing ctrl+u</li>
 
@@ -83,7 +83,7 @@ www-data@djinn:/opt$ cat /home/nitish/.dev/creds.txt&#13;&#10;nitish:p4ssw0rdStr
     </pre>
 
     <br>
-    <h2>Privesc - nitish</h2>
+    <h2><a id="nitish">Privesc - nitish</a></h2>
 
     <li>I use the "su" command to switch to this user.</li>
 
@@ -114,7 +114,7 @@ nitish@djinn:~$ sudo -u sam /usr/bin/genie -cmd anything&#13;&#10;my man!!&#13;&
     </pre>
 
     <br>
-    <h2>Privesc - sam</h2>
+    <h2><a id="sam">Privesc - sam</a></h2>
 
     <li>As sam I again, check "sudo -l" for any sudo permissions.</li>
 
@@ -132,7 +132,7 @@ sam@djinn:~$ sudo /root/lago&#13;&#10;What do you want to do ?&#13;&#10;1 - Be n
 
 
     <br>
-    <h2>Privesc Method #1 - Root</h2>
+    <h2><a id="root">Privesc Method #1 - Root</a></h2>
 
     <li>There is a file named ".pyc" in Sam's home directory that looks like the source code behind /root/lago.  I initially use the command "strings" to examine the file contents.</li>
 
@@ -222,7 +222,7 @@ uid=0(root) gid=0(root) groups=0(root)
     <li>Root shell achieved.</li>
 
     <br>
-    <h2>Privesc Method #2 - Root</h2>
+    <h2><a id="root2">Privesc Method #2 - Root</a></h2>
 
     <li>The alternative route to root is through port 1337.  Port 1337 presents us with a math game</li>
 
