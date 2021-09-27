@@ -13,6 +13,15 @@ layout: default
 
     <hr>
 
+    <h2>Contents</h2>
+    <ul>
+        <li>Summary</li>
+        <li>Port Scanning</li>
+        <li>Information Gathering</li>
+        <li>Foothold</li>
+        <li>Privesc - root</li>
+    </ul>
+
     <h2>Summary</h2>
 
     <p>Gaining a foothold on Spaghetti involved exploiting a command being offered by a bot on an irc server.  Exploitation of this command leads to RCE as a low privilege user.  Once in the box, we are able to achieve root command execution by exploiting a script that root runs as a cronjob.  This script uses contents of the mysql table "mailbox" for the parameters that it passes.  The mysql credentials are found in the web server config files.  Upon modifying the contents of mysql we are able to execute our own malicious script as root.</p>

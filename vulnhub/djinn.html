@@ -13,6 +13,18 @@ layout: default
 
     <hr>
 
+    <h2>Contents</h2>
+    <ul>
+        <li>Summary</li>
+        <li>Port Scanning</li>
+        <li>Information Gathering</li>
+        <li>Foothold</li>
+        <li>Privesc - nitish</li>
+        <li>Privesc - sam</li>
+        <li>Privesc Method #1 - root</li>
+        <li>Privesc Method #2 - root</li>
+    </ul>
+
     <h2>Summary</h2>
 
     <p>Djinn has two paths.  One path leads directly to root over port 1337.  This requires a python command injection of a base64 encoded reverse shell.  The shell returns as root.  The other path involves finding a web directory that allows us to execute commands.  Command execution filters for certain characters so we are forced to use a base64 encoded payload for our reverse shell.  This leads to the www-data low priv shell.  We find credentials in a file for the user nitish.  Once we switch to nitish we find that we have permissions to a sudo command.  The flag required to privesc using this sudo command is in the manual, it is not shown in the output from the -h help flag.  Using the sudo command we gain a shell as the user sam.  Sam also has a sudo ability that allows us to privesc to root.  Decompiling a file in Sam's home directory provides us with the informatio needed to exploit the sudo command in order to gain a root shell.</p>

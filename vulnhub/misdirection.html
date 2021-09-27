@@ -13,6 +13,15 @@ layout: default
 
     <hr>
 
+    <h2>Contents</h2>
+    <ul>
+        <li>Summary</li>
+        <li>Port Scanning</li>
+        <li>Information Gathering</li>
+        <li>Foothold</li>
+        <li>Privesc - root</li>
+    </ul>
+
     <h2>Summary</h2>
     
     <p>This box was very easy.  The most difficult part was avoiding all the rabbit holes during the initial phase of web enumeration.  Once you get past all the rabbit holes, there is simply an interactive webshell waiting for us to find it.  We gain our www-data reverse shell.  www-data has the sudo ability to execute bash as brexit.  We gain our brexit shell.  The user brexit has write access to /etc/passwd.  We simply add another root user and we have our root shell.</p>

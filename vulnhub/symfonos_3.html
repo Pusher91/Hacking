@@ -13,6 +13,16 @@ layout: default
 
     <hr>
 
+    <h2>Contents</h2>
+    <ul>
+        <li>Summary</li>
+        <li>Port Scanning</li>
+        <li>Information Gathering</li>
+        <li>Foothold</li>
+        <li>Privesc - hades</li>
+        <li>Privesc - root</li>
+    </ul>
+
     <h2>Summary</h2>
 
     <p>To start off, this box presented us with two paths.  One being a rabbit hole, and the other being a simple shellshock exploit.  Once on the box we gain shell as cerberus and have admin permissions on tcpdump.  Using tcpdump we listen on localhost and find the credentials for the user Hades being passed over the network in cleartext.  We ssh in as the user Hades using these credentials.  Hades has write access to the python 2.3 library.  Abusing these write permissions, we are able to modify a python library file that is being called from a script that is being ran as root.  We successfully gain root command execution which leads us to a root shell.</p>
