@@ -34,7 +34,32 @@ layout: default
     <br>
     <h2>Information Gathering</h2>
 
-    
+    <li>After a poking around a little, the web server becomes the first point of interest.  First I checked /robots.txt.  This revealed a couple directories that did not lead to anything interesting.  Then I ran gobuster against the web server.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/DerpNStink_1/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ gobuster dir -u http://10.0.0.21 -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt                                  &#13;&#10;===============================================================&#13;&#10;Gobuster v3.1.0&#13;&#10;by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)&#13;&#10;===============================================================&#13;&#10;[+] Url:                     http://10.0.0.21&#13;&#10;[+] Method:                  GET&#13;&#10;[+] Threads:                 10&#13;&#10;[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt&#13;&#10;[+] Negative Status codes:   404&#13;&#10;[+] User Agent:              gobuster/3.1.0&#13;&#10;[+] Timeout:                 10s&#13;&#10;===============================================================&#13;&#10;2021/09/26 19:59:10 Starting gobuster in directory enumeration mode&#13;&#10;===============================================================&#13;&#10;/weblog               (Status: 301) [Size: 306] [--&gt; http://10.0.0.21/weblog/]&#13;&#10;/php                  (Status: 301) [Size: 303] [--&gt; http://10.0.0.21/php/]   &#13;&#10;/css                  (Status: 301) [Size: 303] [--&gt; http://10.0.0.21/css/]   &#13;&#10;/js                   (Status: 301) [Size: 302] [--&gt; http://10.0.0.21/js/]    &#13;&#10;/javascript           (Status: 301) [Size: 310] [--&gt; http://10.0.0.21/javascript/]&#13;&#10;/temporary            (Status: 301) [Size: 309] [--&gt; http://10.0.0.21/temporary/] &#13;&#10;/server-status        (Status: 403) [Size: 289]                                   &#13;&#10;                                                                                  &#13;&#10;===============================================================&#13;&#10;2021/09/26 19:59:48 Finished&#13;&#10;===============================================================
+    </pre>
+
+    <li>The directory /weblog is revealed.  Upon visiting this directory we get redirected to "derpnstink.local/weblog", so I add this to my /etc/hosts file.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/DerpNStink_1/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ cat /etc/hosts                                                                         &#13;&#10;127.0.0.1&#9;localhost&#13;&#10;127.0.1.1&#9;kali&#13;&#10;10.0.0.21&#9;derpnstink.local&#13;&#10;&#13;&#10;# The following lines are desirable for IPv6 capable hosts&#13;&#10;::1     localhost ip6-localhost ip6-loopback&#13;&#10;ff02::1 ip6-allnodes&#13;&#10;ff02::2 ip6-allrouters
+    </pre>
+
+    <li>Now the webpage should load with this</li>
+
+    <img src="../images/derpnstink1/derpnstink_local.png">
+
+    <li>Nothing immediately stands out as interesting on this page so I take a look at the source code.</li>
+
+    <img src="../images/derpnstink1/derpnstink_local_src.png">
+
+
+
+
+
+
+
     <br>
     <h2>Foothold</h2>
 
