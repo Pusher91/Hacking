@@ -18,14 +18,14 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
-        <li><a href="#brexit">Privesc - brexit</a></li>
-        <li><a href="#root">Privesc - root</a></li>
+        <li><a href="#www-data">Shell - www-data</a></li>
+        <li><a href="#brexit">Shell - brexit</a></li>
+        <li><a href="#root">Shell - root</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
     
-    <p>This box was very easy.  The most difficult part was avoiding all the rabbit holes during the initial phase of web enumeration.  Once you get past all the rabbit holes, there is simply an interactive webshell waiting for us to find it.  We gain our www-data reverse shell.  www-data has the sudo ability to execute bash as brexit.  We gain our brexit shell.  The user brexit has write access to /etc/passwd.  We simply add another root user and we have our root shell.</p>
+    <p>This box was very easy.  The most difficult part was avoiding all the rabbit holes during the initial phase of web enumeration.  Once you get past all the rabbit holes, there is simply an interactive webshell waiting for us to find.  We gain our www-data reverse shell.  www-data has the sudo ability to execute bash as brexit.  We gain our brexit shell.  The user brexit has write access to /etc/passwd.  We simply add another root user and we have our root shell.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -79,14 +79,15 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
     </pre>
 
-    <h2><a id="foothold">Foothold</a></h2>
+    <h2><a id="www-data">Shell - www-data</a></h2>
 
     <li>Simply by going to /debug we are prompted with a fully interactive web shell.  I use a bash command the create a reverse shell on my machine.</li>
 
     <img src="../images/misdirection/foothold.png">
 
-
-    <h2><a id="brexit">Privesc - Brexit</a></h2>
+    <br>
+    
+    <h2><a id="brexit">Shell - Brexit</a></h2>
 
     <li>The first thing I did was run "sudo -l" to see if we have any sudo access.</li>
 
@@ -112,7 +113,7 @@ www-data@misdirection:/var/www/html/debug$ sudo -u brexit /bin/bash&#13;&#10;bre
 
     <li>It turns out we have write access to /etc/passwd</li>
 
-    <h2><a id="root">Privesc - Root</a></h2>
+    <h2><a id="root">Shell - Root</a></h2>
 
     <li>I choose to add another use named root2 to /etc/passwd.  In order to do this I will simply add another user named root2 to the end of the passwd file like this:</li>
     <ul>
