@@ -98,10 +98,10 @@ www-data@sar:/var/www/html$ cat finally.sh &#13;&#10;#!/bin/sh&#13;&#10;&#13;&#1
 www-data@sar:/var/www/html$ ls -la write.sh&#13;&#10;-rwxrwxrwx 1 www-data www-data 30 Oct 21  2019 write.sh&#13;&#10;www-data@sar:/var/www/html$ cat write.sh &#13;&#10;#!/bin/sh&#13;&#10;&#13;&#10;touch /tmp/gateway
     </pre>
 
-    <li>write.sh simply creates the file /tmp/gateway.  However, we have write access to write.sh, so all we need to do is edit the contents with our own malicious command.  When root runs finally.sh under it's cronjob, it will execute write.sh, which will execute out malicious command.</li>
+    <li>write.sh simply creates the file /tmp/gateway.  However, we have write access to write.sh, so all we need to do is edit the contents with our own malicious command.  When root runs finally.sh under it's cronjob, it will execute write.sh, which will execute our malicious command.</li>
 
     <br>
-    
+
     <h2><a id="root">Shell - Root</a></h2>
 
     <pre>
