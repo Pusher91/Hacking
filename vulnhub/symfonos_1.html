@@ -473,7 +473,7 @@ uid=1000(helios) gid=1000(helios) groups=1000(helios),24(cdrom),25(floppy),29(au
 
     <h2><a id="root">Privesc - Root</a></h2>
 
-    <p>In the /opt directory I notice a SUID executable named statuscheck.  When I execute it, it seems like it is grabbing headers of a web page.  In search of a way to exploit this SUID executable, I run the "strings" command against it.  This reveals that the SUID executable is calling curl without an absolute path.  This is our path to root.</p>
+    <li>In the /opt directory I notice a SUID executable named statuscheck.  When I execute it, it seems like it is grabbing headers of a web page.  In search of a way to exploit this SUID executable, I run the "strings" command against it.  This reveals that the SUID executable is calling curl without an absolute path.  This is our path to root.</li>
 
     <pre>
 helios@symfonos:/opt$ strings statuscheck 
