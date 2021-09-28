@@ -19,7 +19,7 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#bigtommysenior">Shell - bigtommysenior</a></li>
-        <li><a href="#www-data">Privesc - www-data</a></li>
+        <li><a href="#www-data">shell - www-data</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
@@ -230,7 +230,7 @@ Progress: 205096 / 28688786 (0.71%)           [ERROR] 2021/09/27 20:28:16 [!] pa
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ ssh bigtommysenior@10.0.0.22                                                                              130 &Cross;&#13;&#10;bigtommysenior@10.0.0.22&apos;s password: &#13;&#10;Welcome to Ubuntu 16.04 LTS (GNU/Linux 4.4.0-31-generic x86_64)&#13;&#10;&#13;&#10; * Documentation:  https://help.ubuntu.com/&#13;&#10;&#13;&#10;143 packages can be updated.&#13;&#10;0 updates are security updates.&#13;&#10;&#13;&#10;&#13;&#10;Last login: Thu Jul 14 13:45:57 2016&#13;&#10;bigtommysenior@CallahanAutoSrv01:~$ 
     </pre>
 
-    <h2><a id="www-data">Privesc - www-data</a></h2>
+    <h2><a id="www-data">shell - www-data</a></h2>
 
     <li>Once on the box, we find a file called LOOT.ZIP in bigtommysenior's home directory.  The file is encrypted and I am unable to crack it.  There is another file called el-flag-numero-quatro.txt.  This file gives us the 4th flag for the box.  It also tells us the 5th flag is locate in the root directory /5.txt.  The 5th flag is unreadable by us but owned by www-data.  If we can get a shell as www-data we will get access to the 5th flag.</li>
 
