@@ -19,12 +19,13 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#bigtommysenior">Shell - bigtommysenior</a></li>
+        <li><a href="#www-data">Privesc - www-data</a></li>
         <li><a href="#root">Privesc - root</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
 
-    <p></p>
+    <p>This box followed through with an entire Tommy Boy themed story line.  It started through the web server, finding a wordpress site, gaining credentials, and getting SSH.  From there we had to gain credentials from the mysql server, go back to the wordpress site, create a web shell, and gain a shell as www-data in order to gain read access to important files.  From there the box was pwned.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -50,6 +51,8 @@ layout: default
     </pre>
 
     <li>After watching the youtube link we can guess that the web directory we are looking for is "/prehistoricforest/.  http://10.0.0.22/prehistoricforest/ leads us to a wordpress page.  There is a password protected post on the wordpress page at this link, http://10.0.0.22/prehistoricforest/index.php/2016/07/06/status-of-restoring-company-home-page/,  and there is another post here, http://10.0.0.22/prehistoricforest/index.php/2016/07/06/status-of-restoring-company-home-page/, which tells us to go to /richard to find the password to the password protected wordpress post.  /richard leads us to a picture that we download and examine with exiftool.</li>
+
+    <br>
 
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1/nmap]&#13;&#10;&boxur;&HorizontalLine;$ wget http://10.0.0.22/richard/shockedrichard.jpg                                                                                          &#13;&#10;--2021-09-27 18:38:09--  http://10.0.0.22/richard/shockedrichard.jpg&#13;&#10;Connecting to 10.0.0.22:80... connected.&#13;&#10;HTTP request sent, awaiting response... 200 OK&#13;&#10;Length: 167037 (163K) [image/jpeg]&#13;&#10;Saving to: &OpenCurlyQuote;shockedrichard.jpg&rsquor;&#13;&#10;&#13;&#10;shockedrichard.jpg                      100%[=============================================================================&gt;] 163.12K  --.-KB/s    in 0.001s  &#13;&#10;&#13;&#10;2021-09-27 18:38:09 (273 MB/s) - &OpenCurlyQuote;shockedrichard.jpg&rsquor; saved [167037/167037]&#13;&#10;&#13;&#10;                                                                                                                                                              &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1/nmap]&#13;&#10;&boxur;&HorizontalLine;$ exiftool shockedrichard.jpg                                                             &#13;&#10;ExifTool Version Number         : 12.30&#13;&#10;File Name                       : shockedrichard.jpg&#13;&#10;Directory                       : .&#13;&#10;File Size                       : 163 KiB&#13;&#10;File Modification Date/Time     : 2016:07:07 15:17:24-04:00&#13;&#10;File Access Date/Time           : 2021:09:27 18:38:09-04:00&#13;&#10;File Inode Change Date/Time     : 2021:09:27 18:38:09-04:00&#13;&#10;File Permissions                : -rw-r--r--&#13;&#10;File Type                       : JPEG&#13;&#10;File Type Extension             : jpg&#13;&#10;MIME Type                       : image/jpeg&#13;&#10;JFIF Version                    : 1.01&#13;&#10;Resolution Unit                 : None&#13;&#10;X Resolution                    : 1&#13;&#10;Y Resolution                    : 1&#13;&#10;Exif Byte Order                 : Little-endian (Intel, II)&#13;&#10;Software                        : Google&#13;&#10;Copyright                       : Copyright &copy; 1995 Paramount Pictures Corporation. Credit: &copy; 1995 Paramount Pictures / Courtesy: Pyxurz.&#13;&#10;Exif Version                    : 0220&#13;&#10;<marK>User Comment                    : ce154b5a8e59c89732bc25d6a2e6b90b</marK>
@@ -228,6 +231,8 @@ Progress: 205096 / 28688786 (0.71%)           [ERROR] 2021/09/27 20:28:16 [!] pa
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ ssh bigtommysenior@10.0.0.22                                                                              130 &Cross;&#13;&#10;bigtommysenior@10.0.0.22&apos;s password: &#13;&#10;Welcome to Ubuntu 16.04 LTS (GNU/Linux 4.4.0-31-generic x86_64)&#13;&#10;&#13;&#10; * Documentation:  https://help.ubuntu.com/&#13;&#10;&#13;&#10;143 packages can be updated.&#13;&#10;0 updates are security updates.&#13;&#10;&#13;&#10;&#13;&#10;Last login: Thu Jul 14 13:45:57 2016&#13;&#10;bigtommysenior@CallahanAutoSrv01:~$ 
     </pre>
 
+    <h2><a id="www-data">Privesc - www-data</a></h2>
+
     <li>Once on the box, we find a file called LOOT.ZIP in bigtommysenior's home directory.  The file is encrypted and I am unable to crack it.  There is another file called el-flag-numero-quatro.txt.  This file gives us the 4th flag for the box.  It also tells us the 5th flag is locate in the root directory /5.txt.  The 5th flag is unreadable by us but owned by www-data.  If we can get a shell as www-data we will get access to the 5th flag.</li>
 
     <br>
@@ -297,11 +302,17 @@ Do this for ALL the flags sequentially, and this password will open the loot.zip
 folder and you can call the box PWNED.
     </pre>
 
-    <li></li>
+    <li>I did not pay attention to flag locations as I was working on this box.  So I take a shortcut at this point.  I simply use my bigtommysenior shell (because it's SSH and so it looks better than the www-data shell) to search for the flag files in one swoop.</li>
 
+    <pre>
+bigtommysenior@CallahanAutoSrv01:/$ find / 2&gt;/dev/null | grep .txt | grep flag&#13;&#10;/var/thatsg0nnaleaveamark/NickIzL33t/flagtres.txt&#13;&#10;/var/www/html/flag-numero-uno.txt&#13;&#10;/var/www/html/prehistoricforest/thisisthesecondflagyayyou.txt&#13;&#10;/home/bigtommysenior/el-flag-numero-quatro.txt&#13;&#10;bigtommysenior@CallahanAutoSrv01:/$ cat /var/thatsg0nnaleaveamark/NickIzL33t/flagtres.txt&#13;&#10;THREE OF 5 FLAGS - you&apos;re awesome sauce.&#13;&#10;&#13;&#10;Flag data: TinyHead&#13;&#10;bigtommysenior@CallahanAutoSrv01:/$ cat /var/www/html/flag-numero-uno.txt&#13;&#10;This is the first of five flags in the Callhan Auto server.  You&apos;ll need them all to unlock&#13;&#10;the final treasure and fully consider the VM pwned!&#13;&#10;&#13;&#10;Flag data: B34rcl4ws&#13;&#10;bigtommysenior@CallahanAutoSrv01:/$ cat /var/www/html/prehistoricforest/thisisthesecondflagyayyou.txt&#13;&#10;You&apos;ve got 2 of five flags - keep it up!&#13;&#10;&#13;&#10;Flag data: Z4l1nsky&#13;&#10;bigtommysenior@CallahanAutoSrv01:/$ cat /home/bigtommysenior/el-flag-numero-quatro.txt&#13;&#10;YAY!  Flag 4 out of 5!!!! And you should now be able to restore the Callhan Web server to normal&#13;&#10;working status.&#13;&#10;&#13;&#10;Flag data: EditButton&#13;&#10;&#13;&#10;But...but...where&apos;s flag 5?  &#13;&#10;&#13;&#10;I&apos;ll make it easy on you.  It&apos;s in the root of this server at /5.txt
+    </pre>
 
+    <li>Now I follow the directions from the 5th flag and combine all the flags together to unzip the LOOT.ZIP file.</li>
 
-
+    <pre>
+bigtommysenior@CallahanAutoSrv01:~$ unzip LOOT.ZIP &#13;&#10;Archive:  LOOT.ZIP&#13;&#10;[LOOT.ZIP] THE-END.txt password: &#13;&#10;  inflating: THE-END.txt             &#13;&#10;bigtommysenior@CallahanAutoSrv01:~$ cat THE-END.txt &#13;&#10;YOU CAME.&#13;&#10;YOU SAW.&#13;&#10;YOU PWNED.&#13;&#10;&#13;&#10;Thanks to you, Tommy and the crew at Callahan Auto will make 5.3 cajillion dollars this year.&#13;&#10;&#13;&#10;GREAT WORK!&#13;&#10;&#13;&#10;I&apos;d love to know that you finished this VM, and/or get your suggestions on how to make the next &#13;&#10;one better.&#13;&#10;&#13;&#10;Please shoot me a note at 7ms @ 7ms.us with subject line &quot;Here comes the meat wagon!&quot;&#13;&#10;&#13;&#10;Or, get in touch with me other ways:&#13;&#10;&#13;&#10;* Twitter: @7MinSec&#13;&#10;* IRC (Freenode): #vulnhub (username is braimee)&#13;&#10;&#13;&#10;Lastly, please don&apos;t forget to check out www.7ms.us and subscribe to the podcast at&#13;&#10;bit.ly/7minsec&#13;&#10;&#13;&#10;&lt;/shamelessplugs&gt;&#13;&#10;&#13;&#10;Thanks and have a blessed week!&#13;&#10;&#13;&#10;-Brian Johnson&#13;&#10;7 Minute Security
+    </pre>
 
 
     <br>
