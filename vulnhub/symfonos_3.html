@@ -18,8 +18,8 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
-        <li><a href="#root">Privesc - root</a></li>
+        <li><a href="#cerberus">Shell - cerberus</a></li>
+        <li><a href="#root">Shell - root</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
@@ -60,7 +60,7 @@ layout: default
         <li>/tartarus/ - &quot;&lt;!-- The underworld can be cruel... but it can also be misleading. --&gt;&quot;</li>
     </ul>
 
-    <li>/cgi-bin/underworld turns out to be a custom cgi-bin directory.  I run Nikto against this with custom flags specifgying the custom cgi-bin directory.</li>
+    <li>/cgi-bin/underworld turns out to be a custom cgi-bin directory.  I run Nikto against this with custom flags specifying the custom cgi-bin directory.</li>
 
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/symfonos_3]&#13;&#10;&boxur;&HorizontalLine;$ nikto -host http://10.0.0.15 -Cgidirs &quot;/cgi-bin/underworld&quot; | tee 10.0.0.15-nikto &#13;&#10;- Nikto v2.1.6&#13;&#10;---------------------------------------------------------------------------&#13;&#10;+ Target IP:          10.0.0.15&#13;&#10;+ Target Hostname:    10.0.0.15&#13;&#10;+ Target Port:        80&#13;&#10;+ Start Time:         2021-09-23 10:00:01 (GMT-4)&#13;&#10;---------------------------------------------------------------------------&#13;&#10;+ Server: Apache/2.4.25 (Debian)&#13;&#10;+ The anti-clickjacking X-Frame-Options header is not present.&#13;&#10;+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS&#13;&#10;+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type&#13;&#10;+ Apache/2.4.25 appears to be outdated (current is at least Apache/2.4.37). Apache 2.2.34 is the EOL for the 2.x branch.&#13;&#10;+ Server may leak inodes via ETags, header found with file /, inode: f1, size: 58e15fe4052c8, mtime: gzip&#13;&#10;+ Allowed HTTP Methods: HEAD, GET, POST, OPTIONS &#13;&#10;+ Uncommon header &apos;93e4r0-cve-2014-6278&apos; found, with contents: true&#13;&#10;+ OSVDB-112004: /cgi-bin/underworld: Site appears vulnerable to the &apos;shellshock&apos; vulnerability (http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6271).&#13;&#10;+ Uncommon header &apos;93e4r0-cve-2014-6271&apos; found, with contents: true&#13;&#10;+ OSVDB-112004: /cgi-bin/underworld: Site appears vulnerable to the &apos;shellshock&apos; vulnerability (http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6278).&#13;&#10;+ OSVDB-3233: /icons/README: Apache default file found.&#13;&#10;+ 8676 requests: 0 error(s) and 11 item(s) reported on remote host&#13;&#10;+ End Time:           2021-09-23 10:00:52 (GMT-4) (51 seconds)&#13;&#10;---------------------------------------------------------------------------&#13;&#10;+ 1 host(s) tested
@@ -68,7 +68,9 @@ layout: default
 
     <li>The web server appears to be vulernable to shellshock.  This will easily get us a reverse shell.</li>
 
-    <h2><a id="foothold">Foothold</a></h2>
+    <br>
+    
+    <h2><a id="cerberus">Shell - cerberus</a></h2>
 
     <li>I set my reverse listener on port 4444 and send a curl against /cgi-bin/underworld with the user agent header set to exploit the shellshock vulnerability.</li>
 
@@ -143,7 +145,7 @@ hades@symfonos3:/tmp$ ls -la&#13;&#10;total 4612&#13;&#10;drwxrwxrwt  9 root    
 drwx------  3 root     root        4096 Sep 22 11:23 systemd-private-b3950a3936fe498d87e4f6a8bb5c726d-apache2.service-TvRruh&#13;&#10;drwx------  3 root     root        4096 Sep 22 11:23 systemd-private-b3950a3936fe498d87e4f6a8bb5c726d-systemd-timesyncd.service-AM0Iif&#13;&#10;drwxrwxrwt  2 root     root        4096 Sep 22 11:23 .X11-unix&#13;&#10;drwxrwxrwt  2 root     root        4096 Sep 22 11:23 .XIM-unix
     </pre>
 
-    <h2><a id="root">Privesc - Root</a></h2>
+    <h2><a id="root">Shell - Root</a></h2>
 
     <li>Now we execute the rootbash file with the -p flag and we gain a root shell.</li>
 
