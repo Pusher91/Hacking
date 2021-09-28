@@ -99,6 +99,9 @@ Lol
 
     <img src="../images/tommyboy1/ios_useragent.png">
 
+    <br>
+    <br>
+
     <li>Now when I browse to http://10.0.0.22:8008/NickIzL33t/ I get text saying</li>
     
     <pre>
@@ -113,44 +116,7 @@ Lol
     <li>I used gobuster to find the .html file name.  I used a few different wordlists before landing on rockyou.txt.  I also setup gobuster to with the user-agent to identify as a cell phone (iphone in this case).</li>
 
     <pre>
-┌──(kali㉿kali)-[~/Documents/VulnHub/TommyBoy_1/WebEnum]
-└─$ gobuster dir -u http://10.0.0.22:8008/NickIzL33t/ -w /usr/share/wordlists/rockyou.txt -x html -a "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3" | tee nickisl33t
-===============================================================
-Gobuster v3.1.0
-by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
-===============================================================
-[+] Url:                     http://10.0.0.22:8008/NickIzL33t/
-[+] Method:                  GET
-[+] Threads:                 10
-[+] Wordlist:                /usr/share/wordlists/rockyou.txt
-[+] Negative Status codes:   404
-[+] User Agent:              User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3
-[+] Extensions:              html
-[+] Timeout:                 10s
-===============================================================
-2021/09/27 20:28:00 Starting gobuster in directory enumeration mode
-===============================================================
-Progress: 6644 / 28688786 (0.02%)[ERROR] 2021/09/27 20:28:01 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^": invalid URL escape "%^"
-Progress: 40776 / 28688786 (0.14%)[ERROR] 2021/09/27 20:28:03 [!] parse "http://10.0.0.22:8008/NickIzL33t/!\"£$%^": invalid URL escape "%^"
-Progress: 47376 / 28688786 (0.17%)[ERROR] 2021/09/27 20:28:04 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&*()": invalid URL escape "%^&"
-/??????.html          (Status: 200) [Size: 270]
-/??????               (Status: 200) [Size: 270]
-Progress: 67280 / 28688786 (0.23%)            [ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%sexy": invalid URL escape "%se"
-[ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%angel": invalid URL escape "%an"
-Progress: 73806 / 28688786 (0.26%)            [ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&*": invalid URL escape "%^&"
-Progress: 80402 / 28688786 (0.28%)            [ERROR] 2021/09/27 20:28:06 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%bitch": invalid URL escape "%bi"
-///////               (Status: 200) [Size: 270]
-///////.html          (Status: 403) [Size: 94] 
-Progress: 106792 / 28688786 (0.37%)           [ERROR] 2021/09/27 20:28:08 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&*(": invalid URL escape "%^&"
-Progress: 119898 / 28688786 (0.42%)           [ERROR] 2021/09/27 20:28:09 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%me": invalid URL escape "%me"
-Progress: 133056 / 28688786 (0.46%)           [ERROR] 2021/09/27 20:28:11 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%cute": invalid URL escape "%cu"
-Progress: 139692 / 28688786 (0.49%)           [ERROR] 2021/09/27 20:28:11 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%^&": invalid URL escape "%^&"
-[ERROR] 2021/09/27 20:28:11 [!] parse "http://10.0.0.22:8008/NickIzL33t/!@#$%": invalid URL escape "%"
-Progress: 152810 / 28688786 (0.53%)           [ERROR] 2021/09/27 20:28:12 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%love": invalid URL escape "%lo"
-[ERROR] 2021/09/27 20:28:12 [!] parse "http://10.0.0.22:8008/NickIzL33t/!\"£$%^&*()": invalid URL escape "%^&"
-Progress: 172212 / 28688786 (0.60%)           [ERROR] 2021/09/27 20:28:13 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%cool": invalid URL escape "%co"
-/fallon1.html         (Status: 200) [Size: 459]
-Progress: 205096 / 28688786 (0.71%)           [ERROR] 2021/09/27 20:28:16 [!] parse "http://10.0.0.22:8008/NickIzL33t/100%real": invalid URL escape "%re"
+&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1/WebEnum]&#13;&#10;&boxur;&HorizontalLine;$ gobuster dir -u http://10.0.0.22:8008/NickIzL33t/ -w /usr/share/wordlists/rockyou.txt -x html -a &quot;User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3&quot; | tee nickisl33t&#13;&#10;===============================================================&#13;&#10;Gobuster v3.1.0&#13;&#10;by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)&#13;&#10;===============================================================&#13;&#10;[+] Url:                     http://10.0.0.22:8008/NickIzL33t/&#13;&#10;[+] Method:                  GET&#13;&#10;[+] Threads:                 10&#13;&#10;[+] Wordlist:                /usr/share/wordlists/rockyou.txt&#13;&#10;[+] Negative Status codes:   404&#13;&#10;[+] User Agent:              User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B176 Safari/7534.48.3&#13;&#10;[+] Extensions:              html&#13;&#10;[+] Timeout:                 10s&#13;&#10;===============================================================&#13;&#10;2021/09/27 20:28:00 Starting gobuster in directory enumeration mode&#13;&#10;===============================================================&#13;&#10;Progress: 6644 / 28688786 (0.02%)[ERROR] 2021/09/27 20:28:01 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!@#$%^&quot;: invalid URL escape &quot;%^&quot;&#13;&#10;Progress: 40776 / 28688786 (0.14%)[ERROR] 2021/09/27 20:28:03 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!\&quot;&pound;$%^&quot;: invalid URL escape &quot;%^&quot;&#13;&#10;Progress: 47376 / 28688786 (0.17%)[ERROR] 2021/09/27 20:28:04 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!@#$%^&amp;*()&quot;: invalid URL escape &quot;%^&amp;&quot;&#13;&#10;/??????.html          (Status: 200) [Size: 270]&#13;&#10;/??????               (Status: 200) [Size: 270]&#13;&#10;Progress: 67280 / 28688786 (0.23%)            [ERROR] 2021/09/27 20:28:06 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%sexy&quot;: invalid URL escape &quot;%se&quot;&#13;&#10;[ERROR] 2021/09/27 20:28:06 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%angel&quot;: invalid URL escape &quot;%an&quot;&#13;&#10;Progress: 73806 / 28688786 (0.26%)            [ERROR] 2021/09/27 20:28:06 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!@#$%^&amp;*&quot;: invalid URL escape &quot;%^&amp;&quot;&#13;&#10;Progress: 80402 / 28688786 (0.28%)            [ERROR] 2021/09/27 20:28:06 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%bitch&quot;: invalid URL escape &quot;%bi&quot;&#13;&#10;///////               (Status: 200) [Size: 270]&#13;&#10;///////.html          (Status: 403) [Size: 94] &#13;&#10;Progress: 106792 / 28688786 (0.37%)           [ERROR] 2021/09/27 20:28:08 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!@#$%^&amp;*(&quot;: invalid URL escape &quot;%^&amp;&quot;&#13;&#10;Progress: 119898 / 28688786 (0.42%)           [ERROR] 2021/09/27 20:28:09 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%me&quot;: invalid URL escape &quot;%me&quot;&#13;&#10;Progress: 133056 / 28688786 (0.46%)           [ERROR] 2021/09/27 20:28:11 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%cute&quot;: invalid URL escape &quot;%cu&quot;&#13;&#10;Progress: 139692 / 28688786 (0.49%)           [ERROR] 2021/09/27 20:28:11 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!@#$%^&amp;&quot;: invalid URL escape &quot;%^&amp;&quot;&#13;&#10;[ERROR] 2021/09/27 20:28:11 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!@#$%&quot;: invalid URL escape &quot;%&quot;&#13;&#10;Progress: 152810 / 28688786 (0.53%)           [ERROR] 2021/09/27 20:28:12 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%love&quot;: invalid URL escape &quot;%lo&quot;&#13;&#10;[ERROR] 2021/09/27 20:28:12 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/!\&quot;&pound;$%^&amp;*()&quot;: invalid URL escape &quot;%^&amp;&quot;&#13;&#10;Progress: 172212 / 28688786 (0.60%)           [ERROR] 2021/09/27 20:28:13 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%cool&quot;: invalid URL escape &quot;%co&quot;&#13;&#10;/fallon1.html         (Status: 200) [Size: 459]&#13;&#10;Progress: 205096 / 28688786 (0.71%)           [ERROR] 2021/09/27 20:28:16 [!] parse &quot;http://10.0.0.22:8008/NickIzL33t/100%real&quot;: invalid URL escape &quot;%re&quot;
     </pre>
 
     <li>The output is a little messy but I watched the output until an interesting status 200 returned.  fallon1.html turns out to be the correct .html file name.</li>
@@ -230,7 +196,7 @@ Progress: 205096 / 28688786 (0.71%)           [ERROR] 2021/09/27 20:28:16 [!] pa
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/VulnHub/TommyBoy_1]&#13;&#10;&boxur;&HorizontalLine;$ ssh bigtommysenior@10.0.0.22                                                                              130 &Cross;&#13;&#10;bigtommysenior@10.0.0.22&apos;s password: &#13;&#10;Welcome to Ubuntu 16.04 LTS (GNU/Linux 4.4.0-31-generic x86_64)&#13;&#10;&#13;&#10; * Documentation:  https://help.ubuntu.com/&#13;&#10;&#13;&#10;143 packages can be updated.&#13;&#10;0 updates are security updates.&#13;&#10;&#13;&#10;&#13;&#10;Last login: Thu Jul 14 13:45:57 2016&#13;&#10;bigtommysenior@CallahanAutoSrv01:~$ 
     </pre>
 
-    <h2><a id="www-data">shell - www-data</a></h2>
+    <h2><a id="www-data">Shell - www-data</a></h2>
 
     <li>Once on the box, we find a file called LOOT.ZIP in bigtommysenior's home directory.  The file is encrypted and I am unable to crack it.  There is another file called el-flag-numero-quatro.txt.  This file gives us the 4th flag for the box.  It also tells us the 5th flag is locate in the root directory /5.txt.  The 5th flag is unreadable by us but owned by www-data.  If we can get a shell as www-data we will get access to the 5th flag.</li>
 
@@ -283,22 +249,7 @@ bigtommysenior@CallahanAutoSrv01:/var/www/html/prehistoricforest$ cat ./wp-conte
     <li>Navigating to http://10.0.0.22/prehistoricforest/wp-content/themes/twentysixteen/404.php should connect to the netcat listener with a reverse shell as www-data.  Now we can read the flag in the root directory.</li>
 
     <pre>
-www-data@CallahanAutoSrv01:/$ cat .5	
-cat .5.txt 
-FIFTH FLAG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-YOU DID IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-OH RICHARD DON'T RUN AWAY FROM YOUR FEELINGS!!!!!!!!
-
-Flag data: Buttcrack
-
-Ok, so NOW what you do is take the flag data from each flag and blob it into one big chunk.
-So for example, if flag 1 data was "hi" and flag 2 data was "there" and flag 3 data was "you"
-you would create this blob:
-
-hithereyou
-
-Do this for ALL the flags sequentially, and this password will open the loot.zip in Big Tom's
-folder and you can call the box PWNED.
+www-data@CallahanAutoSrv01:/$ cat .5&#9;&#13;&#10;cat .5.txt &#13;&#10;FIFTH FLAG!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&#13;&#10;YOU DID IT!!!!!!!!!!!!!!!!!!!!!!!!!!!!&#13;&#10;OH RICHARD DON&apos;T RUN AWAY FROM YOUR FEELINGS!!!!!!!!&#13;&#10;&#13;&#10;Flag data: Buttcrack&#13;&#10;&#13;&#10;Ok, so NOW what you do is take the flag data from each flag and blob it into one big chunk.&#13;&#10;So for example, if flag 1 data was &quot;hi&quot; and flag 2 data was &quot;there&quot; and flag 3 data was &quot;you&quot;&#13;&#10;you would create this blob:&#13;&#10;&#13;&#10;hithereyou&#13;&#10;&#13;&#10;Do this for ALL the flags sequentially, and this password will open the loot.zip in Big Tom&apos;s&#13;&#10;folder and you can call the box PWNED.
     </pre>
 
     <li>I did not pay attention to flag locations as I was working on this box.  So I take a shortcut at this point.  I simply use my bigtommysenior shell (because it's SSH and so it looks better than the www-data shell) to search for the flag files in one swoop.</li>
@@ -315,5 +266,3 @@ bigtommysenior@CallahanAutoSrv01:~$ unzip LOOT.ZIP &#13;&#10;Archive:  LOOT.ZIP&
 
 </body>
 </html>
-
- 	UPDATE <Table> SET <Column>='<Value>' WHERE <Column>='<Value>';
