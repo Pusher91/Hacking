@@ -18,12 +18,12 @@ layout: default
         <li>Summary</li>
         <li>Port Scanning</li>
         <li>Information Gathering</li>
-        <li>Foothold</li>
-        <li>Privesc - root</li>
+        <li>Shell - www-data</li>
+        <li>shell - root</li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
-    <p>Muddy involved exploiting an LFI to gain access to a webdav server.  Once access is gained to webdav we are able to upload a webshell, and at that point RCE is achieved.  Privesc involved exploting a cronjob running netstat without an absolute path.  We are able to write a malicious netstat to a directory in the cronjob PATH variable preceding the legitimate cronjob.  This leads us to root.</p>
+    <p>Muddy involved exploiting an LFI to gain access to a webdav server.  Once access is gained to webdav we are able to upload a webshell, and at that point RCE is achieved.  Privesc involved exploiting a cronjob running netstat without an absolute path.  We are able to write a malicious netstat to a directory in the cronjob PATH variable preceding the location of the legitimate netstat.  This leads us to root.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -207,7 +207,7 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 &lt;/SOAP-ENV:Envelope&gt;
     </pre>
 
-    <h2><a id="foothold">Foothold</a></h2>
+    <h2><a id="www-data">Shell - www-data</a></h2>
 
     <p>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials for basic auth on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav</p>
 
@@ -302,7 +302,7 @@ www-data@muddy:/var/www/html/webdav$
     </pre>
 
 
-    <h2><a id="root">Privesc - Root</a></h2>
+    <h2><a id="root">shell - Root</a></h2>
 
     <li>Once we are on the box, one of the things we check is for cronjobs.  There turns out to be a cronjob we can exploit</li>
 
