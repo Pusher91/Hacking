@@ -347,7 +347,7 @@ PATH=/dev/shm:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 *  *    * * *   root    netstat -tlpn &gt; /root/status &amp;&amp; service apache2 status &gt;&gt; /root/status &amp;&amp; service mysql status &gt;&gt; /root/status
     </pre>
 
-    <li>The cronjob is calling for the program netstat without an absolute path.  So we look at the PATH variables and see if we can write to any of them.  /dev/shm is a directory that we can commonly write to as an unprivileged user.  So in order to exploit this, we will create a malicious executable named netstat and place it in this directory.  I use msfvenom to create this.</li>
+    <li>The cronjob is calling for the program netstat without an absolute path.  So we look at the PATH variables and see if we can write to any of the ones listed, preceding the one that contains the legitimate version of netstat.  /dev/shm is a directory that we can commonly write to as an unprivileged user and it is the first one listed in the PATH variable.  This is perfect.  So in order to exploit this, we will create a malicious executable named netstat and place it in this directory.  I use msfvenom to create this.</li>
 
     <br>
 
