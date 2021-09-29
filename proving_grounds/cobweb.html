@@ -18,7 +18,7 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#foothold">Shell - apache</a></li>
         <li><a href="#root">Shell - root</a></li>
     </ul>
 
@@ -161,8 +161,8 @@ ftp&gt; exit
         <li>192.168.118.5 - - [27/Aug/2021:08:47:04 -0400] <mark>"GET /.index.php.swp</mark> HTTP/1.1&quot; 200 5422 &quot;-&quot; &quot;Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0&quot;</li>
     </ul>
 
-    <h2><a id="www-data">Shell - www-data</a></h2>
-    
+    <h2><a id="www-data">Shell - apache</a></h2>
+
     <li>When we visit http://192.168.248.162/.index.php.swp we see some php code involving interaction with the SQL database.  I used curl to download the contents of this page.</li>
 
     <pre>
@@ -227,7 +227,7 @@ find / -perm -u=s 2&gt;/dev/null
 /usr/libexec/sssd/selinux_child
     </pre>
 
-    <li>We go to searchsploit and search for any exploits for it.  I also include the version 4.5 in my search.  I download </li>
+    <li>We go to searchsploit and search for any exploits for it.  I also include the version 4.5 in my search.</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Cobweb]
