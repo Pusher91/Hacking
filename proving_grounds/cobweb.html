@@ -19,7 +19,7 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#foothold">Foothold</a></li>
-        <li><a href="#root">Privesc - root</a></li>
+        <li><a href="#root">Shell - root</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
@@ -161,6 +161,8 @@ ftp&gt; exit
         <li>192.168.118.5 - - [27/Aug/2021:08:47:04 -0400] <mark>"GET /.index.php.swp</mark> HTTP/1.1&quot; 200 5422 &quot;-&quot; &quot;Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0&quot;</li>
     </ul>
 
+    <h2><a id="www-data">Shell - www-data</a></h2>
+    
     <li>When we visit http://192.168.248.162/.index.php.swp we see some php code involving interaction with the SQL database.  I used curl to download the contents of this page.</li>
 
     <pre>
@@ -174,8 +176,9 @@ ftp&gt; exit
     <li>I pasted this code into a php beautifier that I found on google to make it easier to read.  I also added comments to the code to give a brief explanation of the vulnerabilities in the code and how we will exploit them.</li>
 
     <img src="../images/cobweb/sql_injection.png">
-
-    <h2><a id="foothold">Foothold</a></h2>
+    
+    <br>
+    <br>
 
     <li>Now we will exploit this code using a URL sql injection.  I send this through Firefox to create a web page containing a reverse shell.</li>
     <ul>
