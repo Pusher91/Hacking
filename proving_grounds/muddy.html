@@ -87,7 +87,7 @@ Service detection performed. Please report any incorrect results at https://nmap
     <br>
     <br>
 
-    <li>When we visit the web server on port 80, http://192.168.248.161 it redirects us to muddy.ugc and says page cannot be found.  In order to fix this, we add "192.168.248.161 muddy.ugc" to our /etc/hosts file.  After changing this and revisiting port 80 we find a wordpress site.  The first thing I do is try to login as admin, but the login page does not exist.  Then I try wpscan against it but nothing vulnerable turns up.  Finally I run gobuster against it and get this:</li>
+    <li>When we visit the web server on port 80, http://192.168.248.161 it redirects us to muddy.ugc and says page cannot be found.  In order to fix this, we add "192.168.248.161 muddy.ugc" to our /etc/hosts file.  After changing this and revisiting port 80 we find a wordpress site.  The first thing I do is try to login as admin, but the login page does not exist.  Then I try wpscan against it but nothing vulnerable turns up.  Finally I run gobuster and get this:</li>
 
     <pre>
 ┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Muddy/WebEnum]
