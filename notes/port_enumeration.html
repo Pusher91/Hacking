@@ -463,7 +463,14 @@ layout: default
         <li>Connect with netcat</li>
         <ul>
             <li>Enter a username and if it exists, it will return with details on the user.</li>
+            <pre>
+$ nc -nv 192.168.108.140 79                      130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Connected to 192.168.108.140:79.&#13;&#10;charlotte&#13;&#10;Login: charlotte         Name: Charlotte&#13;&#10;&#13;&#10;[No profile information]
+            </pre>
         </ul>
+        <li>Running finger on local machine</li>
+        <pre>
+$ finger                                         127 &Cross;&#13;&#10;Login     Name       Tty      Idle  Login Time   Office     Office Phone&#13;&#10;kali      Kali       tty7     1:21  Sep 29 14:21 (:0)
+        </pre>
     </ul>
     
     <h2>80 TCP / HTTP</h2>
