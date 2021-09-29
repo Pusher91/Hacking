@@ -18,7 +18,7 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#foothold">Foothold</a></li>
+        <li><a href="#???">Shell - ???</a></li>
         <li><a href="#root">Privesc - root</a></li>
     </ul>
 
@@ -30,18 +30,22 @@ layout: default
 
     <li>Running a port scan against the full port range to determine which ones are open.</li>
 
-    <pre></pre>
+    <pre>
+# Nmap 7.91 scan initiated Wed Sep 29 11:22:43 2021 as: nmap -p- -oN ping_tcp 10.0.0.23&#13;&#10;Nmap scan report for 10.0.0.23&#13;&#10;Host is up (0.00086s latency).&#13;&#10;Not shown: 65532 closed ports&#13;&#10;PORT      STATE SERVICE&#13;&#10;22/tcp    open  ssh&#13;&#10;80/tcp    open  http&#13;&#10;33060/tcp open  mysqlx&#13;&#10;MAC Address: 00:0C:29:F6:73:1F (VMware)&#13;&#10;&#13;&#10;# Nmap done at Wed Sep 29 11:22:51 2021 -- 1 IP address (1 host up) scanned in 8.12 seconds
+    </pre>
 
     <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
 
-    <pre></pre>
+    <pre>
+# Nmap 7.91 scan initiated Wed Sep 29 11:23:17 2021 as: nmap -p22,80,33060 -sV -sC -oN script_tcp 10.0.0.23&#13;&#10;Nmap scan report for 10.0.0.23&#13;&#10;Host is up (0.00018s latency).&#13;&#10;&#13;&#10;PORT      STATE SERVICE VERSION&#13;&#10;22/tcp    open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)&#13;&#10;| ssh-hostkey: &#13;&#10;|   3072 91:ba:0d:d4:39:05:e3:13:55:57:8f:1b:46:90:db:e4 (RSA)&#13;&#10;|   256 0f:35:d1:a1:31:f2:f6:aa:75:e8:17:01:e7:1e:d1:d5 (ECDSA)&#13;&#10;|_  256 af:f1:53:ea:7b:4d:d7:fa:d8:de:0d:f2:28:fc:86:d7 (ED25519)&#13;&#10;80/tcp    open  http    Apache httpd 2.4.41 ((Ubuntu))&#13;&#10;|_http-generator: WordPress 5.4.2&#13;&#10;| http-robots.txt: 1 disallowed entry &#13;&#10;|_/secret.txt&#13;&#10;|_http-server-header: Apache/2.4.41 (Ubuntu)&#13;&#10;|_http-title: OSCP Voucher &amp;#8211; Just another WordPress site&#13;&#10;33060/tcp open  mysqlx?&#13;&#10;| fingerprint-strings: &#13;&#10;|   LDAPSearchReq, SSLSessionReq, TLSSessionReq: &#13;&#10;|     Invalid message&quot;&#13;&#10;|_    HY000&#13;&#10;1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :&#13;&#10;SF-Port33060-TCP:V=7.91%I=7%D=9/29%Time=615484F2%P=x86_64-pc-linux-gnu%r(N&#13;&#10;SF:ULL,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(GenericLines,9,&quot;\x05\0\0\0\x0b\&#13;&#10;SF:x08\x05\x1a\0&quot;)%r(HTTPOptions,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(RPCCh&#13;&#10;SF:eck,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(DNSVersionBindReqTCP,9,&quot;\x05\0\&#13;&#10;SF:0\0\x0b\x08\x05\x1a\0&quot;)%r(Help,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(SSLS&#13;&#10;SF:essionReq,2B,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0\x1e\0\0\0\x01\x08\x01\x10\x8&#13;&#10;SF:8&apos;\x1a\x0fInvalid\x20message\&quot;\x05HY000&quot;)%r(TLSSessionReq,2B,&quot;\x05\0\0\&#13;&#10;SF:0\x0b\x08\x05\x1a\0\x1e\0\0\0\x01\x08\x01\x10\x88&apos;\x1a\x0fInvalid\x20me&#13;&#10;SF:ssage\&quot;\x05HY000&quot;)%r(Kerberos,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(SMBPr&#13;&#10;SF:ogNeg,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(FourOhFourRequest,9,&quot;\x05\0\0&#13;&#10;SF:\0\x0b\x08\x05\x1a\0&quot;)%r(LPDString,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(&#13;&#10;SF:LDAPSearchReq,2B,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0\x1e\0\0\0\x01\x08\x01\x1&#13;&#10;SF:0\x88&apos;\x1a\x0fInvalid\x20message\&quot;\x05HY000&quot;)%r(ms-sql-s,9,&quot;\x05\0\0\0\&#13;&#10;SF:x0b\x08\x05\x1a\0&quot;)%r(afp,9,&quot;\x05\0\0\0\x0b\x08\x05\x1a\0&quot;)%r(giop,9,&quot;\&#13;&#10;SF:x05\0\0\0\x0b\x08\x05\x1a\0&quot;);&#13;&#10;MAC Address: 00:0C:29:F6:73:1F (VMware)&#13;&#10;Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Wed Sep 29 11:25:34 2021 -- 1 IP address (1 host up) scanned in 136.80 seconds
+    </pre>
 
     <br>
     <h2><a id="infogather">Information Gathering</a></h2>
 
     
     <br>
-    <h2><a id="foothold">Foothold</a></h2>
+    <h2><a id="???">Shell - ???</a></h2>
 
 
     <br>
