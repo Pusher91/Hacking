@@ -178,6 +178,8 @@ xmlns:urn=\&quot;urn:HelloService\&quot;&gt;&lt;soapenv:Header/&gt;
 &#039;http://localhost:8888/HelloService/soap11&#039; | xmllint --format -
     </pre>
 
+    <h2><a id="www-data">Shell - www-data</a></h2>
+
     <li>If we substitute "localhost" for "muddy.ugc", "sayhello" for "checkout", and "HelloService" for "muddy" we get a working exploit:</li>
 
     <pre>
@@ -215,9 +217,7 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 &lt;/SOAP-ENV:Envelope&gt;
     </pre>
 
-    <h2><a id="www-data">Shell - www-data</a></h2>
-
-    <li>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials stored for basic auth on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav and use LFI to access them.</li>
+    <li>Now that we have a working LFI exploit we will use it to gain more information to gain shell access to the host.  Thinking back to the muddy.ugc/webdav directory, there are likely credentials stored for basic authentication on the web server.  We can find these credentials in /var/www/html/webdav/passwd.dav and use LFI to access them.</li>
 
     <pre>
  &#x250c;&#x2500;&#x2500;(kali&#x327f;kali)-[~/Documents/ProvingGrounds/Muddy/exfiltrated]
@@ -256,6 +256,8 @@ xmlns:urn=\&quot;urn:checkout\&quot;&gt;&lt;soapenv:Header/&gt;
 
     <li>I choose to crack the hash ($apr1$GUG1OnCu$uiSLaAQojCm14lPMwISDi0) using hashcat.  In order to identify the hash mode required, I go to https://hashcat.net/wiki/doku.php?id=example_hashes and search the page for the first characters of the hash, "apr1".  This brings be to the hashcat mode 1600</li>
 
+    <br>
+    
     <img src="../images/muddy/hashcat.png">
 
     <br>
