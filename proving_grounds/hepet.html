@@ -1,0 +1,58 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>Hepet Walkthrough</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<body>
+
+    <h1>Hepet Walkthrough</h1>
+
+    <hr>
+
+    <h2>Contents</h2>
+    <ul>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#???">Shell - ???</a></li>
+        <li><a href="#root">Shell - root</a></li>
+    </ul>
+
+    <h2><a id="summary">Summary</a></h2>
+
+    <p></p>
+
+    <h2><a id="portscan">Port Scanning</a></h2>
+
+    <li>Running a port scan against the full port range to determine which ones are open.</li>
+
+    <pre>
+# Nmap 7.91 scan initiated Wed Sep 29 14:26:20 2021 as: nmap -p- -oN ping_tcp 192.168.108.140&#13;&#10;Nmap scan report for 192.168.108.140&#13;&#10;Host is up (0.046s latency).&#13;&#10;Not shown: 65522 filtered ports&#13;&#10;PORT      STATE SERVICE&#13;&#10;25/tcp    open  smtp&#13;&#10;79/tcp    open  finger&#13;&#10;105/tcp   open  csnet-ns&#13;&#10;106/tcp   open  pop3pw&#13;&#10;110/tcp   open  pop3&#13;&#10;143/tcp   open  imap&#13;&#10;443/tcp   open  https&#13;&#10;2224/tcp  open  efi-mg&#13;&#10;7680/tcp  open  pando-pub&#13;&#10;8000/tcp  open  http-alt&#13;&#10;11100/tcp open  unknown&#13;&#10;20001/tcp open  microsan&#13;&#10;33006/tcp open  unknown&#13;&#10;&#13;&#10;# Nmap done at Wed Sep 29 14:28:14 2021 -- 1 IP address (1 host up) scanned in 113.71 seconds
+    </pre>
+
+    <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
+
+    <pre>
+# Nmap 7.91 scan initiated Wed Sep 29 14:28:35 2021 as: nmap -p25,79,105,106,110,143,443,2224,7680,8000,11100,20001,33006 -sV -sC -oN script_scan 192.168.108.140&#13;&#10;Nmap scan report for 192.168.108.140&#13;&#10;Host is up (0.039s latency).&#13;&#10;&#13;&#10;PORT      STATE SERVICE        VERSION&#13;&#10;25/tcp    open  smtp           Mercury/32 smtpd (Mail server account Maiser)&#13;&#10;|_smtp-commands: localhost Hello nmap.scanme.org; ESMTPs are:, TIME, &#13;&#10;79/tcp    open  finger         Mercury/32 fingerd&#13;&#10;| finger: Login: Admin         Name: Mail System Administrator\x0D&#13;&#10;| \x0D&#13;&#10;|_[No profile information]\x0D&#13;&#10;105/tcp   open  ph-addressbook Mercury/32 PH addressbook server&#13;&#10;106/tcp   open  pop3pw         Mercury/32 poppass service&#13;&#10;110/tcp   open  pop3           Mercury/32 pop3d&#13;&#10;|_pop3-capabilities: EXPIRE(NEVER) TOP USER UIDL APOP&#13;&#10;143/tcp   open  imap           Mercury/32 imapd 4.62&#13;&#10;|_imap-capabilities: OK IMAP4rev1 CAPABILITY complete X-MERCURY-1A0001 AUTH=PLAIN&#13;&#10;443/tcp   open  ssl/http       Apache httpd 2.4.46 ((Win64) OpenSSL/1.1.1g PHP/7.3.23)&#13;&#10;| http-methods: &#13;&#10;|_  Potentially risky methods: TRACE&#13;&#10;|_http-server-header: Apache/2.4.46 (Win64) OpenSSL/1.1.1g PHP/7.3.23&#13;&#10;|_http-title: Time Travel Company Page&#13;&#10;| ssl-cert: Subject: commonName=localhost&#13;&#10;| Not valid before: 2009-11-10T23:48:47&#13;&#10;|_Not valid after:  2019-11-08T23:48:47&#13;&#10;|_ssl-date: TLS randomness does not represent time&#13;&#10;| tls-alpn: &#13;&#10;|_  http/1.1&#13;&#10;2224/tcp  open  http           Mercury/32 httpd&#13;&#10;|_http-title: Mercury HTTP Services&#13;&#10;7680/tcp  open  pando-pub?&#13;&#10;8000/tcp  open  http           Apache httpd 2.4.46 ((Win64) OpenSSL/1.1.1g PHP/7.3.23)&#13;&#10;| http-methods: &#13;&#10;|_  Potentially risky methods: TRACE&#13;&#10;|_http-server-header: Apache/2.4.46 (Win64) OpenSSL/1.1.1g PHP/7.3.23&#13;&#10;|_http-title: Time Travel Company Page&#13;&#10;11100/tcp open  vnc            VNC (protocol 3.8)&#13;&#10;| vnc-info: &#13;&#10;|   Protocol version: 3.8&#13;&#10;|   Security types: &#13;&#10;|_    Unknown security type (40)&#13;&#10;20001/tcp open  ftp            FileZilla ftpd 0.9.41 beta&#13;&#10;| ftp-anon: Anonymous FTP login allowed (FTP code 230)&#13;&#10;| -r--r--r-- 1 ftp ftp            312 Oct 20  2020 .babelrc&#13;&#10;| -r--r--r-- 1 ftp ftp            147 Oct 20  2020 .editorconfig&#13;&#10;| -r--r--r-- 1 ftp ftp             23 Oct 20  2020 .eslintignore&#13;&#10;| -r--r--r-- 1 ftp ftp            779 Oct 20  2020 .eslintrc.js&#13;&#10;| -r--r--r-- 1 ftp ftp            167 Oct 20  2020 .gitignore&#13;&#10;| -r--r--r-- 1 ftp ftp            228 Oct 20  2020 .postcssrc.js&#13;&#10;| -r--r--r-- 1 ftp ftp            346 Oct 20  2020 .tern-project&#13;&#10;| drwxr-xr-x 1 ftp ftp              0 Oct 20  2020 build&#13;&#10;| drwxr-xr-x 1 ftp ftp              0 Oct 20  2020 config&#13;&#10;| -r--r--r-- 1 ftp ftp           1376 Oct 20  2020 index.html&#13;&#10;| -r--r--r-- 1 ftp ftp         425010 Oct 20  2020 package-lock.json&#13;&#10;| -r--r--r-- 1 ftp ftp           2454 Oct 20  2020 package.json&#13;&#10;| -r--r--r-- 1 ftp ftp           1100 Oct 20  2020 README.md&#13;&#10;| drwxr-xr-x 1 ftp ftp              0 Oct 20  2020 src&#13;&#10;| drwxr-xr-x 1 ftp ftp              0 Oct 20  2020 static&#13;&#10;|_-r--r--r-- 1 ftp ftp            127 Oct 20  2020 _redirects&#13;&#10;|_ftp-bounce: bounce working!&#13;&#10;| ftp-syst: &#13;&#10;|_  SYST: UNIX emulated by FileZilla&#13;&#10;33006/tcp open  unknown&#13;&#10;| fingerprint-strings: &#13;&#10;|   LPDString, NULL: &#13;&#10;|_    Host &apos;192.168.49.108&apos; is not allowed to connect to this MariaDB server&#13;&#10;1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :&#13;&#10;SF-Port33006-TCP:V=7.91%I=7%D=9/29%Time=6154B05A%P=x86_64-pc-linux-gnu%r(N&#13;&#10;SF:ULL,4D,&quot;I\0\0\x01\xffj\x04Host\x20&apos;192\.168\.49\.108&apos;\x20is\x20not\x20a&#13;&#10;SF:llowed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&quot;)%r(LPDStrin&#13;&#10;SF:g,4D,&quot;I\0\0\x01\xffj\x04Host\x20&apos;192\.168\.49\.108&apos;\x20is\x20not\x20all&#13;&#10;SF:owed\x20to\x20connect\x20to\x20this\x20MariaDB\x20server&quot;);&#13;&#10;Service Info: Host: localhost; OS: Windows; CPE: cpe:/o:microsoft:windows&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Wed Sep 29 14:29:37 2021 -- 1 IP address (1 host up) scanned in 62.13 seconds 
+    </pre>
+
+    
+
+    <br>
+    <h2><a id="infogather">Information Gathering</a></h2>
+
+    
+    <br>
+    <h2><a id="???">Shell - ???</a></h2>
+
+
+    <br>
+    <h2><a id="root">Privesc - Root</a></h2>
+
+</body>
+</html>
+
