@@ -1853,13 +1853,13 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
     <li>LDAP connection to Global Catalog over SSL.</li>
     
     <h2>3306 TCP / MySql</h2>
+
     <li>Connect to a mysql database</li>
+
     <ul>
         <li>impacket-mssqlclient username:password@ip.address</li>
-        <li>mysql --host=127.0.0.1 --port=13306 --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
-        <ul>
-            <li>Connect to local port (port forwarding in this example) 13306 as &lt;username&gt;</li>
-        </ul>
+        <li>mysql --host=&lt;ip address&gt; --port=&lt;port&gt; --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
+        <li>mysql -e &lt;db command&gt; -u &lt;user&gt; -p&lt;pasword&gt; [&lt;database&gt;] </li>
     </ul>
     
     <li>User-Defined Functions (UDF)</li>
@@ -1868,11 +1868,12 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
         <li>Allows administrators to create custom repeatable functions to accomplish specific objectives</li>
         <li>Written in C or C++ and will run almost any code including system commands</li>
     </ul>
+
     <table>
         <tr>
             <td>Show variables</td>
             <td>
-                <li>show variables;</li>
+                <li>Show variables;</li>
                 <ul>
                     <li>Some possible interesting variabels</li>
                     <ul>
