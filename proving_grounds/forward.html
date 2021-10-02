@@ -232,7 +232,6 @@ fox@forward:~$ find / -perm -u=s -ls 2&gt;/dev/null&#13;&#10;   273373     52 -r
     <li>dosbox is an unusual SUID program to see.  GTFOBins will provide us with bash commands to write to files as root using a suid dosbox.  However, this does nothing to help us because dosbox appends a carriage return to the end of every line that we append to any file.  Appending a new root user to /etc/passwd will not work, appending a malicious cronjob will not work, etc.  In order to take full advantage of dosbox we need to get a graphical interface.  We can do this by passing the -X flag when logging in via SSH.  This way, when we execute dosbox, we will get a graphical window of it.</li>
 
     <br>
-    <br>
 
     <img src="../images/forward/dosbox.png">
 
