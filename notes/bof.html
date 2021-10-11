@@ -29,7 +29,13 @@ layout: default
         <tr>
             <td>3</td>
             <td>Test for bad characters</td>
-            <td>Place all bad character test (consisting of all possible hex encoded characters) after EIP offset, then follow ESP in dump upon BOF crash.  If a character does not show up in the ESP dump after the program crashes, then remove whichever character does not show up first from the bad character test.  Resend the bof, recheck the dump to see if all characters are in tact, repeat until all are in tact upon program crash.</td>
+            <td>
+                <li>Place bad character test (all possible characters, hex encoded) after the EIP offset</li>
+                <li>Send buffer overflow and crash the program</li>
+                <li>Follow ESP in the dump and check if all characters are showing from the bad character test.</li>
+                <li>If characters are missing, then remove the first one that is not showing in the ESP dump from the bad character test, and then send the buffer overflow again.</li>
+                <li>Repeat ths process until all characters that are send in the bad character test successuflly show in the ESP dump.</li>
+            </td>
         </tr>
         <tr>
             <td>4</td>
