@@ -29,7 +29,7 @@ layout: default
         <tr>
             <td>3</td>
             <td>Test for bad characters</td>
-            <td>Send all characters, then follow ESP in dump upon BOF crash.</td>
+            <td>Place all bad character test (consisting of all possible hex encoded characters) after EIP offset, then follow ESP in dump upon BOF crash.  If a character does not show up in the ESP dump after the program crashes, then remove whichever character does not show up first from the bad character test.  Resend the bof, recheck the dump to see if all characters are in tact, repeat until all are in tact upon program crash.</td>
         </tr>
         <tr>
             <td>4</td>
