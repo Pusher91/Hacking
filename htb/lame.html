@@ -56,6 +56,8 @@ layout: default
     <br>
     <br>
 
+    <h2><a id="root">Shell - Root</a></h2>
+
     <li>I move on to the old samba SMB server running on this box.  According to nmap it is running samba smb 3.0.2.  I take a search for it on searchsploit to see if I can find an exploit.</li>
 
     <img src="../images/lame/smb_searchsploit.png">
@@ -79,19 +81,9 @@ layout: default
 
     <li>Logging in with smbclient and using single quotes around the username did not work at all.  Then I tried with double quotes around the username and that just caused the reverse shell to connect from my local machine.  After facing this problem I tried logging using smbmap, crackmapexec, and then impacket-smbclient.  impacket-smbclient gave me the results intended.</li>
 
-    <br>
-    <br>
-
     <img src="../images/lame/impacket-smbclient.png">
 
-    <br>
-    <br>
-    
-
-
-
-    <br>
-    <h2><a id="root">Shell - Root</a></h2>
+    <li></li>
     
 </body>
 </html>
