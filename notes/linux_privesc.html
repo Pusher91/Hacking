@@ -195,6 +195,87 @@ layout: default
     <ul>
         <li>pspy</li>
     </ul>
+
+    <hr>
+
+    <h2>Manual Enumeration</h2>
+
+    <li>User info</li>
+    <table>
+        <tr>
+            <td>Current user</td>
+            <td>
+                <li>whoami</li>
+                <li>who</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Currently logged in users</td>
+            <td>W</td>
+        </tr>
+        <tr>
+            <td>Current permissions</td>
+            <td>id</td>
+        </tr>
+        <tr>
+            <td>User list</td>
+            <td>/etc/passwd</td>
+        </tr>
+        <tr>
+            <td>Groups</td>
+            <td>/etc/group</td>
+        </tr>
+    </table>
+
+    <li>Operating System & Kernel</li>
+
+    <tabe>
+        <tr>
+            <td>Show host</td>
+            <td>hostname</td>
+        </tr>
+        <tr>
+            <td>Distribution type & version</td>
+            <td>
+                <li>/etc/issue</li>
+                <li>/etc/*-release</li>
+                <li>/etc/lsb-release #debian</li>
+                <li>/etc/redhat-released #redhat</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Kernel version</td>
+            <td>
+                <li>/proc/version</li>
+                <li>uname -a</li>
+                <li>uname -r</li>
+                <li>uname -mrs</li>
+                <li>rpm -q kernel</li>
+                <li>dmesg | grep linux</li>
+                <li>ls /boot | grep vmlinuz-</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Kernel modules</td>
+            <td>lsmod</td>
+        </tr>
+        <tr>
+            <td>More info on specific kernel module</td>
+            <td>/sbin/modinfo &lt;kernel module&gt;</td>
+        </tr>
+        <tr>
+            <td>System architecture</td>
+            <td>arch</td>
+        </tr>
+        <tr>
+            <td>Environment Variables</td>
+            <td>
+                <li>/etc/profile</li>
+                <li>/etc/bashrc</li>
+            </td>
+        </tr>
+        <tr></tr>
+    </tabe>
     
     <hr>
     
