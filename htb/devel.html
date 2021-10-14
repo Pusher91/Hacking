@@ -113,6 +113,20 @@ layout: default
 
     <img src="../images/devel/jp1.png">
 
+    <br>
+    <br>
+
+    <li>It appears I am getting an error while trying to run Juicy Potato.  When running Juicy Potato without the -c flag it will choose a CLSID for us while running the exploit.  Sometimes in order to get Juicy Potato to work properly we need to choose a different CLSID.  I go to google and search "juicy potato CLSID" and that brings me to this link: http://ohpe.it/juicy-potato/CLSID/.  The systeminfo command tells us that this is Windows 7 Enterprise so we choose that from the list.</li>
+
+    <img src="../images/devel/clsid_list.png">
+
+    <br>
+    <br>
+
+    <li>There is a script that will automate the process of trying CLSID's for us, but this is not necessary on this box.  I simply choose the CLSID for the ShellHWDetection, the top one on the list.  This has a CLSID of {555F3418-D99E-4E51-800A-6E89CFD8B1D7}.</li>
+
+    
+
 </body>
 
 </html>
