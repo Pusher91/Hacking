@@ -130,6 +130,8 @@ layout: default
     </table>
     
     <p>Massscan - Possbily the fastest port scanner.</p>
+
+    <hr>
     
     <h2>21 TCP / FTP</h2>
     
@@ -201,6 +203,8 @@ layout: default
             </ul>
         </li>
     </ul>
+
+    <hr>
     
     <h2>22 TCP / SSH</h2>
     
@@ -236,6 +240,8 @@ layout: default
             <td>-oPubkeyAcceptedKeyTypes=+&lt;key type - example: ssh-dss&gt;</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>25 TCP / SMTP</h2>
     
@@ -340,6 +346,8 @@ done;
             <li>Alt+F2</li>
         </ul>
     </li>
+
+    <hr>
     
     <h2>53 TCP / DNS</h2>
     
@@ -448,6 +456,8 @@ done;
             </tr>
         </table>
     </ul>
+
+    <hr>
     
     <h2>69 UDP / TFTP</h2>
     
@@ -455,6 +465,8 @@ done;
         <li>No command to list files</li>
         <li>Mostly the same commands as FTP</li>
     </ul>
+
+    <hr>
 
     <h2>79 TCP / finger</h2>
 
@@ -472,6 +484,8 @@ $ nc -nv 192.168.108.140 79                      130 &Cross;&#13;&#10;Ncat: Vers
 $ finger                                         127 &Cross;&#13;&#10;Login     Name       Tty      Idle  Login Time   Office     Office Phone&#13;&#10;kali      Kali       tty7     1:21  Sep 29 14:21 (:0)
         </pre>
     </ul>
+
+    <hr>
     
     <h2>80 TCP / HTTP</h2>
     
@@ -511,6 +525,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </ul>
         </li>
     </ul>
+
+    <hr>
     
     <h2>88 TCP / Kerberos</h2>
     
@@ -577,6 +593,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
     
     <li>Good article on Kerberose attacking: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
     <br>
+
+    <hr>
     
     <h2>110 TCP / POP3</h2>
     
@@ -615,6 +633,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>RETR &lt;email # from LIST&gt;</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>111 TCP / rpcbind / NFS</h2>
     <ul>
@@ -694,6 +714,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table></td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>113 TCP / ident</h2>
     
@@ -703,6 +725,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <li>By default nmap -sC will enumerate every use of every running port</li>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>119 TCP / NNTP</h2>
     
@@ -733,6 +757,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>135 TCP / msrpc</h2>
     
@@ -773,6 +799,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <li>/auxiliary/scanner/dcerpc/hidden</li>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>139 TCP / Netbios</h2>
     
@@ -884,6 +912,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>143 TCP / IMAP</h2>
     
@@ -937,6 +967,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>A1 LOGOUT</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>161 UDP / SNMP</h2>
     
@@ -995,6 +1027,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>389 TCP / LDAP</h2>
     <ul>
@@ -1130,12 +1164,16 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </table>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>443 TCP / HTTPS</h2>
     
     <li>Secure version of port 80.  Most of the same things apply</li>
     <li>Check certificate for any interesting information</li>
-    <br>
+
+    <hr>
+
     <h2>445 TCP / SMB</h2>
     
     <li>SMB is the protocol, CIFS is an old dialect of SMB, and my is the Linux/Unix-like implementation of the SMB protocol.</li>
@@ -1415,11 +1453,14 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
     </table>
 
     <li>impacket-smbclient</li>
-    
+
+    <hr>
     
     <h2>464 TCP / kpasswd5</h2>
     <li>Used for changing/setting passwords against Active Directory.</li>
-    <br>
+
+    <hr>
+
     <h2>500 UDP / ISAKMP</h2>
     <li>Used for Internet Key Exchange (IKE)</li>
     <li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
@@ -1560,10 +1601,13 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </ul>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>636 TCP / LDAPS</h2>
     <li>LDAP SSL connection</li>
-    <br>
+
+    <hr>
     
     <h2>837 TCP / rsync</h2>
     
@@ -1605,9 +1649,13 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>rync -a -e "ssh -p &lt;port #&gt;" &lt;local directory&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;directory&gt;</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>1025 TCP / msrpc</h2>
-    <br>
+
+    <hr>
+
     <h2>1433 TCP / Microsoft SQL</h2>
     <li>Good resource: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet</li>
     <li>Retrieve mssql service's password using smb</li>
@@ -1712,6 +1760,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>SELECT * FROM fn_my_permissions(NULL, 'SERVER');</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>1521 TCP / Oracle TNS Listener</h2>
     
@@ -1824,6 +1874,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             end;
         </pre>
     </ul>
+
+    <hr>
     
     <h2>2049 TCP / mountd (NFS)</h2>
     <li>sudo apt install nfs-common</li>
@@ -1841,6 +1893,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>mount -t nfs &lt;ip address&gt;:&lt;nfs share&gt;  &lt;local directory to mount to - Example: /mnt/&gt;</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>3000 TCP / Express.js Node</h2>
     <li>hadoop</li>
@@ -1848,16 +1902,21 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
         <li>Big data storage solution</li>
         <li>Data analytics & Data science</li>
     </ul>
+
+    <hr>
     
-    <h2>3268 TCP / LDAP
-    </h2>
+    <h2>3268 TCP / LDAP</h2>
     <li>LDAP connection to Global Catalog instead of the local DC which port 389 will return information for</li>
     <li>LDAP requests sent to port 3268 can be used to search for objects in the entire forest.</li>
     <li>Only the attributes marked for replication to the global catalog can be returned.</li>
-    <br>
+
+    <hr>
+
     <h2>3269 TCP / LDAPS</h2>
     <li>LDAP connection to Global Catalog over SSL.</li>
-    
+
+    <hr>
+
     <h2>3306 TCP / MySql</h2>
 
     <li>Connect to a mysql database</li>
@@ -1983,9 +2042,19 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
     </table>
     
     <li>Good resource: https://www.w3schools.com/sql/</li>
+
+    <hr>
     
     <h2>3389 TCP / RDP</h2>
-    <br>
+    
+    <table>
+        <tr>
+            <td>Set scaling to full screen at 150% resolution</td>
+            <td>rdesktop -g 100%@150</td>
+        </tr>
+    </table>
+
+    <hr>
     
     <h2>3690 TCP / SVN</h2>
     <table>
@@ -2006,8 +2075,11 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>svn up -&lt;revision from log&gt;</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>5432 TCP Postgresql</h2>
+
     <li>Default credentials are</li>
     <ul>
         <li>Username: postgres</li>
@@ -2094,11 +2166,15 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>SELECT * FROM cmd_exec;</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>5985 TCP / Microsoft HTTPAPI</h2>
-    <br>
+
+    <hr>
     
     <h2>5985 TCP / WinRM</h2>
+
     <li>Windows remote management</li>
     <ul>
         <li>Can log into a remote shell using user credentials</li>
@@ -2135,8 +2211,11 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </tr>
         </table>
     </ul>
+
+    <hr>
     
     <h2>6379 TCP / redis</h2>
+
     <li>Key store / value storage</li>
     <li>RCE Methods:</li>
     <ul>
@@ -2205,6 +2284,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             </tr>
         </table>
     </ul>
+
+    <hr>
     
     <h2>6667 TCP / irc</h2>
     <li>Tools</li>
@@ -2214,11 +2295,13 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <li>gui irc client</li>
         </ul>
     </ul>
+
+    <hr>
     
     <h2>6697 TCP / irc</h2>
     <li>Incoming IRC connections encrypted via TLS/SSL</li>
     
-    <br>
+    <hr>
     
     <h2>27017 TCP / mongodb</h2>
     <table>
@@ -2239,6 +2322,8 @@ $ finger                                         127 &Cross;&#13;&#10;Login     
             <td>db.tasks.insert({"cmd&quot;:&quot;&lt;bash command&gt;&quot;})</td>
         </tr>
     </table>
+
+    <hr>
     
     <h2>11211 TCP / memcache</h2>
     
