@@ -39,7 +39,7 @@ layout: default
         <tr>
             <td>Enumerate all open UDP ports</td>
             <td>
-                <li>sudo nmap -sU &lt;output file&gt;</li>
+                <li>sudo nmap -sU -oN &lt;output file&gt;</li>
                 <ul>
                     <li>You do not want to do -p- for UDP ports.  -p- will scan the full port range and would take a long time for UDP.  -sU will test the most common/likely open ports.</li>
                 </ul>
