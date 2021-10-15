@@ -51,6 +51,13 @@ layout: default
         </tr>
     </table>
 
+    <li>Port scan tips:</li>
+    <ul>
+        <li>Running scan with -sV and -sC at the same time or each separately can give different responses in some cases.</li>
+        <li>If UDP shows open|filtered then run scripts with -sC. This will be more likely to get a response from the port to confirm if it is open or not.</li>
+        <li>Sometimes open ports only show up while using -sT.  Maybe only applicable to ISAKMP/ipsec.</li>
+    </ul>
+
     <li>Some nmap flags:</li>
     
     <table>
