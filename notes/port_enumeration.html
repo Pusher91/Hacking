@@ -51,10 +51,8 @@ layout: default
         </tr>
     </table>
     
-    <ul>
-        <li>Running scan with -sV and -sC at the same time or each separately can give different responses in some cases.</li>
-        <li>If UDP shows open|filtered then run scripts with -sC.  This will be more likely to get a response from the port to confirm if it is open or not.  Sometimes open ports only show up while using -sT (rare.  Maybe only an ISAKMP/ipsec issue?)</li>
-    </ul>
+    <li>Running scan with -sV and -sC at the same time or each separately can give different responses in some cases.</li>
+    <li>If UDP shows open|filtered then run scripts with -sC.  This will be more likely to get a response from the port to confirm if it is open or not.  Sometimes open ports only show up while using -sT (rare.  Maybe only an ISAKMP/ipsec issue?)</li>
     
     <table>
         <tr>
@@ -83,12 +81,13 @@ layout: default
         </tr>
         <tr>
             <td>
-                <ul>Packets per second to send
-                    <li>nmap may send less if:
-                        <ul><li>It has nothing to send</li>
-                            <li>Hardware Limit</li>
-                        </ul>
-                    </li>
+                Packets per second to send
+                <ul>
+                    <li>nmap may send less if:</li>
+                    <ul>
+                        <li>It has nothing to send</li>
+                        <li>Hardware Limit</li>
+                    </ul>
                 </ul>
             </td>
             <td>--min-rate &lt;#&gt;</td>
