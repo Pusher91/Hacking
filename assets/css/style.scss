@@ -22,7 +22,8 @@ mark {
 }
 
 table {
-  width:100%;
+  table-layout: auto;
+  width:0%;
   border-collapse:collapse;
   white-space:nowrap;
 }
