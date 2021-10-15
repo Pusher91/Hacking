@@ -358,6 +358,7 @@ layout: default
             <td>dig axfr &lt;Domain - Example: friendzone.htb&gt; @&lt;ns ip address&gt;</td>
         </tr>
     </table>
+    
     <li>DNSRecon</li>
     <table>
         <tr>
@@ -365,6 +366,7 @@ layout: default
             <td>dnsrecon -d &lt;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
         </tr>
     </table>
+    
     <li>Gobuster</li>
     <table>
         <tr>
@@ -372,6 +374,7 @@ layout: default
             <td>gobuster dns -d &lt;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
         </tr>
     </table>
+    
     <li>dnsEnum</li>
     <li>wfuzz</li>
     <table>
@@ -384,7 +387,7 @@ layout: default
                         <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&lt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
                     </tr>
                     <tr>
-                        <td>Run 2nd scan with --hh &gt;#&lt; flag to hide response to exclude length of page the coincides with directories that do not exist</td>
+                        <td>Run 2nd scan with --hh &lt;#&gt; flag to hide response to exclude length of page the coincides with directories that do not exist</td>
                         <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&gt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt --hh &lt;Char Length #&gt;</td>
                     </tr>
                 </table>
@@ -396,134 +399,131 @@ layout: default
     
     <h2>69 UDP / TFTP</h2>
     
-    <ul>
-        <li>No command to list files</li>
-        <li>Mostly the same commands as FTP</li>
-    </ul>
+    <li>No command to list files</li>
+    <li>Mostly the same commands as FTP</li>
     
     <hr>
     
     <h2>79 TCP / finger</h2>
     
+    <li>A service that provides information about users.  Can provide information such as full name, login time, phone number, email last sent, maybe file information.</li>
+    <li>Connect with netcat</li>
     <ul>
-        <li>A service that provides information about users.  Can provide information such as full name, login time, phone number, email last sent, maybe file information.</li>
-        <li>Connect with netcat</li>
-        <ul>
-            <li>Enter a username and if it exists, it will return with details on the user.</li>
-            <pre>&#13;&#10;$ nc -nv 192.168.108.140 79                      130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Connected to 192.168.108.140:79.&#13;&#10;charlotte&#13;&#10;Login: charlotte         Name: Charlotte&#13;&#10;&#13;&#10;[No profile information]&#13;&#10;            </pre>
-        </ul>
-        <li>Running finger on local machine</li>
-        <pre>&#13;&#10;$ finger                                         127 &Cross;&#13;&#10;Login     Name       Tty      Idle  Login Time   Office     Office Phone&#13;&#10;kali      Kali       tty7     1:21  Sep 29 14:21 (:0)&#13;&#10;        </pre>
+        <li>Enter a username and if it exists, it will return with details on the user.</li>
+        <pre>&#13;&#10;$ nc -nv 192.168.108.140 79                      130 &Cross;&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Connected to 192.168.108.140:79.&#13;&#10;charlotte&#13;&#10;Login: charlotte         Name: Charlotte&#13;&#10;&#13;&#10;[No profile information]&#13;&#10;            </pre>
     </ul>
+    <li>Running finger on local machine</li>
+    <pre>&#13;&#10;$ finger                                         127 &Cross;&#13;&#10;Login     Name       Tty      Idle  Login Time   Office     Office Phone&#13;&#10;kali      Kali       tty7     1:21  Sep 29 14:21 (:0)&#13;&#10;        </pre>
     
     <hr>
     
     <h2>80 TCP / HTTP</h2>
     
+    <li>Hosts file is located in /etc/hosts</li>
+    <li>Check headers for evidence of what the server is running</li>
+    <li>gobuster</li>
     <ul>
-        <li>Hosts file is located in /etc/hosts</li>
-        <li>Check headers for evidence of what the server is running</li>
-        <li>gobuster
-            <ul>
-                <li>Enumerate directories</li>
-            </ul>
-        </li>
-        <li>feroxbuster
-            <ul>
-                <li>Enumerate directories recursivley</li>
-            </ul>
-        </li>
-        <li>Google web server version to find OS version that the host is running</li>
-        <li>curl
-            <table>
-                <tr>
-                    <td>banner grab</td>
-                    <td>-i</td>
-                </tr>
-                <tr>
-                    <td>Follow page redirections and grab header</td>
-                    <td>-L -i</td>
-                </tr>
-                <tr>
-                    <td>Silent mode.  Do not show progress meter or error messages.</td>
-                    <td>-s</td>
-                </tr>
-            </table>
-        </li>
-        <li>html2text
-            <ul>
-                <li>Render page in CLI</li>
-            </ul>
-        </li>
+        <li>Enumerate directories</li>
+    </ul>
+    
+    <li>feroxbuster</li>
+    <ul>
+        <li>Enumerate directories recursivley</li>
+    </ul>
+    
+    <li>Google web server version to find OS version that the host is running</li>
+    <li>curl
+        <table>
+            <tr>
+                <td>banner grab</td>
+                <td>-i</td>
+            </tr>
+            <tr>
+                <td>Follow page redirections and grab header</td>
+                <td>-L -i</td>
+            </tr>
+            <tr>
+                <td>Silent mode.  Do not show progress meter or error messages.</td>
+                <td>-s</td>
+            </tr>
+        </table>
+    </li>
+    
+    <li>html2text</li>
+    <ul>
+        <li>Render page in CLI</li>
     </ul>
     
     <hr>
     
     <h2>88 TCP / Kerberos</h2>
     
+    <li>Tools</li>
     <ul>
-        <li>Tools</li>
+        <li>Bloodhound</li>
         <ul>
-            <li>Bloodhound</li>
-            <ul>
-                <li>Analyzes relationships between AD objects</li>
-            </ul>
-            <table>
-                <tr>
-                    <td>Generate file for bloodhound to analyze</td>
-                    <td>sudo python3 bloodhound.py -c all -u &lt;user&gt; -p '&lt;password&gt;' -ns &lt;ip&gt; -d &lt;domain name&gt; --zip</td>
-                </tr>
-            </table>
+            <li>Analyzes relationships between AD objects</li>
         </ul>
-        <li>Kerbrute</li>
-        <ul>
-            <li>Can enumerate AD usernames
-                <table>
-                    <tr>
-                        <td>Enumerate usename list</td>
-                        <td>userenum -d &gt;domain or ip&lt; &gt;username list&lt;<br>-/usr/share/seclists/Usernames/xato-net-10-million-usernames.txt</td>
-                    </tr>
-                </table>
-            </li>
-            <li>Can also be used to brute force passwords.  Uses preauth method so it will not generate a typical failed login error code</li>
-        </ul>
-        <li>AS-REP Roasting</li>
-        <ul>
-            <li>Retrieve a ticket for a use that has DONT_REQ_PREAUTH enabled and then crack it</li>
-            <ul>
-                <li>DONT_REQ_PREAUTH means the DC will provide a TGT without verifying the request for the ticket was encrypted by the password of the user that is requesting the TGT.</li>
-            </ul>
-            <li>Attack can be done from machine that is not joined to the domain</li>
-            <ul>
-                <li>Enumeration is easier on a domain-joined machine - you can use LDAP Filter or PowerView to find targets</li>
-            </ul>
-            <li>Attack from a windows machine:</li>
-            <ul>
-                <li>Tools:</li>
-                <ul>
-                    <li>PowerView.ps1 - Enumerate Users</li>
-                    <li>ASREPRoast.ps1 - Retrieve ticket hashes</li>
-                    <li>Rebeus - C#/.NET replacement for ASREPRoast.ps1.  Harder for victim to detect.</li>
-                </ul>
-            </ul>
-            <li>Attack from linux</li>
-            <ul>
-                <li>User enumeration methods:</li>
-                <ul>
-                    <li>Using LDAP, may need a domain users credentials to access.</li>
-                    <li>Brute force - kerbrute</li>
-                    <li>Any other means</li>
-                </ul>
-                <li>Request tickets/retrieve hashes using Impacket-GetNPUsers</li>
-                <ul>
-                    <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt; -outputfile &lt;file&gt;</li>  
-                </ul>
-            </ul>
-        </ul>   
+        <table>
+            <tr>
+                <td>Generate file for bloodhound to analyze</td>
+                <td>sudo python3 bloodhound.py -c all -u &lt;user&gt; -p '&lt;password&gt;' -ns &lt;ip&gt; -d &lt;domain name&gt; --zip</td>
+            </tr>
+        </table>
     </ul>
     
+    <li>Kerbrute</li>
+    <ul>
+        <li>Can enumerate AD usernames</li>
+        <table>
+            <tr>
+                <td>Enumerate usename list</td>
+                <td>userenum -d &gt;domain or ip&lt; &gt;username list&lt;<br>-/usr/share/seclists/Usernames/xato-net-10-million-usernames.txt</td>
+            </tr>
+        </table>
+        
+        <li>Can also be used to brute force passwords.  Uses preauth method so it will not generate a typical failed login error code</li>
+    </ul>
+    
+    <li>AS-REP Roasting</li>
+    <ul>
+        <li>Retrieve a ticket for a use that has DONT_REQ_PREAUTH enabled and then crack it</li>
+        <ul>
+            <li>DONT_REQ_PREAUTH means the DC will provide a TGT without verifying the request for the ticket was encrypted by the password of the user that is requesting the TGT.</li>
+        </ul>
+        
+        <li>Attack can be done from machine that is not joined to the domain</li>
+        <ul>
+            <li>Enumeration is easier on a domain-joined machine - you can use LDAP Filter or PowerView to find targets</li>
+        </ul>
+        
+        <li>Attack from a windows machine:</li>
+        <ul>
+            <li>Tools:</li>
+            <ul>
+                <li>PowerView.ps1 - Enumerate Users</li>
+                <li>ASREPRoast.ps1 - Retrieve ticket hashes</li>
+                <li>Rebeus - C#/.NET replacement for ASREPRoast.ps1.  Harder for victim to detect.</li>
+            </ul>
+        </ul>
+        
+        <li>Attack from linux</li>
+        <ul>
+            <li>User enumeration methods:</li>
+            <ul>
+                <li>Using LDAP, may need a domain users credentials to access.</li>
+                <li>Brute force - kerbrute</li>
+                <li>Any other means</li>
+            </ul>
+            
+            <li>Request tickets/retrieve hashes using Impacket-GetNPUsers</li>
+            <ul>
+                <li>Impacket-GetNPUsers -dc-ip &lt;ip&gt; &lt;domain&gt;/ -no-pass -usersfile &lt;file&gt; -outputfile &lt;file&gt;&lt; -outputfile &lt;file&gt;</li>  
+            </ul>
+        </ul>
+    </ul>   
+    
     <li>Good article on Kerberose attacking: https://m0chan.github.io/2019/07/31/How-To-Attack-Kerberos-101.html#as-rep-roasting</li>
-    <br>
     
     <hr>
     
