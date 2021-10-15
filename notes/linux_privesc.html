@@ -596,7 +596,7 @@ layout: default
     <li>NFS share information is stored in /etc/exports</li>
     <li>Root Squashing</li>
     <ul>
-        <li>When a remote user is root NFS will squash them and treat then as "nobody" user.  However, root squashing can be turned off and users who connect as root will remain root</li>
+        <li>When connecting to an NFS share, if root squashing is enabled, then the owner of the files in the share will be set to "nobody".</li>
         <ul>
             <li>On victim machine:</li>
             <ul>
