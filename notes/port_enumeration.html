@@ -1005,138 +1005,135 @@ layout: default
     <hr>
     
     <h2>389 TCP / LDAP</h2>
+    
+    <li>TCP 389 LDAP plain text</li>
+    <li>Used for requesting information from the local domain controller.</li>
+    <li>LDAP requests sent to port 389 can be used to search for objects only within the global catalog’s home domain. </li>
+    <li>The requesting application can obtain all of the attributes for those objects.</li>
     <ul>
-        <li>TCP 389 LDAP plain text</li>
-        <li>Used for requesting information from the local domain controller.</li>
-        <li>LDAP requests sent to port 389 can be used to search for objects only within the global catalog’s home domain. </li>
-        <li>The requesting application can obtain all of the attributes for those objects.</li>
+        <li>For example, a request to port 389 could be used to obtain a user’s department</li>
+    </ul>
+    
+    <li>Tools</li>
+    <ul>
+        <li>nmap --script ldap-search</li>
+        <li>Listen on localhost for ldap traffic</li>
+        <li>tcpdump -i lo -nnXs 0 'port 389'</li>
+        <table>
+            <tr>
+                <td>Do no conver hosts or ports to name</td>
+                <td>nn</td>
+            </tr>
+            <tr>
+                <td>Print in ascii and hex</td>
+                <td>X</td>
+            </tr>
+            <tr>
+                <td>Capture entire packet</td>
+                <td>-s 0</td>
+            </tr>
+        </table>
+        
+        <li>nmap</li>
         <ul>
-            <li>For example, a request to port 389 could be used to obtain a user’s department</li>
+            <li>sudo nmap --script &quot;ldap* and not brute&quot; &lt;ip address&gt;</li>
         </ul>
-        <li>Tools</li>
-        <ul>
-            <li>nmap --script ldap-search</li>
-            <li>Listen on localhost for ldap traffic</li>
-            <ul>
-                <li>Listen on localhost for ldap traffic</li>
-                <ul>
-                    <li>tcpdump -i lo -nnXs 0 'port 389'</li>
-                    <table>
-                        <tr>
-                            <td>Do no conver hosts or ports to name</td>
-                            <td>nn</td>
-                        </tr>
-                        <tr>
-                            <td>Print in ascii and hex</td>
-                            <td>X</td>
-                        </tr>
-                        <tr>
-                            <td>Capture entire packet</td>
-                            <td>-s 0</td>
-                        </tr>
-                    </table>
-                </ul>
-            </ul>
-            <li>nmap</li>
-            <ul>
-                <li>sudo nmap --script &quot;ldap* and not brute&quot; &lt;ip address&gt;</li>
-            </ul>
-            <li>ldapsearch</li>
-            <table>
-                <tr>
-                    <td>Basic search</td>
-                    <td>ldapsearch -h &lt;ip address&gt;</td>
-                </tr>
-                <tr>
-                    <td>Simple authentication</td>
-                    <td>ldapsearch -h &lt;ip address&gt; -x</td>
-                </tr>
-                <tr>
-                    <td>Authenticate as user</td>
-                    <td>ldapsearch -h &lt;ip address&gt; -x -D '&ls;user&gt;@&lt;domain&gt;' -w '&lt;password&gt;' -b 'DC=something,DC=something'</td>
-                </tr>
-                <tr>
-                    <td>Retrieve naming contexts</td>
-                    <td>ldapsearch -h &lt;ip address&gt; -x -s base namingcontexts<br>Output can be thought of folders and they are different types of folders</td>
-                </tr>
-                <tr>
-                    <td>Output all the LDAP information that can be queried</td>
-                    <td>
+        
+        <li>ldapsearch</li>
+        <table>
+            <tr>
+                <td>Basic search</td>
+                <td>ldapsearch -h &lt;ip address&gt;</td>
+            </tr>
+            <tr>
+                <td>Simple authentication</td>
+                <td>ldapsearch -h &lt;ip address&gt; -x</td>
+            </tr>
+            <tr>
+                <td>Authenticate as user</td>
+                <td>ldapsearch -h &lt;ip address&gt; -x -D '&ls;user&gt;@&lt;domain&gt;' -w '&lt;password&gt;' -b 'DC=something,DC=something'</td>
+            </tr>
+            <tr>
+                <td>Retrieve naming contexts</td>
+                <td>ldapsearch -h &lt;ip address&gt; -x -s base namingcontexts<br>Output can be thought of folders and they are different types of folders</td>
+            </tr>
+            <tr>
+                <td>Output all the LDAP information that can be queried</td>
+                <td>
+                    <ul>
+                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
                         <ul>
-                            <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
+                            <li>DC=values from output of "Retrieving name contexts" command</li>
+                        </ul>
+                        <li>Terms to grep for on this file (can be done instead of querying ldap for a term directly):</li>
+                        <ul>
+                            <li>member</li>
+                            <li>CN=</li>
+                            <li>memberof</li>
+                            <li>user</li>
+                            <li>Password (and variations such as pwd)</li>
+                            <li>Look for anomalies in output</li>
                             <ul>
-                                <li>DC=values from output of "Retrieving name contexts" command</li>
-                            </ul>
-                            <li>Terms to grep for on this file (can be done instead of querying ldap for a term directly):</li>
-                            <ul>
-                                <li>member</li>
-                                <li>CN=</li>
-                                <li>memberof</li>
-                                <li>user</li>
-                                <li>Password (and variations such as pwd)</li>
-                                <li>Look for anomalies in output</li>
-                                <ul>
-                                    <li>cat &lt;ldap output file&gt; | awk '{print $1}' | sort | uniq -c | sort -nr</li>
-                                </ul>
+                                <li>cat &lt;ldap output file&gt; | awk '{print $1}' | sort | uniq -c | sort -nr</li>
                             </ul>
                         </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Query LDAP</td>
-                    <td>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Query LDAP</td>
+                <td>
+                    <ul>
+                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;'</li>
                         <ul>
-                            <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;'</li>
+                            <li>Queries to search:</li>
                             <ul>
-                                <li>Queries to search:</li>
+                                <li>objectClass=Person</li>
                                 <ul>
-                                    <li>objectClass=Person</li>
+                                    <li>pwdLastSet</li>
                                     <ul>
-                                        <li>pwdLastSet</li>
-                                        <ul>
-                                            <li>Convert to human readble using online converter:<br>https://www.epochconverter.com/ldap</li>
-                                        </ul>
-                                        <li>sAMAccountName = username</li>
-                                        <ul>
-                                            <li>User is equivalent (not equivalent as a filter)</li>
-                                        </ul>
+                                        <li>Convert to human readble using online converter:<br>https://www.epochconverter.com/ldap</li>
+                                    </ul>
+                                    <li>sAMAccountName = username</li>
+                                    <ul>
+                                        <li>User is equivalent (not equivalent as a filter)</li>
                                     </ul>
                                 </ul>
                             </ul>
                         </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Query LDAP with Filters</td>
-                    <td>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Query LDAP with Filters</td>
+                <td>
+                    <ul>
+                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;' &lt;Filter&gt;</li>
                         <ul>
-                            <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;' &lt;Filter&gt;</li>
+                            <li>Can add more than 1 filter</li>
                             <ul>
-                                <li>Can add more than 1 filter</li>
+                                <li>'&lt;Query to search&gt;' &lt;filter 1&gt; &lt;filter 2&gt; &lt;filter 3&gt; ...</li> 
+                            </ul>
+                            <li>Filter examples</li>
+                            <ul>
+                                <li>sAMAccountName</li>
                                 <ul>
-                                    <li>'&lt;Query to search&gt;' &lt;filter 1&gt; &lt;filter 2&gt; &lt;filter 3&gt; ...</li> 
+                                    <li>Retrieve all usernames.  grep for sAMAccountName to get list of usernames.</li>
+                                    <ul>
+                                        <li>Accounts with $ are machine generated.  Passwords not crackable.</li>
+                                        <li>SM_  and HealthMailbox accounts are Exchange related.  Passwords not crackable.</li>
+                                    </ul>
                                 </ul>
-                                <li>Filter examples</li>
+                                <li>Domain admins</li>
                                 <ul>
-                                    <li>sAMAccountName</li>
-                                    <ul>
-                                        <li>Retrieve all usernames.  grep for sAMAccountName to get list of usernames.</li>
-                                        <ul>
-                                            <li>Accounts with $ are machine generated.  Passwords not crackable.</li>
-                                            <li>SM_  and HealthMailbox accounts are Exchange related.  Passwords not crackable.</li>
-                                        </ul>
-                                    </ul>
-                                    <li>Domain admins</li>
-                                    <ul>
-                                        <li>"(&(objectClass=user)(memberOf=CN=Domain Admins,CN=Users,DC=htb,DC=local))"</li>
-                                    </ul>
+                                    <li>"(&(objectClass=user)(memberOf=CN=Domain Admins,CN=Users,DC=htb,DC=local))"</li>
                                 </ul>
                             </ul>
                         </ul>
-                    </td>
-                </tr>
-            </table>
-        </ul>
+                    </ul>
+                </td>
+            </tr>
+        </table>
     </ul>
     
     <hr>
