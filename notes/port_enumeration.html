@@ -16,7 +16,7 @@ layout: default
     
     <h2><a id="portscan">Port Scanning</a></h2>
     
-    <h4>Nmap</h4>
+    <h4>nmap</h4>
     
     <li>Basic strategy</li>
     <table>
@@ -121,7 +121,7 @@ layout: default
     <li>UDP Scanning relies on the server to send back a "ICMP Port Unreachable" message to know if a port is open or closed.  If the server doesn't send back this message (port is filtered by a firewall, etc) then the port will look like it is open when it is not.</li>
 
     <br>
-    
+
     <li>Bash script for port scanning</li>
     
     <pre>&#13;&#10;#!/bin/bash host=10.5.5.11&#13;&#10;for port in {1..65535}; do&#13;&#10;timeout .1 bash -c &quot;echo &gt;/dev/tcp/$host/$port&quot; &amp;&amp;&#13;&#10;echo &quot;port $port is open&quot;&#13;&#10;done&#13;&#10;echo &quot;Done&quot;&#13;&#10;            </pre>
