@@ -270,133 +270,127 @@ layout: default
     <li>swaks</li>
     <ul>
         <li>Swiss Army Knift SMTP</li>
-        <ul>
-            <li>Bash script to send emails to a list</li>
-            <pre>&#13;&#10;for email in $(cat email.lst);&#13;&#10;do&#13;&#10;swaks \&#13;&#10;--from support@sneakymailer.htb \&#13;&#10;--to $email \&#13;&#10;--header &apos;Subject: Please Register Your Account&apos; \&#13;&#10;--body &apos;http://10.10.14.106/test&apos; \&#13;&#10;--server sneakymailer.htb&#13;&#10;done;&#13;&#10;                                </pre>
-        </ul>   
+        <li>Bash script to send emails to a list</li>
+        <pre>&#13;&#10;for email in $(cat email.lst);&#13;&#10;do&#13;&#10;swaks \&#13;&#10;--from support@sneakymailer.htb \&#13;&#10;--to $email \&#13;&#10;--header &apos;Subject: Please Register Your Account&apos; \&#13;&#10;--body &apos;http://10.10.14.106/test&apos; \&#13;&#10;--server sneakymailer.htb&#13;&#10;done;&#13;&#10;                                </pre>
     </ul>
     
-    <li>Thunderbird
-        <ul>
-            <li>Mail client</li>
-        </ul>
-    </li>
-    <li>Evolution
-        <ul>
-            <li>Mail Client</li>
-            <li>Alt+F2</li>
-        </ul>
-    </li>
+    <li>Thunderbird</li>
+    <ul>
+        <li>Mail client</li>
+    </ul>
+    
+    <li>Evolution</li>
+    <ul>
+        <li>Mail Client</li>
+        <li>Alt+F2</li>
+    </ul>
     
     <hr>
     
     <h2>53 TCP / DNS</h2>
     
+    <li>If DNS is running then we can edit /etc/resolv.conf instead of /etc/hosts so it will autobatically grab other DNS names</li>
     <ul>
-        <li>If DNS is running then we can edit /etc/resolv.conf instead of /etc/hosts so it will autobatically grab other DNS names</li>
-        <ul>
-            <li>resolv.conf hosts will be searched in order from top to bottom</li>
-        </ul>
-        
-        <li>nslookup</li>
-        <table>
-            <tr>
-                <td>Resolve IP to domain name</td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>Start nslookup in interactive mode</td>
-                            <td>nslookup</td>
-                        </tr>
-                        <tr>
-                            <td>Enter server IP</td>
-                            <td>&lt;ip address&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>Enter IP and/or hostname to resolve against the server</td>
-                            <td>
-                                <ul>
-                                    <li>ip addresses to try:</li>
-                                    <ul>
-                                        <li>ip of the nameserver itself</li>
-                                        <li>127.0.0.1</li>
-                                        <li>127.0.0.2</li>
-                                        <li>Any other suspected interested ip addresses or hostnames</li>
-                                    </ul>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Zone transfer</td>
-                            <td>ls -d &lt;domain&gt;</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        
-        <li>Host</li>
-        <ul>
-            <table>
-                <tr>
-                    <td>Resolve IP to domain name</td>
-                    <td>host &lt;ip address&gt;<br>host &lt;domain name&gt; &lt;DNS Server&gt;</td>
-                </tr>
-                <tr>
-                    <td>Find all mx records for example.ecom</td>
-                    <td>host -t mx &lt;Domain Name&gt;<br>Example: host -t mx example.com</td>
-                </tr>
-                <tr>
-                    <td>Zone Transfer</td>
-                    <td>host -l &lt;domain name&gt; &lt;DNS Sever&gt;<br>Example: host -l cronos.htb ns1.cronos.htb<br>Example: host -l cronos.htb &lt;ip address&gt;</td>
-                </tr>
-                <tr>
-                    <td>Find name servers</td>
-                    <td>host -t ns example.com</td>
-                </tr>
-            </table>
-        </ul>
-        <li>dig</li>
-        <table>
-            <tr>
-                <td>Zone Transfer</td>
-                <td>dig axfr &lt;Domain - Example: friendzone.htb&gt; @&lt;ns ip address&gt;</td>
-            </tr>
-        </table>
-        <li>DNSRecon</li>
-        <table>
-            <tr>
-                <td>Zone Transfer</td>
-                <td>dnsrecon -d &lt;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
-            </tr>
-        </table>
-        <li>Gobuster</li>
-        <table>
-            <tr>
-                <td>Subdomain brute force</td>
-                <td>gobuster dns -d &lt;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
-            </tr>
-        </table>
-        <li>dnsEnum</li>
-        <li>wfuzz</li>
-        <table>
-            <tr>
-                <td>Run scan to look for other subdomains</td>
-                <td>
-                    <table>
-                        <tr>
-                            <td>Run 1st scan to check char length on responses and immediately push ctrl+c</td>
-                            <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&lt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
-                        </tr>
-                        <tr>
-                            <td>Run 2nd scan with --hh &gt;#&lt; flag to hide response to exclude length of page the coincides with directories that do not exist</td>
-                            <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&gt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt --hh &lt;Char Length #&gt;</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
+        <li>resolv.conf hosts will be searched in order from top to bottom</li>
     </ul>
+    
+    <li>nslookup</li>
+    <table>
+        <tr>
+            <td>Resolve IP to domain name</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Start nslookup in interactive mode</td>
+                        <td>nslookup</td>
+                    </tr>
+                    <tr>
+                        <td>Enter server IP</td>
+                        <td>&lt;ip address&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>Enter IP and/or hostname to resolve against the server</td>
+                        <td>
+                            <ul>
+                                <li>ip addresses to try:</li>
+                                <ul>
+                                    <li>ip of the nameserver itself</li>
+                                    <li>127.0.0.1</li>
+                                    <li>127.0.0.2</li>
+                                    <li>Any other suspected interested ip addresses or hostnames</li>
+                                </ul>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Zone transfer</td>
+                        <td>ls -d &lt;domain&gt;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+    <li>Host</li>
+    <table>
+        <tr>
+            <td>Resolve IP to domain name</td>
+            <td>host &lt;ip address&gt;<br>host &lt;domain name&gt; &lt;DNS Server&gt;</td>
+        </tr>
+        <tr>
+            <td>Find all mx records for example.ecom</td>
+            <td>host -t mx &lt;Domain Name&gt;<br>Example: host -t mx example.com</td>
+        </tr>
+        <tr>
+            <td>Zone Transfer</td>
+            <td>host -l &lt;domain name&gt; &lt;DNS Sever&gt;<br>Example: host -l cronos.htb ns1.cronos.htb<br>Example: host -l cronos.htb &lt;ip address&gt;</td>
+        </tr>
+        <tr>
+            <td>Find name servers</td>
+            <td>host -t ns example.com</td>
+        </tr>
+    </table>
+    
+    <li>dig</li>
+    <table>
+        <tr>
+            <td>Zone Transfer</td>
+            <td>dig axfr &lt;Domain - Example: friendzone.htb&gt; @&lt;ns ip address&gt;</td>
+        </tr>
+    </table>
+    <li>DNSRecon</li>
+    <table>
+        <tr>
+            <td>Zone Transfer</td>
+            <td>dnsrecon -d &lt;Domain&gt; -t axfr -n &lt;DNS Address&gt;</td>
+        </tr>
+    </table>
+    <li>Gobuster</li>
+    <table>
+        <tr>
+            <td>Subdomain brute force</td>
+            <td>gobuster dns -d &lt;Domain Name&gt; -w  /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
+        </tr>
+    </table>
+    <li>dnsEnum</li>
+    <li>wfuzz</li>
+    <table>
+        <tr>
+            <td>Run scan to look for other subdomains</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Run 1st scan to check char length on responses and immediately push ctrl+c</td>
+                        <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&lt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt</td>
+                    </tr>
+                    <tr>
+                        <td>Run 2nd scan with --hh &gt;#&lt; flag to hide response to exclude length of page the coincides with directories that do not exist</td>
+                        <td>wfuzz -c -u &lt;IP Address&gt; -H "Host: FUZZ:&lt;Domain Name&gt;" -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt --hh &lt;Char Length #&gt;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
     
     <hr>
     
