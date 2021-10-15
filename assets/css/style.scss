@@ -50,30 +50,4 @@ pre {
   word-wrap: break-word;
          }
 
- .row {
-    display: flex;
-  }
-
-  .column {
-    flex: 50%;
-    padding: 0px;
-    height: 0px;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-
-  .box{
-    display: none;
-    width: 100%;
-}
-
-a:hover + .box,.box:hover{
-    display: block;
-    position: relative;
-    z-index: 100;
-}
-
   
