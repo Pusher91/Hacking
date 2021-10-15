@@ -25,7 +25,7 @@ layout: default
             <td>sudo nmap -p- &lt;ip address&gt; -oN &lt;output file&gt;</td>
         </tr>
         <tr>
-            <td>Enumerate service versions and other information from open ports</td>
+            <td>Enumerate service versions and other information from open TCP ports</td>
             <td>
                 <li>sudo nmap -p&lt;comma separated list of open ports&gt; -sV -sC &lt;ip address&gt; -oN &lt;output file&gt;</li>
                 <ul>
@@ -46,13 +46,12 @@ layout: default
             </td>
         </tr>
         <tr>
-            <td>Enumerate service versions and other information from open ports</td>
+            <td>Enumerate service versions and other information from open UDP ports</td>
             <td>sudo nmap -sV -sC -sU -p&lt;comma separated list of open ports&gt;</td>
         </tr>
     </table>
-    
-    <li>Running scan with -sV and -sC at the same time or each separately can give different responses in some cases.</li>
-    <li>If UDP shows open|filtered then run scripts with -sC.  This will be more likely to get a response from the port to confirm if it is open or not.  Sometimes open ports only show up while using -sT (rare.  Maybe only an ISAKMP/ipsec issue?)</li>
+
+    <li>Some nmap flags:</li>
     
     <table>
         <tr>
