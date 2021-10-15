@@ -29,7 +29,7 @@ layout: default
             <td>
                 <li>sudo nmap -p&lt;comma separated list of open ports&gt; -sV -sC &lt;ip address&gt; -oN &lt;output file&gt;</li>
                 <ul>
-                    <li>Easy way to create comma separated list using output file from sudo nmap -p-</li>
+                    <li>Easy way to create comma separated list using output file from sudo nmap -p- -oN <output file></li>
                     <ul>
                         <li>cat &lt;output file from -p- scan&gt; | grep open| awk -F / &apos;{print $1}&apos; ORS=&apos;,&apos; | xclip -selection clipboard</li>
                     </ul>
