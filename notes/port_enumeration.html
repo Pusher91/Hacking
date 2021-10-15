@@ -879,11 +879,17 @@ layout: default
         </tr>
         <tr>
             <td>List Folders/Mailboxes</td>
-            <td>A1 LIST *<br>A1 LIST INBOX *<br>A1 LIST "Archive" *</td>
+            <td>
+                A1 LIST *
+                <br>
+                A1 LIST INBOX *
+                <br>
+                A1 LIST "Archive" *
+            </td>
         </tr>
         <tr>
             <td>Create new folder/inbox</td>
-            <td>A1 CREATE &lt;name&gt;"</td>
+            <td>A1 CREATE "&lt;name&gt;"</td>
         </tr>
         <tr>
             <td>Delete folder/mailbox</td>
@@ -907,11 +913,21 @@ layout: default
         </tr>
         <tr>
             <td>List Messages</td>
-            <td>List messages A1 FETCH:* (flags)<br>A1 UID FETCH 1:* (flags)</td>
+            <td>
+                List messages A1 FETCH:* (flags)
+                <br>
+                A1 UID FETCH 1:* (flags)
+            </td>
         </tr>
         <tr>
             <td>Retrieve message content</td>
-            <td>A1 FETCH 2 body[text]<br>A1 FETCH 2 all<br> A1 UID FETCH 102 (UID RFC822.SIZE BODY.PEEK[])</td>
+            <td>
+                A1 FETCH 2 body[text]
+                <br>
+                A1 FETCH 2 all
+                <br>
+                A1 UID FETCH 102 (UID RFC822.SIZE BODY.PEEK[])
+            </td>
         </tr>
         <tr>
             <td>Close mailbox</td>
