@@ -21,10 +21,8 @@ mark {
   color: black;
 }
 
-table {
-  width:100%;
-  border-collapse: collapse;
-  border: 1px solid black;
+p, ul, ol, table, pre, {
+  margin:0 0 20px;
 }
 
 pre {
