@@ -50,14 +50,14 @@ layout: default
             <td>sudo nmap -p&lt;comma separated list of open ports&gt; -sV -sC -sU &lt;ip address&gt;</td>
         </tr>
     </table>
-
-    <li>Port scan tips:</li>
+    
+    <li>Port scanning tips:</li>
     <ul>
         <li>Running scan with -sV and -sC at the same time or each separately can give different responses in some cases.</li>
         <li>If UDP shows open|filtered then run scripts with -sC. This will be more likely to get a response from the port to confirm if it is open or not.</li>
         <li>Sometimes open ports only show up while using -sT.  Maybe only applicable to ISAKMP/ipsec.</li>
     </ul>
-
+    
     <li>Some nmap flags:</li>
     
     <table>
@@ -119,13 +119,12 @@ layout: default
     <br>
     
     <li>UDP Scanning relies on the server to send back a "ICMP Port Unreachable" message to know if a port is open or closed.  If the server doesn't send back this message (port is filtered by a firewall, etc) then the port will look like it is open when it is not.</li>
+
+    <br>
     
-    <table>
-        <tr>Bash script for port scanning</tr>
-        <tr>
-            <pre>&#13;&#10;#!/bin/bash host=10.5.5.11&#13;&#10;for port in {1..65535}; do&#13;&#10;timeout .1 bash -c &quot;echo &gt;/dev/tcp/$host/$port&quot; &amp;&amp;&#13;&#10;echo &quot;port $port is open&quot;&#13;&#10;done&#13;&#10;echo &quot;Done&quot;&#13;&#10;            </pre>
-        </tr>
-    </table>
+    <li>Bash script for port scanning</li>
+    
+    <pre>&#13;&#10;#!/bin/bash host=10.5.5.11&#13;&#10;for port in {1..65535}; do&#13;&#10;timeout .1 bash -c &quot;echo &gt;/dev/tcp/$host/$port&quot; &amp;&amp;&#13;&#10;echo &quot;port $port is open&quot;&#13;&#10;done&#13;&#10;echo &quot;Done&quot;&#13;&#10;            </pre>
     
     <li>Massscan - Possbily the fastest port scanner.</li>
     
