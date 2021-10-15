@@ -107,12 +107,12 @@ layout: default
         </tr>
     </table>
     
-    <ul>
-        <li>w: Connection timeout in seconds</li>
-        <li>z: Specify Zero-I/O mode which will send no data and is used for scanning</li>
-    </ul>
+    <li>w: Connection timeout in seconds</li>
+    <li>z: Specify Zero-I/O mode which will send no data and is used for scanning</li>
     
-    <p>UDP Scanning relies on the server to send back a "ICMP Port Unreachable" message to know if a port is open or closed.  If the server doesn't send back this message (port is filtered by a firewall, etc) then the port will look like it is open when it is not.</p>
+    <br>
+    
+    <li>UDP Scanning relies on the server to send back a "ICMP Port Unreachable" message to know if a port is open or closed.  If the server doesn't send back this message (port is filtered by a firewall, etc) then the port will look like it is open when it is not.</li>
     
     <table>
         <tr>Bash script for port scanning</tr>
@@ -121,79 +121,74 @@ layout: default
         </tr>
     </table>
     
-    <p>Massscan - Possbily the fastest port scanner.</p>
+    <li>Massscan - Possbily the fastest port scanner.</li>
     
     <hr>
     
     <h2>21 TCP / FTP</h2>
     
+    <li>If FTP is rejecting user login *without* asking for a password then we can enumerate users</li>
+    <li>Tools</li>
+    <table>
+        <tr>
+            <td>Connect to server</td>
+            <td>ftp &lt;ip address&gt;</td>
+        </tr>
+        <tr>
+            <td>Upload file</td>
+            <td>put &lt;file&gt;</td>
+        </tr>
+        <tr>
+            <td>Download file</td>
+            <td>get &lt;file&gt;</td>
+        </tr>
+        <tr>
+            <td>Upload multiple files</td>
+            <td>mput *[.&lt;.php/.html/etc...&gt;]</td>
+        </tr>
+        <tr>
+            <td>Download multiple files</td>
+            <td>mget *[.&lt;.php/.html/etc...&gt;]</td>
+        </tr>
+        <tr>
+            <td>Local current directory</td>
+            <td>lcd</td>
+        </tr>
+        <tr>
+            <td>Set binary mode</td>
+            <td>binary</td>
+        </tr>
+    </table>
+    
+    <li>wget</li>
+    <table>
+        <tr>
+            <td>Recursively download FTP contents</td>
+            <td>wget -r ftp://&lt;user&gt;&lt;ip address&gt; --password=&lt;password&gt;</td>
+        </tr>
+        <tr>
+            <td>Mirror FTP</td>
+            <td>wget --mirror ftp://&lt;user&gt;:&lt;password&gt;@&lt;ip address&gt;</td>
+        </tr>
+    </table>
+    
+    <li>Proftp</li>
     <ul>
-        <li>If FTP is rejecting user login *without* asking for a password then we can enumerate users</li>
-        <li>Tools
-            <table>
-                <tr>
-                    <td>Connect to server</td>
-                    <td>ftp &lt;ip address&gt;</td>
-                </tr>
-                <tr>
-                    <td>Upload file</td>
-                    <td>put &lt;file&gt;</td>
-                </tr>
-                <tr>
-                    <td>Download file</td>
-                    <td>get &lt;file&gt;</td>
-                </tr>
-                <tr>
-                    <td>Upload multiple files</td>
-                    <td>mput *[.&lt;.php/.html/etc...&gt;]</td>
-                </tr>
-                <tr>
-                    <td>Download multiple files</td>
-                    <td>mget *[.&lt;.php/.html/etc...&gt;]</td>
-                </tr>
-                <tr>
-                    <td>Local current directory</td>
-                    <td>lcd</td>
-                </tr>
-                <tr>
-                    <td>Set binary mode</td>
-                    <td>binary</td>
-                </tr>
-            </table>
-        </li>
-        <li>
-            wget
-            <table>
-                <tr>
-                    <td>Recursively download FTP contents</td>
-                    <td>wget -r ftp://&lt;user&gt;&lt;ip address&gt; --password=&lt;password&gt;</td>
-                </tr>
-                <tr>
-                    <td>Mirror FTP</td>
-                    <td>wget --mirror ftp://&lt;user&gt;:&lt;password&gt;@&lt;ip address&gt;</td>
-                </tr>
-            </table>
-        </li>
-        <li>Proftp
-            <ul>
-                <li>Can copy a file between remote directories using write permissions
-                    <table>
-                        <tr>
-                            <td>Connect to FTP server </td>
-                            <td>telnet &lt;ip address&gt; &lt;port&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>Select a file to copy</td>
-                            <td>site cpfr &lt;remote file&gt;</td>
-                        </tr>
-                        <tr>
-                            <td>Select a location to copy file to</td>
-                            <td>Site cpto &lt;remote directory to copy file to&gt;</td>
-                        </tr>
-                    </table>
-                </li>
-            </ul>
-        </li>
+        <li>Can copy a file between remote directories using write permissions</li>
+        <table>
+            <tr>
+                <td>Connect to FTP server </td>
+                <td>telnet &lt;ip address&gt; &lt;port&gt;</td>
+            </tr>
+            <tr>
+                <td>Select a file to copy</td>
+                <td>site cpfr &lt;remote file&gt;</td>
+            </tr>
+            <tr>
+                <td>Select a location to copy file to</td>
+                <td>Site cpto &lt;remote directory to copy file to&gt;</td>
+            </tr>
+        </table>
     </ul>
     
     <hr>
