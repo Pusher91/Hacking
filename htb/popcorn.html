@@ -24,7 +24,7 @@ layout: default
     
     <h2><a id="summary">Summary</a></h2>
     
-    <p></p>
+    <p>After enumerating directories on the web server we find a torrent hosting website.  Using sql inejction we are able to login as root.  Once logged in I am able to upload a php web shell by bypassing an upload restriction filter.  Once on the box an interesting motd file is found in the user George's home directory.  This leads us to an exploit which gives us root shell.</p>
     
     <h2><a id="portscan">Port Scanning</a></h2>
     
@@ -89,7 +89,7 @@ layout: default
 
     <br>
     <br>
-    
+
     <h2><a id="www-data">Shell - www-data</a></h2>
 
     <li>At this point, we can either click on sign up under the login form and create a user or do a simple sql injection to get admin access.  If you create your own user then you will need to upload a torrent file in order to gain a foothold (this will make more sense in a couple more steps).  I choose to login as admin using 'or 1=1-- - for both the username and password.</li>
@@ -181,13 +181,34 @@ layout: default
     <br>
     <br>
 
-    <li></li>
-
-    
-    
-    
-    <br>
     <h2><a id="root">Shell - Root</a></h2>
+
+    <li>I visit the /home directory and find /george.  I look inside Georges home directory and find an unusual file - /home/george/.cache/motd.legal-displayed  Upon discovering this file I use searchsploit to look see if any exploits exist that have to do with this file.</li>
+
+    <img src="../images/popcorn/searchsploit.png">
+
+    <br>
+    <br>
+
+    <li>It looks like these 2 exploits reference the MOTD which is in the name of the file I found.  The exploits also reference "Linux PAM 1.1.0".  I check to see which version of PAM is installed on the victim.</li>
+
+    <img src="../images/popcorn/pam.png">
+
+    <br>
+    <br>
+
+    <li>The PAM version on the victim machine also matches the 2 exploits.  I download one of the exploits and transfer it to the victim.</li>
+
+    <img src="../images/popcorn/exploit_download_and_transfer.png">
+
+    <br>
+    <br>
+
+    <li>Now I execute the script.</li>
+
+    <img src="../images/popcorn/root_shell.png">
+
+    <li>Root shell achieved.</li>
     
 </body>
 </html>
