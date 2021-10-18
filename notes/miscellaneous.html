@@ -141,6 +141,46 @@ layout: default
         </ul>
         <li>nmap</li>
     </ul>
+
+    <hr>
+
+    <h2>VoIP</h2>
+
+    <li>SIPVicious - Pentest tool suite</li>
+    <ul>
+        <li>svmap</li>
+        <ul>
+            <li>sip scanner.  Scans ip address space for SIP servers.</li>
+        </ul>
+
+        <li>svwar</li>
+        <ul>
+            <li>Scans for working extensions.  Also tells if the extension line requires authentication or not.</li>
+            
+        </ul>
+
+        <li>svcrack</li>
+        <ul>
+            <li>Password cracker using digest authentication.  Cracks passwords on both registrar and proxy servers.</li>
+            <li>Example usage:</li>
+            <table>
+                <tr>
+                    <td>svwar -e 1-10000 10.129.1.226 -m INVITE</td>
+                    <td>Scan extentions 1-10000 on ip 10.129.1.266 using the INVITE method</td>
+                </tr>
+            </table>
+        </ul>
+
+        <li>svreport</li>
+        <ul>
+            <li>Manages sessions created by the other tools and export to pdf, xml, csv, and plain text.</li>
+        </ul>
+
+        <li>svcrash</li>
+        <ul>
+            <li>Responds to svwar and svcrack SIP message that causes old version to crash</li>
+        </ul>
+    </ul>
     
     
 
