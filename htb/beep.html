@@ -45,7 +45,7 @@ layout: default
         <li>10000 - Webmin login page</li>
     </ul>
 
-    <li>Using gobuster against the Elastix login page reveals more directories we can take a look at.  I used the command gobuster dir -u https://10.129.1.226 -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -k -t 50 | tee 443-raft and then inverse grepped the output to exclude 403 status responses.</li>
+    <li>Using gobuster against the Elastix login page reveals more directories we can take a look at.  I used the command "gobuster dir -u https://10.129.1.226 -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -k -t 50 | tee 443-raft" and then inverse grepped the output to exclude 403 status responses.</li>
 
     <img src="../images/beep/gobuster443.png">
 
