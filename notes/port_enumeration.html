@@ -1818,7 +1818,8 @@ layout: default
         <tr>
             <td>Write file</td>
             <td>
-                <pre>&#13;&#10;                    declare&#13;&#10;                    f utl_file.file_type;&#13;&#10;                    s varchar(5000) := &apos;&lt;insert text to write&gt;&apos;;&#13;&#10;                    begin&#13;&#10;                    f := utl_file.fopen(&apos;/inetpub/wwwroot&apos;, &apos;&lt;file to write&gt;&apos;, &apos;W&apos;);&#13;&#10;                    utl_file.put_line(f,s);&#13;&#10;                    utl_file.fclose(f);&#13;&#10;                    end;&#13;&#10;                    &lt;/file&gt;&#13;&#10;                </pre>
+                <pre>&#13;&#10;declare&#13;&#10;f utl_file.file_type;&#13;&#10;s varchar(5000) := &apos;&lt;insert text to write&gt;&apos;;&#13;&#10;begin&#13;&#10;f := utl_file.fopen(&apos;/inetpub/wwwroot&apos;, &apos;&lt;file to write&gt;&apos;, &apos;W&apos;);&#13;&#10;utl_file.put_line(f,s);&#13;&#10;utl_file.fclose(f);&#13;&#10;end;&#13;&#10;                    </file>
+                </pre>
             </td>
         </tr>
         <tr>

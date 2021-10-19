@@ -1,0 +1,90 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>Optimum Walkthrough</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<body>
+
+    <h1>Optimum Walkthrough</h1>
+
+    <hr>
+
+    <h2>Contents</h2>
+    <ul>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#kostas">Shell - kostas</a></li>
+        <li><a href="#root">Shell - root</a></li>
+    </ul>
+
+    <h2><a id="summary">Summary</a></h2>
+
+    <p></p>
+
+    <h2><a id="portscan">Port Scanning</a></h2>
+
+    <li>Running a port scan against the full port range to determine which ones are open.</li>
+
+    <pre>&#13;&#10;# Nmap 7.91 scan initiated Mon Oct 18 16:14:36 2021 as: nmap -p- -oN ping_tcp 10.129.1.127&#13;&#10;Nmap scan report for 10.129.1.127&#13;&#10;Host is up (0.043s latency).&#13;&#10;Not shown: 65534 filtered ports&#13;&#10;PORT   STATE SERVICE&#13;&#10;80/tcp open  http&#13;&#10;&#13;&#10;# Nmap done at Mon Oct 18 16:16:47 2021 -- 1 IP address (1 host up) scanned in 131.56 seconds&#13;&#10;    </pre>
+
+    <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
+
+    <pre>&#13;&#10;# Nmap 7.91 scan initiated Mon Oct 18 16:21:00 2021 as: nmap -p80 -sV -sC -oN nmap/script_tcp 10.129.1.127&#13;&#10;Nmap scan report for 10.129.1.127&#13;&#10;Host is up (0.039s latency).&#13;&#10;&#13;&#10;PORT   STATE SERVICE VERSION&#13;&#10;80/tcp open  http    HttpFileServer httpd 2.3&#13;&#10;|_http-server-header: HFS 2.3&#13;&#10;|_http-title: HFS /&#13;&#10;Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Mon Oct 18 16:21:14 2021 -- 1 IP address (1 host up) scanned in 14.44 seconds&#13;&#10;    </pre>
+
+    <br>
+    <h2><a id="infogather">Information Gathering</a></h2>
+
+    <li>The nmap scans only pick up on port 80 being open and running HttpFileServer 2.3.  I visit the web page where I can see that the file server is running.  I use searchsploit to see if any exploits exist for it.</li>
+
+    <img src="../images/optimum/searchsploit.png">
+
+    <br>
+    <br>
+
+    <h2><a id="kostas">Shell - kostas</a></h2>
+
+    <li>This exploit appears to be what we are looking for.  I download it using "searchsploit -m 49125".  I take a look at the script code to see what is going on.</li>
+
+    <img src="../images/optimum/exploit_script.png">
+
+    <br>
+    <br>
+
+    <li>The script appears to fill in a url that injects a command of our choosing.  I will use the example command in order to gain a reverse shell.  First I need to setup my reverse shell powershell script.  I will use the nishang script /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1.</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Optimum]&#13;&#10;&boxur;&HorizontalLine;$ cp /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 shell.ps1&#13;&#10;    </pre>
+
+    <li>Now I will edit the script and appened the reverse shell function to the end of the script.</li>
+
+    <img src="../images/optimum/nishang.png">
+
+    <br>
+    <br>
+    
+    <li>With the nishang script setup I will now setup a python web server in the same directory as the script.</li>
+
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Optimum]&#13;&#10;&boxur;&HorizontalLine;$ sudo python3 -m http.server 80                                                                  1 &Cross;&#13;&#10;Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...&#13;&#10;    </pre>
+
+    <li>Now I set up my netcat listener in preparation for receiving a reverse shell connection on port 443.  I also prepend rlwrap to my netcat listener command so I can use the arrow keys to navigate the CLI within my reverse shell connection.</li>
+    
+    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Optimum]&#13;&#10;&boxur;&HorizontalLine;$ rlwrap nc -lvnp 443&#13;&#10;Ncat: Version 7.91 ( https://nmap.org/ncat )&#13;&#10;Ncat: Listening on :::443&#13;&#10;Ncat: Listening on 0.0.0.0:443&#13;&#10;    </pre>
+    
+    <li>With the reverse shell in place, my python web server set up, and my netcat listener listening, I will now execute the exploit using the command shown in the example of the exploit script.</li>
+
+    <img src="../images/optimum/reverse_shell.png">
+
+    <br>
+    <br>
+
+    <h2><a id="root">Shell - Root</a></h2>
+
+    <li>
+
+</body>
+</html>
+
