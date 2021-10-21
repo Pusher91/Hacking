@@ -19,6 +19,7 @@ layout: default
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
         <li><a href="#root">Shell - nt authority\system</a></li>
+        <li><a href="#extra">Extra</a></li>
     </ul>
 
     <h2><a id="summary">Summary</a></h2>
@@ -62,7 +63,7 @@ layout: default
     <br>
     <br>
 
-    <li>Hydra produces a couple false-positives with the admin:admin credentials, but the credentials tomcat:s3cret to work and we are let in to /manager/html.</li>
+    <li>Hydra produces a couple false-positives with the admin:admin credentials, but the credentials tomcat:s3cret to work and we are let in to /manager/html.  The admin:admin credentials came back as false positives because those are credentials that tomcat recognizes but they are not credentials that have access to the manager portal.</li>
     
     <img src="../images/jerry/tomcat_manager.png">
 
@@ -98,6 +99,19 @@ layout: default
     <br>
 
     <li>System shell achieved.</li>
+
+    <br>
+
+    <h2><a id="extra">Extra</a></h2>
+
+    <li>If we navigate to C:\apache-tomcat-7.0.88\conf there is a file called tomcat-users.xml. This file contains username and password credentials for all the tomcat users.  It also shows which permissions each of those users has.</li>
+
+    <img src="../images/jerry/tomcat-users.xml.png">
+
+    <br>
+    <br>
+
+    <li>We can see admin:admin exists with the role of "role1" only.  tomcat:s3cret contains the roles "manager-gui" and some others, which is the reason tomcat was able to access the manager portal and admin:admin was not.</li>
 
 </body>
 </html>
