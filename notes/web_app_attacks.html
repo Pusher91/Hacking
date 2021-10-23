@@ -992,11 +992,27 @@ layout: default
 		<li>hydra -C   /seclists/passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt http-get://10.0.0.25:8080/host-manager/html</li>
 	</ul>
 
-	<li>File with tomcat credentials - tomcat-users.xml</li>
+	<li>Helpful Files</li>
 	<ul>
-		<li>Can be found in various locations</li>
-		<li>Search apache version + Ubuntu to find the ubuntu distribution that is most likely running on the box.  Then google the distribution name + tomcat in order to find the tomcat file directories installed on the box.</li>
-		<li>Install tomcat and search for the location on your own box.  Example: <code>sudo apt install tomcat9</code></li>
+		<li>tomcat-users.xml</li>
+			<ul>
+				<li>List of user credentials and permissions.</li>
+				<li>/etc/tomcat9/tomcat-users.xml</li>
+				<li>/opt/tomcat/apache-tomcat-9.0.54/conf/tomcat-users.xml</li>
+				<li>/usr/share/tomcat9/etc/tomcat-users.xml</li>
+				<li>/var/lib/ucf/cache/:etc:tomcat9:tomcat-users.xml</li>
+			</ul>
+			
+		<li>/usr/lib/systemd/system/tomcat9.service</li>
+		<ul>
+			<li>Will show CATALINA_HOME and CATALINA_BASE variables</li>
+		</ul>
+
+		<li>Find other files</li>
+		<ul>
+			<li>Search apache version + Ubuntu to find the ubuntu distribution that is most likely running on the box.  Then google the distribution name + tomcat in order to find the tomcat file directories installed on the box.</li>
+			<li>Install tomcat and search for the location on your own box.  Example: <code>sudo apt install tomcat9</code></li>
+		</ul>
 	</ul>
 
 	<li>Deploy .war reverse shell</li>
