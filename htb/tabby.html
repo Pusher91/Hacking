@@ -18,7 +18,8 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#???">Shell - ???</a></li>
+        <li><a href="#tomcat">Shell - tomcat</a></li>
+        <li><a href="#ash">Shell - ash</a></li>
         <li><a href="#root">Shell - root</a></li>
     </ul>
 
@@ -109,6 +110,8 @@ layout: default
     <br>
     <br>
 
+    <h2><a id="tomcat">Shell - tomcat</a></h2>
+
     <li>I use this file location to find the tomcat-users.xml file using the LFI on port 80.</li>
 
     <img src="../images/tabby/tomcat-users.png">
@@ -164,14 +167,79 @@ layout: default
     <br>
 
     <li>With the .war reverse shell deployed I know start my netcat listener in preparation of receiving a reverse shell connection.</li>
-    
 
-    <h2><a id="???">Shell - ???</a></h2>
+    <img src="../images/tabby/netca_reverse_shell.png">
 
+    <br>
+    <br>
+
+    <h2><a id="ash">Shell - ash</a></h2>
+
+    <li>Once on the box I find a file called 16162020_backup.zip in the web server (/var/www/html/16162020_backup.zip).  This file is password protected and the password <code>$3cureP4s5w0rd123!</code> does not work.  I transfer this to my kali box in order to crack it by base64 encoding it and then decoding on my kali machine.  I base64 encoded the file using the command <code>cat 16162020_backup.zip | base64</code></li>
+
+    <img src="../images/tabby/base64_decode.png">
+
+    <br>
+    <br>
+
+    <li>Now I convert the zip file to a hash for john to crack and crack it.</li>
+
+    <img src="../images/tabby/john.png">
+
+    <br>
+    <br>
+
+    <li>I find the password <code>admin@it</code>.  After cracking the has, I unzip the backup file but nothing useful seems to be in it.  Instead, I decide to use the credential to attempt to <code>su</code> into the user ash, since ash was the owner of the original backup file.  <code>su ash</code> and entering the password <code>admin@it</code> works and I now have a shell as ash.</li>
+
+    <img src="../images/tabby/ash_shell.png">
+
+    <br>
+    <br>
+
+    <h2><a id="root">Shell - root</a></h2>
 
     <br>
 
-    <h2><a id="root">Shell - Root</a></h2>
+    <li>Aas the user ash I run the command <code>id</code> and find that I am part of the group lxd.</li>
+
+    <img src="../images/tabby/id.png">
+
+    <br>
+    <br>
+
+    <li>Googling for "lxd privilege escalation" brings me to this page https://book.hacktricks.xyz/linux-unix/privilege-escalation/interesting-groups-linux-pe/lxd-privilege-escalation where it explains how to escalate privilege to root using the lxd group privileges.  After following the instructions I end up with 2 files: lxd.tar.xz and rootfs.squashfs.  I transfer them to the victim machine.</li>
+
+    <img src="../images/tabby/xfer_lxd_abuse.png">
+
+    <br>
+    <br>
+
+    <li>I try to run the command to add the image.  However, it turns out my PATH variable does not include /snap/bin where lxc is located.  So I update my path variable to include this location.</li>
+
+    <img src="../images/tabby/path_update.png">
+
+    <br>
+    <br>
+
+    <li>After running that command again it gives me a message suggesting I run <code>lxd init</code>.  So I run that command.  For every prompt I just press enter and use the default answers.</li>
+
+    <br>
+
+    <li>Currently I have been operating out of the /tmp directory.  Every time I run the command I keep getting a message saying "Error: open ./lxd.tar.xz: no such file or directory".  So I am assuming there is some type of restriction on the /tmp directory.  Another common writable location is /dev/shm so I move my file there and rerun the command <code>lxc image import lxd.tar.xz rootfs.squashfs --alias alpine</code> as well as the 2 commands after it.</li>
+
+    <img src="../images/tabby/dev_shm.png">
+
+    <br>
+    <br>
+
+    <li>Now that I have finished setting up the container I start it up.</li>
+
+    <img src="../images/tabby/root.png">
+
+    <br>
+    <br>
+
+    <li>We now have a root shell.</li>
 
 </body>
 </html>
