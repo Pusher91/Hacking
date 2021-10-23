@@ -25,7 +25,7 @@ layout: default
 
     <h2><a id="summary">Summary</a></h2>
 
-    <p></p>
+    <p>Tabby begins with finding an LFI in order to gain access to tomcat and upload and deploy a .war reverse shell.  After doing so there is password protected zip file on the web server.  I crack the password has for this file and find out the password to the file is also the password to the file owner's account, ash.  After switching users to ash I find that I am a part of the group "lxd".  With lxd group permissions I am able to create an image and gain root access.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
