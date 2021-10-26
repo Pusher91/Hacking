@@ -10,24 +10,24 @@ layout: default
 <hr>
 
 <body>
-
+    
     <h1>Miscellaneous</h1>
     
     <hr>
     
     <h2>Python Command Injection</h2>
-
+    
     <li>Test for injection: enter math calculation such as 2*2.  If the math is being evaluated then a vulnerability might exist.</li>
-
+    
     <li>Inject commands:</li>
     <ul>
         <li>eval('__import__("os").system("&lt;command&gt;")')</li>
     </ul>
-
+    
     <li>Good resource: https://www.stackhawk.com/blog/command-injection-python/#os-commands</li>
-
+    
     <hr>
-
+    
     <h2>Reading Different File Types</h2>
     
     <table>
@@ -86,13 +86,13 @@ layout: default
             </td>
         </tr>
     </table>
-
+    
     <hr>
-
+    
     <h2>Steganography</h2>
-
+    
     <li>Steganography: hiding a secret message inside of another file (picture, video, message, etc.)</li>
-
+    
     <li>Tools</li>
     <ul>
         <li>steghide</li>
@@ -101,8 +101,8 @@ layout: default
             <ul>
                 <table>
                     <tr>
-                        <th>Extract data from an image using a password</td>
-                        <th>steghide extract -sf &lt;File Name&gt; -p &lt;password&gt;</td>
+                        <td>Extract data from an image using a password</td>
+                        <td>steghide extract -sf &lt;File Name&gt; -p &lt;password&gt;</td>
                     </tr>
                     <tr>
                         <td>Extract data</td>
@@ -122,16 +122,16 @@ layout: default
             <li>We will be prompted for a password whether it is or protected by one or not.</li>
         </ul>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Port Knocking</h2>
-
+    
     <li>Linux configuration file</li>
     <ul>
         <li>/etc/knockd.conf</li>
     </ul>
-
+    
     <li>Port knocking tools</li>
     <ul>
         <li>knock</li>
@@ -141,18 +141,18 @@ layout: default
         </ul>
         <li>nmap</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>VoIP</h2>
-
+    
     <li>SIPVicious - Pentest tool suite</li>
     <ul>
         <li>svmap</li>
         <ul>
             <li>sip scanner.  Scans ip address space for SIP servers.</li>
         </ul>
-
+        
         <li>svwar</li>
         <ul>
             <li>Scans for working extensions.  Also tells if the extension line requires authentication or not.</li>
@@ -165,24 +165,92 @@ layout: default
             </table>
             
         </ul>
-
+        
         <li>svcrack</li>
         <ul>
             <li>Password cracker using digest authentication.  Cracks passwords on both registrar and proxy servers.</li>
         </ul>
-
+        
         <li>svreport</li>
         <ul>
             <li>Manages sessions created by the other tools and export to pdf, xml, csv, and plain text.</li>
         </ul>
-
+        
         <li>svcrash</li>
         <ul>
             <li>Responds to svwar and svcrack SIP message that causes old version to crash</li>
         </ul>
     </ul>
     
+    <hr>
     
-
+    <h2>HTTP Cookies</h2>
+    
+    <li>Cookies in storage</li>
+    <ul>
+        <li>Can be stolen with javascript XSS</li>
+        <ul>
+            <li>Setting the HttpOnly flag on the cookie will disallow javascript from grabbing cookies from the the browser storage.</li>
+        </ul>
+    </ul>
+    
+    <li>Cookies in transit</li>
+    <ul>
+        <li>Mitigate man in the middle attacks by using HTTPS</li>
+        <ul>
+            <li>Sometimes websites will allow HTTP access as well as HTTPS</li>
+            <ul>
+                <li>The “Secure” flag can be set to only allow cookie transmission over HTTPS</li>
+            </ul>
+        </ul>
+    </ul>
+    
+    <li>Cross-Domain Cookies Usage</li>
+    <ul>
+        <li>When a website loads resources from other websites it can send any cookies you have for those website along with those requests for loading content from other websites.</li>
+        <li>Use the “SameSite” flag to disable the browser’s ability to send your cookies unless the web request comes directly from you instead.</li>
+        <ul>
+            <li>“SameSite” has two possible values</li>
+            <table>
+                <tr>
+                    <td>strict</td>
+                    <td>The web request origin must come from you every time.</td>
+                </tr>
+                <tr>
+                    <td>lax</td>
+                    <td>The web request can be cross-origin if it is an HTTP GET request and you are navigating to the root directory</td>
+                </tr>
+            </table>
+        </ul>
+    </ul>
+    
+    <li>Subdomain cookie sharing</li>
+    <ul>
+        <li>By default a cookie will only be shared with the subdomain it was given from.</li>
+        <li>The “Domain” parameter can be set in order to alter the scope of the domain that the cookie is shared with.</li>
+        <ul>
+            <li>i.e. the domain parameter could be set to the root domain and then any subdomain would get access to those cookies.</li>
+        </ul>
+    </ul>
+    
+    <li>Cookie sharing by path</li>
+    <ul>
+        <li>By default the path of the resource that set the cookie only gets access to it.</li>
+        <li>The “Path” parameter can be set on a cookie in order to specify which web path gets access to the cookie.</li>
+        <ul>
+            <li>If it is set to /blog then everything under /blog will get access to the cookie.</li>
+            <li>If it is set to / then everything gets access to the cookie.</li>
+        </ul>
+    </ul>
+    
+    <li>Cookie lifespan</li>
+    <ul>
+        <li>Cookie lifespan is for one session if not specified otherwise.</li>
+        <li>Cookie lifespan can be specified using the attributes: “max-age” and “expires”</li>
+    </ul>
+    
+    
+    
+    
 </body>
 </html>
