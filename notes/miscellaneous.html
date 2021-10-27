@@ -191,6 +191,10 @@ layout: default
     
     <table>
         <tr>
+            <th>Http Flag</th>
+            <th>Description</th>
+        </tr>
+        <tr>
             <td>Expires</td>
             <td rowspan="2">
                 <li>By default a cookie lifespan lasts one session, which is traditionally until a browser closes.  Modern browsers might hold onto a cookie longer than that.</li>
@@ -225,6 +229,10 @@ layout: default
         <tr>
             <td>HttpOnly</td>
             <td>Makes the cookie inaccessible to client side scripts.  If a browser does not support the HttpOnly flag then the cookie will still be accessible by scripts.</td>
+        </tr>
+        <tr>
+            <td>SameSite</td>
+            <td></td>
         </tr>
     </table>
     
