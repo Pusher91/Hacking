@@ -185,28 +185,46 @@ layout: default
     <hr>
     
     <h2>HTTP Cookies</h2>
-
+    
     <li>HTTP Cookie Flags</li>
     <pre>Set-Cookie: &lt;name&gt;=&lt;value&gt;[; &lt;Max-Age&gt;=&lt;age&gt;]&#13;&#10;`[; expires=&lt;date&gt;][; domain=&lt;domain_name&gt;]&#13;&#10;[; path=&lt;some_path&gt;][; secure][; HttpOnly]</pre>
     
-    <li>Cookies in storage</li>
-    <ul>
-        <li>Can be stolen with javascript XSS</li>
-        <ul>
-            <li>Setting the HttpOnly flag on the cookie will disallow javascript from grabbing cookies from the the browser storage.</li>
-        </ul>
-    </ul>
-    
-    <li>Cookies in transit</li>
-    <ul>
-        <li>Mitigate man in the middle attacks by using HTTPS</li>
-        <ul>
-            <li>Sometimes websites will allow HTTP access as well as HTTPS</li>
-            <ul>
-                <li>The “Secure” flag can be set to only allow cookie transmission over HTTPS</li>
-            </ul>
-        </ul>
-    </ul>
+    <table>
+        <tr>
+            <td>Max-age</td>
+            <td>Expires</td>
+            <td rowspan="2">
+                <li>By default a cookie lifespan lasts one session(until the browser closes).  Modern browsers might hold onto a cookie longer than that.</li>
+                <li>Set the shortest reasonable cookie life span for maxmimum security</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Domain</td>
+            <td>
+                <li>By default a cookie will only be shared with the subdomain that it was generated from.</li>
+                <li>The domain flag allows you to change the scope of where the cookie shared.  If the domain get changed from the subdomain to the root domain then every subdomain of that root will have access to the cookie.</li>
+            </td>
+        </tr>
+        <tr>
+            <td>Path</td>
+            <td>
+                <li>By default a cookie is only shared with the web path that generated it.</li>
+                <li>The path paramter can be used to modify the scope of the web path that has access to the cookie.  If the path paramater gets set to / (root) then every path on the website will get access to the cookie.</li>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>Secure</td>
+            <td>
+                <li>By default cookies can be sent over HTTP and HTTPS.</li>
+                <li>The secure flag will only allow cookies to be sent over HTTPS.</li>
+            </td>
+        </tr>
+        <tr>
+            <td>HttpOnly</td>
+            <td>Makes the cookie inaccessible to client side scripts.  If a browser does not support the HttpOnly flag then the cookie will still be accessible by scripts.</td>
+        </tr>
+    </table>
     
     <li>Cross-Domain Cookies Usage</li>
     <ul>
@@ -251,20 +269,20 @@ layout: default
         <li>Cookie lifespan is for one session if not specified otherwise.</li>
         <li>Cookie lifespan can be specified using the attributes: “max-age” and “expires”</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2><a id=java>Java Deserialization</a></h2>
-
-	<li>Use ysoserial to generate malicious java serialization file.</li>
-	<ul>
-		<li>https://github.com/frohoff/ysoserial</li>
-		<ul>
-			<li>Download ysoserial-master-SNAPSHOT.jar from the Installation section</li>
-		</ul>
-	</ul>
-	
-	<li>Syntax: java -jar ysoserial-master-SNAPSHOT.jar &lt;payload type&gt; &#039;&lt;command&gt;&#039;</li>
+    
+    <li>Use ysoserial to generate malicious java serialization file.</li>
+    <ul>
+        <li>https://github.com/frohoff/ysoserial</li>
+        <ul>
+            <li>Download ysoserial-master-SNAPSHOT.jar from the Installation section</li>
+        </ul>
+    </ul>
+    
+    <li>Syntax: java -jar ysoserial-master-SNAPSHOT.jar &lt;payload type&gt; &#039;&lt;command&gt;&#039;</li>
     
     
     
