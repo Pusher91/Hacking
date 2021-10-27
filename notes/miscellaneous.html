@@ -276,15 +276,18 @@ layout: default
 
     <li>Defenses:</li>
     <ul>
-        <li>CSRF Tokens</li>
+        <li>Synchronizer Token Pattern</li>
+        <ul>
+            <li>Server generates a CSRF token once per session or per request.  When a request is made the server compares the CSRF token to the user's session.</li>
+            <ul>
+                <li>Per request are more secure but can cause issues such as using the "back" button.</li>
+            </ul>
+        </ul>
+
         <li>Double submit cookie</li>
         <ul>
-            <li>Weak CSRF protection</li>
-            <li>Upon logging in the server creates a Session ID and CSRF token.</li>
-            <ul>
-                <li>The server stores the Session ID but does not Store the CSRF token.</li>
-                <li>The browser stores the CSRF token as a cookie.</li>
-            </ul>
+            <li>Weaker CSRF protection</li>
+            <li>The server geberates a session ID and CSRF token.</li>
         </ul>
     </ul>
     
