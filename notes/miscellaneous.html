@@ -236,15 +236,19 @@ layout: default
                 <li>When browsing to a website that pulls resources from other websites your browser can send any cookies you have for those websites.</li>
                 <li>The "SameSite" flag will diable the browsers ability to send your cookies cross-domain to other websites.</li>
                 <li>This flag will watch the origin of web requests and if the origin does not come from you then it will not send cookies.</li>
-                <li>This flag also has two values, "strict" and "lax"</li>
+                <li>This flag also has three values: Strict, Lax, and None</li>
                 <table>
                     <tr>
-                        <td>strict</td>
+                        <td>Strict</td>
                         <td>The web request origin must come from you every time.</td>
                     </tr>
                     <tr>
-                        <td>lax</td>
-                        <td>The web request can be cross-origin if it is an HTTP GET request and you are navigating to the root directory</td>
+                        <td>Lax</td>
+                        <td>The web request can be cross-origin if it is an HTTP GET request and you are navigating to the root directory.  Cookies will not be sent when a website loads images or something else from an external site that you have cookies</td>
+                    </tr>
+                    <tr>
+                        <td>None</td>
+                        <td>Cookies will always be sent.  If None is set then Secure must also be set or the cookie will not be sent.</td>
                     </tr>
                 </table>
             </td>
