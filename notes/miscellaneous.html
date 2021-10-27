@@ -267,25 +267,23 @@ layout: default
     </ul>
     
     <li>Syntax: java -jar ysoserial-master-SNAPSHOT.jar &lt;payload type&gt; &#039;&lt;command&gt;&#039;</li>
-
+    
     <hr>
     
     <h2>CSRF Tokens</h2>
-
+    
+    <li>Synchronizer Token Pattern</li>
     <ul>
-        <li>Synchronizer Token Pattern</li>
+        <li>Server generates a CSRF token once per session or per request.  When a request is made the server compares the CSRF token to the user's session.</li>
         <ul>
-            <li>Server generates a CSRF token once per session or per request.  When a request is made the server compares the CSRF token to the user's session.</li>
-            <ul>
-                <li>Per request are more secure but can cause issues such as using the "back" button.</li>
-            </ul>
+            <li>Per request are more secure but can cause issues such as using the "back" button.</li>
         </ul>
-
-        <li>Double submit cookie</li>
-        <ul>
-            <li>Weaker CSRF protection</li>
-            <li>The server geberates a session ID and CSRF token.</li>
-        </ul>
+    </ul>
+    
+    <li>Double submit cookie</li>
+    <ul>
+        <li>Weaker CSRF protection</li>
+        <li>The server geberates a session ID and CSRF token.</li>
     </ul>
     
     
