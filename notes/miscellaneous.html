@@ -235,6 +235,7 @@ layout: default
             <td>
                 <li>When browsing to a website that pulls resources from other websites your browser can send any cookies you have for those websites.</li>
                 <li>This flag will alter that behavior based on one of it's three values: Strict, Lax, and None</li>
+                <br>
                 <table>
                     <tr>
                         <td>Strict</td>
@@ -266,6 +267,26 @@ layout: default
     </ul>
     
     <li>Syntax: java -jar ysoserial-master-SNAPSHOT.jar &lt;payload type&gt; &#039;&lt;command&gt;&#039;</li>
+
+    <hr>
+    
+    <h2>CSRF</h2>
+
+    <li></li>
+
+    <li>Defenses:</li>
+    <ul>
+        <li>CSRF Tokens</li>
+        <li>Double submit cookie</li>
+        <ul>
+            <li>Weak CSRF protection</li>
+            <li>Upon logging in the server creates a Session ID and CSRF token.</li>
+            <ul>
+                <li>The server stores the Session ID but does not Store the CSRF token.</li>
+                <li>The browser stores the CSRF token as a cookie.</li>
+            </ul>
+        </ul>
+    </ul>
     
     
     
