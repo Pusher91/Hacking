@@ -228,50 +228,6 @@ layout: default
         </tr>
     </table>
     
-    <li>Cross-Domain Cookies Usage</li>
-    <ul>
-        <li>When a website loads resources from other websites it can send any cookies you have for those website along with those requests for loading content from other websites.</li>
-        <li>Use the “SameSite” flag to disable the browser’s ability to send your cookies unless the web request comes directly from you instead.</li>
-        <ul>
-            <li>“SameSite” has two possible values</li>
-            <table>
-                <tr>
-                    <td>strict</td>
-                    <td>The web request origin must come from you every time.</td>
-                </tr>
-                <tr>
-                    <td>lax</td>
-                    <td>The web request can be cross-origin if it is an HTTP GET request and you are navigating to the root directory</td>
-                </tr>
-            </table>
-        </ul>
-    </ul>
-    
-    <li>Subdomain cookie sharing</li>
-    <ul>
-        <li>By default a cookie will only be shared with the subdomain it was given from.</li>
-        <li>The “Domain” parameter can be set in order to alter the scope of the domain that the cookie is shared with.</li>
-        <ul>
-            <li>i.e. the domain parameter could be set to the root domain and then any subdomain would get access to those cookies.</li>
-        </ul>
-    </ul>
-    
-    <li>Cookie sharing by path</li>
-    <ul>
-        <li>By default the path of the resource that set the cookie only gets access to it.</li>
-        <li>The “Path” parameter can be set on a cookie in order to specify which web path gets access to the cookie.</li>
-        <ul>
-            <li>If it is set to /blog then everything under /blog will get access to the cookie.</li>
-            <li>If it is set to / then everything gets access to the cookie.</li>
-        </ul>
-    </ul>
-    
-    <li>Cookie lifespan</li>
-    <ul>
-        <li>Cookie lifespan is for one session if not specified otherwise.</li>
-        <li>Cookie lifespan can be specified using the attributes: “max-age” and “expires”</li>
-    </ul>
-    
     <hr>
     
     <h2><a id=java>Java Deserialization</a></h2>
