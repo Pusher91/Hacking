@@ -277,6 +277,11 @@ layout: default
     <li>Protections</li>
 
     <ul>
+        <li>CSRF Tokens can be used to guard against CSRF attacks.  A CSRF token is a long random string that is provided by the web server to the user which is used to prove that they are authenticated.  A CSRF token differs from a cookie because it is sent in a different field of the web request.  Even though a CSRF token might be stored in the same location as cookies a CSRF attack will not be able to take the value of the CSRF token and place it in the required field of the web request that is required to prove that the request is coming from an authenticated user.</li>
+    </ul>
+
+    <li>Different implementations of CSRF tokens:</li>
+    <ul>
         <li>Synchronizer Token Pattern</li>
         <ul>
             <li>Server generates a CSRF token once per session or per request.  When a request is made the server compares the CSRF token to the user's session.</li>
