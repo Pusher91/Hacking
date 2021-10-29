@@ -1210,6 +1210,7 @@ layout: default
 		<ul>
 			<li>Weaker CSRF protection</li>
 			<li>The server generates a cookie and a CSRF token as a pair for the user.  When making a web request the user will send the cookie as well as the CSRF token in some other paramater of the web request.  If the cookie does not match up withe CSRF token that the server is expecting then the web request should not go through since a CSRF would be detected.</li>
+			<li>We do not use the session ID cookie as the CSRF token because we cannot set HttpOnly on the session ID in this scenario.  Setting the session ID to HttpOnly provides additional security.</li>
 		</ul>
 		
 		<li>SameSite cookie flag</li>
@@ -1224,9 +1225,10 @@ layout: default
 			<li>When submitting a web request (such as transferring funds) the server should have a challenge such as asking for a password in order to authenticate the web request.  A CSRF attack should not be able to know what the answer to the challenge is, therefore a CSRF will not work.</li>
 		</ul>
 		
-		<li>Origin Headers</li>
+		<li>Origin and Referer Headers</li>
 		<ul>
-			<li>Verify that the web request destination is the same as the origin.</li>
+			<li>Verify that the web request destination origin is something the web application expects.</li>
+			<li>The Origin and Referer headers can only be set by the browser.</li>
 			<li>Examples:</li>
 			<ul>
 				<li>Legitimate request - submitting a fund transfer on bank.com would show the request originated from bank.com</li>
