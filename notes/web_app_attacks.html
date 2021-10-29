@@ -1196,6 +1196,10 @@ layout: default
 	<li>CSRF Tokens</li>
 	<ul>
 		<li>CSRF Tokens can be used to guard against CSRF attacks.  A CSRF token is a long random string that is provided by the webserver to the user which is used to prove that they are authenticated.  A CSRF token differs from a cookie because it is sent in a different field of the web request.  Even though a CSRF token might be stored in the same location as cookies a CSRF attack will not be able to take the value of the CSRF token and place it in the required field of the web request that is required to prove that the request is coming from an authenticated user.</li>
+		<li>Custom headers typically cannot be set in CSRF attacks.  See: http://blog.alutam.com/2011/09/14/jersey-and-cross-site-request-forgery-csrf/</li>
+		<ul>
+			<li>Custom headers may be sufficient to stop current CSRF attacks.  However, random generated CSRF tokens are smart to use in preparation for if attackers figure out how to set customer headers.</li>
+		</ul>
 	</ul>
 	
 	<li>Protections against CSRF:</li>
@@ -1210,7 +1214,6 @@ layout: default
 		<ul>
 			<li>Weaker CSRF protection</li>
 			<li>The server generates a cookie and a CSRF token as a pair for the user.  When making a web request the user will send the cookie as well as the CSRF token in some other paramater of the web request.  If the cookie does not match up withe CSRF token that the server is expecting then the web request should not go through since a CSRF would be detected.</li>
-			<li>We do not use the session ID cookie as the CSRF token because we cannot set HttpOnly on the session ID in this scenario.  Setting the session ID to HttpOnly provides additional security.</li>
 		</ul>
 		
 		<li>SameSite cookie flag</li>
