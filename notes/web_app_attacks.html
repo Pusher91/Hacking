@@ -1213,7 +1213,7 @@ layout: default
 		<li>Double submit cookie</li>
 		<ul>
 			<li>Weaker CSRF protection</li>
-			<li>The server generates a cookie and a CSRF token as a pair for the user.  When making a web request the user will send the cookie as well as the CSRF token in some other paramater of the web request.  If the cookie does not match up withe CSRF token that the server is expecting then the web request should not go through since a CSRF would be detected.</li>
+			<li>The server provides a random value as a cookie and the user must submit this cookie value both as a cookie and in a customer header when making web requests.</li>
 		</ul>
 		
 		<li>SameSite cookie flag</li>
