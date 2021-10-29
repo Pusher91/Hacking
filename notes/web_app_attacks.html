@@ -1197,8 +1197,7 @@ layout: default
 	
 	<li>A CSRF attack takes place when an attacker crafts a malicious web request and tricks the victim into sending the request to a web application that they are already authenticated to.  The malicious web request could do anything such as transfer funds, change account information, or any other action an authenticated user could make on the web application.  A website is vulnerable to CSRF attacks if it only uses cookies to validate whether a web request is coming from an authenticated user.</li>
 	
-	<li>Protections</li>
-	
+	<li>CSRF Tokens</li>
 	<ul>
 		<li>CSRF Tokens can be used to guard against CSRF attacks.  A CSRF token is a long random string that is provided by the webserver to the user which is used to prove that they are authenticated.  A CSRF token differs from a cookie because it is sent in a different field of the web request.  Even though a CSRF token might be stored in the same location as cookies a CSRF attack will not be able to take the value of the CSRF token and place it in the required field of the web request that is required to prove that the request is coming from an authenticated user.</li>
 	</ul>
