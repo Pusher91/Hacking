@@ -807,7 +807,7 @@ layout: default
 	<li>Windows</li>
 	<ul>
 		<li>Identify RFI</li>
-
+		
 		<table>
 			<tr>
 				<td>Test RFI using SMB</td>
@@ -820,7 +820,7 @@ layout: default
 		</table>
 		
 		<li>Try to extract a hash</li>
-
+		
 		<table>
 			<tr>
 				<td>Listen for SMB</td>
@@ -831,13 +831,13 @@ layout: default
 				<td>tcpdump -i tun0 port 445</td>
 			</tr>
 		</table>
-
+		
 		<ul>
 			<li>If traffic shows on 445 when attempting the RFI but nothing shows in responder then the server is not vulernable to this attack</li>
 		</ul>
-
+		
 		<br>
-
+		
 		<li>Try setting up SMB Server on attacker and attempt to use RFI to access these files</li>
 		<ul>
 			<li>RFI &lt;url&gt;/&lt;smb share&gt;/shell.php&amp;cmd=whoami</li>
@@ -1190,37 +1190,54 @@ layout: default
 	<h2>SSTI (Server Side Template Injection)</h2>
 	
 	<li><a href="command_injection.html#ssti">Click here</a></li>
-
+	
 	<hr>
-
+	
 	<h2>Cross-Site Request Forgery (CSRF)</h2>
+	
+	<li>A CSRF attack takes place when an attacker crafts a malicious web request and tricks the victim into sending the request to a web application that they are already authenticated to.  The malicious web request could do anything such as transfer funds, change account information, or any other action an authenticated user could make on the web application.  A website is vulnerable to CSRF attacks if it only uses cookies to validate whether a web request is coming from an authenticated user.</li>
+	
+	<li>Protections</li>
+	
+	<ul>
+		<li>CSRF Tokens can be used to guard against CSRF attacks.  A CSRF token is a long random string that is provided by the webserver to the user which is used to prove that they are authenticated.  A CSRF token differs from a cookie because it is sent in a different field of the web request.  Even though a CSRF token might be stored in the same location as cookies a CSRF attack will not be able to take the value of the CSRF token and place it in the required field of the web request that is required to prove that the request is coming from an authenticated user.</li>
+	</ul>
+	
+	<li>Protections against CSRF:</li>
+	<ul>
+		<li>Synchronizer Token Pattern</li>
+		<ul>
+			<li>A new CSRF token is generated for each form submission.</li>
+			<li>Can cause issues in scenarios such as using the "back" button on the browser, since the CSRF token on the previous page will no longer match what it used to.</li>
+		</ul>
+		
+		<li>Double submit cookie</li>
+		<ul>
+			<li>Weaker CSRF protection</li>
+			<li>The server generates a cookie and a CSRF token as a pair for the user.  When making a web request the user will send the cookie as well as the CSRF token in some other paramater of the web request.  If the cookie does not match up withe CSRF token that the server is expecting then the web request should not go through since a CSRF would be detected.</li>
+		</ul>
+		
+		<li>SameSite cookie flag</li>
+		<ul>
+			<li>If this flag is set then it can stop cookies from being sent cross-site which are the basis behind CSRF attacks.</li>
+			<li>A browser might not support this feature.</li>
+			<li>Lacks the ability for fine-grain control.  Example:  The website (example.com) is a forum and someone posts a link to the forum's delete account function (example.com/DeleteAccount).  Any user who clicks this link will send their cookies.  If aditional protections such as a CSRF token is not also implemented then the delete account function would execute.</li>
+		</ul>
+		
+		<li>Challenge/response pattern</li>
+		<ul>
+			<li>When submitting a web request (such as transferring funds) the server should have a challenge such as asking for a password in order to authenticate the web request.  A CSRF attack should not be able to know what the answer to the challenge is, therefore a CSRF will not work.</li>
+		</ul>
+		
+		<li>Origin Headers</li>
+		<ul>
+			<li>Verify that the web request destination is the same as the origin.</li>
+			<li>Examples:</li>
+			<ul>
+				<li>Legitimate request - submitting a fund transfer on bank.com would show the request originated from bank.com</li>
+				<li>Forged request - visting evil.com triggers a CSRF attack to transfer funds on bank.com  The request would show originating from evil.com.</li>
+			</ul>
 
-    <li>A CSRF attack takes place when an attacker crafts a malicious web request and tricks the victim into sending the request to a web application that they are already authenticated to.  The malicious web request could do anything such as transfer funds, change account information, or any other action an authenticated user could make on the web application.  A website is vulnerable to CSRF attacks if it only uses cookies to validate whether a web request is coming from an authenticated user.</li>
-    
-    <li>Protections</li>
-
-    <ul>
-        <li>CSRF Tokens can be used to guard against CSRF attacks.  A CSRF token is a long random string that is provided by the webserver to the user which is used to prove that they are authenticated.  A CSRF token differs from a cookie because it is sent in a different field of the web request.  Even though a CSRF token might be stored in the same location as cookies a CSRF attack will not be able to take the value of the CSRF token and place it in the required field of the web request that is required to prove that the request is coming from an authenticated user.</li>
-    </ul>
-
-    <li>Protections against CSRF:</li>
-    <ul>
-        <li>Synchronizer Token Pattern</li>
-        <ul>
-            <li>Server generates a CSRF token once per session or per request.  When a request is made the server compares the CSRF token to the user's session.</li>
-            <ul>
-                <li>Per request is more secure but can cause issues such as using the "back" button.</li>
-            </ul>
-        </ul>
-        
-        <li>Double submit cookie</li>
-        <ul>
-            <li>Weaker CSRF protection</li>
-            <li>The server generates a session ID and CSRF token.</li>
-        </ul>
-        
-        <li>SameSite cookie flag</li>
-        <ul>
-            <li>If this flag is set it can stop cookies from being sent cross-site.</li>
-        </ul>
-    </ul>
+			<li>This protection can cause issues in scenarios where the origin header is altered for legitimate reasons such as using adblocker.</li>
+		</ul>
+	</ul>
