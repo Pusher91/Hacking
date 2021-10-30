@@ -181,14 +181,64 @@ layout: default
 	<hr>
 	
 	<h2>SQL Injection</h2>
+
+	<li>Types of SQL Injection</li>
+	<ul>
+		<li>In-band</li>
+		<ul>
+			<li>Error based</li>
+			<ul>
+				<li>Send queries are sent that cause the application to output SQL error message.  Information about the database can be learned through them.</li>
+			</ul>
+
+			<li>Union based</li>
+			<ul>
+				<li>UNION sql queries are used to grab information from the database and output it to the web application.</li>
+			</ul>
+		</ul>
+
+		<li>Blind</li>
+		<ul>
+			<li>Boolean</li>
+			<ul>
+				<li>A SQL query is sent that contains a condition that causes the server to respond differently depending on if the condition is true or false.</li>
+			</ul>
+
+			<li>Time-based</li>
+			<ul>
+				<li>Sql queries are used that cause the server to delay it's response a predictable amount of time.  A sql injection is confirmed if the server responds in the delayed predictable amount of time.</li>
+			</ul>
+		</ul>
+
+		<li>Out-of-band</li>
+		<ul>
+			<li>Output of the sql injection is read through an outbound communication via HTTP or DNS from the sql server.</li>
+		</ul>
+
+		<li>Second order</li>
+		<ul>
+			<li>The sql injection is stored in the database somewhere and then retrieved using another method in order to execute the sql query.</li>
+			<li>Example: create a user on a website with a name that is actually a sql injection query.  Look at that user on the website to see the output of the query.</li>
+		</ul>
+	</ul>
 	
 	<li>Preventing SQL injection</li>
 	<ul>
-		<li>Use parameterized queries, also known as prepared statements.  This puts parameters or placeholders into SQL statements.  The databased binds the values of the user input to the statement.  This prevents user input from manipulating SQL code.</li>
+		<li>Parameterized Statements</li>
+		<ul>
+			<li>The sql statement and the user input are passed to the database separately which allows the database driver to intpret them as intended.</li>
+			<li>Without prepared statements the full sql statement is built including the user input and then it is passed to the database.</li>
+		</ul>
+
+		<li>Input santitization</li>
+		<ul>
+			<li>Limit character length</li>
+			<li>Whitelist characters - only allow certain characters to be used</li>
+			<li>Blacklist characters - do not allow certain characters to be used</li>
+		</ul>
+
+		<li>Web Application Firewall (WAF) - Detects sql injection signatures and filters them out.  These signatures are part of a constantly updated database that the firewall uses.</li>
 		<li>Do not display errors on the webpage</li>
-		<li>Limit character length</li>
-		<li>Whitelist characters - only allow certain characters to be used</li>
-		<li>Blacklist characters - do not allow certain characters to be used</li>
 		<ul>
 			<li>Such as:  &ldquo;&lt;&gt;/?*()&amp;,SQL,SCRIPT,SELECT,INSERT,UPDATE,DROP,%0A,%0D,%00</li></li>
 		</ul>
