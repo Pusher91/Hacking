@@ -124,6 +124,24 @@ layout: default
                                             </ul>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>Get address for System function</td>
+                                        <td>
+                                            <li><span class="red">readelf -s /lib/i386-linux-gnu/libc.so.6 | grep &quot; system@&quot;</span></li>
+                                            <ul>
+                                                    <li>gdb-peda$ p <span class="purple">0xb7e19000</span> + <span class="red">0x&lt;readelf hex address&gt;</span></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Get address for Exit function</td>
+                                        <td>
+                                            <li><span class="teal">readelf -s /lib/i386-linux-gnu/libc.so.6 | grep &quot; exit@&quot;</span></li>
+                                            <ul>
+                                                <li>gdb-peda$ p <span class="purple">0xb7e19000 + <span class="teal">0x&lt;readelf hex address&gt;</span></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
                                 </table>
                             </ul>
                         </td>
