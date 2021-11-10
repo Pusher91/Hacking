@@ -173,7 +173,7 @@ layout: default
             <td>
                 <li>$(python -c &apos;print(&quot;a&quot;*&lt;offset&gt; + &quot;<span class="red">&lt;System&gt;</span>&quot; + &quot;<span class="teal">&lt;Exit&gt;</span>&quot; + &quot;<span class="brown">&lt;/bin/sh&gt;</span>&quot;)&apos;)</li>
                 <ul>
-                    <li>Find offset by sending pattern to trigger BOF and find where in the pattern the pointer instruction lands</li>
+                    <li>Find offset by sending a pattern of characters (msf-pattern_create) to trigger BOF and find where in the pattern the pointer instruction lands</li>
                     <li>Addresses must be little-endian encoded</li>
                     <ul>
                         <li>0xb7e53da0 = \xa0\x3d\xe5\xb7</li>
