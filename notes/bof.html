@@ -85,19 +85,28 @@ layout: default
         </ul>
     </ul>
     
-    <li>Check BOF protetions</li>
+    <li>Check BOF protections</li>
     
     <table>
         <tr>
-            <td>Canary</td>
+            <td>
+                Canary
+                <li>gdb-peda$ checksec</li>
+            </td>
             <td>Off is good</td>
         </tr>
         <tr>
-            <td>Fortify</td>
+            <td>
+                Fortify
+                <li>gdb-peda$ checksec</li>
+            </td>
             <td>Blank</td>
         </tr>
         <tr>
-            <td>NX</td>
+            <td>
+                NX
+                <li>gdb-peda$ checksec</li>
+            </td>
             <td>
                 <li>Enabled = Cannot run from the stack</li>
                 <li>Use return to libc method</li>
@@ -108,12 +117,35 @@ layout: default
             </td>
         </tr>
         <tr>
-            <td>PIE</td>
+            <td>
+                PIE
+                <li>gdb-peda$ checksec</li>
+            </td>
             <td>Blank</td>
         </tr>
         <tr>
-            <td>RELRO</td>
+            <td>
+                RELRO
+                <li>gdb-peda$ checksec</li>
+            </td>
             <td>Blank</td>
+        </tr>
+        <tr>
+            <td>Address Space Layout Randomization (ASLR)</td>
+            <td>
+                <li>OS setting that randomizes where executables are loaded into memory</li>
+                <li>cat /proc/sys/kernel/randomize_va_space</li>
+                <ul>
+                    <li>1 = Disabled</li>
+                    <li>2 = Enabled</li>
+                    <ul>
+                        <li>If enabled, then run the BOF many times in order to get it to work</li>
+                        <ul>
+                            <li>for i in {1..5000}; do &lt;BOF&gt;; done</li>
+                        </ul>
+                    </ul>
+                </ul>
+            </td>
         </tr>
     </table>
     
