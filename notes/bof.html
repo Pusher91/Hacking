@@ -89,48 +89,36 @@ layout: default
     
     <table>
         <tr>
-            <td>Open up the program in gdb</td>
-            <td>gdb ./program</td>
+            <td>Canary</td>
+            <td>Off is good</td>
         </tr>
         <tr>
-            <td>Check BOF protections</td>
+            <td>Fortify</td>
+            <td>Blank</td>
+        </tr>
+        <tr>
+            <td>NX</td>
             <td>
-                <li>gdb-peda$ checksec</li>
-                <table>
-                    <tr>
-                        <td>Canary</td>
-                        <td>Off is good</td>
-                    </tr>
-                    <tr>
-                        <td>Fortify</td>
-                        <td>Blank</td>
-                    </tr>
-                    <tr>
-                        <td>NX</td>
-                        <td>
-                            <li>Enabled = Cannot run from the stack</li>
-                            <li>Use return to libc method</li>
-                            <ul>
-                                <li>Overwrite return address so the computer jumps to the desired function.  Typically the system function with the argument /bin/sh</li>
-                                <li>https://0xdf.gitlab.io/2019/03/23/htb-frolic.html</li>
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>PIE</td>
-                        <td>Blank</td>
-                    </tr>
-                    <tr>
-                        <td>RELRO</td>
-                        <td>Blank</td>
-                    </tr>
-                </table>
+                <li>Enabled = Cannot run from the stack</li>
+                <li>Use return to libc method</li>
+                <ul>
+                    <li>Overwrite return address so the computer jumps to the desired function.  Typically the system function with the argument /bin/sh</li>
+                    <li>https://0xdf.gitlab.io/2019/03/23/htb-frolic.html</li>
+                </ul>
             </td>
         </tr>
+        <tr>
+            <td>PIE</td>
+            <td>Blank</td>
+        </tr>
+        <tr>
+            <td>RELRO</td>
+            <td>Blank</td>
+        </tr>
     </table>
-
+    
     <h3>Return to libc BOF Methodology</h3>
-
+    
     <table>
         <tr>
             <td>Get base libc address</td>
