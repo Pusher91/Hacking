@@ -41,7 +41,31 @@ layout: default
 
     <li>Since SSH is an uncommon first point of exploitation I focus my efforts on the web server on port 80.  I begin by clicking on "MENU" and then "PORTAL"</li>
 
-    <img src="../images/bountyhunter/menu.png"></img>
+    <img src="../images/bountyhunter/menu.png">
+
+    <br>
+
+    <li>On the next page I select the hyperlink "here", which brings me to http://10.129.253.52/log_submit.php</li>
+
+    <img src="../images/bountyhunter/bountyreportsystem.png">
+
+    <br>
+
+    <li>I fill out the form and interecept it with burp to see what is happening.</li>
+
+    <img src="../images/bountyhunter/burp.png">
+    
+    <br>
+
+    <li>It appears to be submitting an XML form in the web request in the data field.  I send this web request to repeater and then test to see if XML External Entity (XXE) injection works.  I submit the following:</li>
+
+    <img src="../images/bountyhunter/xxe.png">
+
+    <br>
+
+    <li>I then highlight the XXE code and press <code>ctrl + b</code> to base64 encode it and then <code>ctrl + u</code> to html encode it, just like the original web request was.</li>
+
+    <img src="">
     
     <br>
     <h2><a id="???">Shell - ???</a></h2>
