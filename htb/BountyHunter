@@ -1,0 +1,55 @@
+---
+layout: default
+---
+<html>
+<head>
+    <title>BountyHunter Walkthrough</title>
+    <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
+</head>
+
+<body>
+
+    <h1>BountyHunter Walkthrough</h1>
+
+    <hr>
+
+    <h2>Contents</h2>
+    <ul>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#portscan">Port Scanning</a></li>
+        <li><a href="#infogather">Information Gathering</a></li>
+        <li><a href="#???">Shell - ???</a></li>
+        <li><a href="#root">Shell - root</a></li>
+    </ul>
+
+    <h2><a id="summary">Summary</a></h2>
+
+    <p></p>
+
+    <h2><a id="portscan">Port Scanning</a></h2>
+
+    <li>Running a port scan against the full port range to determine which ones are open.</li>
+
+    <pre># Nmap 7.91 scan initiated Wed Nov 10 11:57:34 2021 as: nmap -p- -oN ping_tcp 10.129.253.52&#13;&#10;Nmap scan report for 10.129.253.52&#13;&#10;Host is up (0.044s latency).&#13;&#10;Not shown: 65533 closed ports&#13;&#10;PORT   STATE SERVICE&#13;&#10;22/tcp open  ssh&#13;&#10;80/tcp open  http&#13;&#10;&#13;&#10;# Nmap done at Wed Nov 10 11:58:11 2021 -- 1 IP address (1 host up) scanned in 36.74 seconds</pre>
+
+    <li>Running an nmap scan using the flags -sV and -sC to enumerate service versions and other information.</li>
+
+    <pre># Nmap 7.91 scan initiated Thu Nov 11 16:05:16 2021 as: nmap -p22,80 -sV -sC -oN script_tcp 10.129.253.52&#13;&#10;Nmap scan report for 10.129.253.52&#13;&#10;Host is up (0.037s latency).&#13;&#10;&#13;&#10;PORT   STATE SERVICE VERSION&#13;&#10;22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)&#13;&#10;| ssh-hostkey: &#13;&#10;|   3072 d4:4c:f5:79:9a:79:a3:b0:f1:66:25:52:c9:53:1f:e1 (RSA)&#13;&#10;|   256 a2:1e:67:61:8d:2f:7a:37:a7:ba:3b:51:08:e8:89:a6 (ECDSA)&#13;&#10;|_  256 a5:75:16:d9:69:58:50:4a:14:11:7a:42:c1:b6:23:44 (ED25519)&#13;&#10;80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))&#13;&#10;|_http-server-header: Apache/2.4.41 (Ubuntu)&#13;&#10;|_http-title: Bounty Hunters&#13;&#10;Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Thu Nov 11 16:05:32 2021 -- 1 IP address (1 host up) scanned in 15.16 seconds</pre>
+
+    <br>
+    <h2><a id="infogather">Information Gathering</a></h2>
+
+    <li>Since SSH is an uncommon first point of exploitation I focus my efforts on the web server on port 80.  I begin by clicking on "MENU" and then "PORTAL"</li>
+
+    <img src="../images/bountyhunter/menu.png"></img>
+    
+    <br>
+    <h2><a id="???">Shell - ???</a></h2>
+
+
+    <br>
+    <h2><a id="root">Shell - Root</a></h2>
+
+</body>
+</html>
+
