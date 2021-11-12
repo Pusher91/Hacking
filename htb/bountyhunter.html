@@ -18,7 +18,7 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#???">Shell - ???</a></li>
+        <li><a href="#Development">Shell - Development</a></li>
         <li><a href="#root">Shell - root</a></li>
     </ul>
     
@@ -72,7 +72,7 @@ layout: default
     <li>The XXE injection works and we are able to see the contents of /etc/passwd.  In /etc/passwd we find the only user besides root with /bin/bash is "Development".  The only other port open on this machine is SSH on 22.  So if we can find the password or SSH key for the user "Development" then we can SSH in.  I look for an SSH key in /home/development/.ssh/id_rsa but nothing returns.</li>
     
     <br>
-    <h2><a id="???">Shell - ???</a></h2>
+    <h2><a id="Development">Shell - Development</a></h2>
     
     <li>By now the gobuster can has finished and we find that the directory /db.php exists.  This file might contain credentials for the database, and these credentials could be reused for the "Development" user, so I read the file contents using XXE injection.  At first I attempt to do so exactly like I did when I read the contents of /etc/passwd.  However, this does not work when trying to read php files.  Instead, I end up having to use a php wrapper and base64 encode the contents of /db.php in the web directory.  My web request looked as follows:</li>
     
