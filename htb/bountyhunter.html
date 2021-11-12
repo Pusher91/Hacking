@@ -44,11 +44,13 @@ layout: default
     <img src="../images/bountyhunter/menu.png">
     
     <br>
+    <br>
     
     <li>On the next page I select the hyperlink "here", which brings me to http://10.129.253.52/log_submit.php</li>
     
     <img src="../images/bountyhunter/bountyreportsystem.png">
     
+    <br>
     <br>
     
     <li>I fill out the form and interecept it with burp to see what is happening.</li>
@@ -56,17 +58,20 @@ layout: default
     <img src="../images/bountyhunter/burp.png">
     
     <br>
+    <br>
     
     <li>It appears to be submitting an XML form in the web request in the data field.  I send this web request to repeater and then test to see if XML External Entity (XXE) injection works.  I submit the following:</li>
     
     <img src="../images/bountyhunter/xxe.png">
     
     <br>
+    <br>
     
     <li>I then highlight the XXE code and press <code>ctrl + b</code> to base64 encode it and then <code>ctrl + u</code> to html encode it, just like the original web request was.</li>
     
     <img src="../images/bountyhunter/passwd.png">
     
+    <br>
     <br>
     
     <li>The XXE injection works and we are able to see the contents of /etc/passwd.  In /etc/passwd we find the only user besides root with /bin/bash is "Development".  The only other port open on this machine is SSH on 22.  So if we can find the password or SSH key for the user "Development" then we can SSH in.  I look for an SSH key in /home/development/.ssh/id_rsa but nothing returns.</li>
@@ -79,17 +84,20 @@ layout: default
     <img src="../images/bountyhunter/db.png">
     
     <br>
+    <br>
     
     <li>After base64 encoding and then url encoding the data=contents I send the web request.  It returns with the base64 encoded content of the db.php file.</li>
     
     <img src="../images/bountyhunter/db2.png">
     
     <br>
+    <br>
     
     <li>I take the base64 string that the server returned and I decode it.</li>
     
     <img src="../images/bountyhunter/db3.png">
     
+    <br>
     <br>
     
     <li>Using this password I am able to SSH in to the server as the user development.  <code>sshpass -p m19RoAU0hP41A1sTsq6K ssh development@10.129.253.52</code></li>
