@@ -41,10 +41,13 @@ layout: default
             <td>4</td>
             <td>Find jmp esp instruction</td>
             <td>
-                <li>!mona jmp -r esp -cpb &quot;\x00\x0A&quot;</li>
+                <li>!mona jmp -r esp -cpb &lt;bad characters - example: &quot;\x00\x0A&quot;&gt;</li>
+                <ul>
+                    <li>Very common bad characters: &quot;\x00\x0A&quot;</li>
+                </ul>
                 <li>Set breakpoint on JMP instruction</li>
                 <ul>
-                    <li>b &lt;JMP ESP Address&gt;</li>
+                    <li>immunity debugger command: b &lt;JMP ESP Address&gt;</li>
                 </ul>
             </td>
         </tr>
