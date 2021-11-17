@@ -25,7 +25,7 @@ layout: default
 
     <h2><a id="summary">Summary</a></h2>
 
-    <p></p>
+    <p>Gaining a foothold on this box requires brute forcing for subdomains.  Once the subdomain is found a combination of 2 web exploits are required to gain code execution as www-data.  Once on the box, a database configuration file reveals the password to the mysql database.  The mysql database contains hashed passwords for Moodle users.  Cracking the admin hash reveals a password which is reused by the user jamie.  Jamie has sudo permissions to the pkg install command.  Exploiting this permission gives root code execution.</p>
 
     <h2><a id="portscan">Port Scanning</a></h2>
 
@@ -223,9 +223,6 @@ layout: default
     <li>Then I execute the rootbash file with the "-p" flag and I gain a shell with root permissions.</li>
 
     <img src="../images/schooled/rootbash.png">
-
-
-
 
 </body>
 </html>
