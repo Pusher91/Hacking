@@ -24,11 +24,27 @@ layout: default
         </tr>
         <tr>
             <td>Easy way to allow things</td>
-            <td>audit2allow</td>
+            <td>
+                audit2allow -i &lt;input&gt;
+                <br>
+                grep denied /var/log/audit/audit.log | grep read | tail -1 | audit2allow
+            </td>
         </tr>
         <tr>
             <td>Analyze SELinux logs (/var/log/audit/audit.log)</td>
             <td>audit2why</td>
+        </tr>
+        <tr>
+            <td>View policies</td>
+            <td>getsebool -a</td>
+        </tr>
+        <tr>
+            <td>Set policies</td>
+            <td>setsebool</td>
+        </tr>
+        <tr>
+            <td>View port policies</td>
+            <td>semanage port -l</td>
         </tr>
     </table>
     
