@@ -25,7 +25,7 @@ layout: default
     
     <h2><a id="summary">Summary</a></h2>
     
-    <p>This box starts out by using snmp output to fnd a web service hidden on a subdomain that is leaked by the SSL certificate.  On this web service, seeddms, I find an exploit to gain code execution.  Once on the box I find credentials for the sql server stored in a configuration file.  These credentials are reused for michelle on the other web service, cockpit.  On cockpit I am able to add an SSH key for michelle and then gain a shell as michelle.  As michelle I am able to create a script that exploits the /usr/bin/monitor executable that is being ran as root via snmp.</p>
+    <p>This box starts out by using snmp output to fnd a web service hidden on a subdomain that is leaked by the SSL certificate.  On this web service, seeddms, I find an exploit to gain code execution.  Once on the box I find credentials for the sql server stored in a configuration file.  These credentials are reused for michelle on the other web service, cockpit.  On cockpit I am able to add an SSH key for michelle and then gain a shell as michelle.  As michelle I am able to create a script that exploits the /usr/bin/monitor executable that is being ran as root via snmp and I gain a root shell.</p>
     
     <h2><a id="portscan">Port Scanning</a></h2>
     
