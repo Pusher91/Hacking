@@ -43,11 +43,17 @@ layout: default
         <li>C:\Program Files\</li>
         <li>C:\Program Files (x86)\</li>
     </ul>
-    
-    <li>Autologon creds</li>
+
+    <li>Check for credentials</li>
     <ul>
-        <li>get-item -path "HKLM:\software\microsoft\windows nt\currentversion\winlogon"</li>
-        <li>reg.exe query "HKLM\software\microsoft\windows nt\currentversion\winlogon"</li>
+        <li>Autologin</li>
+        <ul>
+            <li>get-item -path "HKLM:\software\microsoft\windows nt\currentversion\winlogon"</li>
+            <li>reg.exe query "HKLM\software\microsoft\windows nt\currentversion\winlogon"</li>
+        </ul>
+
+        <li>Group Policy (GPP) passwords</li>
+        <li>C:\Windows\Panther\unattend.xml</li>
     </ul>
     
     <li>Check running processes, pay attention to admin</li>
@@ -65,7 +71,6 @@ layout: default
         </ul>
     </ul>
     
-    <li>Look for Group Policy (GPP) passwords</li>
     
     <li>Installed programs/applications</li>
     <ul>
