@@ -43,7 +43,7 @@ layout: default
         <li>C:\Program Files\</li>
         <li>C:\Program Files (x86)\</li>
     </ul>
-
+    
     <li>Check for credentials</li>
     <ul>
         <li>Autologin</li>
@@ -51,7 +51,7 @@ layout: default
             <li>get-item -path "HKLM:\software\microsoft\windows nt\currentversion\winlogon"</li>
             <li>reg.exe query "HKLM\software\microsoft\windows nt\currentversion\winlogon"</li>
         </ul>
-
+        
         <li>Group Policy (GPP) passwords</li>
         <li>C:\Windows\Panther\unattend.xml</li>
     </ul>
@@ -109,13 +109,29 @@ layout: default
         <li>SeLoadDriverPrivilege</li>
         <li>SeTakeOwnershipPrivilege</li>
         <li>SeDebugPrivilege</li>
-
+        
         <br>
         
         <li>Article on exploiting privileges: https://foxglovesecurity.com/2017/08/25/abusing-token-privileges-for-windows-local-privilege-escalation/</li>
     </ul>
     
     <li>Always Install Elevated</li>
+    <ul>
+        <li>HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
+        <ul>
+            <li>reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated</li>
+        </ul>
+        
+        <li>HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer</li>
+        <ul>
+            <li>reg query HKLM\software\policies\microsoft\windows\installer /v alwaysinstallelevated</li>
+        </ul>
+        
+        <li>Create msi reverse shell and execute it</li>
+        <ul>
+            <li>msiexec /qn /i shell.msi</li>
+        </ul>
+    </ul>
     
     <li>Abuse GUI Program running as admin</li>
     <ul>
