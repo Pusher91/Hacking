@@ -1547,8 +1547,20 @@ layout: default
                 </td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
+                <td>Encrypted Credential Manager Credentials</td>
+                <td>
+                    <li>User credential Location - C:\Users\&lt;USER&gt;\AppData\Local\Microsoft\Credentials\</li>
+                    <li>System credential location - %systemroot%\System32\config\systemprofile\AppData\Local\Microsoft\Credentials\</li>
+                    <tr>
+                        <td>mimikatz decrypt file using master key</td>
+                        <td>
+                            <li># dpapi::cred /in:C:\Users\User\Desktop\credentials</li>
+                            <ul>
+                                <li>If ran after decrypting a master key the mimikatz will automatically apply it</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </td>
             </tr>
         </table>
         
