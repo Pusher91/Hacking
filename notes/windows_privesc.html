@@ -1113,6 +1113,10 @@ layout: default
             <td>gci HKLM:\SYSTEM\CurrentControlSet\Services</td>
         </tr>
         <tr>
+            <td>List started services</td>
+            <td>cmd.exe /c wmic service where started=true get name, startname</td>
+        </tr>
+        <tr>
             <td>
                 <li>List services:</li>
                 <ul>
