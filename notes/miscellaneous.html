@@ -315,6 +315,11 @@ layout: default
         <ol>
             <li>Linux kernel initialization completes.</li>
             <li>The program /sbin/init gets ran.</li>
+            <ul>
+                <li>init is the parent of all processes</li>
+                <li>init typically has a PID of 1</li>
+            </ul>
+
             <li>/sbin/init reads /etc/inittab to determine which scripts to run to complete initialization.</li>
             <ol>
                 <li>First, the script /etc/rc.d/rc.sysinit gets ran.  This is reponsible for initialization tasks.</li>
