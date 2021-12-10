@@ -302,6 +302,33 @@ layout: default
     </ul>
     
     <li>Syntax: java -jar ysoserial-master-SNAPSHOT.jar &lt;payload type&gt; &#039;&lt;command&gt;&#039;</li>
+
+    <hr>
     
+    <h2>Gitlab</h2>
+
+    <li>Access console: <code>gitlab-rails console</code></li>
+
+    <li>Console Commands:</li>
+
+    <table>
+        <tr>
+            <td>Show active users</td>
+            <td>User.active</td>
+        </tr>
+        <tr>
+            <td>Show admins</td>
+            <td>User.admins</td>
+        </tr>
+        <tr>
+            <td>Change user password</td>
+            <td>
+                <li>&lt;username&gt;.password = &apos;&lt;new password&gt;&apos;</li>
+                <li>&lt;username&gt;.password_confirmation = &apos;&lt;new password&gt;&apos;</li>
+                <li>&lt;username&gt;.save</li>
+            </td>
+        </tr>
+    </table>
+
 </body>
 </html>
