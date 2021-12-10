@@ -323,9 +323,10 @@ layout: default
         <tr>
             <td>Change user password</td>
             <td>
-                <li>&lt;username&gt;.password = &apos;&lt;new password&gt;&apos;</li>
-                <li>&lt;username&gt;.password_confirmation = &apos;&lt;new password&gt;&apos;</li>
-                <li>&lt;username&gt;.save</li>
+                <li>&lt;variable&gt; = User.find(&lt;user id #&gt;)</li>
+                <li>&lt;user variable&gt;.password = &apos;&lt;new password&gt;&apos;</li>
+                <li>&lt;user variable&gt;.password_confirmation = &apos;&lt;new password&gt;&apos;</li>
+                <li>&lt;user variable&gt;.save</li>
             </td>
         </tr>
     </table>
