@@ -284,6 +284,16 @@ layout: default
             <td>Network interfaces and addresses</td>
             <td>/proc/net/fib_trie</td>
         </tr>
+        <tr>
+            <td>Listening ports (HEX encoded)</td>
+            <td>
+                /proc/net/tcp
+                <li>cat /proc/net/tcp | grep '00000000:0000 0A' </li>
+                <ul>
+                    <li>0A = listening</li>
+                </ul>
+            </td>
+        </tr>
     </table>
     
     <hr>
