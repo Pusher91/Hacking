@@ -1098,6 +1098,14 @@ layout: default
 	<pre>&lt;!DOCTYPE foo [ &lt;!ENTITY xxe SYSTEM &quot;http://website.com&quot;&gt; ]&gt;</pre>
 
 	<hr>
+
+	<h2>Execution After Redirect (EAR)</h2>
+
+	<li>An attacker can ignore a redirect and read the full contents of that page</li>
+
+	<li>Example: If a webpage redirects users who are not logged in, but that web page lacks code termination upon redirect, then an attacker can ignore the redirect and read the full contents of the page.</li>
+
+	<hr>
 	
 	<h2>Tomcat</h2>
 	
