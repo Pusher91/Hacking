@@ -1135,15 +1135,15 @@ layout: default
         <table>
             <tr>
                 <td>Basic search</td>
-                <td>ldapsearch -h &lt;ip address&gt;</td>
+                <td>ldapsearch -H ldap://&lt;ip address&gt;</td>
             </tr>
             <tr>
                 <td>Simple authentication</td>
-                <td>ldapsearch -h &lt;ip address&gt; -x</td>
+                <td>ldapsearch -H ldap://&lt;ip address&gt; -x</td>
             </tr>
             <tr>
                 <td>Authenticate as user</td>
-                <td>ldapsearch -h &lt;ip address&gt; -x -D &apos;&lt;user&gt;@&lt;domain&gt;&apos; -w
+                <td>ldapsearch -H ldap://&lt;ip address&gt; -x -D &apos;&lt;user&gt;@&lt;domain&gt;&apos; -w
                     &apos;&lt;password&gt;&apos;
                     -b &apos;DC=something,DC=something&apos;
                 </td>
@@ -1151,7 +1151,7 @@ layout: default
             <tr>
                 <td>Retrieve naming contexts</td>
                 <td>
-                    ldapsearch -h &lt;ip address&gt; -x -s base namingcontexts
+                    ldapsearch -H ldap://&lt;ip address&gt; -x -s base namingcontexts
                     <ul>
                         <li>Output can be thought of folders and they are different types of folders</li>
                     </ul>
@@ -1160,7 +1160,7 @@ layout: default
             <tr>
                 <td>Output all the LDAP information that can be queried</td>
                 <td>
-                    <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
+                    <li>ldapsearch -H ldap://&lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;"</li>
                     <ul>
                         <li>DC=values from output of "Retrieving name contexts" command</li>
                     </ul>
@@ -1182,7 +1182,7 @@ layout: default
             <tr>
                 <td>Query LDAP</td>
                 <td>
-                    <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to
+                    <li>ldapsearch -H ldap://&lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to
                         search&gt;'
                     </li>
                     <ul>
@@ -1208,7 +1208,7 @@ layout: default
             <tr>
                 <td>Query LDAP with Filters</td>
                 <td>
-                    <li>ldapsearch -h &lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to
+                    <li>ldapsearch -H ldap://&lt;ip address&gt; -x -b "DC=&lt;value&gt;,DC=&lt;value&gt;" '&lt;Query to
                         search&gt;'
                         &lt;Filter&gt;
                     </li>
