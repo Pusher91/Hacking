@@ -220,10 +220,16 @@ layout: default
         <li>pth-winexe</li>
     </ul>
 
-    <li>Check password attack vectors</li>
+    <li>Active Directory attacks</li>
     <ul>
         <li>ASREPRoast</li>
+        <ul>
+            <li>If there are users without kerberos pre-auth required.</li>
+        </ul>
         <li>Kerberoast</li>
+        <ul>
+            <li>If able to authenticate as a user.</li>
+        </ul>
     </ul>
 
     <hr>
@@ -2049,6 +2055,11 @@ layout: default
                 </ul>
             </ul>
         </ul>
+    </ul>
+
+    <li>Check domain</li>
+    <ul>
+        <li>crackmapexec smb &lt;ip&gt;</li>
     </ul>
 
     <hr>
