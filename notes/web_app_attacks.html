@@ -132,6 +132,10 @@ layout: default
 	<ul>
 		<li>If a domain name is being used then check if any subdomains exist</li>
 		<li>ffuf -c -u http://&lt;ip address&gt; -H &quot;Host: FUZZ.&lt;domain&gt;&quot; -w &lt;wordlist&gt;</li>
+		<li>FUZZ vhosts for variations of known subdomains.</li>
+		<ul>
+			<li>Known subdomain: preprod-billing.rootdomain | preprod-FUZZ.rootdomain</li>
+		</ul>
 	</ul>
 	
 	<li>Log poisoning</li>
