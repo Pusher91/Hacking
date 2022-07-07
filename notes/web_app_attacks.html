@@ -180,17 +180,16 @@ layout: default
 		</ul>
 	</ul>
 	
-	<li>Enumerate valid users</li>
+	<li>Enumerate valid users with error message</li>
 	<ul>
-		<li>Observe error message returned when attempting to login</li>
+		<li>Check for unique errors</li>
 		<ul>
-			<li>If you attempt to login and an error message returns saying "User does not exist, please try again", then you know that user does not exist.</li>
-			<li>If you get an error message saying "Password is incorrect for this user" then you know that user exists.</li>
+			<li>For users we know exists</li>
 			<ul>
-				<li>You can determine users that exist before attacking passwords.</li>
-				<li>Try this same technique on the password recovery page.</li>
-				<li>Automate user enumeration using wfuzz</li>
+				<li>With valid password</li>
+				<li>With invalid password</li>
 			</ul>
+			<li>For users we know do not exist</li>
 		</ul>
 	</ul>
 	
