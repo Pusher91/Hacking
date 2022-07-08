@@ -96,21 +96,18 @@ layout: default
     <li>mysql</li>
     <ul>
         <li>If we can log in to it, look for sensitive information</li>
-        <li>Attempt run commands as the user (preferably root) that is logged into mysql</li>
+        <li>UDF Exploit - Run commands as the user (preferably root) that is logged into mysql</li>
         <ul>
-            <li>UDF Exploit</li>
+            <li>Place a UDF exploit shared object in the mysql plugins directory</li>
             <ul>
-                <li>Place a UDF exploit shared objects in the mysql plugins directory</li>
+                <li>Get plugins directory:
+                    <pre>SHOW VARIABLES LIKE &apos;plugin_dir&apos;;</pre>
+                </li>
+                <li>Shared Objects</li>
                 <ul>
-                    <li>Get plugins directory:
-                        <pre>SHOW VARIABLES LIKE &apos;plugin_dir&apos;;</pre>
-                    </li>
-                    <li>Shared Objects</li>
-                    <ul>
-                        <li>raptor_udf</li>
-                        <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_32.so</li>
-                        <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_64.so</li>
-                    </ul>
+                    <li>raptor_udf</li>
+                    <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_32.so</li>
+                    <li>/usr/share/metasploit-framework/data/exploits/mysql/lib_mysqludf_sys_64.so</li>
                 </ul>
             </ul>
         </ul>
