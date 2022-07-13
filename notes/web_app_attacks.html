@@ -174,10 +174,15 @@ layout: default
 		</ul>
 		<li>PHP Juggling Bug / Bypass Login</li>
 		<ul>
-			<li>Abuses how PHP interprets information</li>
-			<li>Change login webrequest of: username=admin&password=admin</li>
-			<li>To: username=admin&password[]=admin</li>
-			<li>If this works, you will login without providing correct password</li>
+			<li>Abuses how PHP interprets == vs === comparisons</li>
+				<ul>
+					<li>== is a lazy comparison</li>
+					<li>=== is a strict comparison</li>
+				</ul>
+			<li>PHP juggling login bypass examples</li>
+			<ul>
+				<li>{&quot;password&quot;:true}</li>
+			</ul>
 		</ul>
 	</ul>
 	
