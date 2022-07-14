@@ -350,6 +350,18 @@ layout: default
                     <ul>
                         <li>List CRC for each file</li>
                         <li>List encrypytion method for each file</li>
+                        <ul>
+                            <li>Method = ZipCrypto</li>
+                            <ul>
+                                <li>Vulerable to plaintext attack</li>
+                                <ul>
+                                    <li>Only need to know 10 plaintext characters that exist in the encrypted/zipped file</li>
+                                    <ul>
+                                        <li>The more plaintext, the quicker the attack</li>
+                                    </ul>
+                                </ul>
+                            </ul>
+                        </ul>
                     </ul>
                 </td>
             </tr>
