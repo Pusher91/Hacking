@@ -359,6 +359,25 @@ layout: default
                                     <ul>
                                         <li>The more plaintext, the quicker the attack</li>
                                     </ul>
+                                    <li>Attack steps</li>
+                                    <table>
+                                        <tr>
+                                            <td>Zip plaintext (that mirrors text from the encrypted file)</td>
+                                            <td>zip plaintext.zip plaintex.txt</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Check CRC from zipped plaintext file, make sure it is the same as the encrypted file</td>
+                                            <td>l -lst &lt;zip file&gt;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Get keys for encrypted file</td>
+                                            <td>bkcrack -C &lt;encrypted zip&gt; -c &lt;encrypted target file on zip&gt; -P &lt;plaintext zip&gt; -p &lt;plaintext from target encrypted file&gt;</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Change encrypted zip password</td>
+                                            <td>bkcrack -C &lt;Encrypted zip file&gt; -K &lt;keys from previous command&gt; -U &lt;output zip&gt; &lt;new password&gt;</td>
+                                        </tr>
+                                    </table>
                                 </ul>
                             </ul>
                         </ul>
