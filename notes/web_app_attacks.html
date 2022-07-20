@@ -183,7 +183,7 @@ layout: default
 					</td>
 				</tr>
 			</table>
-			
+
 			<li>BurpSuite Intruder</li>
 			<li>Wordpress - wpscan (also an overall vulnerability scanner)</li>
 		</ul>
@@ -1321,9 +1321,16 @@ layout: default
 
 	<h2>Wordpress</h2>
 
-	<li>Sensitive Files</li>
+	<li>Sensitive Files / Directories</li>
 	<ul>
 		<li>wordpress/wp-settings.php</li>
+		<ul>
+			<li>Database credentials</li>
+		</ul>
+		<li>/wp-content/plugins/</li>
+		<ul>
+			<li>Sometimes a directory listing of plugins is enabled, usually not.</li>
+		</ul>
 	</ul>
 
 	<li>Exploitation</li>
@@ -1346,6 +1353,10 @@ layout: default
 		<ul>
 			<li>Flags</li>
 			<table>
+				<tr>
+					<td>--plugins-detection aggressive</td>
+					<td>Aggressively search for plugins</td>
+				</tr>
 				<tr>
 					<td>ap</td>
 					<td>All plugins</td>
