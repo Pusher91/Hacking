@@ -915,8 +915,11 @@ layout: default
 	<ul>
 		<li>Usage (batch style) with some flags explained:</li>
 		<ul>
-			<li>sqlmap -r &lt;Saved GET request&gt; --batch [--force-ssl] [--technique=U] [--dbms=mysql] [--password]
-			</li>
+			<li>sqlmap -r &lt;Saved GET request&gt; --batch [--force-ssl] [--technique=U] [--dbms=mysql] [--password]</li>
+			<li>Custom injection point</li>
+			<ul>
+				<li>Insert * where burp should inject payload (if neccessary)</li>
+			</ul>
 			<table>
 				<tr>
 					<td>-r</td>
