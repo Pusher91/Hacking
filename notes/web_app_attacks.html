@@ -1255,6 +1255,12 @@ layout: default
 
 	<h2>XXE Injection</h2>
 
+	<li>Test for XXE Injection</li>
+	<ul>
+		<li>Use the XXE injection test before XXE LFI or XXE SSRF attack in case the victim detects a malicious XXE injection and disables it before being able to attempt to exploit the XXE</li>
+		<pre>&lt;!DOCTYPE replace [&lt;!ENTITY example &quot;Doe&quot;&gt; ]&gt;&#13;&#10; &lt;userInfo&gt;&#13;&#10;  &lt;firstName&gt;John&lt;/firstName&gt;&#13;&#10;  &lt;lastName&gt;&amp;example;&lt;/lastName&gt;&#13;&#10; &lt;/userInfo&gt;</pre>
+	</ul>
+
 	<li>File retrieval</li>
 	<ul>
 		<li>Use php wrappers to access internal files <code>php://filter/convert.base64-encode/resource=</code></li>
