@@ -140,6 +140,9 @@ layout: default
 
     <br>
 
+    <li>Port scan without builtin linux features</li>
+    <pre>echo &gt; /dev/tcp/&lt;ip address&gt;/&lt;port&gt; &amp;&amp; echo UP || echo DOWN</pre>
+
     <li>Bash script for port scanning</li>
 
     <pre>&#13;&#10;#!/bin/bash host=10.5.5.11&#13;&#10;for port in {1..65535}; do&#13;&#10;timeout .1 bash -c &quot;echo &gt;/dev/tcp/$host/$port&quot; &amp;&amp;&#13;&#10;echo &quot;port $port is open&quot;&#13;&#10;done&#13;&#10;echo &quot;Done&quot;&#13;&#10;            </pre>
